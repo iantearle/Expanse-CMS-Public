@@ -1,0 +1,113 @@
+.pull-right { position: relative; }
+.gravatar {
+	position: absolute;
+	left: -34px;
+	top: 5px;
+	border: solid #cfcfcf 2px;
+}
+.gravatar,.gravatar img{
+	width: 25px;
+	height: 25px;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+}
+/*
+------------------------------------------------------------
+Accordion Styles
+============================================================
+*/
+		.stretchToggle {
+		cursor:pointer;
+		padding:0.2em;
+		margin: 0.15em;
+		border: 1px solid #DDE1E3;
+		padding: 1px;
+		font-size:110%;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		}
+		.stretchToggle span {
+		display:block;
+		text-decoration:none;
+		background: #EEF0F1;
+		padding: 0.2em;
+		color:#069;
+		}
+		.stretch {
+		background:#fff;
+		}
+		.stretchContainer {
+		background:#fff;
+		border:1px solid #B6C2D7;
+		padding: 0.5em;
+		}
+		
+		/*
+		------------------------------------------------------------
+		Summary/Latest Buzz
+		============================================================
+		*/
+		#summary{
+		padding: 0.5em 1em 2em;
+		float:left;
+		clear:both;
+		}
+		
+		#summary h1{
+		color:#000;
+		margin:0 0 1em;
+		padding-bottom:0.2em;
+		border-bottom:1px solid #808C97;
+		font-size: 1.2em;
+		}
+		h1 span{
+		color:#004CA3;
+		font-size:1.2em;
+		}
+		#theBuzz{float:left; width:250px;}
+		#theBuzz h1{
+		color:#226094;
+		background:url(../images/buzz_report.gif) no-repeat 0 50%;
+		padding: 0 0 0 20px;
+		margin-bottom:1em;
+		border:0;
+		}
+		#summary h2{
+		margin:0;
+		font-size:1em;
+		}
+		#summary ul{
+		width:150px;
+		float:left;
+		margin-right:20px;
+		list-style:none;
+		border-right: 1px dotted #808C97;
+		}
+		#summary ul li{
+		margin-bottom:0.7em;
+		line-height:1.1;
+		}
+		#summary ul li p span{
+		color:#004CA3;
+		}
+		#summary a.buzz{
+		padding: 0 0 0 20px;
+		color: #004CA3;
+		display:block;
+		height: 20px;
+		background:url(../images/buzz.gif) no-repeat 0 50%;
+		font-size: 0.9em;
+		margin:0;
+		}
+		#summary h3{
+		font-size: 1.2em;
+		}
+		#summary .contentalert{
+		width: 90%;
+		text-align:left;
+		background-position: 5px 50%;
+		padding: 0.5em 0.5em 0.5em 3em;
+		margin-bottom:1em;
+		}

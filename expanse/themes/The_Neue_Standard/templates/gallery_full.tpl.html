@@ -1,0 +1,47 @@
+<div id="content" class="gallery">
+	<h1>Artwork</h1>
+
+	{output}
+
+	{loop:content}
+		<h3 class="artwork">{title}</h3>
+		<img src="{image}" id="full-image" />
+		{loop:image_set}
+			<dl class="image-set">
+				<dt><img src="{thumbnail}" title="{caption}" alt="{caption}" /></dt>
+				<dd>{caption}</dd>
+			</dl>
+		{/loop}
+		<dl id="details-list">
+			<dt>Materials</dt>
+			<dd>{materials}</dd>
+			<dt>Description</dt>
+			<dd>{descr}</dd>
+			{loop:extra_fields}
+				<dt>{field}</dt>
+				<dd>{value}</dd>
+			{/loop}
+		</dl>
+		
+		<p>{set:logged_in}<a href="{editlink}">Edit item</a>{/set}</p>
+		
+		{set:for_sale}<p id="item-price">${paypal_amount}</p>
+			{paypal_form}
+		{/set}
+
+		<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by <a href="{user_url}">{author}</a></p>
+		
+		{if:{comments}}<h4 id="comments">{comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+			{mis:the_comments}
+				<h5>There are no comments on this entry. You should add one.</h5>
+			{/mis}
+		{/if}
+		{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
+
+		{include:'comments.tpl.html'}
+		
+		{if:{comments}}
+			{include:'comment_form.tpl.html'}
+		{/if}
+	{/loop}
+</div>

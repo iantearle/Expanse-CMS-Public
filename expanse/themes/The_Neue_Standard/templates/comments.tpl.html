@@ -1,0 +1,9 @@
+{loop:the_comments}
+	<dl class="comment">
+		<dt id="comment-{_rank}"><a href="#comment-{_rank}" title="Permanent Link To This Comment" class="comment-link">{_rank}</a> {set:url}<a href="{url}" title="Link to {name}'s site">{/set}{name}{set:url}</a>{/set} says:</dt>
+	    <dd>
+	        <p class="comment-message">{message}</p>
+	        <p class="meta">Posted on <strong class="date">{date}</strong> at <strong class="date">{time}</strong>{set:logged_in}<br /><a href="{expanseurl}index.php?type=edit&amp;cat=admin&amp;sub=comments&amp;id={id}">Edit comment</a>{/set}</p>
+	    </dd>
+	</dl>
+{/loop}

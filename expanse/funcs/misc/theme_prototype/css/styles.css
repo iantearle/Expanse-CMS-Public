@@ -1,0 +1,67 @@
+/*__CSS_META__*/
+
+
+/*
+-------------------------------------------------
+Global values
+=================================================
+*/
+
+/*Global whitespace reset*/
+*{
+margin:0;
+padding:0;
+}
+body{
+/*Resets 1em to equal 10px (on fonts, at least), so 1.2em equals 12px, 1.6em equals 16px, etc.*/
+font: 62.5%/1.6em 'Lucida Sans Unicode','Lucida Grande', 'Lucida', Arial, Verdana, sans-serif;
+padding:3em;
+background:#fff;
+}
+a{
+color: #668324;
+}
+a:hover{
+color:#966218;
+}
+
+h1, h2, h3, h4, h5, h6{
+color:#053C73;
+font-family: Georgia, "Times New Roman", Times, serif;
+margin:1em 0;
+}
+
+p{margin-bottom:1em;}
+
+ul{list-style:none;}
+ul li ul{
+margin-left:1em;
+}
+
+/*
+-------------------------------------------------
+Menu
+=================================================
+*/
+#menu{float:left;}
+#menu h2 a{color:#053C73;}
+
+/*
+-------------------------------------------------
+Content
+=================================================
+*/
+#content{
+width:700px; 
+float:left;
+margin-left: 2em;
+}
+
+/*
+-------------------------------------------------
+Footer
+=================================================
+*/
+#footer{
+clear:both;
+}

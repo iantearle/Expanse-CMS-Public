@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="language" content="EN-GB" />
+<link href="{themecss}" rel="stylesheet" type="text/css" />
+</head>
+<body> 
+<div id="mailBox">
+<h1>{sitename} E-mail Notification</h1>
+<dl>
+<dt id="contactForm"><a href="{url}">{name}</a> says:</dt>
+ <dd> <p>{message}</p>
+  <p>Sent On: {date} @ {time}</p>
+ </dd>
+  <dt id="commenterInformation">Contact Information</dt>
+  <dd id="commenterDetails"><p><strong>Name:</strong> {name}<br />
+  <strong>E-mail: </strong><a href="mailto:{email}">{email}</a><br />
+  <strong>URL: </strong><a href="{url}">{url}</a><br />
+  <strong>ISP Details:</strong> <a href="http://ws.arin.net/cgi-bin/whois.pl?queryinput={ip}">http://ws.arin.net/cgi-bin/whois.pl?queryinput={ip}</a><br />
+  <strong>IP:</strong> {ip}<br />
+  <strong>Hostmask:</strong> {hostmask}</p></dd>
+</dl>
+<p>You can <a href="mailto:{email}">respond to this email</a>.</p>
+<p>Powered By <a href="{company_url}" target="_blank">{cms_name}</a></p>
+</div>
+</body>
+</html>

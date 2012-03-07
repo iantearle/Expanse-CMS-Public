@@ -1,0 +1,34 @@
+<!-- Begin Blog Full -->
+<div id="content" class="blog">
+	<h1>{category}</h1>
+	{set:subcategory}<h2>{subcategory}</h2>{/set}
+	{output}
+	{loop:content}
+		<h2 class="news"><a href="{permalink}">{title}</a></h2>
+		<p class="meta">Posted on <strong class="date">{date}</strong> at <strong class="time">{time}</strong> by <strong class="author">{author}</strong>.</p>
+		{set:logged_in}<p><a href="{editlink}">Edit Entry</a></p>{/set}
+		{set:extra_fields}
+			<dl>
+			{loop:extra_fields}
+			<dt>{field}</dt>
+			<dd>{value}</dd>
+			{/loop}
+			</dl>
+		{/set}
+		<div id="descr">{descr}</div>
+
+		{if:{comments}}<h4 id="comments">{comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+			{mis:the_comments}
+				<h5>There are no comments on this entry. You should add one.</h5>
+			{/mis}
+		{/if}
+		{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
+
+		{include:'comments.tpl.html'}
+		
+		{if:{comments}}
+			{include:'comment_form.tpl.html'}
+		{/if}
+	{/loop}
+</div>
+<!-- End Blog Full -->

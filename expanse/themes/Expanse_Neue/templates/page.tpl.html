@@ -1,0 +1,16 @@
+<div id="content" class="page">
+{output}
+{loop:content}
+<h3 class="news"><a href="{permalink}">{title}</a></h3>
+<p>{loop:extra_fields}
+<strong>{field}</strong>: {value}<br />
+{/loop}</p>
+{set:parent_link}<h2>&laquo; {parent_link}</h2>{/set}
+{page_list}
+{descr}
+{set:logged_in}<a href="{editlink}">Edit page</a>{/set}<br />
+</p>
+ 
+{/loop}
+
+</div>

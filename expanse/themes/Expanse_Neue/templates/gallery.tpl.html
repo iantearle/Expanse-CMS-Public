@@ -1,0 +1,23 @@
+<div id="content" class="gallery">
+<h1>{category}</h1>
+{set:subcategory}<h2>{subcategory}</h2>{/set}
+ 
+{output}
+<!--Begin paging-->
+{loop:pages}{set:_first}Pages: {/set}{previous_link} {page_link} {next_link}{/loop}
+<!--/End paging-->
+<ul id="gallery">
+{loop:content} 
+
+  <li><a href="{image}" rel="lightbox[gallery]" title="{title} - &lt;a href=&quot;{permalink}&quot; class=&quot;viewDetails&quot;&gt;View image details&lt;/a&gt;"><img src="{thumbnail}" alt="{title}" title="{title}" class="artworkImages" /></a>
+!!{excerpt}!!
+</li>
+
+{/loop}
+</ul>
+
+</div>
+
+
+
+

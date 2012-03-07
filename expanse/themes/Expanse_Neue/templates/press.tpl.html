@@ -1,0 +1,21 @@
+<div id="content" class="press">
+<h1>Press</h1>
+{set:subcategory}<h2>{subcategory}</h2>{/set}
+{output}
+
+<!--Begin paging-->
+{loop:pages}{set:_first}Pages: {/set}{previous_link} {page_link} {next_link}{/loop}
+<!--/End paging-->
+
+{loop:content}
+<h3 class="press"><a href="{permalink}">{title}</a></h3>
+{if:{image}}
+<p><a href="{permalink}"><img src="{image}" class="artworkImages keepSized" title="{title}" alt="{title}" /></a></p>
+{/if}
+{descr}
+<p><strong>Posted:</strong> {date}</p>{/loop}
+
+</div>
+
+
+

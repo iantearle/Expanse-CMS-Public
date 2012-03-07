@@ -1,0 +1,462 @@
+/* @override http://r-blog.com/expanse/themes/The_Neue_Standard/css/The_Neue_Standard.css */
+/*
+//----------------------------
+Theme Name: The Neue Standard
+Theme URL: http://socialistpear.com
+Description: default expanse theme
+Version: 1.0
+Author: Ryan Miglavs
+Author URL: http://socialistpear.com
+//----------------------------
+*/
+
+/*------------- General Junk ----------------*/
+* {
+	margin: 0;
+	padding: 0;
+	}
+html {
+	
+	}
+body {
+	color: #666;
+	font: 16px/24px Georgia, "Times New Roman", Times, serif;
+	background: #fff;
+	/*background: url(../images/grid.png) repeat;*/
+	}
+a:link {
+	color: #0010af;
+	text-decoration: none;
+	}
+a:visited {
+	color: #5a61af;
+	text-decoration: none;
+	}
+a:hover {
+	color: #ed3fb1;
+	text-decoration: none;
+	}
+a:active {
+	color: #dc83c7;
+	text-decoration: none;
+	}
+p a:link {
+	color: #5a61af;
+	}
+p a:visited {
+	color: #5a61af;
+	}
+p:hover a:link {
+	color: #0010af;
+	}
+p:hover a:visited {
+	color: #5a61af;
+	}
+p a:hover {
+	color: #ed3fb1;
+	}
+p a:active {
+	color: #dc83c7;
+	}
+p:hover a:hover {
+	color: #ed3fb1;
+	}
+p:hover a:active {
+	color: #dc83c7;
+	}
+a:link .caps {
+	color: #0010af;
+	text-decoration: none;
+	}
+a:visited .caps {
+	color: #5a61af;
+	text-decoration: none;
+	}
+a:hover .caps {
+	color: #ed3fb1;
+	text-decoration: none;
+	}
+a:active .caps {
+	color: #dc83c7;
+	text-decoration: none;
+	}
+a img {
+	border: none;
+	}
+ul {
+	list-style: none;
+	}
+ol {
+	list-style: inside decimal;
+	}
+p {
+	margin-bottom: 1.5em;
+	}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	}
+h1 {
+	font-size: 36px;
+	line-height: 48px;
+	letter-spacing: -.05em;
+	}
+h2 {
+	
+	}
+h3 {
+	color: #ff920f;
+	}
+h4 {
+	color: #b712ff;
+	}
+h5 {
+	font-size: 100%;
+	color: #ff920f;
+	color: #4284e7;
+	}
+strong {
+	font-weight: normal;
+	color: #999;
+	}
+strong.name {
+	color: #a2f769;
+	}
+span.amp {
+	font-size: 110%;
+	font-family: Baskerville, "Baskerville Old Face", "Goudy Old Style", "Palatino", "Book Antiqua", serif;
+	font-style: italic;
+	}
+span.caps {
+	font-size: 90%;
+	color: #777;
+	}
+span.dquo {
+	
+	}
+span.quo {
+	
+	}
+abbr {
+	font-size: 90%;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	cursor: help;
+	}
+/*--------------- Form Junk ------------------*/
+fieldset {
+	clear: both;
+	margin-top: -16px;
+	padding-left: 12px;
+	border-top: none;
+	border-bottom: none;
+	border-right: none;
+	border-left: 8px solid #ddd;
+	}
+fieldset:hover {
+	border-left: 8px solid #a2f769;
+	}
+fieldset legend {
+	margin-left: -10px;
+	padding-top: 16px;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-weight: bold;
+	color: #ddd;
+	text-transform: uppercase;
+	}
+fieldset:hover legend {
+	color: #a2f769;
+	}
+.required {
+	color: #f00;
+	}
+form {
+	
+	}
+form p {
+	clear: both;
+	overflow: hidden;
+	}
+form p label {
+	float: left;
+	width: 10em;
+	}
+form p input, form p textarea {
+	float: left;
+	width: 200px;
+	padding-top: 1px;
+	border: 1px solid #ccc;
+	color: #ed3fb1;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	background: #eaeaea;
+	}
+form p input {
+	height: 1.5em;
+	}
+form p:hover input, form p:hover textarea {
+	background: #efefef;
+	}
+form p input:focus, form p textarea:focus {
+	background: #f0f0f0;
+	}
+form button {
+	width: 8em;
+	height: 3em;
+	border: 4px solid #ddd;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	background: #eee;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-weight: bold;
+	color: #888;
+	text-transform: uppercase;
+	cursor: pointer;
+	}
+form button:hover {
+	border: 4px solid #a2f769;
+	background: #fff;
+	color: #555;
+	}
+/*------------- Masthead Junk ----------------*/
+#masthead {
+	height: 96px;
+	padding: 0 20px;
+	background: url(../images/background.jpg) repeat-x 160px bottom;
+	}
+#masthead h1 a:link {
+	color: #a2f769;
+	}
+#masthead h1 a:visited {
+	color: #a2f769;
+	}
+#masthead h1 a:hover {
+	color: #ed3fb1;
+	}
+#masthead h1 a:active {
+	color: #ed3fb1;
+	}
+#masthead h2 {
+	font-size: 20px;
+	}
+/*--------------- Search Junk ----------------*/
+#search {
+	position: absolute;
+	left: 20px;
+	width: 170px;
+	padding-left: 12px;
+	border-left: 8px solid #ddd;
+	}
+#search:hover {
+	border-left: 8px solid #a2f769;
+	}
+#search h3 {
+	margin: -4px 0 0 0;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-weight: bold;
+	color: #ddd;
+	text-transform: uppercase;
+	}
+#search:hover h3 {
+	color: #a2f769;
+	}
+#search input#search-input {
+	padding-top: 1px;
+	height: 1.5em;
+	border: 1px solid #ccc;
+	color: #ed3fb1;
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	text-indent: 16px;
+	background: #eaeaea url(../images/search.gif) no-repeat left center;
+	}
+#search input#search-input:hover {
+	background-color: #efefef;
+	}
+#search input#search-input:focus {
+	text-indent: 0;
+	background-color: #f0f0f0;
+	background-image: none;
+	}
+/*--------------- Menu Junk ------------------*/
+ul#menu {
+	position: absolute;
+	left: 220px;
+	width: 120px;
+	font-size: 20px;
+	}
+ul#menu ul li {
+	text-indent: 1em;
+	font-size: 16px;
+	}
+ul#menu li a {
+	display: block;
+	padding: 0 4px;
+	border-left: 8px solid #ddd;
+	line-height: 24px;
+	}
+ul#menu li a:hover {
+	color: #fff;
+	background: #a2f769;
+	border-left: 8px solid #6b85c0;
+	}
+/*-------------- Content Junk ----------------*/
+#content {
+	padding: 0 1em 0 360px;
+	min-height: 400px;
+	}
+#content h1 {
+	margin: -9px 0 9px 0;
+	}
+#content .item {
+	padding-left: 12px;
+	border-left: 8px solid #ddd;
+	}
+#content .item:hover {
+	border-left: 8px solid #a2f769;
+	}
+#content p.meta {
+	font-size: 12px;
+	line-height: 24px;
+	margin-bottom: 2em;
+	color: #ccc;
+	}
+#content #descr p {
+	line-height: 24px;
+	}
+#content #descr ul {
+	margin-bottom: 2em;
+	margin-left: .5em;
+	list-style-type: circle !important;
+	list-style-position: outside !important;
+	text-indent: .3em;
+	}
+#content #descr ul li {
+	color: #888;
+	}
+#content #descr ul li a:link {
+	color: #5a61af;
+	}
+#content #descr ul li:hover {
+	color: #666;
+	}
+#content #descr ul li:hover a:link {
+	color: #0010af;
+	}
+/*-------------- Comment Junk ---------------*/
+form#commentform {
+	margin-top: 24px;
+	}
+h4#comments {
+	color: #bbb;
+	font: italic 18px/24px Georgia, "Times New Roman", Times, serif;
+	}
+dl.comment {
+	position: relative;
+	padding-left: 12px;
+	border-left: 4px solid #ccc;
+	}
+dl.comment:hover {
+	border-left: 4px solid #dc83c7;
+	}
+a.comment-link {
+	position: absolute;
+	left: -2.4em;
+	top: -4px;
+	width: 2em;
+	font: italic 36px/48px Georgia, "Times New Roman", Times, serif;
+	color: #ccc;
+	text-align: right;
+	}
+dl.comment:hover a.comment-link {
+	color: #dc83c7;
+	}
+dl.comment:hover p.meta {
+	color: #bbb !important;
+	}
+dl.comment dt {
+	margin-bottom: 24px;
+	color: #bbb;
+	font-size: 14px;
+	line-height: 24px;
+	}
+dl.comment:hover dt {
+	color: #aaa !important;
+	}
+/*-------------- Gallery Junk ---------------*/
+#content ul#gallery .item {
+	float: left;
+	position: relative;
+	width: 120px;
+	height: 130px;
+	margin: 8px 8px 22px 8px;
+	border-left: none;
+	border-bottom: 8px solid #ddd;
+	background: #fff;
+	}
+#content ul#gallery .item:hover {
+	border-bottom: 8px solid #a2f769;
+	}
+#content ul#gallery .item img {
+	margin-top: 10px;
+	}
+#content ul#gallery .item h3 a {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	color: #ddd;
+	text-transform: uppercase;
+	font: bold 20px/16px "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	}
+#content ul#gallery .item:hover h3 a, #content ul#gallery .item h3 a:hover {
+	color: #a2f769;
+	}
+#content img#full-image {
+	max-width: 100%;
+	}
+#content dl#details-list {
+	
+	}
+#content dl#details-list dt {
+	display: run-in;
+	color: #999;
+	}
+#content dl#details-list dd {
+	color: #333;
+	}
+#content dl#details-list dd p {
+	display: inline-block;
+	}
+#content.gallery h3.artwork {
+	font-family: "Trebuchet MS", "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-weight: bold;
+	color: #ed3fb1;
+	}
+#content.gallery p#item-price {
+	margin: 0;
+	color: #a2f769;
+	font-size: 20px;
+	line-height: 24px;
+	}
+/*--------------- Links Junk ----------------*/
+#content.links h3 a {
+	display: block;
+	}
+#content.links h3 a .link-url {
+	display: block;
+	color: #fff;
+	font-size: 14px;
+	line-height: 24px;
+	}
+#content.links h3 a:hover .link-url {
+	color: #bbb;
+	}
+/*-------------- Footer Junk ----------------*/
+#footer {
+	clear: both;
+	padding: 20px 20px 20px 360px;
+	}
+#footer p {
+	margin: 0;
+	}

@@ -1,0 +1,9 @@
+<div id="content" class="links">
+<h1>{category}</h1>
+{set:subcategory}<h2>{subcategory}</h2>{/set}
+{output}
+{loop:content}
+<h3><a href="{url}" target="_blank" title="{title}">{title}</a></h3>
+<p>{descr}</p>
+{/loop}
+</div>

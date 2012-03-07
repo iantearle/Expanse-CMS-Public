@@ -1,0 +1,46 @@
+<!-- Begin Contact Page -->
+<div id="content" class="page">
+	{output}
+	{loop:content}
+		<h1 class="{dirtitle} page">{title}</h1>
+		{set:parent_link}<h3>&laquo; {parent_link}</h3>{/set}
+		{set:extra_fields}
+			<dl>
+			{loop:extra_fields}
+			<dt>{field}</dt>
+			<dd>{value}</dd>
+			{/loop}
+			</dl>
+		{/set}
+		{page_list}
+		<div id="descr">{descr}</div>
+		{set:logged_in}<p><a href="{editlink}">Edit page</a></p>{/set}
+	{/loop}
+	<p class="form-note"><span class="required">*</span> Required fields. No <span class="caps"><abbr title="Hypertext Markup Language">HTML</abbr></span> is allowed. All newlines and links will be automagically converted for you.</p>
+	<form id="contact-form" name="contactform" action="" method="POST">
+		<fieldset id="info-fieldset">
+			<legend>Your Info</legend>
+			<p>
+				<label for="name">Name: <span class="required">*</span></label>
+		        <input name="name_required" id="name" type="text" value="" />
+			</p>
+			<p>
+				<label for="email">Email Address: <span class="required">*</span></label>
+		        <input name="email_required_email" id="email" type="text" value="" />
+			</p>
+			<p>
+				<label for="url">URL:</label>
+				<input name="url_url" id="url" type="text" value="" />
+			</p>
+		</fieldset>
+		<fieldset id="thoughts-fieldset">
+			<legend>Your Thoughts</legend>
+			<p>
+	        <label for="message">Message: <span class="required">*</span></label>
+	        <textarea name="message_required" id="message" cols="20" rows="10" ></textarea>
+	        </p>
+		    <button name="contact" id="send-button" type="submit">Send!</button>
+		</fieldset>
+	</form>
+</div>
+<!-- End Contact Page -->

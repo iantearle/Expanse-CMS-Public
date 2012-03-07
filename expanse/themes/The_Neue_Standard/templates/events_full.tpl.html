@@ -1,0 +1,28 @@
+<!-- Begin Events Full -->
+<div id="content">
+	<h1>{category}</h1>
+	{output}
+	{loop:content}
+		<h3>{title}</h3>
+		<p>When:{event_date}</p>
+		<p>Details: {descr}</p>
+		<p>{loop:extra_fields}
+		<strong>{field}</strong>: {value}<br />
+		{/loop}</p>
+		<p>More Information: {url} </p>
+		
+		{if:{comments}}<h4 id="comments">{comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+			{mis:the_comments}
+				<h5>There are no comments on this entry. You should add one.</h5>
+			{/mis}
+		{/if}
+		{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
+
+		{include:'comments.tpl.html'}
+		
+		{if:{comments}}
+			{include:'comment_form.tpl.html'}
+		{/if}
+	{/loop}
+</div>
+<!-- End Events Full -->

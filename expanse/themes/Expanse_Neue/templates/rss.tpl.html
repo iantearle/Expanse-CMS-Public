@@ -1,0 +1,17 @@
+<rss version="2.0">
+<channel>
+<title>{sitename}</title> 
+<link>{category_link}</link> 
+<description>{sitedescr}</description> 
+<language>en-us</language> 
+<docs>http://blogs.law.harvard.edu/tech/rss</docs> 
+{loop:content}
+<item>
+<title>{title}</title>
+<description>{descr}</description>
+<link>{permalink}</link> 
+<pubDate>{created}</pubDate>
+</item>
+{/loop}
+</channel>
+</rss>

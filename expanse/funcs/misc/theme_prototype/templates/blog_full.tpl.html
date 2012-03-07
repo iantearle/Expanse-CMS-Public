@@ -1,0 +1,30 @@
+<div id="content" class="news">
+<h1>{category}</h1>
+{set:subcategory}<h2>{subcategory}</h2>{/set}
+{output}
+{loop:content}
+<h3 class="news"><a href="?pcat={pid}&amp;item={id}">{title}</a></h3>
+<p>{loop:extra_fields}
+<strong>{field}</strong>: {value}<br />
+{/loop}</p>
+{descr}
+<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by {author}{set:logged_in} | <a href="{expanseurl}index.php?type=edit&amp;cat_id={pcat}&amp;id={id}">Edit item</a>{/set}<br />
+</p>
+  {if:{comments}}<h4 id="viewcomments"> {comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+  	{mis:the_comments}
+	<h5>There are no comments on this entry. You should add one.</h5>
+	{/mis}
+  {/if}
+{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
+
+	
+{loop:the_comments}
+  <dl class="comments">
+<dt id="comment{_rank}"><a href="#comment{_rank}" title="Permanent Link To This Comment">{name}</a> says:</dt>
+ <dd> <p>{message}</p>
+  <p>Posted On: {date} @ {time}{set:logged_in} | <a href="{expanseurl}index.php?type=edit&amp;cat=admin&amp;sub=comments&amp;id={id}">Edit comment</a>{/set}</p></dd>
+</dl>
+  {/loop}
+{include:'comment_form.tpl.html'}
+{/loop}
+</div>

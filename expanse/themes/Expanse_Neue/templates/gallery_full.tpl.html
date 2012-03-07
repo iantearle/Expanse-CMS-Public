@@ -1,0 +1,36 @@
+<div id="content" class="gallery">
+<h1>Artwork</h1>
+
+{output}
+
+{loop:content}<h3 class="artwork"><a href="{image}" rel="lightbox" title="{title}">{title}</a></h3>
+<a href="{image}" rel="lightbox" title="{title}"><img src="{image}" id="fullView" class="artworkImages" /></a>
+<p>{loop:image_set}
+<a href="{image}" rel="lightbox[{category}]" title="{caption}"><img src="{thumbnail}" border="0" class="artworkImages" title="Image {_rank}" /></a>
+{/loop}</p>
+<p>Materials: {materials}</p>
+<p>Description: {descr}</p>
+<p>{loop:extra_fields}
+<strong>{field}</strong>: {value}<br />
+{/loop}</p>
+<p>{set:logged_in}<a href="{expanseurl}index.php?type=edit&amp;cat_id={pcat}&amp;id={id}">Edit item</a>{/set}</p>
+	{paypal_form}
+<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by <a href="{user_url}">{author}</a></p>
+  {if:{comments}}<h4 id="viewcomments"> {comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+  	{mis:the_comments}
+	<h5>There are no comments on this entry. You should add one.</h5>
+	{/mis}
+  {/if}
+{if: {comments} == 0}<h5>Comments are not allowed on this entry.</h5>
+{/if}
+
+{loop:the_comments}
+  <dl class="comments">
+<dt id="comment{_rank}"><a href="#comment{_rank}" title="Permanent Link To This Comment">{name}</a> says:</dt>
+ <dd> <p>{message}</p>
+  <p>Posted On: {date} @ {time}{set:logged_in} | <a href="{editlink}">Edit comment</a>{/set}</p></dd>
+</dl>
+  {/loop}
+{include:'comment_form.tpl.html'}
+{/loop}
+</div>

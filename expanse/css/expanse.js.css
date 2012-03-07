@@ -1,0 +1,140 @@
+/*
+------------------------------------------------------------
+Expanse
+http://expansecms.com
+Content management for the Artist, by the Artist
+Written, with love, by Nate Cavanaugh and Jason Morrison
+www.alterform.com & www.dubtastic.com
+All rights reserved.
+
+Javascript only CSS
+============================================================
+*/
+/*
+------------------------------------------------------------
+Global styles
+============================================================
+*/
+.hidden{
+	display: none;
+}
+.visible{
+	display: block;
+}
+.hilite{
+
+}
+#content .formatSettings{
+}
+.formatSettingsL{
+
+}
+/*
+------------------------------------------------------------
+Tooltips (w/ Javascript) 
+============================================================
+*/
+.hasHelp{
+display: none;
+}
+.helpContents{
+margin: 0;
+padding: 7px;
+position: absolute;
+top: -1000px;
+left: -1000px;
+border: 1px solid #999;
+z-index: 100;
+background-color: #fff;
+-moz-border-radius: 5px;
+width: 250px;
+font-size: 12px;
+}
+.hasHelp{
+display: inline;
+cursor: pointer;
+}
+#categoriesList .hasHelp{
+padding-top: 0;
+display: inline;
+cursor: pointer;
+}
+#vanilla .hasHelp{
+padding-top: 0.7em;
+display: inline;
+cursor: pointer;
+float:left;
+margin: 0.4em;
+}
+#bannedIPs.hasHelp, #bannedWords.hasHelp{
+padding-bottom: 8em;
+display: inline;
+cursor: pointer;
+}
+blockquote.helpContents a{
+text-decoration: none;
+}
+
+
+
+/*
+------------------------------------------------------------
+Waiting Message Styles
+============================================================
+*/
+#overlay{ background-image: url(../../images/overlay.png); }
+#overlayHelp{
+background: #fff url(../images/loading.gif) no-repeat 50% 5px;
+width: 200px;
+padding: 2em;
+border: 1px solid #eee;
+position:absolute;
+top:50%;
+left:50%;
+float:left;
+z-index:100;
+}
+#overlayHelp h1{
+font-size: 125%;
+margin:0 auto;
+}
+#overlay.submit{
+background:#000;
+filter:alpha(opacity=50);
+-moz-opacity:0.50;
+opacity: 0.50;
+cursor:default;
+}
+/*
+------------------------------------------------------------
+Container for Sizing links
+============================================================
+*/
+#sizerContainer a, .sizerContainer a{
+}
+/*
+-------------------------------------------------
+Misc.
+=================================================
+*/
+/*   Marked for deletion   //---------------------------*/
+#itemList div.deleting{
+	border:1px solid #c00;
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+	position:relative;
+}
+#itemList div.deleting *{
+	color: #ccc;
+}
+#itemList div img.marked{display:none;}
+#itemList div.deleting img.marked {
+	display:block;
+	position:absolute;
+	border:0;
+	top:10px;
+	left: 50%;
+	margin: 0 0 0 -64px;
+	background:none;
+}

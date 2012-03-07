@@ -1,0 +1,32 @@
+<!-- Begin Links Full -->
+<div id="content" class="links">
+	<h1>{category}</h1>
+	{set:subcategory}<h2>{subcategory}</h2>{/set}
+	{output}
+	{loop:content}
+		<h3><a href="{url}" title="{title}">{title}<span class="link-url"> &#9758; {url}</span></a></h3>
+		{set:descr}<p>{descr}</p>{/set}
+		{set:extra_fields}
+			<dl>
+			{loop:extra_fields}
+			<dt>{field}</dt>
+			<dd>{value}</dd>
+			{/loop}
+			</dl>
+		{/set}
+		
+		{if:{comments}}<h4 id="comments">{comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>
+			{mis:the_comments}
+				<h5>There are no comments on this entry. You should add one.</h5>
+			{/mis}
+		{/if}
+		{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
+
+		{include:'comments.tpl.html'}
+	
+		{if:{comments}}
+			{include:'comment_form.tpl.html'}
+		{/if}
+	{/loop}
+</div>
+<!-- End Links Full -->

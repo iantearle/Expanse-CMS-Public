@@ -1,0 +1,30 @@
+{#	var adnVM = window.adnVM || {}
+	adnVM.Badge = function() { #}
+{* EDIT BELOW HERE *}
+
+
+adverts =  
+[ 
+{loop:content}'<a href="{yoursite}?id={id}&amp;url={url}&amp;utm_campaign={title}"><img src="{yoursite}?id={id}&amp;resource={image}&amp;utm_campaign={title}" id="full-image" /></a>{descr}'{set:_not_last},{/set}
+{/loop} 
+] 
+var advert = adverts[Math.floor(Math.random()*adverts.length)]
+
+	var sHtml = advert;
+
+{* EDIT ABOVE *}
+{#	function GetHtml() {
+		var oElement = document.getElementById('script-id');
+			var oDiv = document.createElement('div');
+			oElement.parentNode.insertBefore(oDiv, oElement).innerHTML = sHtml;
+			oElement.innerHTML = sHtml;
+		};
+		return {
+			Init : function() {
+				if (document.getElementById && document.createTextNode) {
+					GetHtml();
+				}
+			}
+		};
+	}();
+	adnVM.Badge.Init(); #}

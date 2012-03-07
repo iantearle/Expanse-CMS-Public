@@ -1,0 +1,38 @@
+<div id="menu">
+  <ul>
+  {loop:custom_menu}
+	 <li><h2><a href="{link}">{title}</a></h2>
+	 	{set:subcats}
+				<ul>
+				{loop:subcats}
+					<li><a href="{link}">{title}</a></li>
+				{/loop}
+				</ul>
+		{/set}
+	 </li>
+	{/loop}
+	
+	
+    {* 
+	This portion of the menu has been commented from the 
+	template, but we left it here so you can switch to the 
+	old menu if you like. - Nate
+	
+	{loop:sections}
+		<li><h2><a href="{link}">{title}</a></h2>
+			{set:subcats}
+				<ul>
+				{loop:subcats}
+					<li><a href="{link}">{title}</a></li>
+				{/loop}
+				</ul>
+			{/set}
+		</li>
+	{/loop}
+	{loop:user_pages}
+		<li><h2><a href="{link}">{title}</a></h2></li>
+	{/loop}
+	/This is the end of the comment
+	*}
+	
+</ul></div>

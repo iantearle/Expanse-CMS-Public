@@ -1,0 +1,13 @@
+<div id="content">
+<h1>{category}</h1>
+{output}
+{loop:content}
+<h3>{title}</h3>
+<p>When:{event_date}</p>
+<p>Details: {descr}</p>
+<p>{loop:extra_fields}
+<strong>{field}</strong>: {value}<br />
+{/loop}</p>
+<p>More Information: {url} </p>
+{/loop}
+</div>

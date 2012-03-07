@@ -1,0 +1,21 @@
+{if:{comments}}
+  <h4 id="postcomment">Post A Comment</h4>
+<p class="formNote">* Required Fields <br />
+No HTML is allowed. All links, and new lines will be automagically converted to HTML for you.<br />
+Notice to spammers, all links will be sanitized with rel=&quot;nofollow&quot;.</p>
+<form action="" method="post" id="commentform">
+<label for="name">Name:</label><input name="name_required" id="name" value="" class="formfields" />
+*
+<input type="hidden" name="itemid" value="{id}" />
+<input type="hidden" name="cid" value="{cid}" />
+<br />
+<label for="email">E-mail:</label><input name="email_required_email" id="email" value="" class="formfields" />
+*<br />
+<label for="url">URL:</label><input name="url_required_url" id="url" value="" class="formfields" />
+*<br />
+<label for="message">Comments:</label><textarea name="message_required" rows="" cols="" id="message" class="formfields"></textarea>
+*<br />
+<label for="rememberinfo">Remember Me?</label><input name="rememberinfo" id="rememberinfo" type="checkbox" value="1" class="cBox" checked="checked" /><br />
+<label for="comment"></label><input type="submit" name="comment" id="comment" class="buttons" value="Submit" />
+</form>
+{/if}

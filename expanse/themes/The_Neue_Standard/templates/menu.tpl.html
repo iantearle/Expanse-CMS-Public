@@ -1,0 +1,17 @@
+<!-- Begin Menu -->
+<ul id="menu">
+ {loop:custom_menu}
+	 <li id="t-{dirtitle}">
+		<h4><a href="{link}">{title}</a></h4>
+	 	{set:subcats}
+				<ul>
+				{loop:subcats}
+					<li><a href="{link}">{title}</a></li>
+				{/loop}
+				</ul>
+		{/set}
+	 </li>
+	{/loop}
+</ul>
+{include:'search_form.tpl.html'}
+<!-- End Menu -->

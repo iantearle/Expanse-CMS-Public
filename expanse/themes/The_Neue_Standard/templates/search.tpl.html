@@ -1,0 +1,16 @@
+<!-- Begin Search Results -->
+<div id="content" class="search">
+	<h1>Search Results</h1>
+	{output}
+	<!--Begin paging-->
+	<p id="paging">{loop:pages}{set:_first}Pages: {/set}{previous_link} {page_link} {next_link}{/loop}</p>
+	<!--/End paging-->
+	{loop:content}
+		<div class="search item">
+			<h3><a href="{permalink}">{title}</a></h3>
+			{set:image}<a href="{permalink}"><img src="{thumbnail}" alt="" /></a>{/set}
+			<p>{descr}</p>
+		</div>
+	{/loop}
+</div>
+<!-- End Search Results -->

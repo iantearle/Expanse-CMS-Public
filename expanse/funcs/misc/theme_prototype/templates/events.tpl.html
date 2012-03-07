@@ -1,0 +1,16 @@
+<div id="content" class="events">
+<h1>{category}</h1>
+{set:subcategory}<h2>{subcategory}</h2>{/set}
+{output}
+{loop:content}
+<h3>{title}</h3>
+<dl>
+<dt>When</dt>
+<dd>{event_date}</dd>
+<dt>Details</dt>
+<dd>{descr}</dd>
+<dt>More Information</dt>
+<dd><a href="{url}">{url}</a></dd>
+</dl>
+{/loop}
+</div>
