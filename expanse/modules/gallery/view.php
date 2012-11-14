@@ -7,13 +7,12 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 //Must be included at the top of all mod files.
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
-
+if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
 $size_note = sprintf('<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>', sprintf(L_SIZE_NOTE,MAX_UPLOAD));
- ?>
-<?php
+
 //If you're adding content, use this block
-if(ADDING) { ?>
+if(ADDING) {
+?>
 	<input type="hidden" name="aid" value="<?php echo $_SESSION['id']; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $catid; ?>" />
 	<?php
@@ -131,7 +130,9 @@ if(ADDING) { ?>
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_MASS_UPLOAD ?>" />
 		</div>
-	<?php } else { ?>
+	<?php
+	} else {
+	?>
 		<div class="row">
 			<div class="span12">
 				<div class="pull-right">
@@ -256,11 +257,13 @@ if(ADDING) { ?>
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 		</div><?php
-		}
+	}
 }
+
 if(EDITING) {
 	//If you're editing one specific item, use this block
-	if(EDIT_SINGLE) { ?>
+	if(EDIT_SINGLE) {
+	?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
 		<div class="row">
@@ -422,7 +425,9 @@ if(EDITING) {
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php } elseif(EDIT_LIST) { ?>
+	<?php
+	} elseif(EDIT_LIST) {
+	?>
 		<div class="row">
 				<?php $the_module->doSort(); ?>
 			<div class="span12">
@@ -433,17 +438,18 @@ if(EDITING) {
 				?>
 
 				<div id="itemList">
-				<?php foreach($itemsList as $ind => $item):
+				<?php
+				foreach($itemsList as $ind => $item):
 					$item->title = trim_title($item->title);
 					$item->descr = trim_excerpt($item->descr);
 					$users->Get($item->aid);
 					$the_displayname = $users->displayname;
 					$the_username = $users->username;
 					$has_subcat = ($item->cid != $item->pid && $item->cid != 0) ? true : false;
-					if($has_subcat){
+					if($has_subcat) {
 						$sections->Get($item->cid);
 						$category = $sections->sectionname;
-						if(empty($category)){
+						if(empty($category)) {
 							$has_subcat = false;
 						}
 					}
@@ -463,18 +469,25 @@ if(EDITING) {
 							<input type="checkbox" name="del[]" value="<?php echo $item->id; ?>" id="item_delete_<?php echo $item->id; ?>" /><label for="item_delete_<?php echo $item->id; ?>"><?php echo L_DELETE_ITEM ?></label>
 						</fieldset>
 					</div>
-				<?php endforeach; ?>
+				<?php
+				endforeach;
+				?>
 
 					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
 				</div>
-				<?php if($hasitems): ?>
+				<?php
+				if($hasitems):
+				?>
 				<div class="form-actions">
 					<div class="pull-right">
 						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
 					</div>
 				</div>
-				<?php endif; ?>
+				<?php
+				endif;
+				?>
 			</div>
-		</div><?php
+		</div>
+<?php
 	}
 }

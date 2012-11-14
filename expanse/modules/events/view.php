@@ -7,9 +7,7 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 //Must be included at the top of all mod files.
-if(!defined('EXPANSE')) {
-	die('Sorry, but this file cannot be directly viewed.');
-}
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
 ?>
 <script type="text/javascript" src="modules/events/bootstrap-datepicker.js"></script>
 <?php
@@ -104,7 +102,9 @@ if(ADDING):
 <?php
 //If you're editing content, use this block
 elseif(EDITING):
-	if(EDIT_SINGLE): ?>
+
+	if(EDIT_SINGLE):
+?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
 		<div class="row">
@@ -200,7 +200,9 @@ elseif(EDITING):
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php elseif(EDIT_LIST): ?>
+<?php
+	elseif(EDIT_LIST):
+?>
 		<div class="row">
 				<?php $the_module->doSort(); ?>
 			<div class="span12">
@@ -211,22 +213,23 @@ elseif(EDITING):
 				?>
 
 				<div id="itemList">
-				<?php foreach($itemsList as $ind => $item):
+				<?php
+				foreach($itemsList as $ind => $item):
 					$item->title = trim_title($item->title);
 					$item->descr = trim_excerpt($item->descr);
 					$users->Get($item->aid);
 					$the_displayname = $users->displayname;
 					$the_username = $users->username;
 					$has_subcat = ($item->cid != $item->pid && $item->cid != 0) ? true : false;
-					if($has_subcat){
+					if($has_subcat) {
 						$sections->Get($item->cid);
 						$category = $sections->sectionname;
-						if(empty($category)){
+						if(empty($category)) {
 							$has_subcat = false;
 						}
 					}
 
-					?>
+				?>
 					<div id="item_<?php echo $item->id ?>" title="<?php echo strip_tags($item->descr) ?>">
 						<span class="pull-right <?php echo ($item->online == 0) ? 'label' : 'label label-success'; ?>"><?php echo ($item->online == 0) ? L_ITEM_OFFLINE : L_ITEM_ONLINE; ?></span>
 						<h1><?php echo $item->title ?></h1>
@@ -240,18 +243,24 @@ elseif(EDITING):
 							<input type="checkbox" name="del[]" value="<?php echo $item->id; ?>" id="item_delete_<?php echo $item->id; ?>" /><label for="item_delete_<?php echo $item->id; ?>"><?php echo L_DELETE_ITEM ?></label>
 						</fieldset>
 					</div>
-				<?php endforeach; ?>
-
+				<?php
+				endforeach;
+				?>
 					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
 				</div>
-				<?php if($hasitems): ?>
-				<div class="form-actions">
-					<div class="pull-right">
-						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
+				<?php
+				if($hasitems):
+				?>
+					<div class="form-actions">
+						<div class="pull-right">
+							<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
+						</div>
 					</div>
-				</div>
-				<?php endif; ?>
+				<?php
+				endif;
+				?>
 			</div>
 		</div>
-	<?php endif; ?>
-<?php endif; ?>
+<?php
+	endif;
+endif;

@@ -1,6 +1,44 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
 
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 require('funcs/admin.php');
 //$pagetitle = $cmsname.L_MENU_SEPARATOR.$version.L_MENU_SEPARATOR;
 $cat_action = ACTION;
@@ -80,7 +118,7 @@ $cat_action = ACTION;
 			<p>Expanse is licensed under the <a href="http://opensource.org/licenses/mit-license.php"><span class="caps">MIT</span> open-source license</a>. That means the code is copyright Ryan Miglavs, but you have permission to do almost anything you like with it. <strong>It’s free, both as in free beer and free speech.</strong></p>
 			<p>This includes using all or parts of the code in commercial applications. I request, but don’t require, that you give explicit credit and a link to expanse cms (<a href="http://expansecms.org">http://expansecms.org</a>), without using the expanse name or logo to advertise your product without written permission from the trademark owner (as specified by international trademark laws). You must, however, include the following license and notice with anything you distribute.</p>
 			<div id="boilerplate">
-				<p>Copyright (c) 2009 Ian Tearle (http://expansecms.org)</p>
+				<p>Copyright &copy; 2009 Ian Tearle (http://expansecms.org)</p>
 				<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 				<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 				<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUR OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
@@ -90,5 +128,5 @@ $cat_action = ACTION;
 				printf(FAILURE, L_MISC_NOTHING_HERE);
 			} ?>
 	  </div>
-       <!-- End page content -->
- <?php $outmess->write_footer();?>
+<?php
+$outmess->write_footer();

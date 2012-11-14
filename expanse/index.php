@@ -1,12 +1,51 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 require('funcs/admin.php');
 if(LOGGED_IN) {
 	if((ADDING || EDITING) && !empty($catid)) {
 		$cats = $sections->GetList(array(array('id', '=', $catid),array('pid', '=', 0)));
 		$more_cats = $sections->GetList(array(array('pid', '=', 0)));
 		foreach($more_cats as $k => $v) {
-			if(!in_array($v->id, $auth->Permissions) || ($v->id == $catid)){
+			if(!in_array($v->id, $auth->Permissions) || ($v->id == $catid)) {
 				unset($more_cats[$k]);
 			}
 		}
@@ -24,16 +63,17 @@ if(LOGGED_IN) {
 			$the_module->more();
 			if(ADDING) {
 				/*   ADDING   //-------------------------------*/
-				if(is_posting(L_BUTTON_ADD)){
+				if(is_posting(L_BUTTON_ADD)) {
 					$the_module->add();
 				}
 			} else {
 				/*   EDITING   //-------------------------------*/
-				if(EDIT_SINGLE){
-					if(is_posting(L_BUTTON_EDIT)){
+				if(EDIT_SINGLE) {
+					if(is_posting(L_BUTTON_EDIT)) {
 						$the_module->edit();
 					}
-						$items = $the_module->get_single();
+
+					$items = $the_module->get_single();
 				} elseif(EDIT_LIST) {
 					if(is_posting(L_BUTTON_DELETE)){
 						$the_module->delete();
@@ -42,6 +82,7 @@ if(LOGGED_IN) {
 					$itemsList = $the_module->get_list();
 				}
 			}
+
 			$the_module->add_title();
 		}
 	} // end adding or editing
@@ -49,7 +90,8 @@ if(LOGGED_IN) {
 $wordwrap = 75;
 $descrlength = 80;
 /*   Header   //-------------------------------*/
-$outmess->write_header($pagetitle); ?>
+$outmess->write_header($pagetitle);
+?>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -65,7 +107,8 @@ $outmess->write_header($pagetitle); ?>
 						</li>
 					<?php } ?>
 				</ul>
-				<?php if(!isset($is_install)) {
+				<?php
+				if(!isset($is_install)) {
 					$gravatar = (isset($_SESSION['email'])) ? md5( strtolower( trim( $_SESSION['email'] ) ) ) : ''; ?>
 						<ul class="nav pull-right">
 							<li class="dropdown">
@@ -84,8 +127,11 @@ $outmess->write_header($pagetitle); ?>
 							</li>
 						</ul>
 					<p class="pull-right">
-				<?php } else {
-					?><p><?php
+				<?php
+				} else {
+				?>
+				<p>
+				<?php
 					$install_step = check_get_alphanum('step');
 					$uninstall_type = check_get_alphanum('uninstall_type');
 					if($install_step == 'install'){
@@ -97,26 +143,30 @@ $outmess->write_header($pagetitle); ?>
 						$step = CMS_NAME.' wants to know what you\'re doing';
 					}
 					echo $step;
-				} ?>
-				<?php //echo isset($headerDate) ? $headerDate : ''; ?></p>
+				}
+				?>
+				</p>
 			</div>
 		</div>
-	</div> <?php
-if(LOGGED_IN) { ?>
+	</div>
+<?php
+if(LOGGED_IN) {
+?>
 	<div class="container<?php echo ' '.empty($the_type) ? ' mainPage' : ''; ?>">
 		<form method="post" action="" enctype="multipart/form-data" id="post" name="post" class="form-stacked">
-			<?php if(!(empty($catid) && empty($cat))){
+			<?php
+			if(!(empty($catid) && empty($cat))) {
 				echo $outmess->generateBreadCrumbs($catid, 'edit');
 			}
 			echo $output;
-				if(ADDING && !empty($catid)){
+				if(ADDING && !empty($catid)) {
 					include('add.php');
-				} elseif(EDITING && !empty($catid)){
+				} elseif(EDITING && !empty($catid)) {
 					include('edit.php');
-				}  elseif (CAT == 'admin' && $auth->Admin){
-
-					if (empty($admin_sub)){ ?>
-						<?php echo $output; ?>
+				}  elseif (CAT == 'admin' && $auth->Admin) {
+					if (empty($admin_sub)) {
+						echo $output;
+					?>
 						<div class="well">
 							<ul id="catList" class="nav nav-tabs nav-stacked adminList">
 								<?php
@@ -131,21 +181,28 @@ if(LOGGED_IN) { ?>
 								applyOzoneAction('admin_menu'); ?>
 							</ul>
 						</div>
-						<?php
-					} elseif (!empty($admin_sub)) {
+					<?php
+					} elseif(!empty($admin_sub)) {
 						applyOzoneAction('admin_page');
 					}
 				} elseif(is_home()) {
-					?><div class="row"><?php
+				?>
+					<div class="row">
+				<?php
 					include('main.php');
-					?></div><?php
+				?>
+					</div>
+				<?php
 				} elseif(CAT == 'upgrade') {
 					include('upgrade.php');
-				} else { ?>
-					<p><?php echo L_NOTHING_HERE ?></p><?php
-				} ?>
-	</div> <?php
-} else { ?>
+				} else {
+					echo L_NOTHING_HERE;
+				}
+				?>
+	</div>
+<?php
+} else {
+?>
 	<div class="container login">
 		<h1><?php printf(L_MAIN_TITLE,CMS_NAME); ?></h1>
 		<form method="post" action="" id="post" name="post">
@@ -153,7 +210,7 @@ if(LOGGED_IN) { ?>
 		echo $output;
 		if(isset($_GET['action']) && $_GET['action'] == 'forgot') {
 			if(!isset($_GET['reset_key'])) {
-				?>
+			?>
 				<div class="control-group">
 					<label for="username" class="control-label"><?php echo L_LOGIN_USERNAME ?></label>
 					<div class="controls">
@@ -169,14 +226,14 @@ if(LOGGED_IN) { ?>
 				<div class="form-actions">
 					<input name="get_password" id="get_password" type="submit" class="btn error" value="<?php echo L_BUTTON_GET_INFO ?>" />
 				</div>
-				<?php
+			<?php
 			} else {
-				?>
+			?>
 				<a href="./"><?php echo L_LOGIN_GO_BACK ?></a>
-				<?php
+			<?php
 			}
 		} else {
-			?>
+		?>
 			<h3><?php echo L_GET_STARTED ?></h3>
 			<div class="control-group">
 				<label for="username" class="control-label"><?php echo L_LOGIN_USERNAME ?></label>
@@ -200,11 +257,15 @@ if(LOGGED_IN) { ?>
 			</div>
 			<div class="form-actions">
 				<input name="login" type="submit" id="login" value="Submit" class="btn btn-primary" />
-				<a href="index.php?action=forgot" title="<?php echo L_LOGIN_FORGOT_PASSWORD ?>" id="forgotLink">
-				<?php echo L_LOGIN_FORGOT_PASSWORD ?></a><br />
-			</div> <?php
-		} //Not resetting ?>
-	</div> <?php
-} ?>
+				<a href="index.php?action=forgot" title="<?php echo L_LOGIN_FORGOT_PASSWORD ?>" id="forgotLink"><?php echo L_LOGIN_FORGOT_PASSWORD ?></a>
+			</div>
+		<?php
+		} //Not resetting
+?>
+	</div>
+<?php
+}
+?>
 	</form>
-<?php $outmess->write_footer(); ?>
+<?php
+$outmess->write_footer();

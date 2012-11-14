@@ -7,14 +7,11 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 #Must be included at the top of all mod files.
-if(!defined('EXPANSE')){
-die('Sorry, but this file cannot be directly viewed.');
-}
- ?>
-<?php
+if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
+
 #If you're adding content, use this block
 if(ADDING):
-	?>
+?>
 	<input type="hidden" name="aid" value="<?php echo $_SESSION['id']; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $catid; ?>" />
 	<div class="row">
@@ -84,11 +81,13 @@ if(ADDING):
 		<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 	</div>
 
-<?php endif; ?>
 <?php
+endif;
 #If you're editing content, use this block
 if(EDITING):
-	if(EDIT_SINGLE): ?>
+
+	if(EDIT_SINGLE):
+	?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
 		<div class="row">
@@ -167,7 +166,9 @@ if(EDITING):
 		<div class="form-actions">
 			</label><input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php elseif(EDIT_LIST): ?>
+	<?php
+	elseif(EDIT_LIST):
+	?>
 		<div class="row">
 				<?php $the_module->doSort(); ?>
 			<div class="span12">
@@ -221,5 +222,6 @@ if(EDITING):
 				<?php endif; ?>
 			</div>
 		</div>
-	<?php endif; ?>
-<?php endif; ?>
+	<?php
+	endif;
+endif;

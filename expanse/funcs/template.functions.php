@@ -1,5 +1,44 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 
 /*
 -------------------------------------------------
@@ -7,9 +46,11 @@ Template functions
 -------------------------------------------------
 */
 $user_vars = array('menu' => array(), 'header' => array(), 'main' => array(), 'footer' => array(), 'loops' => array());
+
 /*
 Conditional functions
 */
+
 /**
 * Checks to see if we're on the home page
 * @return boolean
@@ -19,6 +60,7 @@ function is_home() {
 	$ucat = UCAT;
 	return(empty($pcat) && empty($ucat));
 }
+
 /**
 * Checks to see if we're on a single page
 * @return boolean
@@ -27,6 +69,7 @@ function is_single() {
 	$item_id = ITEM_ID;
 	return(!empty($item_id));
 }
+
 /**
 * Checks to see if we're on a search
 * @return boolean
@@ -35,6 +78,7 @@ function is_search() {
 	$search = SEARCH;
 	return(!empty($search));
 }
+
 /**
 * Checks to see if we're in a category
 * @return boolean
@@ -43,6 +87,7 @@ function is_category() {
 	$pcat = CAT_ID;
 	return(!empty($pcat));
 }
+
 /**
 * Checks to see if we're in a subcategory
 * @return boolean
@@ -51,6 +96,7 @@ function is_subcat() {
 	$subcat = SUBCAT;
 	return(!empty($subcat));
 }
+
 /**
 * Checks to see if we're on a user page
 * @return boolean
@@ -59,6 +105,7 @@ function is_userpage() {
 	$ucat = UCAT;
 	return(!empty($ucat));
 }
+
 /**
 * Checks to see if we're on the feed
 * @return boolean
@@ -66,6 +113,7 @@ function is_userpage() {
 function is_feed() {
 	return(basename($_SERVER['PHP_SELF']) == XML_PAGE);
 }
+
 /**
 * Checks to see if a comment is being sumitted
 * @return boolean
@@ -73,6 +121,7 @@ function is_feed() {
 function is_commenting() {
 	return(isset($_POST['comment']) || isset($_POST['comment_x']));
 }
+
 /**
 * Checks to see if the contact form is being submitted
 * @return boolean
@@ -80,6 +129,7 @@ function is_commenting() {
 function is_contacting() {
 	return(isset($_POST['contact']) || isset($_POST['contact_x']));
 }
+
 /**
 * Checks to see if the theme has a home page
 * @return boolean
@@ -88,6 +138,7 @@ function has_homepage() {
 	global $themetemplates;
 	return(file_exists("$themetemplates/home".TPL_EXT));
 }
+
 /**
 * Checks to see if the theme is being previewed
 * @return boolean
@@ -96,6 +147,7 @@ function is_preview() {
 	global $test_theme;
 	return(LOGGED_IN && !empty($test_theme));
 }
+
 /**
 * Sets the globabl var fof to 404
 */
@@ -103,9 +155,11 @@ function trigger_404() {
 	global $fof;
 	$fof = '404';
 }
+
 /*
 Compartmentalize page
 */
+
 /**
 * Assembles the menu object and assigns it to the template
 * @return string
@@ -154,22 +208,23 @@ function make_menu() {
 	$mainmenu = applyOzone('menu', $mainmenu);
 	return sprintt($mainmenu, safe_tpl("$themetemplates/@menu{$tplext}"));
 }
+
 /**
 * Builds the menu with all the appropriate link vars
 * @param array $menu
 * @return array $menu
 */
-function prepare_menu_content($menu){
+function prepare_menu_content($menu) {
 	global $option, $theme_suffix;
 	$sections = get_dao('sections');
 	$items = get_dao('items');
-	foreach ($menu as $k => $val) {
+	foreach($menu as $k => $val) {
 		$categories = isset($val->public) ? true : false;
 		$obj = $categories ? 'sections' : 'items';
 		$cat_type = $categories ? 'pcat' : 'ucat';
 		$conditions = array();
 		$conditions[] = array('pid', '=', $val->id);
-		if(!$categories){
+		if(!$categories) {
 			$conditions[] = array('type', '=', 'static');
 		}
 		$menu[$k]->subcats = $$obj->GetList($conditions);
@@ -202,6 +257,7 @@ function prepare_menu_content($menu){
 	}
 	return $menu;
 }
+
 /**
 * Assembles the header object and assigns it to the template
 * @return string
@@ -215,6 +271,7 @@ function make_header() {
 	$header = applyOzone('header', $header);
 	return sprintt($header, safe_tpl("$themetemplates/@header{$tplext}"));
 }
+
 /**
 * Assembles the footer object and assigns it to the template
 * @return string
@@ -228,6 +285,7 @@ function make_footer() {
 	$footer = applyOzone('footer', $footer);
 	return sprintt($footer, safe_tpl("$themetemplates/@footer{$tplext}"));
 }
+
 /**
 * Adds an array of objects loop to the global var $user_vars
 * @param string $arg
@@ -251,12 +309,15 @@ function add_loop($arg, $name) {
 	}
 	$user_vars['loops'][$name] = (isset($user_vars['loops'][$name])) ? array_merge($user_vars['loops'][$name],$loop) : $loop;
 }
+
 /*   Not sure why I added this...   //-------------------------------*/
 function get_items($arg = '') {
 	global $user_vars;
 	return prepare_content($arg, $user_vars);
 }
+
 /*//-------------------------------*/
+
 /**
 * Adds a variable to the global var $user_vars
 * @param string $arg
@@ -272,6 +333,7 @@ function add_variable($arg, $area = 'main', $loop = '') {
 		$user_vars[$area] = isset($user_vars[$area]) ?  array_merge($user_vars[$area],$var) : $var;
 	}
 }
+
 /**
 * Parses a pipe separated list of colon separated name value pairs (ex: name:value|name2:value2)
 * @param string $arg
@@ -291,6 +353,7 @@ function parse_strr($arg, $tolower = true) {
 	unset($narg);
 	return $arr;
 }
+
 /**
 * Adds a pregenerated page title, as well as
 * individual information (item title, category, subcategory) to the global $user_vars
@@ -304,7 +367,7 @@ function grab_title($user_section) {
 	$page_title = '';
 	if(!empty($pcat)) {
 		$sections->Get($pcat);
-		if($sections->pid == 0){
+		if($sections->pid == 0) {
 			$category = $sections->sectionname;
 			$page_title = $category;
 		}
@@ -327,6 +390,7 @@ function grab_title($user_section) {
 	$user_vars[$user_section]['category'] = $category;
 	$user_vars[$user_section]['subcategory'] = $subcategory;
 }
+
 /**
 * Assembles the objects for the RSS feeds, and either returns
 * the template, or prints it depending on whether $return is true or false
@@ -425,12 +489,13 @@ function expanseXML($arg = '', $extraVars = '', $return = false) {
 	$page = inject_variables($page, $extraVars);
 	$page = applyOzone('xml_page_content', $page);
 	$page = ozone_walk($page);
-	if(!$return ) {
+	if(!$return) {
 		printt($page, $template);
 	} else {
 		return sprintt($page, $template);
 	}
 }
+
 /**
 * Inserts the variables from $var into the template object $tpl_obj
 * @param object $tpl_obj
@@ -447,7 +512,9 @@ function inject_variables($tpl_obj, $vars) {
 				}
 				foreach($tpl_obj->{$ind} as $ev_i => $ev_v) {
 					foreach ($val as $ni => $nv) {
-						if(is_int($ni)){continue;}
+						if(is_int($ni)){
+							continue;
+						}
 						$tpl_obj->{$ind}[$ev_i]->{$ni} = $nv;
 					}
 				}
@@ -458,6 +525,7 @@ function inject_variables($tpl_obj, $vars) {
 	}
 	return $tpl_obj;
 }
+
 /**
 * Assembles the objects for the pages, and either returns
 * the template, or prints it depending on whether $return is true or false
@@ -467,14 +535,15 @@ function inject_variables($tpl_obj, $vars) {
 * @return string $return
 */
 function expanse($arg = '', $extraVars = array(), $return = false) {
-	$content = prepare_content($arg, $extraVars, $return );
+	$content = prepare_content($arg, $extraVars, $return);
 	$content['page'] = applyOzone('page_content', $content['page']);
-	if (!$return ) {
+	if(!$return) {
 		printt($content['page'], $content['template']);
 	} else {
 		return sprintt($content['page'], $content['template']);
 	}
 }
+
 /**
 * Assembles the objects for the pages, and returns an array
 * containing the template object and the file path to the template
@@ -487,7 +556,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 	global $items, $sections, $comments, $users, $Database, $output, $user_vars, $theme_suffix;
 	$page = new stdClass();
 	$option = getAllOptions();
-	foreach ($option as $ok => $ov) {
+	foreach($option as $ok => $ov) {
 		$page->{$ok} = $ov;
 	}
 	$paginate = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -521,7 +590,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			} else {
 				$pcat = false;
 			}
-		} elseif ($is_static) {
+		} elseif($is_static) {
 			$defcat = 0;
 		} else {
 			$sections->Get($option->startcategory);
@@ -569,13 +638,14 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			}
 		}
 	}
+
 	//Pagination
 	if(!$is_static && !$ignore_paging) {
 		$andMore = !empty($subcat) ? " AND cid=$subcat" : '';
 		$Database->Query("SELECT COUNT(*) as item_count FROM ".PREFIX."items WHERE pid=$pcat{$andMore} AND created <=".time()." AND online=1");
 		$itemcount = $Database->Result(0, 'item_count');
 		$pagecount = ceil($itemcount / $howmany);
-		for ($i = 1; $i <= $pagecount; $i++) {
+		for($i = 1; $i <= $pagecount; $i++) {
 			$page->pages[$i] = new stdClass();
 			$page->pages[$i]->pagenumber = $i;
 			$page->pages[$i]->currentpage = $paginate;
@@ -584,6 +654,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			$page->pages[$i]->pagecount = $pagecount;
 			$page->pages[$i]->category = $pcat;
 			$page->pages[$i]->subcategory = $subcat;
+
 			//Previous link
 			$previous_link = '';
 			$previous_link_url = '';
@@ -601,6 +672,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			}
 			$page->pages[$i]->previous_link_url = $previous_link_url;
 			$page->pages[$i]->previous_link = $previous_link;
+
 			//Next link
 			$next_link = '';
 			$next_link_url = '';
@@ -618,6 +690,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			}
 			$page->pages[$i]->next_link_url = $next_link_url;
 			$page->pages[$i]->next_link = $next_link;
+
 			//Pages links
 			$page_link_url = '';
 			$page_link_url = INDEX_PAGE.'?pcat=' . $pcat;
@@ -638,6 +711,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 		}
 	}
 	// END Pagination
+
 	$page_ul = '';
 	$parent_link = '';
 	if(!empty($content)) {
@@ -656,14 +730,16 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			}
 		}
 		$content = assignContent($content, array('pcat' => $pcat, 'options' => $option, 'page_list' => $page_ul, 'parent_link' => $parent_link));
-/*		if(!$is_search) {
+		/*
+		if(!$is_search) {
 			foreach ($subcategories as $k => $itemObject) {
 				$subcontent = $items->GetList(array(array('cid', '=', $itemObject->id)));
 				$subcategories[$k]->category_link = YOUR_SITE.INDEX_PAGE."?pcat=$pcat" . '&amp;subcat='.$itemObject->id;
 				$subcategories[$k]->category_link = (CLEAN_URLS) ? YOUR_SITE.$category_name . '/'.$itemObject->dirtitle : $subcategories[$k]->category_link;
 				$subcategories[$k]->content = assignContent($subcontent, array('pcat' => $pcat, 'options' => $option));
 			}
-		}*/
+		}
+		*/
 	} else {
 		printOut(FAILURE, L_NO_ENTRIES_USER);
 	}
@@ -697,6 +773,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 	$page = ozone_walk($page);
 	return array('page' => $page, 'template' => $template);
 }
+
 /**
 * Prepares the array of objects by inserting common variables into the object
 * @param array $content
@@ -744,11 +821,14 @@ function assignContent($content, $extraVars = array()) {
 			$sections->Get($itemObj->pid);
 			$parent_dirtitle = $sections->dirtitle;
 		}
+
 		//Category Link
 		$content[$k]->category_link = $yoursite.((CLEAN_URLS) ? "$parent_dirtitle" : INDEX_PAGE."?pcat={$itemObj->pid}") . (!empty($subcat) ? (CLEAN_URLS ? "/$subcat_dirtitle": "&amp;subcat={$subcat}"): '') . $theme_suffix;
+
 		//Body
 		$content[$k]->body = $itemObj->descr;
 		$content[$k]->excerpt = trim_excerpt($itemObj->descr, '', true, true);
+
 		//Permalink & Editlink
 		$content[$k]->permalink = $yoursite.((CLEAN_URLS) ? "$parent_dirtitle/$itemObj->dirtitle" : INDEX_PAGE."?pcat={$itemObj->pid}&amp;item={$itemObj->id}") . $theme_suffix;
 		if($itemObj->type == 'static') {
@@ -759,14 +839,17 @@ function assignContent($content, $extraVars = array()) {
 		$itemObj->pid = $itemObj->type != 'static' ? $itemObj->pid : 7;
 		$content[$k]->editlink = $content[$k]->edit_link = "{$expanseurl}index.php?type=edit&amp;cat_id={$itemObj->pid}&amp;id={$itemObj->id}";
 		$content[$k]->uploads_url = $uploads_url;
+
 		//Image
 		$content[$k]->image = (!empty($itemObj->image)) ? $expanseurl . $uploads . '/' . $itemObj->image : null;
 		$content[$k]->image_name = $itemObj->image;
 		$content[$k]->image_tag = '<img src="' . ((!is_null($content[$k]->image) ? $content[$k]->image : $error_img)) . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
+
 		//Thumbnail
 		$content[$k]->thumbnail = $itemObj->autothumb == 1 || empty($itemObj->thumbnail) ? $expanseurl . 'funcs/tn.lib.php?id=' . $itemObj->id . '&amp;thumb=1' : $expanseurl . $uploads . '/' . $itemObj->thumbnail;
 		$content[$k]->thumbnail_name = $itemObj->thumbnail;
 		$content[$k]->thumbnail_tag = '<img src="' . $content[$k]->thumbnail . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
+
 		//Users
 		$users->Get($itemObj->aid);
 		$content[$k]->username = $users->username;
@@ -800,16 +883,18 @@ function assignContent($content, $extraVars = array()) {
 		unset($customFieldsArray);
 		$extraoptions = trim($itemObj->extraoptions);
 		$content[$k]->extraoptions = !empty($extraoptions) ? unserialize($extraoptions) : array();
-			foreach ($content[$k]->extraoptions as $ek => $ev) {
-				$content[$k]->options[$ek]->option = $ev;
-			}
+		foreach ($content[$k]->extraoptions as $ek => $ev) {
+			$content[$k]->options[$ek]->option = $ev;
+		}
+
 		//Date
 		$content[$k]->timestamp = $itemObj->created;
 		$content[$k]->date = gmdate($dateformat, $itemObj->created + $timeoffset);
 		$content[$k]->time = gmdate($timeformat, $itemObj->created + $timeoffset);
+
 		//Smilies
 		$content[$k]->descr = $itemObj->smilies == 1 ? parseSmilies($itemObj->descr, $smiliespath) : $itemObj->descr;
-		if ($itemObj->for_sale === 1) {
+		if($itemObj->for_sale === 1) {
 			$content[$k]->paypal_logo = $paypal_logo;
 			$content[$k]->price = $itemObj->paypal_amount;
 			$content[$k]->currency_type = $currency_type;
@@ -824,7 +909,7 @@ function assignContent($content, $extraVars = array()) {
 			$content[$k]->paypal_form .= '<div class="simpleCart_shelfItem">
 				<p>Item Name: '.$content[$k]->title.'</p>
 				<select class="item_Size">';
-			foreach($content[$k]->extraoptions as $o => $p){
+			foreach($content[$k]->extraoptions as $o => $p) {
 				$content[$k]->paypal_form .= "<option>".$p."</option>\n";
 			}
 			$content[$k]->paypal_form .= '</select>';
@@ -844,6 +929,7 @@ function assignContent($content, $extraVars = array()) {
 			$content[$k]->paypal_form .= '</div>';
 		}
 		/*@=*/
+
 		$itemImages = $images->GetList(array(array('itemid', '=', $itemObj->id)));
 		foreach($itemImages as $index => $image_val) {
 			foreach($option as $ok => $ov) {
@@ -861,10 +947,12 @@ function assignContent($content, $extraVars = array()) {
 				}
 			}
 			$itemImages[$index]->logged_in = $extraVars['logged_in'];
+
 			//Image
 			$itemImages[$index]->image = $expanseurl . $uploads . '/' . $image_val->image;
 			$itemImages[$index]->image_tag = '<img src="' . $itemImages[$index]->image . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
 			$itemImages[$index]->image_name = $itemImages[$index]->image;
+
 			//Thumbnail
 			$itemImages[$index]->thumbnail = $expanseurl . 'funcs/tn.lib.php?image_id=' . $image_val->id;
 			$itemImages[$index]->thumbnail_tag = '<img src="' . $itemImages[$index]->thumbnail . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
@@ -872,6 +960,7 @@ function assignContent($content, $extraVars = array()) {
 		}
 		$content[$k]->image_set = $itemImages;
 		/*@=*/
+
 		$itemComments = $comments->GetList(array(array('itemid', '=', $itemObj->id),array('online', '=', 1)));
 		foreach($itemComments as $index => $comment_val) {
 			foreach($option as $ok => $ov) {
@@ -901,6 +990,7 @@ function assignContent($content, $extraVars = array()) {
 	}
 	return $content;
 }
+
 /**
 * Recursively creates a nested HTML list of user created pages
 * @param int $default
@@ -918,7 +1008,7 @@ function get_full_page_list($default = 0, $parent = 0, $level = 0) {
 			$url = CLEAN_URLS ? $yoursite.$page->dirtitle : $yoursite.INDEX_PAGE.'?ucat='.$page->id;
 			if(!empty($item_id)) {
 				if($page->id == $ucat) {
-				$page_list .= '<li class="page_' . $page->id . ' user_page current_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a></li>' . "\n";
+					$page_list .= '<li class="page_' . $page->id . ' user_page current_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a></li>' . "\n";
 				}
 			}
 			$page_list .= '<li class="page_' . $page->id . ' user_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a></li>' . "\n" . '<ul>' . get_full_page_list($default, $page->id, $level + 1) . '</ul>' . "\n";
@@ -926,6 +1016,7 @@ function get_full_page_list($default = 0, $parent = 0, $level = 0) {
 	}
 	return $page_list;
 }
+
 /**
 * Returns a portion of a string while leaving intact any HTML tags in that string
 * @param string $posttext
@@ -952,17 +1043,20 @@ function html_substr($posttext, $minimum_length = 200, $length_offset = 10) {
 						$tag_counter = $tag_counter + 3;
 					}
 				}
-				if($current_char == "/")
+				if($current_char == "/") {
 					$tag_counter = $tag_counter - 2;
-				if($current_char == ">")
+				}
+				if($current_char == ">") {
 					$tag_counter--;
-				if($current_char == "\"")
+				}
+				if($current_char == "\"") {
 					$quotes_on = true;
+				}
 			} else {
-			if ($current_char == "\"")
+			if($current_char == "\"")
 				$quotes_on = false;
 			}
-			if ($i > $minimum_length - $length_offset && $tag_counter == 0) {
+			if($i > $minimum_length - $length_offset && $tag_counter == 0) {
 				$posttext = substr($posttext, 0, $i + 1) . "...";
 				return $posttext;
 			}
@@ -970,6 +1064,7 @@ function html_substr($posttext, $minimum_length = 200, $length_offset = 10) {
 	}
 	return $posttext;
 }
+
 /**
 * Replaces the colon character with its character entity (For Windows file paths)
 * @param string $str
@@ -980,12 +1075,14 @@ function safe_tpl($str) {
 	$str = str_replace('|', '\x7c', $str);
 	return $str;
 }
+
 function unsafe_tpl($str) {
 	$str = str_replace('\x3a', ':', $str);
 	$str = str_replace('\x7c', '|', $str);
 	return $str;
 }
 /*//-------------------------------*/
+
 /**
 * Read a compiled template and check if its not stale
 * @param string $id
@@ -1008,6 +1105,7 @@ function ets_cache_read_handler($id) {
 	}
 	return $content;
 }
+
 /**
 * Write a compiled template
 * @param string $id
@@ -1025,12 +1123,13 @@ function ets_cache_write_handler($id, $content) {
 		fclose($handle);
 	}
 }
+
 /**
 * Creates and sends a comment (default handler)
 * @return void
 */
 function handle_comment() {
-	if(!is_commenting()) {return;}
+	if(!is_commenting()) { return; }
 	global $option, $themetemplates, $tplext, $themecss;
 	if(!isFlooding($option->floodcontrol)) {
 		$commenthandle = new commentProcess;
@@ -1046,12 +1145,13 @@ function handle_comment() {
 		printOut(FAILURE, sprintf(L_FLOODING_MESSAGE, $option->floodcontrol));
 	}
 }
+
 /**
 * Sends an email based on the contact form (default handler)
 * @return void
 */
 function handle_contact() {
-	if(!is_contacting()) {return;}
+	if(!is_contacting()) { return; }
 	global $option, $themetemplates, $tplext, $themecss;
 	if(!isFlooding($option->floodcontrol)) {
 		$contact = new contactProcess;
@@ -1066,6 +1166,7 @@ function handle_contact() {
 		printOut(FAILURE, sprintf(L_FLOODING_MESSAGE, $option->floodcontrol));
 	}
 }
+
 /**
 * Manages the flooding option
 * @return string $time
@@ -1075,7 +1176,7 @@ function register_flooding() {
 	$time = false;
 	if(!isset($_SESSION['current_time'])) {
 		$time = time();
-	} elseif ((time() - $_SESSION['current_time']) > $option->floodcontrol) {
+	} elseif((time() - $_SESSION['current_time']) > $option->floodcontrol) {
 		$time = time();
 	}
 	if($time) {
@@ -1084,4 +1185,3 @@ function register_flooding() {
 	}
 	return $time;
 }
-?>

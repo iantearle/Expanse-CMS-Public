@@ -41,5 +41,3 @@ Expanse - Content Management For Web Designers, By A Web Designer
 ****************************************************************/
 require("expanse/funcs/home.php");
 print $layout;
-
-?>

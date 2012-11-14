@@ -1,5 +1,44 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 /*   Error reporting level   //---------------------------*/
 error_reporting(E_ALL);
 session_start();
@@ -7,7 +46,7 @@ session_start();
 define('LOGGED_IN', false);
 define('PROTOCOL',(((!isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != "on")) ? 'http://' : 'https://'));
 define('CURRENT_PAGE', PROTOCOL.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']);
-if(!isset($_GET['step'])){
+if(!isset($_GET['step'])) {
 	header('Location: '.CURRENT_PAGE.'?step=install');
 }
 define('MIN_VERSION', '5.0');
@@ -24,7 +63,7 @@ $errors = array();
 $results = array();
 /*   Require files   //-------------------------------*/
 require(EXPANSE_PATH.'funcs/common.functions.php');
-if (file_exists(EXPANSE_PATH.'config.php')) {
+if(file_exists(EXPANSE_PATH.'config.php')) {
 	require(EXPANSE_PATH.'config.php');
 	require_once(EXPANSE_PATH.'funcs/database.class.php');
 }
@@ -54,9 +93,9 @@ if(isset($_POST['delete_install'])) {
 	header('Location:'.EXPANSE_URL);
 }
 if(CURRENT_STEP == 'install') {
-	if(INSTALLABLE){
-		if(!empty($install)){
-			if(empty($eula)){
+	if(INSTALLABLE) {
+		if(!empty($install)) {
+			if(empty($eula)) {
 				$errors['missing_eula'] = L_EULA_NOTICE;
 				printOut(FAILURE, $errors['missing_eula']);
 			} else {
@@ -103,8 +142,8 @@ Expanse Config File
 						fwrite($config_file,$config_data);
 						$wrote_config = fclose($config_file);
 						$has_uploads = has_uploads();
-						if (!$has_uploads){
-							if (!mkdir(EXPANSE_PATH.'uploads')) {
+						if(!$has_uploads) {
+							if(!mkdir(EXPANSE_PATH.'uploads')) {
 								$dirsuccess = false;
 								$errors['cant_write_uploads'] = 'Sorry, but there was a problem creating the necessary directories.';
 								printOut(FAILURE,$errors['cant_write_uploads']);
@@ -118,7 +157,7 @@ Expanse Config File
 							$CONFIG['pass']		= $sqlpass;
 							$CONFIG['db']		= $sqldb;
 							$CONFIG['prefix']	= $sqlprefix;
-							if(!class_exists('DatabaseConnection')){
+							if(!class_exists('DatabaseConnection')) {
 								require_once(dirname(__FILE__).'/funcs/database.class.php');
 							} else {
 								//Refresh connection
@@ -166,7 +205,7 @@ Expanse Config File
 							');
 							require(EXPANSE_PATH.'funcs/mail.class.php');
 							require(EXPANSE_PATH.'funcs/template.class.php');
-							if(!ini_get('sendmail_from')){
+							if(!ini_get('sendmail_from')) {
 								$sendmail_from = $adminemail;
 								ini_set('sendmail_from', $sendmail_from);
 							}
@@ -184,8 +223,7 @@ Expanse Config File
 							$mail->setSubject('Expanse is installed. Happiness ensues.');
 							$mail->setHTML($templatebody, $plaintext);
 							$mail->send(array($adminemail));
-						} // uploads directory there, and config file written
-						else {
+						} else {
 							$errors['mail_not_sent'] = 'Sorry, but there was a problem installing Expanse. It seems that your system is unwritable.';
 							printOut(FAILURE,$errors['mail_not_sent']);
 						}
@@ -199,7 +237,10 @@ Expanse Config File
 		printOut(FAILURE, $errors['not_up_to_snuff']);
 	}
 }
-$outmess->write_header('', 1, 1); ?>
+
+$outmess->write_header('', 1, 1);
+
+?>
 <div class="topbar">
 	<div class="topbar-inner">
 		<div class="container">
@@ -215,11 +256,11 @@ $outmess->write_header('', 1, 1); ?>
 			<div class="row"> <?php
 				if(INSTALLABLE) {
 					echo $output;
-					if(isInstalled() && empty($install)){
+					if(isInstalled() && empty($install)) {
 						printf(ALERT.'<br />', 'It appears that Expanse is already installed. If you are looking to uninstall it, you can go <a href="'.CURRENT_PAGE.'?step=uninstall">here</a>.');
 					}
 					/*   At the first step   //-------------------------------*/
-					if(empty($install) || !empty($errors)){ ?>
+					if(empty($install) || !empty($errors)) { ?>
 						<div class="span8">
 							<h1>Settings</h1>
 							<fieldset>
@@ -308,8 +349,8 @@ $outmess->write_header('', 1, 1); ?>
 						<input name="install" id="install" type="submit" class="btn large primary" value="Install" /> <input type="reset" class="btn danger" value="Reset" />
 					</div>
 				</div> <?php
-							}
-				} else { ?>
+				}
+			} else { ?>
 					<div class="span16">
 						<h1>System Requirements</h1>
 						<form action="" method="post" id="eulaStep1">
@@ -387,25 +428,27 @@ $outmess->write_header('', 1, 1); ?>
 						</div>
 					</div>
 			</div>
-		</form> <?php
-				} //End not installable
+		</form>
+<?php
+		} //End not installable
 
-	} elseif (CURRENT_STEP == 'uninstall') {
+	} elseif(CURRENT_STEP == 'uninstall') {
 		$uninstall_type = isset($_GET['uninstall_type']) ? $_GET['uninstall_type'] : '';
 		$result = array(
 			'errors' => array(),
 			'success' => array()
 		);
+
 		function uninstall_expanse() {
 			global $result;
 			if(isInstalled()) {
-				if(has_uploads()){
+				if(has_uploads()) {
 					uninstall_uploads();
 				}
-				if(db_installed()){
+				if(db_installed()) {
 					uninstall_db();
 				}
-				if(has_config()){
+				if(has_config()) {
 					uninstall_config();
 				}
 			} else {
@@ -413,6 +456,7 @@ $outmess->write_header('', 1, 1); ?>
 			}
 			return $result;
 		}
+
 		function uninstall_uploads() {
 			global $Database, $CONFIG, $result;
 			$uploaddir = EXPANSE_PATH.'uploads';
@@ -422,6 +466,7 @@ $outmess->write_header('', 1, 1); ?>
 				$result['errors'][] = 'uploads';
 			}
 		}
+
 		function db_installed() {
 			if(has_config()){
 				global $Database, $CONFIG;
@@ -434,21 +479,24 @@ $outmess->write_header('', 1, 1); ?>
 			}
 			return false;
 		}
+
 		function uninstall_db() {
 			global $Database, $CONFIG, $result;
 			$table_array = array('items','comments', 'customfields', 'hackattempts', 'prefs', 'sections', 'users', 'images', 'sessions');
 			foreach($table_array as $table){
 				$Database->Query("DROP TABLE IF EXISTS `{$Database->Prefix}$table`");
 			}
-			if(!db_installed()){
+			if(!db_installed()) {
 				$result['success'][] = 'db';
 			} else {
 				$result['errors'][] = 'db';
 			}
 		}
-		function has_config(){
+
+		function has_config() {
 			return file_exists(dirname(__FILE__).'/config.php');
 		}
+
 		function uninstall_config() {
 			global $result;
 			if(unlink(EXPANSE_PATH.'/config.php')){
@@ -457,35 +505,39 @@ $outmess->write_header('', 1, 1); ?>
 				$result['errors'][] = 'config';
 			}
 		}
+
 		if(isset($_POST['delete_uploads']) && has_uploads()) {
 			uninstall_uploads();
 			if(!empty($result['success'])){
 				printOut(SUCCESS, 'Your uploads folder has been deleted.');
 			}
 		}
+
 		if(isset($_POST['delete_db']) && db_installed()){
 			uninstall_db();
 			if(has_config()){
 				uninstall_config();
 			}
 		}
+
 		if(isset($_POST['delete_config']) && has_config()) {
 			uninstall_config();
 		}
-		if(isset($_POST['uninstall'])){
+
+		if(isset($_POST['uninstall'])) {
 			$uninstall = uninstall_expanse();
 			if(count($uninstall['errors']) > 0) {
-				foreach($uninstall['errors'] as $val){
-					if($val == 'uploads'){
+				foreach($uninstall['errors'] as $val) {
+					if($val == 'uploads') {
 						printOut(FAILURE, 'Sorry, but the uploads directory could not be deleted. Do you have writing permissions to that directory?');
 					}
-					if($val == 'db'){
+					if($val == 'db') {
 						printOut(FAILURE, 'Sorry, but the database tables could not be removed. Is the information in your config file correct?');
 					}
-					if($val == 'config'){
+					if($val == 'config') {
 						printOut(FAILURE, 'Sorry, but the config file could not be deleted. Do you have writing permissions for that file?');
 					}
-					if($val == 'not installed'){
+					if($val == 'not installed') {
 						printOut(FAILURE, 'Sorry, but Expanse has not yet been installed. Please install it by going <a href="?step=install">here</a>.');
 					}
 				}
@@ -493,8 +545,9 @@ $outmess->write_header('', 1, 1); ?>
 				printOut(SUCCESS, 'Expanse was uninstalled. Your server is lonely now.');
 			}
 		}
+
 		if(isInstalled()) {
-			if(empty($uninstall_type)){ ?>
+			if(empty($uninstall_type)) { ?>
 				<h1>Uninstall Expanse</h1>
 				<?php echo $output; ?>
 				<p>If you wish to uninstall the Expanse, click on the &quot;Uninstall Expanse&quot; button. Once you click the button, the uninstaller will attempt to delete your uploads folder, all the files in the folder, the database tables, and the configuration file. To finish the uninstallation process, please delete files you first uploaded to your server. </p>
@@ -538,7 +591,7 @@ $outmess->write_header('', 1, 1); ?>
 		} elseif(!isset($_POST['uninstall'])) { ?>
 			<div class="alert-message warning" data-alert="alert"><a class="close" href="#">×</a>Sorry, but Expanse has not yet been installed. Please install it by going <a href="?step=install">here</a>.</div> <?php
 	} else {
-	echo $output;
+		echo $output;
 	}
 
 } else {
@@ -548,5 +601,5 @@ $outmess->write_header('', 1, 1); ?>
 </form>
 </div>
 <?php
+
 $outmess->write_footer();
- ?>

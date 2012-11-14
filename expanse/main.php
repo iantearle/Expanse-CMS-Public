@@ -1,7 +1,46 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 //Must be included at the top of all included files.
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
 include('funcs/rss.class.php');
 $rss = new easyRSS;
 ?>
@@ -12,8 +51,8 @@ $rss = new easyRSS;
 </div>
 <div class="span6">
 	<div class="well">
-		<?php if (is_unsafe()){ printf(ALERT, L_PERMISSIONS_WARNING);} ?>
-		<?php $totals = $auth->getTotals();?>
+		<?php if (is_unsafe()){ printf(ALERT, L_PERMISSIONS_WARNING); } ?>
+		<?php $totals = $auth->getTotals(); ?>
 		<p><?php printf(L_OVER_TOTAL_USAGE,$totals['user_count'],$totals['total_count']); ?></p>
 		<?php echo  $auth->createSummary(); ?>
 	</div>
@@ -22,7 +61,7 @@ $rss = new easyRSS;
 <?php applyOzoneAction('main_home'); ?>
 
 <div id="expanseNews" class="span6">
-	<h3><?php printf(L_LATEST_NEWS, CMS_NAME)?></h3>
+	<h3><?php printf(L_LATEST_NEWS, CMS_NAME) ?></h3>
 	<?php
 		$news = array('items'=>array());
 		if(!isset($_SESSION['remote_news'])) {
@@ -40,8 +79,7 @@ $rss = new easyRSS;
 				?>
 				<h3><a href="<?php echo $link ?>" target="_blank"><?php echo $title ?></a></h3>
 				<h4><?php echo $date ?></h4>
-				<?php echo html_entity_decode($descr) ?>
-			<?php
+				<?php echo html_entity_decode($descr);
 			}
 		}
 	echo empty($news['items']) ? L_NEWS_NOT_LOADING : '';
@@ -84,5 +122,3 @@ $rss = new easyRSS;
 	</div>
 </div>
 */
-?>
-	<!-- End page content -->

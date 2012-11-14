@@ -24,7 +24,7 @@ $LEX['login_remember_me'] = 'Remember Me';
 $LEX['login_forgot_password'] = 'I forgot my password';
 $LEX['login_go_back'] = '&laquo; Login';
 
-$LEX['nothing_here'] = 'Please use the <a href="index.php" title="Main Menu">menu</a> to navigate through the CMS.';
+$LEX['nothing_here'] = '<div class="alert alert-info"><strong>Heads up!</strong> Please use the <a href="index.php" title="Main Menu">menu</a> to navigate through the CMS.</div>';
 /*   Password request/change   //-------------------------------*/
 $LEX['missing_retrieve_field'] = 'Please make sure you\'ve entered in a valid username and email';
 $LEX['cant_retrieve'] = 'Sorry, but there does not appear to be a user with that information';
