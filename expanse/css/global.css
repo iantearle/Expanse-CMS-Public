@@ -1,3 +1,4 @@
+ body { padding-top: 60px; }
 .pull-right { position: relative; }
 .gravatar {
 	position: absolute;
@@ -12,49 +13,42 @@
 	-moz-border-radius: 50px;
 	border-radius: 50px;
 }
+.row {
+	margin-bottom: 10px;
+}
+
+.keepState{
+	font-size: 80%;
+	background:#FFFFE0;
+	padding: 0 0.5em;
+	display:block;
+}
 /*
 ------------------------------------------------------------
 Accordion Styles
 ============================================================
 */
-		.stretchToggle {
-		cursor:pointer;
-		padding:0.2em;
-		margin: 0.15em;
-		border: 1px solid #DDE1E3;
-		padding: 1px;
-		font-size:110%;
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
+		.accordion-toggle {
+			cursor:pointer;
+			padding:0.2em;
+			margin: 0.15em;
+			border: 1px solid #DDE1E3;
+			padding: 1px;
+			font-size:110%;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;
+			background: #EEF0F1;
 		}
-		.stretchToggle span {
-		display:block;
-		text-decoration:none;
-		background: #EEF0F1;
-		padding: 0.2em;
-		color:#069;
-		}
-		.stretch {
-		background:#fff;
-		}
-		.stretchContainer {
-		background:#fff;
-		border:1px solid #B6C2D7;
-		padding: 0.5em;
-		}
-		
+
 		/*
 		------------------------------------------------------------
 		Summary/Latest Buzz
 		============================================================
 		*/
-		#summary{
-		padding: 0.5em 1em 2em;
-		float:left;
-		clear:both;
+		.well {
+			overflow: hidden;
 		}
-		
 		#summary h1{
 		color:#000;
 		margin:0 0 1em;

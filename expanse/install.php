@@ -85,21 +85,20 @@ if(CURRENT_STEP == 'install') {
 						$sqlprefix 	= (!empty($sqlprefix)) ? $sqlprefix : 'exp_';
 						$sqlprefix = preg_replace('|[^A-Z0-9_]|i','_', $sqlprefix);
 						$config_data =
-							"<?php
-							/*
-							------------------------------------------------------------
-							Expanse Config File
-							============================================================
-							*/
-							//DATABASE VARIABLES
-							\$CONFIG['host']		= '$sqlhost'; //Database host; usually localhost, or something like mysql.server.com
-							\$CONFIG['user']		= '$sqluser'; //Database User
-							\$CONFIG['pass']		= '$sqlpass'; //Database Password
-							\$CONFIG['db']			= '$sqldb'; //Database Name
-							\$CONFIG['prefix']		= '$sqlprefix'; //Table Prefix
-							//Stop editing
-							\$CONFIG['home']		= dirname(__FILE__);
-							?>";
+"<?php
+/*
+------------------------------------------------------------
+Expanse Config File
+============================================================
+*/
+//DATABASE VARIABLES
+\$CONFIG['host']		= '$sqlhost'; //Database host; usually localhost, or something like mysql.server.com
+\$CONFIG['user']		= '$sqluser'; //Database User
+\$CONFIG['pass']		= '$sqlpass'; //Database Password
+\$CONFIG['db']			= '$sqldb'; //Database Name
+\$CONFIG['prefix']		= '$sqlprefix'; //Table Prefix
+//Stop editing
+\$CONFIG['home']		= dirname(__FILE__);";
 						$config_file = fopen(EXPANSE_PATH.'config.php','w+');
 						fwrite($config_file,$config_data);
 						$wrote_config = fclose($config_file);
@@ -286,7 +285,7 @@ $outmess->write_header('', 1, 1); ?>
 								<p>expanse is licensed under the <a href="http://opensource.org/licenses/mit-license.php"><span class="caps">MIT</span> open-source license</a>. That means the code is copyright Ian Tearle, but you have permission to do almost anything you like with it. <strong>It’s free, both as in free beer and free speech.</strong></p>
 								<p>This includes using all or parts of the code in commercial applications. I request, but don’t require, that you give explicit credit and a link to expanse cms (<a href="http://expansecms.org">http://expansecms.org</a>), without using the expanse name or logo to advertise your product without written permission from the trademark owner (as specified by international trademark laws). You must, however, include the following license and notice with anything you distribute.</p>
 								<div id="boilerplate">
-								<p>Copyright (c) 2009 Ian Tearle (http://expansecms.org)</p>
+								<p>Copyright &copy; 2012 Ian Tearle (http://expansecms.org)</p>
 								<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 								<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 								<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUR OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /********* Expanse ***********/
 
 require('funcs/admin.php');
@@ -18,17 +18,17 @@ $cat_action = ACTION;
 		add_title(L_MISC_NOTHING_HERE_TITLE);
 		}
 		$outmess->write_header('', 1);
- ?> 
-      <!-- Begin page content --> 
-      <div class="topbar">
-		<div class="topbar-inner">
+ ?>
+      <!-- Begin page content -->
+      <div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
 			<div class="container">
 				<a class="brand" href="./"><?php echo CMS_NAME ?></a>
 				<ul class="nav">
 					<li><a href="./">Home</a></li>
 					<?php if(LOGGED_IN) { ?>
 					<li data-dropdown="dropdown">
-						<a class="dropdown-toggle" href="#">Content</a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Content</a>
 						<?php echo $menu; ?>
 					</li>
 					<?php } ?>
@@ -38,7 +38,7 @@ $cat_action = ACTION;
 					$gravatar = md5( strtolower( trim( $_SESSION['email'] ) ) ); ?>
 						<ul class="nav secondary-nav">
 							<li data-dropdown="dropdown">
-								<a class="dropdown-toggle dropdown-signin" id="signin-link" href="#">
+								<a class="dropdown-toggle dropdown-signin" data-toggle="dropdown" id="signin-link" href="#">
 					              <span class="gravatar"><img src="http://www.gravatar.com/avatar/<?php echo $gravatar; ?>?s=25" /></span>
 									<?php printf(L_WELCOME, HEADER_ID);?>
 					            </a>
@@ -72,7 +72,7 @@ $cat_action = ACTION;
 	  <div class="errorPage container">
       <?php if ($cat_action == 'disabled'){ ?>
 	  <?php printf(FAILURE,L_MISC_ACCOUNT_DISABLED) ?>
-      <?php } elseif ($cat_action == 'denied'){ ?> 
+      <?php } elseif ($cat_action == 'denied'){ ?>
 	  <?php printf(FAILURE, L_MISC_NO_PERMISSIONS);?>
             <?php } elseif($cat_action == 'license'){
 			?>
@@ -86,9 +86,9 @@ $cat_action = ACTION;
 				<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUR OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 			</div>
 			<?php
-			} else { 
+			} else {
 				printf(FAILURE, L_MISC_NOTHING_HERE);
 			} ?>
 	  </div>
-       <!-- End page content --> 
+       <!-- End page content -->
  <?php $outmess->write_footer();?>

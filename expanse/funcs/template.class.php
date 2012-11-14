@@ -1355,7 +1355,7 @@ class _ets
 					return FALSE;
 				}
 				$this->containers[$container] = TRUE;
-				return $this->parse($parse, $i = 0, $line = 1, strlen($content), "$content       ");
+				return $this->parse($parse, $i = 0, $line = 1, (string) strlen($content), "$content       ");
 			}
 		// .. or not
 		} else {
@@ -1604,10 +1604,10 @@ class _ets
 					if (is_object($dv)) {
 						// For some reason, PHP 5 is throwing 500's when the parent datatree has an array in the object. Retarded.
 						if (version_compare(phpversion(), '5.0.0', '>')){
-						$my_datatree = new stdClass;	
+						$my_datatree = new stdClass;
 							foreach($datatree['_parent'] as $k => $v){
 								if(is_array($v)){continue;}
-								$my_datatree->{$k} = $v;	
+								$my_datatree->{$k} = $v;
 							}
 							$dv->_parent = $my_datatree;
 						} else {

@@ -1,5 +1,5 @@
-<?php 
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');} 
+<?php
+if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
 /*   Categories   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=categories&amp;action=edit">'.L_ADMIN_MANAGE_CATEGORIES.'</a>',array(),'categories');
 //'<a href="?cat=admin&amp;sub=categories&amp;action=manage">'.L_CATEGORY_MANAGE_TYPES.'</a>'
@@ -36,7 +36,7 @@ function category_content(){
 				$sections = get_dao('sections');
 				$sections->sectionname = isset($_POST['sectionname']) ?  trim(save(strip_tags($_POST['sectionname']))) : '';
 				$sections->descr = isset($_POST['cat_descr']) ?  trim(save(strip_tags($_POST['cat_descr']))) : '';
-				
+
 				$sections->dirtitle =  unique_dirtitle(dirify($sections->sectionname), 'sections');
 				$sections->cat_type = isset($_POST['cat_type']) ? trim($_POST['cat_type']) : '';
 				$sections->public = 0;
@@ -48,31 +48,30 @@ function category_content(){
 						printOut(SUCCESS, sprintf(L_CATEGORY_ADDED, $sections->sectionname, $sections->id));
 					} else {
 						printOut(FAILURE, L_CATEGORY_NOT_ADDED);
-					}					
+					}
 				}
 			}
 			echo $output; ?>
-			<div class="span8">
+			<div class="span6">
 				<h3><?php echo L_CATEGORY_GIVE_NAME ?></h3>
-				<div class="clearfix">
-					<label for="sectionname"><?php echo L_CATEGORY_NAME ?></label>
-					<div class="input">
-						<input type="text" id="sectionname" name="sectionname" class="span8 formfields" />
-					</div>			
+				<div class="control-group">
+					<label for="sectionname" class="control-label"><?php echo L_CATEGORY_NAME ?></label>
+					<div class="controls">
+						<input type="text" id="sectionname" name="sectionname" class="span6 formfields" />
+					</div>
 				</div>
-				<div class="clearfix">
-					<label for="descr"><?php echo L_CATEGORY_DESCRIPTION ?></label>
-					<div class="input">
-						<textarea name="cat_descr" id="cat_descr" class="span8"></textarea>
+				<div class="control-group">
+					<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+					<div class="controls">
+						<textarea name="cat_descr" id="cat_descr" class="span6"></textarea>
 					</div>
 				</div>
 			</div>
-			<div class="span8">
-				<div class="clearfix">
-					<label id="optionsCheckboxes"><?php echo L_CATEGORY_GIVE_TYPE ?></label>
-					<div class="input">
-						<ul class="inputs-list">
-						<?php 	
+			<div class="span6">
+				<h3><?php echo L_CATEGORY_GIVE_TYPE ?></h3>
+				<div class="control-group">
+					<div class="controls">
+						<?php
 						$uninstalled_cats = array();
 						$modfilesdir = EXPANSEPATH."/$modules_dir";
 						$modfiles = getFiles($modfilesdir, 'all',1);
@@ -80,37 +79,28 @@ function category_content(){
 							if(!(in_array("view.php",$v['files']) && in_array("controller.php",$v['files']))){continue;}
 							include("$modfilesdir/$k/controller.php");
 							$info = (object) get_class_vars($k);
-							if($info->Exclude == true){continue;}		
+							if($info->Exclude == true){continue;}
 							if(is_callable(array($k,'install'))){
 								if(getOption('category', $k)){
 								?>
-								<li>
-									<label for="cat<?php echo $info->name; ?>">
-										<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
-										<span><?php echo $info->name; ?></span>
-										<span class="help-block">
-											<strong>Note:</strong> <?php echo $info->description; ?>
-										</span>
-									</label>
-								</li>
+								<label for="cat<?php echo $info->name; ?>" class="checkbox">
+									<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
+									<span><?php echo $info->name; ?></span>
+									<span class="help-block"><strong>Note:</strong> <?php echo $info->description; ?></span>
+								</label>
 								<?php
 								} else {
 									$uninstalled_cats[] = $info->name;
 								}
 							} else { ?>
-								<li>
-									<label for="cat<?php echo $info->name; ?>">
-										<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
-										<span><?php echo $info->name; ?></span>
-										<span class="help-block">
-											<strong>Note:</strong> <?php echo $info->description; ?>
-										</span>
-									</label>
-								</li>
+								<label for="cat<?php echo $info->name; ?>" class="checkbox">
+									<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
+									<span><?php echo $info->name; ?></span>
+									<span class="help-block"><strong>Note:</strong> <?php echo $info->description; ?></span>
+								</label>
 							<?php
 							}
 						}?>
-						</ul>
 					</div>
 				</div><?php
 				if(!empty($uninstalled_cats)){
@@ -119,7 +109,7 @@ function category_content(){
 						<dt><?php echo L_CATEGORY_PENDING_INSTALL_LIST ?></dt>
 						<dd>
 							<ul>
-								<?php 
+								<?php
 								foreach($uninstalled_cats as $ind => $uncat){
 									?><li><a href="?cat=admin&amp;sub=categories&amp;action=manage#cat<?php echo $uncat; ?>"><?php echo $uncat; ?></a></li><?php
 								}
@@ -127,17 +117,17 @@ function category_content(){
 							</ul>
 						</dd>
 					</dl>
-					<?php 
+					<?php
 				}
-				?>						
-			</div>			
-			<input type="hidden" name="pid" value="0">
+				?>
 			</div>
-			<div class="row">
-			<div class="actions">
-				<input type="submit" name="submit" value="<?php echo L_BUTTON_ADD ?>" class="btn primary" />
+				<input type="hidden" name="pid" value="0">
 			</div>
-	<?php 
+
+			<div class="form-actions">
+				<input type="submit" name="submit" value="<?php echo L_BUTTON_ADD ?>" class="btn btn-primary" />
+			</div>
+	<?php
 		} elseif(ACTION == 'manage'){
 			if(is_posting(L_BUTTON_INSTALL)){
 				$install = $Database->Escape($_POST['category']);
@@ -177,11 +167,11 @@ function category_content(){
 			</form>
 			<p><?php echo L_CATEGORY_FINISHED_MANAGING ?></p>
 			<dl id="addCats">
-				<?php 
+				<?php
 				$modfilesdir = EXPANSEPATH."/$modules_dir";
 				$modfiles = getFiles($modfilesdir, 'all', 1);
-				foreach($modfiles['dirs'] as $k => $v){		
-					if(in_array("controller.php",$v['files']) && in_array("view.php",$v['files'])){			
+				foreach($modfiles['dirs'] as $k => $v){
+					if(in_array("controller.php",$v['files']) && in_array("view.php",$v['files'])){
 						include_once("$modfilesdir/{$k}/controller.php");
 						$info = (object) get_class_vars($k);
 						if(is_array($info->author)){
@@ -201,7 +191,7 @@ function category_content(){
 							by <?php echo $info->author;  ?><br />
 							v.<?php echo $info->version ?><br />
 							<p><?php echo $info->description; ?></p>
-							<?php 
+							<?php
 							if(is_callable(array($k,'install')) && !getOption('category', $k)){?>
 								<p class="contentalert"><?php echo L_CATEGORY_PENDING_INSTALL ?><br />
 									<form method="post" action="">
@@ -209,7 +199,7 @@ function category_content(){
 										<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_INSTALL ?>" />
 									</form>
 								</p>
-							<?php 
+							<?php
 							}
 							if(is_callable(array($k,'uninstall')) && getOption('category', $k)){ ?>
 								<form method="post" action="">
@@ -218,7 +208,7 @@ function category_content(){
 									<input name="category" type="hidden" value="<?php echo $k; ?>" />
 									<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_UNINSTALL ?>" />
 								</form>
-								<?php 
+								<?php
 							}
 						?></dd>
 						<?php
@@ -226,14 +216,13 @@ function category_content(){
 				}
 				?>
 			</dl>
-	<?php 
-		}	
+	<?php
+		}
 		if(ACTION == 'edit') {
 			if(!empty($item_id)) {
-				?><div class="span6"><?php
 				$subs =& get_dao('sections');
 				$errs = array();
-				if(is_posting(L_BUTTON_DELETE)) { 
+				if(is_posting(L_BUTTON_DELETE)) {
 					if(isset($_POST['del'])) {
 						foreach($_POST['del'] as $id){
 							$st = get_dao('sections');
@@ -247,7 +236,7 @@ function category_content(){
 								$errs[] = 1;
 							}
 						}
-						$result = '<ul>'.implode('', $result).'</ul>';					
+						$result = '<ul>'.implode('', $result).'</ul>';
 						if(empty($errs)){
 							printOut(SUCCESS, $result);
 						} else {
@@ -279,10 +268,10 @@ function category_content(){
 						}
 						$subsection->dirtitle = unique_dirtitle(dirify($subsection->sectionname), 'sections');
 						$subsection->Save();
-					}	
+					}
 					$sub_result = array('good' => array(), 'bad' => array());
 					$subadd = '';
-					if(!empty($new_cat)){		
+					if(!empty($new_cat)){
 						$newsubs =& get_dao('sections');
 						foreach($new_cat as $i => $v){
 							$v = trim(save(strip_tags($v)));
@@ -316,93 +305,105 @@ function category_content(){
 				}
 				$subs->Get($item_id);
 				$subc = !empty($subs->id) ? $subs->GetList(array(array('pid', '=', $subs->id))) : array();
-				echo $output;	
+				?>
+				<div class="span12">
+					<?php echo $output; ?>
+				</div>
+				<?php
 				if(!empty($subs->id)){	?>
-					<div class="well">
-						<div class="clearfix">
-							<label for="catTitle"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
-							<div class="input">
-								<input name="catTitle" id="catTitle" value="<?php echo $subs->sectionname; ?>" type="text" class="formfields" />
+					<div class="span6">
+						<h3><?php echo L_CATEGORY_ADD_TITLE; ?></h3>
+						<div class="well">
+							<div class="control-group">
+								<label for="catTitle" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
+								<div class="controls">
+									<input name="catTitle" id="catTitle" value="<?php echo $subs->sectionname; ?>" type="text" class="formfields" />
+								</div>
 							</div>
-						</div>
-						<div class="clearfix">
-							<label for="descr"><?php echo L_CATEGORY_DESCRIPTION ?></label>
-							<div class="input">
-								<textarea name="cat_descr" id="cat_descr"><?php echo view($subs->descr); ?></textarea>
+							<div class="control-group">
+								<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+								<div class="controls">
+									<textarea name="cat_descr" id="cat_descr"><?php echo view($subs->descr); ?></textarea>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-					<?php 
-					if($subs->cat_type !== 'pages'){ ?>
-					<div class="span10"><?php
-						if(!empty($subc)){
-							?><fieldset id="editSubs">
-								<legend><?php echo L_EDIT_SUBCATEGORY_NAME_LABEL ?></legend><?php					
-								foreach($subc as $subCat){ ?>
-									<div class="clearfix">
-										<input type="text" name="sectionname[<?php echo $subCat->id; ?>]" id="cat<?php echo $subCat->id; ?>" value="<?php echo $subCat->sectionname; ?>" class="formfields" />
-									</div>
-									<div class="clearfix">
-										<div class="input">
-											<label for="del<?php echo $subCat->id; ?>">
-												<input id="del<?php echo $subCat->id; ?>" name="del[]" class="cBox" type="checkbox" value="<?php echo $subCat->id; ?>" />
-												<span><?php echo L_DELETE_ITEM ?></span>
-											</label>
-										</div>
-									</div>
-									<div class="clearfix">
-										<div class="input">
-											<textarea name="sectionname_descr[<?php echo $subCat->id; ?>]"><?php echo view($subCat->descr); ?></textarea>
-										</div>
-									</div>
-									<?php
-								} ?>
-							</fieldset>
-							<?php 
-						}
-						?>
-							<fieldset id="addSubcats">
-								<legend><?php echo L_ADD_SUBCATEGORY ?></legend>
-								<div id="addSubcats1Group" class="row">
-									<div class="span6">
-										<div class="clearfix">
-											<label for="new_cat"><?php echo L_JS_SUBCAT_LABEL ?></label>
-											<div class="input">
-												<input name="new_cat[]" id="new_cat1" type="text" class="formfields" />
-											</div>
-										</div>
-										<div class="clearfix">
-											<label for="new_cat"><?php echo L_JS_SUBCAT_DESCR ?></label>
-											<div class="input">
-												<textarea name="new_cat_descr[]" id="new_cat_descr1"></textarea>
-											</div>
-										</div>
+					<?php
+					if($subs->cat_type !== 'pages') { ?>
+					<div class="span6" id="addSubcats">
+						<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
+						<div id="addSubcats1Group" class="row">
+							<div class="span6">
+								<div class="control-group">
+									<label for="new_cat1" class="control-label"><?php echo L_JS_SUBCAT_LABEL ?></label>
+									<div class="controls">
+										<input name="new_cat[]" id="new_cat1" type="text" class="formfields" />
 									</div>
 								</div>
-							</fieldset>
-						</div>
-						<div class="span16">
-							<div class="actions">
-								<input type="submit" name="submit" class="btn primary" value="<?php echo L_BUTTON_EDIT ?>" />
-								<div class="pull-right">
-									<input type="submit" name="submit" class="btn danger" value="<?php echo L_BUTTON_DELETE ?>" />
+								<div class="control-group">
+									<label for="new_cat_descr1" class="control-label"><?php echo L_JS_SUBCAT_DESCR ?></label>
+									<div class="controls">
+										<textarea name="new_cat_descr[]" id="new_cat_descr1"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
-						<?php 
+					</div>
+					<div class="span12">
+					<?php
+						if(!empty($subc)){ ?>
+							<h3><?php echo L_EDIT_SUBCATEGORY_NAME_LABEL; ?></h3>
+							<table class="table table-striped">
+								<?php foreach($subc as $subCat){ ?>
+								<tr>
+									<td>
+										<div class="control-group">
+											<label for="cat<?php echo $subCat->id; ?>" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
+											<div class="controls">
+												<input type="text" name="sectionname[<?php echo $subCat->id; ?>]" id="cat<?php echo $subCat->id; ?>" value="<?php echo $subCat->sectionname; ?>" class="formfields" />
+											</div>
+											<label for="sectionname_descr[<?php echo $subCat->id; ?>]" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+											<div class="controls">
+												<textarea name="sectionname_descr[<?php echo $subCat->id; ?>]"><?php echo view($subCat->descr); ?></textarea>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="control-group">
+											<div class="controls">
+												<label for="del<?php echo $subCat->id; ?>" class="checkbox pull-right">
+													<input id="del<?php echo $subCat->id; ?>" name="del[]" type="checkbox" value="<?php echo $subCat->id; ?>" />
+													<?php echo L_DELETE_ITEM ?>
+												</label>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<?php } ?>
+							</table>
+						<?php } ?>
+					</div>
+					<div class="span12">
+						<div class="form-actions">
+							<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
+							<div class="pull-right">
+								<input type="submit" name="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
+							</div>
+						</div>
+					</div>
+						<?php
 					} else { ?>
-						<div class="span16">
-							<div class="actions">
-								<input type="submit" name="submit" class="btn primary" value="<?php echo L_BUTTON_EDIT ?>" />
+						<div class="span12">
+							<div class="form-actions">
+								<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
 							</div>
 						</div><?php
 					}
 				} else {
 					printf(FAILURE, L_CATEGORY_MISSING);
-				}	
+				}
 			} else{
-				?><div class="span16"><?php
+				?><div class="span12"><?php
 				if(is_posting(L_BUTTON_DELETE)) {
 					if(isset($_POST['del'])){
 						foreach($_POST['del'] as $id){
@@ -429,25 +430,26 @@ function category_content(){
 				$hasitems = count($sec) > 0 ? true :  false;
 				$tplext = TPL_EXT;
 				?>
-				<table id="categoriesList" class="zebra-striped">
+				<p class="alert alert-info"><?php echo L_CATEGORY_ADD_LINK ?></p>
+				<table id="categoriesList" class="table table-striped">
 					<thead>
 						<tr>
 							<th><?php echo L_LIST_CATEGORY_NAME ?></th>
 							<th><?php echo L_LIST_NO_OF_ITEMS ?></th>
 							<th><?php echo L_LIST_CATEGORY_TYPE ?></th>
 							<th>
-								<?php echo L_LIST_TEMPLATE_NAME ?> 
+								<?php echo L_LIST_TEMPLATE_NAME ?>
 								<img src="images/help.gif" alt="" width="16" height="16" class="hasHelp" id="templateName" />
 								<blockquote class="helpContents" id="templateNameHelp">
-									<h5><?php echo L_LIST_TEMPLATE_NAME ?></h5> 
+									<h5><?php echo L_LIST_TEMPLATE_NAME ?></h5>
 									<?php echo L_LIST_TEMPLATE_NAME_HELP ?>
 								</blockquote>
 							</th>
 							<th><?php echo L_LIST_CATEGORY_MANAGE ?></th>
 							<th>
-								<label for="toggleBox">
+								<label for="toggleBox" class="checkbox">
 									<input id="toggleBox" type="checkbox" value="" />
-									<span><?php echo L_DELETE_ITEM ?></span>
+									<?php echo L_DELETE_ITEM ?>
 								</label>
 							</th>
 						</tr>
@@ -457,7 +459,7 @@ function category_content(){
 						foreach($sec as $ind => $c){
 							if($c->cat_type == 'pages' && $c->id != 1){ continue; }
 							$itemCount = $Database->Query("SELECT COUNT(id) as count FROM ".PREFIX."items WHERE pid=$c->id");
-							$itemCount = $Database->Result(0, 'count'); 
+							$itemCount = $Database->Result(0, 'count');
 							?>
 							<tr<?php echo ($ind % 2) ? ' class="altRow"' : ''; ?>>
 								<td><?php echo $c->sectionname ?></td>
@@ -465,31 +467,32 @@ function category_content(){
 								<td><?php echo $c->cat_type ?></td>
 								<td><?php echo $c->dirtitle.$tplext ?></td>
 								<td><a href="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>&amp;id=<?php echo $c->id; ?>" class="editLink">Edit</a></td>
-								<td><?php 
+								<td><?php
 									if($c->cat_type != 'pages'){
-										?><input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php 
+										?><input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php
 									} ?>
 								</td>
 							</tr>
-							<?php 
+							<?php
 						}
 						?>
 					</tbody>
 				</table>
-				<p class="contentalert"><?php echo L_DELETE_CATEGORY_ALERT ?></p>
-				<p><?php echo L_CATEGORY_ADD_LINK ?></p>
+				<p class="alert alert-danger"><?php echo L_DELETE_CATEGORY_ALERT ?></p>
 				<?php if($hasitems){ ?>
-					<div class="actions">
+					<div class="form-actions">
 						<div class="clearfix">
 							<div class="pull-right">
-								<input name="submit" type="submit" class="btn danger" value="<?php echo L_BUTTON_DELETE ?>" />
+								<input name="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
 							</div>
 						</div>
 					</div>
 				<?php } ?>
-				<?php				
+				<?php
 			}
 		} ?>
-	</div> 
-</div><?php 
-} ?>
+	</div>
+</div>
+<?php
+}
+?>

@@ -31,7 +31,7 @@ Global styles
 }
 /*
 ------------------------------------------------------------
-Tooltips (w/ Javascript) 
+Tooltips (w/ Javascript)
 ============================================================
 */
 .hasHelp{
@@ -82,28 +82,22 @@ text-decoration: none;
 Waiting Message Styles
 ============================================================
 */
-#overlay{ background-image: url(../../images/overlay.png); }
-#overlayHelp{
-background: #fff url(../images/loading.gif) no-repeat 50% 5px;
-width: 200px;
-padding: 2em;
-border: 1px solid #eee;
-position:absolute;
-top:50%;
-left:50%;
-float:left;
-z-index:100;
-}
-#overlayHelp h1{
-font-size: 125%;
-margin:0 auto;
-}
-#overlay.submit{
+#overlay{
 background:#000;
 filter:alpha(opacity=50);
 -moz-opacity:0.50;
 opacity: 0.50;
 cursor:default;
+}
+.overlayHelp {
+margin: 0 0 0 -125px;
+padding: 7px;
+border: 1px solid #999;
+z-index: 100;
+background-color: #fff;
+-moz-border-radius: 5px;
+width: 250px;
+font-size: 12px;
 }
 /*
 ------------------------------------------------------------

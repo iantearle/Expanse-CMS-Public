@@ -111,11 +111,11 @@ Compartmentalize page
 * @return string
 */
 function make_menu() {
-	global $mainmenu, $themetemplates, $user_vars, $items, $option, $theme_suffix, $Database, $sections;
-	$mainmenu = new stdClass();
+	global $menu, $mainmenu, $themetemplates, $user_vars, $items, $option, $theme_suffix, $Database, $sections, $menu;
 	$tplext = TPL_EXT;
 	$sortdirection = ($option->sortdirection == 'ASC') ? true : false;
 	$sortby = (!empty($option->sortcats)) ? $option->sortcats : 'created';
+	$mainmenu = inject_variables($menu, $user_vars['menu']);
 	$user_pages = $items->GetList(array(
 		array('pid', '=', 0),
 		array('online', '=', 1),
@@ -172,12 +172,12 @@ function prepare_menu_content($menu){
 		if(!$categories){
 			$conditions[] = array('type', '=', 'static');
 		}
-		$menu[$k]->subcats = $$obj->GetList($conditions);	
+		$menu[$k]->subcats = $$obj->GetList($conditions);
 		$menu[$k]->yoursite = YOUR_SITE;
 		$menu[$k]->title = isset($val->sectionname) ? $val->sectionname : $val->title;
 		$menu[$k]->title = !empty($menu[$k]->title) ? $menu[$k]->title : L_NO_TEXT_IN_TITLE;
-		$menu[$k]->body = $menu[$k]->descr  = isset($val->descr) ? applyOzone('category_description',$val->descr) : '';
-		$menu[$k]->body = $menu[$k]->descr  = isset($val->descr) ? $val->descr : '';
+		$menu[$k]->descr = $menu[$k]->descr = isset($val->descr) ? applyOzone('category_description',$val->descr) : 'with ozone';
+		$menu[$k]->descr = $menu[$k]->descr = isset($val->descr) ? $val->descr : 'with out';
 		$menu[$k]->sitename = $option->sitename;
 		$menu[$k]->yourname = $option->yourname;
 		$menu[$k]->category_link = YOUR_SITE.INDEX_PAGE."?$cat_type=".($val->pid == 0 ? $val->id : $val->pid) . $theme_suffix;
@@ -194,7 +194,7 @@ function prepare_menu_content($menu){
 			$menu[$k]->subcats[$i]->yourname = $option->yourname;
 			$menu[$k]->subcats[$i]->subid = $menu[$k]->subcats[$i]->id;
 			$v->descr = applyOzone('category_description',$v->descr);
-			$menu[$k]->subcats[$i]->body = $menu[$k]->subcats[$i]->descr  = isset($v->descr) ? $v->descr : '';
+			$menu[$k]->subcats[$i]->descr = $menu[$k]->subcats[$i]->descr  = isset($v->descr) ? $v->descr : '';
 			$menu[$k]->subcats[$i]->subcategory_link = $categories ? "{$menu[$k]->category_link}&amp;subcat=$v->id" . $theme_suffix :  YOUR_SITE.INDEX_PAGE."?$cat_type=$v->id" . $theme_suffix;
 			$menu[$k]->subcats[$i]->subcategory_link = (CLEAN_URLS) ? ($categories ? "{$menu[$k]->category_link}/$v->dirtitle" : YOUR_SITE.$v->dirtitle) . $theme_suffix : $menu[$k]->subcats[$i]->subcategory_link;
 			$menu[$k]->subcats[$i]->link =& $menu[$k]->subcats[$i]->subcategory_link;
@@ -339,6 +339,7 @@ function expanseXML($arg = '', $extraVars = '', $return = false) {
 	global $items, $sections, $comments, $users, $Database, $output;
 	$option = getAllOptions();
 	foreach($option as $ok => $ov) {
+		$page = new stdClass();
 		$page->{$ok} = $ov;
 	}
 	$paginate = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -389,7 +390,7 @@ function expanseXML($arg = '', $extraVars = '', $return = false) {
 	} else {
 		$content[] = $items->Get($item_id);
 	}
-	
+
 	if(is_search()) {
 		$content = assignContent($content, array('options' => $option));
 	} elseif(!empty($content)) {
@@ -502,8 +503,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 	$defaultcat = '';
 	if(is_search()) {
 		$sortby = 'pid';
-		preg_match_all('/".*?("|$)|((?<=[\\s",+])|^)[^\\s",+]+/', $arr['search'], $matches);
-		$terms = array_map(create_function('$a', 'return trim($a, "\\"\'\\n\\r ");'), $matches[0]);
+		$terms = check_get_alphanum('search');
 		$orderby = false;
 		$limitvalue = 10;
 		$templatesdir = isset($arr['templatedir']) ? $arr['templatedir'] : EXPANSEPATH.'/themes/'.$option->theme.'/templates/';
@@ -541,7 +541,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			$subcat = $sections->GetList(array(array('sectionname', '=', $subcategory_name), array('pid', '=', $pcat)));
 			$category_descr = !empty($subcat) ? $subcat[0]->descr : $category_descr;
 			$subcat = !empty($subcat) ? $subcat[0]->id : '';
-			$conditions[] = array('cid', '=', $subcat);		
+			$conditions[] = array('cid', '=', $subcat);
 		}
 		$sortby = isset($arr['sortby']) ? $arr['sortby'] : ((!empty($option->sortcats)) ? $option->sortcats : 'created');
 		$orderby = (isset($arr['orderby'])) ? $arr['orderby'] : ($sortby == 'order_rank' ? true : false);
@@ -557,7 +557,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			trigger_404();
 			return array('page' => array(), 'template' => $templatesdir.'@misc.tpl.html');
 		}
-		if(is_null($item_id)) {
+		if(is_null($item_id)  && !is_search()) {
 			$content = $items->GetList($conditions, $sortby, $orderby, $limitvalue, '*');
 		} else {
 			$items->Get($item_id);
@@ -590,7 +590,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			if($page->pages[$i]->previouspage > 0 && $i == 1) {
 				$previous_link_url = INDEX_PAGE.'?pcat=' . $pcat;
 				$previous_link_url .= empty($subcat) ? '' : "&amp;subcat=$subcat";
-				$previous_link_url .= '&amp;page=' . $page->pages[$i]->previouspage;				
+				$previous_link_url .= '&amp;page=' . $page->pages[$i]->previouspage;
 				if(CLEAN_URLS) {
 					$previous_link_url = YOUR_SITE;
 					$previous_link_url .= $category_name;
@@ -598,7 +598,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 					$previous_link_url .= '/page/'.$page->pages[$i]->previouspage;
 				}
 				$previous_link = '<a href="' . $previous_link_url . $theme_suffix . '" id="prev">'.L_PREVIOUS_TEXT.'</a>';
-			}			
+			}
 			$page->pages[$i]->previous_link_url = $previous_link_url;
 			$page->pages[$i]->previous_link = $previous_link;
 			//Next link
@@ -706,7 +706,6 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 */
 function assignContent($content, $extraVars = array()) {
 	global $items, $sections, $comments, $users, $Database, $output, $images, $theme_suffix, $pcat, $subcat;
-	date_default_timezone_set('America/Los_Angeles');
 	$option = isset($extraVars['options']) ? $extraVars['options'] : getAllOptions();
 	$extraVars['copyrightdate'] = isset($extraVars['copyrightdate']) ? $extraVars['copyrightdate'] : date('Y');
 	$extraVars['logged_in'] = isset($extraVars['logged_in']) ? $extraVars['logged_in'] : LOGGED_IN;
@@ -809,7 +808,7 @@ function assignContent($content, $extraVars = array()) {
 		$content[$k]->date = gmdate($dateformat, $itemObj->created + $timeoffset);
 		$content[$k]->time = gmdate($timeformat, $itemObj->created + $timeoffset);
 		//Smilies
-		$content[$k]->descr = $itemObj->smilies == 1 ? parseSmilies($itemObj->descr, $smiliespath) : $itemObj->descr;	
+		$content[$k]->descr = $itemObj->smilies == 1 ? parseSmilies($itemObj->descr, $smiliespath) : $itemObj->descr;
 		if ($itemObj->for_sale === 1) {
 			$content[$k]->paypal_logo = $paypal_logo;
 			$content[$k]->price = $itemObj->paypal_amount;
@@ -977,10 +976,14 @@ function html_substr($posttext, $minimum_length = 200, $length_offset = 10) {
 * @return string $str
 */
 function safe_tpl($str) {
-	return str_replace(':', '\x3a', $str);
+	$str = str_replace(':', '\x3a', $str);
+	$str = str_replace('|', '\x7c', $str);
+	return $str;
 }
 function unsafe_tpl($str) {
-	return str_replace('\x3a', ':', $str);
+	$str = str_replace('\x3a', ':', $str);
+	$str = str_replace('\x7c', '|', $str);
+	return $str;
 }
 /*//-------------------------------*/
 /**

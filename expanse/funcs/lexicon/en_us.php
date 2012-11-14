@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(!defined('EXPANSE')){return;}
 /*
 ------------------------------------------------------------
@@ -215,28 +215,28 @@ $LEX['share_page'] 		= 'Share this page';
 $LEX['delete_item'] 		= 'Delete';
 $LEX['no_text_in_title'] 	= 'No title';
 $LEX['no_text_in_description'] 	= 'No text in the body of the description';
-$LEX['posted_by'] 				= 'Posted by: <strong>%s</strong> (%s)';
-$LEX['posted_on'] 				= 'Posted on: %s';
-$LEX['item_online'] 			= 'Item is online';
-$LEX['item_offline'] 			= 'Item is offline';
-$LEX['page_online'] 			= 'Page is online';
-$LEX['page_offline'] 			= 'Page is offline';
+$LEX['posted_by'] 		= 'Posted by: <strong>%s</strong> (%s)';
+$LEX['posted_on'] 		= 'Posted on: %s';
+$LEX['item_online'] 		= 'Item is online';
+$LEX['item_offline'] 		= 'Item is offline';
+$LEX['page_online'] 		= 'Page is online';
+$LEX['page_offline'] 		= 'Page is offline';
 /*   Sub-category   //-------------------------------*/
 $LEX['sub_category'] 		= 'Sub-category';
 $LEX['sub_category_add'] 	= 'Add a sub-category';
-$LEX['sub_category_select'] = 'Select a sub-category';
+$LEX['sub_category_select'] 	= 'Select a sub-category';
 /*   Category actions (move or edit)   //-------------------------------*/
 $LEX['category_action'] 	= 'Category Action';
 $LEX['move_or_copy'] 		= 'Move or copy item to a different category';
-$LEX['move_to'] 			= 'Move item to:';
-$LEX['copy_to'] 			= 'Copy item to:';
+$LEX['move_to'] 		= 'Move item to:';
+$LEX['copy_to'] 		= 'Copy item to:';
 /*   Sharing   //-------------------------------*/
 $LEX['sharing_direct_link']	= 'Direct Link (&quot;Permalink&quot;) to this item';
 $LEX['sharing_image_link']	= 'Permalink to the full size image ';
-$LEX['sharing_thumb_link']	= 'Permalink to thumbnail'; 
+$LEX['sharing_thumb_link']	= 'Permalink to thumbnail';
 /*   Clean URLs   //-------------------------------*/
-$LEX['clean_url_title']	= 'Clean URL Title'; 
-$LEX['clean_url_help']	= 'If you\'re using clean urls, sometimes you may wish to customize the url text for this item. Anything you enter here will be "cleansed" so as to be a valid URL, but you can enter whatever you wish. If you\'d like to automatically regenerate it based upon the title, go ahead and erase the current text, and it will be done for you.'; 
+$LEX['clean_url_title']	= 'Clean URL Title';
+$LEX['clean_url_help']	= 'If you\'re using clean urls, sometimes you may wish to customize the url text for this item. Anything you enter here will be "cleansed" so as to be a valid URL, but you can enter whatever you wish. If you\'d like to automatically regenerate it based upon the title, go ahead and erase the current text, and it will be done for you.';
 /*   Date/Time   //-------------------------------*/
 $LEX['time_date']	= 'Date';
 $LEX['time_month']	= 'Select a month';
@@ -383,6 +383,8 @@ $LEX['events_description'] = 'This type of category is best for posting upcoming
 $LEX['events_title'] = 'Event Title';
 $LEX['events_body']	= 'Event Details';
 $LEX['events_date'] = 'Event Date';
+$LEX['events_date_start'] = 'Event Start Date-time';
+$LEX['events_date_end'] = 'Event End Date-time';
 $LEX['events_link'] = 'Event Link';
 /*
 ------------------------------------------------------------
@@ -447,7 +449,29 @@ If you delete the value in here, it will reset it to use the current title, othe
 $LEX['page_additional_files_delete']	= 'Delete?';
 $LEX['page_file_caption']		= 'File caption';
 $LEX['page_file_name']		= 'File name:';
-
+/*
+------------------------------------------------------------
+Property Module
+============================================================
+*/
+$LEX['property_title']			= 'Place Name';
+$LEX['property_twitter']		= 'Twitter';
+$LEX['property_telephone']		= 'Telephone';
+$LEX['property_admission']		= 'Admission';
+$LEX['property_events']			= 'Events';
+$LEX['property_events_help']	= 'If you have planned events throughout the year you can list them here. You can edit this section at anytime, but changes will only be applied to the database at our periodical updates throughout the year.';
+$LEX['property_dates']			= 'Dates';
+$LEX['property_other']			= 'Other';
+$LEX['property_other_help']		= 'Any other information you would like to appear that you feel would benefit your potential visitors.';
+$LEX['property_facilities']		= 'Facilities';
+$LEX['property_shop']			= 'Shop';
+$LEX['property_plantsales']		= 'Plantsales';
+$LEX['property_cafe']			= 'Cafe';
+$LEX['property_civil_wedding_license']		= 'Civil Wedding License';
+$LEX['property_audio_tours']	= 'Audio Tours';
+$LEX['property_dogs_disallowed'] = 'Dogs Disallowed';
+$LEX['property_open_all_year']	= 'Open All Year';
+$LEX['allow_property_reviews']	= 'Allow reviews';
 /*//-------------------------------*/
 /*
 ------------------------------------------------------------
@@ -489,23 +513,23 @@ $LEX['subcategory_not_deleted']         = 'Your sub-category <strong>%s</strong>
 $LEX['edit_category_success']           = 'The category: <strong>%s</strong> has been edited.%s';
 $LEX['edit_category_failure']           = 'Sorry, but the category: <strong>%s</strong> could not be edited.%s  <p>Why?<br />
 %s</p>';
-$LEX['add_subcategory']        			= 'Add a Sub-Category';
+$LEX['add_subcategory']        		= 'Add a Sub-Category';
 $LEX['edit_category_name_label']        = 'Edit category name';
-$LEX['category_missing']        		= 'Sorry, but there is no category with that id. Please make sure you\'re following a correct link.';
+$LEX['category_missing']        	= 'Sorry, but there is no category with that id. Please make sure you\'re following a correct link.';
 $LEX['category_does_not_exist']        	= '(That category does not exist)';
-$LEX['category_deleted']        		= 'Your category: <strong>%s</strong> has been deleted.';
-$LEX['category_not_deleted']        		= 'Your category: <strong>%s</strong> could not be deleted.%s';
+$LEX['category_deleted']        	= 'Your category: <strong>%s</strong> has been deleted.';
+$LEX['category_not_deleted']        	= 'Your category: <strong>%s</strong> could not be deleted.%s';
 $LEX['edit_subcategory_name_label']     = 'Edit Sub-Category Names';
 $LEX['new_subcategory_added']           = 'Also, your new categories: %s, were added.';
 $LEX['new_subcategory_not_added']       = 'Unfortunately, your new categories: %s, could not be added.';
-$LEX['list_category_name']       		= 'Category Name';
-$LEX['list_no_of_items']       			= 'No. of items';
-$LEX['list_category_type']       		= 'Category Type';
-$LEX['list_template_name']       		= 'Template Name';
-$LEX['list_category_manage']			= 'Manage';
-$LEX['list_template_name_help']			= 'This is the name of the template file, if you want to create a unique template for that category. You do NOT have to name your template files in this fashion. If you want to just have a generic template for all categories of a certain type, you would name the template file in the format of <strong>category_type.tpl.html</strong>. So, for instance, if you want a generic template for every category that is a "blog" category type, you would name your template <strong>blog.tpl.html</strong>';
+$LEX['list_category_name']       	= 'Category Name';
+$LEX['list_no_of_items']       		= 'No. of items';
+$LEX['list_category_type']       	= 'Category Type';
+$LEX['list_template_name']       	= 'Template Name';
+$LEX['list_category_manage']		= 'Manage';
+$LEX['list_template_name_help']		= 'This is the name of the template file, if you want to create a unique template for that category. You do NOT have to name your template files in this fashion. If you want to just have a generic template for all categories of a certain type, you would name the template file in the format of <strong>category_type.tpl.html</strong>. So, for instance, if you want a generic template for every category that is a "blog" category type, you would name your template <strong>blog.tpl.html</strong>';
 $LEX['delete_category_alert'] = 'Deleting a main category will delete all of the items in that category as well.';
-$LEX['category_add_link'] = 'Looking to add a category? Look <a href="?cat=admin&sub=categories&action=add" class="btn small success">no further</a>.';
+$LEX['category_add_link'] = 'Looking to add a category? Look <a href="?cat=admin&sub=categories&action=add">no further</a>.';
 
 /*   Comments Module   //-------------------------------*/
 $LEX['comment_online']		= 'Approved?';
@@ -626,7 +650,7 @@ $LEX['theme_activate_success']   = 'Your theme of choice has been activated.';
 $LEX['theme_activate_failure']   = 'Sorry, but that theme could not be activated.';
 $LEX['theme_no_permissions']   = 'Sadly, you do not have writing permissions for this directory. You can look, but you can\'t touch.';
 $LEX['theme_file_updated']   = 'Your file was updated.';
-$LEX['theme_file_create_note']   = '<!-- %s created by expanse. © %s -->';
+$LEX['theme_file_create_note']   = '<!-- %s created by expanse. %s -->';
 $LEX['theme_file_created']   = 'Your file was created. You can edit it <a href="index.php?cat=admin&amp;sub=theme_editor&amp;theme=%s&amp;themefile=%s">here</a>.';
 $LEX['theme_existing_file']   = 'Sorry, but there is already a file with that name.';
 $LEX['theme_missing_filename']   = 'Please enter in a file name.';
@@ -716,7 +740,7 @@ $LEX['eleventh_month'] 	= 'November';
 $LEX['twelfth_month'] 	= 'December';
 /*
 ------------------------------------------------------------
-Javascript text 
+Javascript text
 (all javascript must be prefixed with js_)
 ============================================================
 */
@@ -748,8 +772,8 @@ $LEX['js_custom_field'] = 'Field';
 $LEX['js_clear_confirm_custom_field'] = 'Are you sure you want to delete all of your fields?';
 
 /*   Custom fields (custom)   //-------------------------------*/
-$LEX['js_custom_label_text'] = 'Label (click to edit)';
-$LEX['js_custom_field_text'] = 'Value (click to edit)';
+$LEX['js_custom_label_text'] = 'Label';
+$LEX['js_custom_field_text'] = 'Value';
 $LEX['js_custom_variable_text'] = 'Custom variable:';
 $LEX['js_custom_delete_field'] = 'Delete this field';
 $LEX['js_increase_field_size'] = 'Increase the field size';

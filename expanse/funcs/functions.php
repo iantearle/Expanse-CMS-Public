@@ -198,11 +198,11 @@ function installFile($path='') {
 		<body id="vanilla">
 			<div id="mainContainer">
 				<!-- Begin Header -->
-				<div class="topbar">
-					<div class="topbar-inner">
+				<div class="navbar navbar-inverse navbar-fixed-top">
+					<div class="navbar-inner">
 						<div class="container">
 							<a class="brand" href="./"><?php echo CMS_NAME ?></a>
-								<p class="pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
+							<p class="pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
 						</div>
 					</div>
 				</div>
@@ -319,7 +319,7 @@ function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array()) 
 				$final['files'][$input] = $_FILES[$input];
 				$final['files'][$input]['name'] = $name;
 				unset($final['files'][$input]['tmp_name']);
-				$max_size = (isset($_POST['MAX_FILE_SIZE'])) ? $_POST['MAX_FILE_SIZE'] : (intval(ini_get('upload_max_filesize')) * 1024 * 1024);
+				$max_size = (isset($_POST['MAX_FILE_SIZE'])) ? $_POST['MAX_FILE_SIZE'] : (intval(ini_get('post_max_size')) * 1024 * 1024);
 				if ($size > $max_size) {
 					if ($max_size < 1024) {
 						$maxfilesize = "$max_size bytes";
@@ -1329,7 +1329,7 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 	$chowmany = check_get_id('sort_howmany');
 	if(!empty($chowmany) && $chowmany != 0) { $howmany = $chowmany; }
 	$limitvalue = $paginate * $howmany - ($howmany);
-	$table = new Expanse($table_name);
+	$table = new Expanse('items');
 	if(is_string($table_name)) {
 		$all_items = $table->GetList(array(array('id','>',0)), 'id', false, "$limitvalue, $howmany");
 		$Database->Query("SELECT COUNT(*) as item_count FROM ".PREFIX."$table_name $specifics");
@@ -1351,24 +1351,41 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 	$previous_link = '';
 	$next_link = '';
 	$page_link = array();
-	for ($i = 1; $i <= $pagecount; $i++) {
+//	for($i = 1; $i <= $pagecount; $i++) {
+//	for($i = 1; $i <= min($paginate + 11, $pagecount); $i++) {
+	for($i = max(1, $paginate - 9); $i <= min($paginate + 10, $pagecount); $i++) {
 		$pagenumber = $i;
 		$currentpage = $paginate;
 		$previouspage = $paginate - 1;
 		$nextpage = $paginate + 1;
 		$pagecount = $pagecount;
+		$left_max = 3;
+		$right_max = 3;
 		//Previous link
 		$previous_link_url = $base_url;
-		if ($previouspage > 0 && $i == 1) {
+		if ($previouspage > 0) {
 			$previous_link_url .= '&amp;page=' . $previouspage;
-			$previous_link = '<li><a href="' . $previous_link_url .'">'.L_PAGING_PREVIOUS.'</a></li';
+			$previous_link = '<li><a href="' . $previous_link_url .'">'.L_PAGING_PREVIOUS.'</a></li>';
+		}
+		$first_link = '';
+		$first_link_url = $base_url;
+		if($previouspage > 9) {
+			$first_link_url .= '&amp;page=' . 0;
+			$first_link = '<li><a href="' . $first_link_url .'">First</a></li>';
 		}
 		//Next link
 		$next_link_url = $base_url;
-		if ($nextpage <= $pagecount && $i == $pagecount) {
+
+		if ($nextpage <= $pagecount) {
 			$next_link_url .= empty($subcat) ? '' : "&amp;subcat=$subcat";
 			$next_link_url .= '&amp;page=' . $nextpage;
 			$next_link = '<li><a href="' . $next_link_url . '">'.L_PAGING_NEXT.'</a></li>';
+		}
+		$last_link_url = $base_url;
+		$last_link = '';
+		if($nextpage <= ($pagecount - 10)) {
+			$last_link_url .= '&amp;page=' . $pagecount;
+			$last_link = '<li><a href="' . $last_link_url . '">Last</a></li>';
 		}
 		//Pages links
 		$page_link_url = $base_url;
@@ -1380,9 +1397,13 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 		echo '<div id="pageList" class="pagination">';
 		echo '<ul>';
 		//echo "".L_PAGING_PAGES." $previous_link ";
+		echo "$first_link";
 		echo "$previous_link";
-		foreach($page_link as $val) { echo " $val "; }
+		foreach($page_link as $val) {
+			echo " $val ";
+		}
 		echo "$next_link";
+		echo "$last_link";
 		echo '</ul>';
 		echo '</div>';
 	} else {
@@ -1516,6 +1537,7 @@ class Module {
 	);
 	var $version = '2.0';
 	var $modURL = 'http://expansecms.org';
+	var $tableNameNew = 'items';
 	//You can use this to exclude from the add category list.
 	var $Exclude = false;
 	//An array of language settings
@@ -1525,7 +1547,7 @@ class Module {
 		$this->output = $GLOBALS['outmess']; // Global output handler
 		$this->auth = $GLOBALS['auth']; // Global authentication object
 		// active-record object for the items table
-		$this->items = get_dao('items');
+		$this->items = get_dao($this->tableNameNew);
 		// active-record object for the customfields table
 		$this->custom = get_dao('customfields');
 		// active-record object for the sections table
@@ -1589,6 +1611,7 @@ class Module {
 				}
 			}
 		}
+		$items->event_date = strtotime($items->event_date);
 		$items->created = dateTimeProcess();
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
@@ -1620,6 +1643,7 @@ class Module {
 				$items->{$ind} = $val;
 			}
 		}
+		$items->event_date = strtotime($items->event_date);
 		$items->created = dateTimeProcess($items->created);
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = set_dirtitle($items);
@@ -1723,26 +1747,31 @@ class Module {
 	}
 	/*      //-------------------------------*/
 	function get_list() {
-		$items = $this->items;
+		$items =& $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
 		$auth = $this->auth;
 		/*--*/
 		$do_sort = check_get_alphanum('do_sort');
+		$terms = check_get_alphanum('search_text');
 		$sortoption = getOption('sortcats');
 		$ascending = getOption('sortdirection') == 'ASC' || $sortoption == 'order_rank' ? true : false;
 		$conditions = array(array('pid', '=', $cat_id));
 		if($do_sort == 'yes') {
-			$sort_orderdir = check_get_alphanum('sort_orderdir') == 'ASC' ? 'ASC' : 'DESC';
+			$sort_orderdir = (check_get_alphanum('sort_orderdir') == 'ASC') ? 'ASC' : 'DESC';
 			$sort_subcat = check_get_id('sort_subcat');
 			$sort_orderby = check_get_alphanum('sort_orderby');
-			$sortoption = !empty($sort_orderby) ? $sort_orderby: $sortoption;
+			$sortoption = (!empty($sort_orderby)) ? $sort_orderby: $sortoption;
 			$ascending = $sort_orderdir;
 		}
 		if(!($auth->SectionAdmin || $auth->Admin)) {
 			$conditions[] = array('aid', '=', $auth->Id);
 		}
-		$this->itemsList = $items->GetList($conditions, $sortoption, $ascending);
+		if($terms) {
+			$this->itemsList = $items->Search($conditions, $terms);
+		} else {
+			$this->itemsList = $items->GetList($conditions, $sortoption, $ascending);
+		}
 		if(empty($this->itemsList)) {
 			printOut(FAILURE,sprintf(L_NO_ENTRIES,$cat_id));
 			$this->errors[] = 1;
@@ -1844,22 +1873,22 @@ class Module {
 				$k = $key+1;
 				$custom_var = '{custom_var'.$k.'}';
 				?>
-				<div id="customLabel<?php echo $k ?>Group" class="row customLabelGroup">
-					<div class="span8">
-						<div class="clearfix">
-							<div class="input">
-								<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span6 fieldLabel text" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
+				<div id="customLabel<?php echo $k ?>Group" class="row customFieldGroup">
+					<div class="span6">
+						<div class="control-group">
+							<div class="controls">
+								<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span6 fieldLabel text" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
 							</div>
 						</div>
-						<div class="clearfix">
-							<div class="input">
-								<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span6 fieldValue"><?php echo $ifield->value ?></textarea>
+						<div class="control-group">
+							<div class="controls">
+								<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"><?php echo $ifield->value ?></textarea>
 							</div>
 						</div>
-						<div class="clearfix">
-							<label for="customVar<?php echo $k ?>"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
-							<div class="input">
-								<input type="text" value="<?php echo view($custom_var); ?>" class="shareField variableField uneditable-input" id="customVar<?php echo $k ?>">
+						<div class="control-group">
+							<label for="customVar<?php echo $k ?>" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
+							<div class="controls">
+								<input type="text" value="<?php echo view($custom_var); ?>" class="shareField variableField uneditable-input" readonly="readonly" id="customVar<?php echo $k ?>">
 							</div>
 						</div>
 					</div>
@@ -1868,21 +1897,21 @@ class Module {
 			}
 		} else {	?>
 			<div id="customLabel1Group" class="row customLabelGroup">
-				<div class="span8">
-					<div class="clearfix">
-						<div class="input">
-							<input type="text" class="span6 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
+				<div class="span6">
+					<div class="control-group">
+						<div class="controls">
+							<input type="text" class="span6 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
 						</div>
 					</div>
-					<div class="clearfix">
-						<div class="input">
-							<textarea id="customValue1" name="custom[1][value]" class="span6 fieldValue"><?php echo L_JS_CUSTOM_FIELD_TEXT ?></textarea>
+					<div class="control-group">
+						<div class="controls">
+							<textarea id="customValue1" name="custom[1][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"></textarea>
 						</div>
 					</div>
-					<div class="clearfix">
-						<label for="customVar1" id="labelcustomVar1"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
-						<div class="input">
-							<input type="text" class="shareField variableField uneditable-input" id="customVar1">
+					<div class="control-group">
+						<label for="customVar1" id="labelcustomVar1" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
+						<div class="controls">
+							<input type="text" class="shareField variableField uneditable-input" readonly="readonly" id="customVar1">
 						</div>
 					</div>
 				</div>
@@ -1910,11 +1939,11 @@ class Module {
 		}
 		?>
 		<div class="row">
-		<div class="span7">
-		<div class="clearfix">
-			<label for="cid"><?php echo L_SUB_CATEGORY ?></label>
-			<div class="input">
-				<select class="" name="cid" id="cid">
+		<div class="span5">
+		<div class="control-group">
+			<label for="cid" class="control-label"><?php echo L_SUB_CATEGORY ?></label>
+			<div class="controls">
+				<select class="span5" name="cid" id="cid">
 					<option value="<?php echo $cat_id ?>"><?php echo L_SUB_CATEGORY_SELECT ?></option>
 					<?php
 					foreach($cats->subcats as $v){
@@ -1927,30 +1956,31 @@ class Module {
 			</div>
 		</div>
 			<?php if(empty($mode)) { ?>
-		<div class="clearfix">
-			<label for="add_subcat"><?php echo L_SUB_CATEGORY_ADD ?></label>
-			<div class="input">
-				<input name="add_subcat" id="add_subcat" type="text" />
+		<div class="control-group">
+			<label for="add_subcat" class="control-label"><?php echo L_SUB_CATEGORY_ADD ?></label>
+			<div class="controls">
+				<input name="add_subcat" id="add_subcat" type="text" class="span5" />
 			</div>
 		</div>
 		</div>
-		<div class="span7">
-		<div class="clearfix">
-			<label for="category_action"><?php echo L_CATEGORY_ACTION ?></label>
-			<div class="input">
-				<select name="category_action" id="category_action">
+		<div class="span5">
+		<div class="control-group">
+			<label for="category_action" class="control-label"><?php echo L_CATEGORY_ACTION ?></label>
+			<div class="controls">
+				<select name="category_action" id="category_action" class="span5">
 					<option value="" selected="selected"><?php echo L_MOVE_OR_COPY ?></option>
 					<option value="move"><?php echo L_MOVE_TO ?></option>
 					<option value="copy"><?php echo L_COPY_TO ?></option>
 				</select>
 			</div>
 		</div>
-		<div class="clearfix">
-			<label for="new_home">Move into</label>
-			<div class="input">
-				<select name="new_home" id="new_home">
+		<div class="control-group">
+			<label for="new_home" class="control-label">Move into</label>
+			<div class="controls">
+				<select name="new_home" id="new_home" class="span5">
 				<?php
 				foreach($more_cats as $other_cat) {
+					$other_cat = new stdClass();
 					if($other_cat == $cat_id || $other_cat->cat_type == 'pages'){continue;}
 					?>
 					<option value="<?php echo $other_cat->id ?>"><?php echo $other_cat->sectionname ?></option>
@@ -1982,24 +2012,24 @@ class Module {
 		$dynamic_url = $yoursite.((CLEAN_URLS) ? "$section_id/$the_item_id" : INDEX_PAGE."?pcat=$section_id&amp;item=$the_item_id");
 		$static_url = $yoursite.((CLEAN_URLS) ? $the_item_id : INDEX_PAGE."?ucat=$items->id");
 		$page_link = ($items->type !== 'static') ? $dynamic_url : $static_url; ?>
-		<div class="clearfix">
-			<label for="pageLink"><?php echo L_SHARING_DIRECT_LINK ?></label>
-			<div class="input">
+		<div class="control-group">
+			<label for="pageLink" class="control-label"><?php echo L_SHARING_DIRECT_LINK ?></label>
+			<div class="controls">
 				<input type="text" class="span8 shareField" id="pageLink" value="<?php echo $page_link; ?>" />
 			</div>
 		</div> <?php
 		if(!empty($items->image)) { ?>
-			<div class="clearfix">
-				<label for="imageLink"><?php echo L_SHARING_IMAGE_LINK ?></label>
-				<div class="input">
+			<div class="control-group">
+				<label for="imageLink" class="control-label"><?php echo L_SHARING_IMAGE_LINK ?></label>
+				<div class="controls">
 					<input type="text" class="span8 shareField" id="imageLink" value="<?php echo $expanseurl; ?>uploads/<?php echo $items->image; ?>" />
 				</div>
 			</div>	 <?php
 			$thumbpath = $items->autothumb == 1 ? $expanseurl.'funcs/tn.lib.php?id='.$items->id.'&amp;thumb=1': $expanseurl.'uploads/'.$items->thumbnail;
 			if($items->autothumb == 1 || !empty($items->thumbnail)) { ?>
-				<div class="clearfix">
-					<label for="thumbLink"><?php echo L_SHARING_THUMB_LINK ?></label>
-					<div class="input">
+				<div class="control-group">
+					<label for="thumbLink" class="control-label"><?php echo L_SHARING_THUMB_LINK ?></label>
+					<div class="controls">
 						<input type="text" class="span8 shareField" id="thumbLink" value="<?php echo $thumbpath; ?>" />
 					</div>
 				</div> <?php
@@ -2010,9 +2040,9 @@ class Module {
 	function doCleanURLTitles() {
 		if(!CLEAN_URLS){return;}
 		$items = $this->items; ?>
-		<div class="clearfix">
-			<label for="dirtitle"><?php echo L_CLEAN_URL_TITLE ?></label>
-			<div class="input">
+		<div class="control-group">
+			<label for="dirtitle" class="control-label"><?php echo L_CLEAN_URL_TITLE ?></label>
+			<div class="controls">
 				<input type="text" name="dir_title" id="dirtitle" value="<?php echo $items->dirtitle; ?>" class="span8" />
 				<span class="help-block"><?php echo L_CLEAN_URL_HELP ?></span>
 			</div>
@@ -2026,9 +2056,9 @@ class Module {
 		$adding = empty($items->created) || is_posting(L_BUTTON_ADD);
 		$timestamp = ($adding) ? time() : $items->created;
 		?>
-		<div class="clearfix">
-		<label for="month"><?php echo L_TIME_DATE ?></label>
-			<div class="input">
+		<div class="control-group">
+			<label for="month" class="control-label"><?php echo L_TIME_DATE ?></label>
+			<div class="controls">
 				<select title="<?php echo L_TIME_MONTH ?>" class="infields" name="month" id="month">
 					<option value="current"><?php echo L_TIME_MONTH ?></option>
 					<?php
@@ -2042,9 +2072,9 @@ class Module {
 				 &nbsp; <input title="<?php echo L_TIME_DAY ?>" name="day" type="text" class="infields" id="day" value="<?php echo date('d', $timestamp); ?>" size="2" /> , <input title="<?php echo L_TIME_YEAR ?>" name="year" type="text" class="infields" id="year" value="<?php echo date('Y', $timestamp); ?>" size="4" />
 			</div>
 		</div>
-		<div class="clearfix">
-		<label for="hour"><?php echo L_TIME_TIME ?></label>
-			<div class="input">
+		<div class="control-group">
+			<label for="hour" class="control-label"><?php echo L_TIME_TIME ?></label>
+			<div class="controls">
 				<select title="<?php echo L_TIME_HOUR ?>" class="infields" name="hour" id="hour">
 					<?php
 					foreach(range(0,23) as $hour) {
@@ -2060,7 +2090,10 @@ class Module {
 				: <input title="<?php echo L_TIME_MINUTE ?>" name="minute" type="text" class="infields" id="minute" value="<?php echo date('i', $timestamp) ?>" size="2" /> : <input title="<?php echo L_TIME_SECOND ?>" name="second" type="text" class="infields" id="second" value="<?php echo date('s', $timestamp) ?>" size="2" />
 			</div>
 		</div>
-		<label for="resettime"><?php echo (!$adding) ? L_TIME_RESET : L_TIME_USE_CURRENT; ?></label><input type="checkbox" name="resettime" id="resettime" value="1" class="cBox"<?php echo ($adding) ? ' checked="checked"': ''; ?> />
+		<label for="resettime" class="checkbox">
+			<input type="checkbox" name="resettime" id="resettime" value="1"<?php echo ($adding) ? ' checked="checked"': ''; ?> />
+			<?php echo (!$adding) ? L_TIME_RESET : L_TIME_USE_CURRENT; ?>
+		</label>
 		<blockquote class="helpContents" id="editDateHelp">
 		<?php if(!empty($items->created)) { ?>
 			<h5><?php echo L_POST_TIME_EDIT ?></h5><?php echo L_TIME_HELP_EDIT ?><?php
@@ -2085,10 +2118,17 @@ class Module {
 					continue;
 				}
 				$camelK = camelize($k); ?>
-				<h3 class="stretchToggle" title="<?php echo $camelK; ?>"><span><?php echo $k ?></span></h3>
-				<div class="stretch" id="<?php echo $camelK; ?>Container">
-					<?php $this->$v($args); ?>
-				</div> <?php
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#stretchContainer" href="#<?php echo $camelK; ?>Container"><?php echo $k ?></a>
+					</div>
+					<div id="<?php echo $camelK; ?>Container" class="accordion-body collapse">
+						<div class="accordion-inner">
+							<?php $this->$v($args); ?>
+						</div>
+					</div>
+				</div>
+			<?php
 			}
 			return;
 		}
@@ -2099,10 +2139,17 @@ class Module {
 		if(!is_callable(array($this,$method))){ return;}
 		$idK = (empty($id) ? camelize($str) : $id);
 		?>
-		<h3 class="stretchToggle" title="<?php echo $idK;  ?>"><span><?php echo $str ?></span></h3>
-			<div class="stretch" id="<?php echo $idK;  ?>">
-			<?php $this->$method($args); ?>
-		</div> <?php
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#stretchContainer" href="#<?php echo $idK;  ?>"><?php echo $str ?></a>
+			</div>
+			<div id="<?php echo $idK;  ?>" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<?php $this->$method($args); ?>
+				</div>
+			</div>
+		</div>
+	<?php
 	}
 	function doSort() {
 		$cats = $this->cats;
@@ -2120,112 +2167,130 @@ class Module {
 		<input type="hidden" name="cat_id" value="<?php echo CAT_ID; ?>" />
 		<input type="hidden" name="type" value="edit" />
 		<?php echo ($is_subcat) ? '<h3>'.L_SORT_VIEWING.' '.$subcat_name.'</h3>' : ''; ?>
-		<div class="stretchContainer">
-			<h3 class="stretchToggle" id="wedge"><span><?php echo $is_subcat ? L_SORT_SUBCATEGORY_DETAILS : L_SORT_CATEGORY_DETAILS ?></span></h3>
-			<div class="stretch" id="categoryDetails">
-				<div class="row">
-					<div class="span7">
-						<h3><?php echo L_SHARING_TITLE ?></h3>
-						<div class="clearfix">
-							<label for="direct_link"><?php echo $is_subcat ? L_SORT_DIRECT_LINK_SUBCATEGORY : L_SORT_DIRECT_LINK_CATEGORY ?></label>
-							<div class="input">
-								<input type="text" id="direct_link" value="<?php echo $category_link  ?>" class="span7 shareField" />
-							</div>
-						</div>
-						<div class="clearfix">
-							<label for="rss_feed"><?php echo L_RSS_FEED ?></label>
-							<div class="input">
-								<input type="text" id="rss_feed" value="<?php echo YOUR_SITE.'feed.php?feed=rss&amp;pcat='.CAT_ID.($is_subcat == true ? '&amp;subcat='.SORT_BY_SUBCATS : '') ?>" class="span7 shareField" />
-							</div>
-						</div>
-						<div class="clearfix">
-							<label for="atom_feed"><?php echo L_ATOM_FEED ?></label>
-							<div class="input">
-								<input type="text" id="atom_feed" value="<?php echo YOUR_SITE.'feed.php?feed=atom&amp;pcat='.CAT_ID.($is_subcat == true ? '&amp;subcat='.SORT_BY_SUBCATS : '') ?>" class="span7 shareField" />
-							</div>
-						</div>
+		<div class="span12">
+			<div class="accordion" id="categoryContainer">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#categoryContainer" href="#categoryDetails"><?php echo L_CATEGORY_OPTIONS ?></a>
 					</div>
-					<div class="span7 offset1">
-						<h3><?php echo L_SORT_TITLE ?></h3>
-						<div class="clearfix">
-							<label for="sort_by_subcat"><?php echo L_SORT_VIEW ?></label>
-							<div class="input">
-								<select id="sort_by_subcat" name="sort_by_subcat" class="span7">
-									<option value="0"><?php echo L_SORT_ALL_SUBCATEGORIES ?></option>
-									<option value="<?php echo CAT_ID ?>">Uncategorized</option>
-								<?php
-								array_unshift($cats->subcats, array('catname' => 'Uncategorized', 'id' => CAT_ID));
-								foreach($cats->subcats as $k => $subcat) {
-									$selected = SORT_BY_SUBCATS != false && SORT_BY_SUBCATS == $subcat['id'] ? 'selected="selected"' : '';
-									?><option value="<?php echo $subcat['id'] ?>" <?php echo $selected ?>><?php echo ($subcat['id'] != CAT_ID ? '&mdash;' : '').$subcat['catname'] ?></option><?php
-								}
-								?></select>
-							</div>
-						</div>
-						<div class="clearfix">
-							<label for="sort_howmany"><?php echo L_SORT_HOWMANY ?></label>
-							<div class="input">
-								<select name="sort_howmany" id="sort_howmany" class="span7">
-								<?php
-								foreach($how_many as $val) {
-									echo '<option value="'.$val.'"'.($val == $sort_howmany ? 'selected="selected"' : '').'>'.$val.'</option>';
-								}
-								?>
-								</select>
-							</div>
-						</div>
-						<div class="clearfix">
-							<label for="sort_orderby"><?php echo L_SORT_SORTBY ?></label>
-							<div class="input">
-								<select id="sort_orderby" name="sort_orderby" class="span7">
-								<?php
-								$items = $this->items;
-								$sort_orderby = check_get_alphanum('sort_orderby');
-								$sort_orderdir = check_get_alphanum('sort_orderdir');
-								foreach($items->Fields as $ind => $val) {
-									switch($val) {
-										case 'id':
-											$sorttag = L_SORT_BY_ID;
-											break;
-										case 'title':
-											$sorttag = L_SORT_BY_TITLE;
-											break;
-										case 'aid':
-											$sorttag = L_SORT_BY_USER;
-											break;
-										case 'created':
-											$sorttag = L_SORT_BY_DATE;
-											break;
-										case 'order_rank':
-											$sorttag = L_SORT_BY_USER_RANK;
-											break;
-										default:
-											$sorttag = '';
-											break;
-									}
-									$selected = ($val == $sort_orderby) ? ' selected="selected"' : '';
-									echo !empty($sorttag) ? '<option value="'.$val.'"'.$selected.'>'.$sorttag.'</option>' : '';
-								}
-								?>
-								</select>
-							</div>
-						</div>
-						<div class="clearfix">
-							<label for="sort_orderdir"><?php echo L_SORT_ORDER_DIRECTION ?></label>
-							<div class="input">
-								<select name="sort_orderdir" id="sort_orderdir" class="span7">
-									<?php
-									$order_dirs = array(L_SORT_BY_ASC => 'ASC', L_SORT_BY_DESC => 'DESC');
-									foreach($order_dirs as $k => $v){
-									echo '<option value="'.$v.'"'.($sort_orderdir == $v ? 'selected="selected"' : '').'>'.$k.'</option>';
-									}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="actions">
-							<input type="hidden" name="do_sort" value="yes" />
-							<input id="sort_submit" type="submit" value="<?php echo L_SORT_BUTTON ?>" class="btn" />
+					<div id="categoryDetails" class="accordion-body collapse">
+						<div class="accordion-inner">
+								<div class="span5">
+									<h3><?php echo L_SHARING_TITLE ?></h3>
+									<div class="control-group">
+										<label for="direct_link" class="control-label"><?php echo $is_subcat ? L_SORT_DIRECT_LINK_SUBCATEGORY : L_SORT_DIRECT_LINK_CATEGORY ?></label>
+										<div class="controls">
+											<input type="text" id="direct_link" value="<?php echo $category_link  ?>" class="span5 shareField" />
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="rss_feed" class="control-label"><?php echo L_RSS_FEED ?></label>
+										<div class="controls">
+											<input type="text" id="rss_feed" value="<?php echo YOUR_SITE.'feed.php?feed=rss&amp;pcat='.CAT_ID.($is_subcat == true ? '&amp;subcat='.SORT_BY_SUBCATS : '') ?>" class="span5 shareField" />
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="atom_feed" class="control-label"><?php echo L_ATOM_FEED ?></label>
+										<div class="controls">
+											<input type="text" id="atom_feed" value="<?php echo YOUR_SITE.'feed.php?feed=atom&amp;pcat='.CAT_ID.($is_subcat == true ? '&amp;subcat='.SORT_BY_SUBCATS : '') ?>" class="span5 shareField" />
+										</div>
+									</div>
+									<h3>Search</h3>
+									<div class="control-group">
+										<label for="search_text" class="control-label">Search for text</label>
+										<div class="controls">
+											<input type="text" id="search_text" name="search_text" value="" class="span5 shareField" />
+										</div>
+									</div>
+								</div>
+								<div class="span5">
+									<h3><?php echo L_SORT_TITLE ?></h3>
+									<div class="control-group">
+										<label for="sort_by_subcat" class="control-label"><?php echo L_SORT_VIEW ?></label>
+										<div class="controls">
+											<select id="sort_by_subcat" name="sort_by_subcat" class="span5">
+												<option value="0"><?php echo L_SORT_ALL_SUBCATEGORIES ?></option>
+												<option value="<?php echo CAT_ID ?>">Uncategorized</option>
+											<?php
+											array_unshift($cats->subcats, array('catname' => 'Uncategorized', 'id' => CAT_ID));
+											foreach($cats->subcats as $k => $subcat) {
+												$selected = SORT_BY_SUBCATS != false && SORT_BY_SUBCATS == $subcat['id'] ? 'selected="selected"' : '';
+												?><option value="<?php echo $subcat['id'] ?>" <?php echo $selected ?>><?php echo ($subcat['id'] != CAT_ID ? '&mdash;' : '').$subcat['catname'] ?></option><?php
+											}
+											?></select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="sort_howmany" class="control-label"><?php echo L_SORT_HOWMANY ?></label>
+										<div class="controls">
+											<select name="sort_howmany" id="sort_howmany" class="span5">
+											<?php
+											foreach($how_many as $val) {
+												echo '<option value="'.$val.'"'.($val == $sort_howmany ? 'selected="selected"' : '').'>'.$val.'</option>';
+											}
+											?>
+											</select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="sort_orderby"><?php echo L_SORT_SORTBY ?></label>
+										<div class="controls" class="control-label">
+											<select id="sort_orderby" name="sort_orderby" class="span5">
+											<?php
+											$items = $this->items;
+											$sort_orderby = check_get_alphanum('sort_orderby');
+											$sort_orderdir = check_get_alphanum('sort_orderdir');
+											foreach($items->Fields as $ind => $val) {
+												switch($val) {
+													case 'id':
+														$sorttag = L_SORT_BY_ID;
+														break;
+													case 'title':
+														$sorttag = L_SORT_BY_TITLE;
+														break;
+													case 'aid':
+														$sorttag = L_SORT_BY_USER;
+														break;
+													case 'created':
+														$sorttag = L_SORT_BY_DATE;
+														break;
+													case 'order_rank':
+														$sorttag = L_SORT_BY_USER_RANK;
+														break;
+													case 'online':
+														$sorttag = 'Online';
+														break;
+													default:
+														$sorttag = '';
+														break;
+												}
+												$selected = ($val == $sort_orderby) ? ' selected="selected"' : '';
+												echo !empty($sorttag) ? '<option value="'.$val.'"'.$selected.'>'.$sorttag.'</option>' : '';
+											}
+											?>
+											</select>
+										</div>
+									<div class="control-group">
+										<label for="sort_orderdir"><?php echo L_SORT_ORDER_DIRECTION ?></label>
+										<div class="controls" class="control-label">
+											<select name="sort_orderdir" id="sort_orderdir" class="span5">
+												<?php
+												$order_dirs = array(L_SORT_BY_ASC => 'ASC', L_SORT_BY_DESC => 'DESC');
+												foreach($order_dirs as $k => $v){
+												echo '<option value="'.$v.'"'.($sort_orderdir == $v ? 'selected="selected"' : '').'>'.$k.'</option>';
+												}
+												?>
+											</select>
+										</div>
+									</div>
+									</div>
+								</div>
+								<div class="span10">
+									<div class="form-actions">
+										<input type="hidden" name="do_sort" value="yes" />
+										<input id="sort_submit" type="submit" value="<?php echo L_SORT_BUTTON ?>" class="btn pull-right" />
+									</div>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -2248,7 +2313,7 @@ function camelize($str) {
 function printOut($message, $more="") {
 	global $output, $report;
 	if(is_array($message)) {
-		foreach($report as $level => $reports){
+		foreach($report as $level => $reports) {
 			$report[$level] = array_unique($report[$level]);
 		}
 		foreach($report['error'] as $val){
@@ -2291,7 +2356,7 @@ function edit_link($id) {
 	return EXPANSE_URL .'index.php?type=edit&amp;cat_id='.CAT_ID.'&amp;id='.$id;
 }
 function preview_link() {
-	return '<div class="clearfix"><label>&nbsp;</label><div class="input"><a href="'.YOUR_SITE .'index.php?preview=true&amp;pcat='.CAT_ID.'&amp;item='.ITEM_ID.'" target="_blank" class="btn">'.L_PREVIEW_TEXT.'</a></div></div>';
+	return '<a href="'.YOUR_SITE .'index.php?preview=true&amp;pcat='.CAT_ID.'&amp;item='.ITEM_ID.'" target="_blank" class="btn">'.L_PREVIEW_TEXT.'</a>';
 }
 function tooltip($title, $help_text) {
 	$unique_id = 'tt_'.random_string();
@@ -2310,7 +2375,7 @@ function helpBlock($help_text) {
 	if(is_array($help_text) && isset($help_text[0])) {
 		$help_text = is_array($help_text[1]) ? vsprintf($help_text[0],$help_text[1]) : sprintf($help_text[0],$help_text[1]);
 	}
-	?> <span class="help-block"><?php echo $help_text ?></span> <?php
+	?> <span class="alert alert-info help-block"><?php echo $help_text ?></span> <?php
 }
 function random_string($length = 6) {
 	return substr(md5(uniqid(microtime())), 0, $length);
@@ -2321,10 +2386,17 @@ function is_posting($value, $button='submit') {
 function create_admin_menu_block($title, $content) {
 	$unique_id = 'admin_'.random_string();
 	?>
-	<h3 class="stretchToggle" title="<?php echo $unique_id ?>"> <a href="#<?php echo $unique_id ?>"><span><?php echo $title ?></span></a></h3>
-		<div class="stretch" id="<?php echo $unique_id ?>">
-	<?php echo $content ?>
-	</div> <?php
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#stretchContainer" href="#<?php echo $unique_id ?>"><?php echo $title ?></a>
+		</div>
+		<div id="<?php echo $unique_id ?>" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<?php echo $content ?>
+			</div>
+		</div>
+	</div>
+<?php
 }
 /**
  * Returns all the plugin files in the plugins folder

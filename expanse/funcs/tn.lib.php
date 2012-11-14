@@ -8,7 +8,7 @@
   require(dirname(__FILE__) . '/ozone.php');
   require(dirname(__FILE__) . '/functions.php');
   require(dirname(__FILE__) . '/common.vars.php');
-  
+
   $option = getAllOptions();
   $maxwidth = (isset($_GET['dim'])) ? $_GET['dim'] : (!empty($option->thumbsize) ? $option->thumbsize : 100);
   $maxheight = (isset($_GET['dim'])) ? $_GET['dim'] : (!empty($option->thumbsize) ? $option->thumbsize : 100);
@@ -62,7 +62,7 @@
   $img = null;
   $ext = strtolower($image_path);
   $ext = strrchr($ext, '.');
-  $ext = ($ext !== false) ? str_replace('.','',$ext) : ''; 
+  $ext = ($ext !== false) ? str_replace('.','',$ext) : '';
   if ($ext == 'jpg' || $ext == 'jpeg') {
       $img = @imagecreatefromjpeg($image_path);
   } elseif ($ext == 'png') {
@@ -129,4 +129,4 @@
       header('Content-type: image/jpeg');
   }
   imagepng($img);
-?> 
+?>

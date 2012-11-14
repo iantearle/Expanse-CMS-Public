@@ -9,7 +9,7 @@ function plugin_content(){
 	global $output;
 	if(!CUSTOM_INSTALL){
 	?>
-		<div class="alert-message info" data-alert="alert"><a class="close" href="#">×</a><p><?php echo L_PLUGIN_NOTE ?></p></div>
+		<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p><?php echo L_PLUGIN_NOTE ?></p></div>
 	<?php
 	}
 	$current_plugins = getOption('active_plugins');
@@ -37,13 +37,13 @@ function plugin_content(){
 			} else {
 				printOut(FAILURE, L_PLUGIN_NOT_UNINSTALLED);
 			}
-			
+
 		}
 	}
-	
+
 	//Cleanup & purge
 	if ($current_plugins == false || !is_array($current_plugins)) {
-		$current_plugins = array();	
+		$current_plugins = array();
 	}
 	foreach ($current_plugins as $key => $current_plugin) {
 		if (!file_exists(PLUGINS . "/$current_plugin")) {
@@ -54,23 +54,23 @@ function plugin_content(){
 	setOption('active_plugins', $current_plugins);
 	$plugins = get_plugins();
 	echo $output; ?>
-	<table id="pluginList" class="condensed-table">
+	<table id="pluginList" class="table table-hover table-condensed">
 		<?php
 		foreach($plugins as $k => $plugin) {
 			$css_class = '';
 			$installed = false;
 			if(in_array($k, $current_plugins)) {
-				$css_class = ' class="installed"';
+				$css_class = ' class="success"';
 				$installed = true;
 			}
 			?>
 			<tr<?php echo $css_class ?>>
-				<td><a href="index.php?cat=admin&amp;sub=plugins&amp;<?php echo $installed ? 'un' : '' ?>install=yes&amp;plugin=<?php echo $k ?>" class="btn <?php echo $installed ? danger : success ?>"><?php echo $installed ? L_BUTTON_UNINSTALL : L_BUTTON_INSTALL ?></a></td>
 				<td>
-					<h4><?php echo $plugin->Name; ?> <span><?php echo L_THEME_VERSION.' '.$plugin->Version; ?></span></h4>
-					<p><?php echo L_THEME_BY.' '.$plugin->Author ?></p>
-					<p><?php echo  $plugin->Description ?></p>
+					<h4><?php echo $plugin->Name; ?> <small><?php echo L_THEME_VERSION.' '.$plugin->Version; ?></small></h4>
+					<p><?php echo L_THEME_BY.' '.$plugin->Author; ?></p>
+					<p><?php echo  $plugin->Description; ?></p>
 				</td>
+				<td><a href="index.php?cat=admin&amp;sub=plugins&amp;<?php echo $installed ? 'un' : ''; ?>install=yes&amp;plugin=<?php echo $k; ?>" class="btn <?php echo $installed ? 'btn-danger' : 'btn-success'; ?>"><?php echo $installed ? L_BUTTON_UNINSTALL : L_BUTTON_INSTALL; ?></a></td>
 			</tr>
 		<?php } ?>
 	</table>

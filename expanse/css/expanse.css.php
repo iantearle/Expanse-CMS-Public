@@ -1,19 +1,12 @@
-<?php 
+<?php
 $files =  array(
-'bootstrap', 'global', 'module', 'admin'
+'global', 'module', 'admin', 'bootstrap', 'bootstrap-responsive'
 );
 $extended = array(
 'install' => 'installation css', 'mailer' => 'Custom mailer css'
 );
 /*   Do not edit below this line   //-------------------------------*/
-ob_start ("ob_gzhandler");
-header("Content-type: text/css; charset: UTF-8");
-header("Cache-Control: must-revalidate");
-$offset = ((60 * 60) * 24) * 14 ;
-$ExpStr = "Expires: " . 
-gmdate("D, d M Y H:i:s",
-time() - $offset) . " GMT";
-header($ExpStr);
+//ob_start("ob_gzhandler");
 $css_file = '/*
 ------------------------------------------------------------
 Expanse
@@ -32,12 +25,18 @@ foreach($files as $include) {
 	if(empty($include) || !file_exists($the_file)){
 		continue;
 	}
-	$css_file .= file_get_contents($the_file);
+	$css_file .= (string) file_get_contents($the_file);
 }
 $get_extended = isset($_GET['extend']) && ctype_alnum($_GET['extend']) ? $_GET['extend'] : '';
 if(!empty($get_extended) && isset($extended[$get_extended])){
 	$css_file .= file_get_contents($folder.$get_extended.'.css');
 }
+
+header("Content-Type: text/css; charset: UTF-8");
+header("Cache-Control: must-revalidate");
+header("Last-Modified: " . date(DateTime::RFC1123));
+header("Expires: " . date(DateTime::RFC1123, time() + 600));
+
 echo $css_file;
 ?>
 

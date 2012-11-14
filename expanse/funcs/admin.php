@@ -66,7 +66,7 @@ $outmess = new outputMessages;
 
 /*
 ------------------------------------------------------------
-Auth Logic 
+Auth Logic
 ============================================================
 */
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'logout') {
@@ -101,12 +101,12 @@ if(isset($auth) && is_object($auth) && 0){
 		$authlevels = count($auth->Permissions);
 		$sessionlevels = isset($_SESSION['permissions']) ? count($_SESSION['permissions']) : 0;
 		if($authlevels == $sessionlevels){
-			$menu = $_SESSION['menu'] != '<ul></ul>' ? $_SESSION['menu'] : $auth->createMenu();			
+			$menu = $_SESSION['menu'] != '<ul></ul>' ? $_SESSION['menu'] : $auth->createMenu();
 		} else {
 			$menu = $_SESSION['menu'] = $auth->createMenu();
 			$_SESSION['permissions'] = $auth->Permissions;
 		}
-		
+
 	} elseif (isset($_SESSION['username'])) {
 		$menu = $_SESSION['menu'] = $auth->createMenu();
 	}
@@ -120,7 +120,7 @@ if(LOGGED_IN && CAT == 'admin'){
 	include(EXPANSEPATH.'/funcs/admin/dbcnx.php');
 	include(EXPANSEPATH.'/funcs/admin/theme_editor.php');
 	include(EXPANSEPATH.'/funcs/admin/prefs.php');
-} 
+}
 
 /*
 ------------------------------------------------------------
@@ -171,40 +171,40 @@ if(LOGGED_IN && CAT == 'admin'){
           $objResponse->addAppend("thumbNailThumb", "src", "&time=" . time());
           return $objResponse->getXML();
       }
-      function updateOrder($arg)
-      {
-          global $Database;
-          $items = new Expanse('items');
-          $errors = array();
-          parse_str($arg);
-          ob_start();
-		  $page = isset($_GET['page']) ? (int) $_GET['page']: 1;
-		  $multiplier = EDIT_LIMIT != 0 ? (EDIT_LIMIT * $page - EDIT_LIMIT) : 0;
-          foreach ($itemList as $k => $v) {
-              (int)$k++;
-				$k += $multiplier;
-              if (!is_numeric($v)) {
-                  continue;
-              }
-              $items->Get($v);
-              $items->order_rank = $k;
-              if ($items->Save()) {
-                  $errors[] = 1;
-              }
-          }
-          $arg = ob_get_contents();
-          ob_end_clean();
-          $arg = (!empty($errors)) ? sprintf(SUCCESS, L_REORDER_SUCCESS) : sprintf(FAILURE, L_REORDER_FAILURE);
-          $objResponse = new xajaxResponse();
-		 
-$script = "	var opacity = new fx.Opacity($('responseText') , {duration: 800});
-			opacity.setOpacity(0);
-			opacity.custom(0,1);
-			";
-		  $objResponse->addAssign("responseText", "innerHTML", $arg);
-          $objResponse->addScript($script);
-          return $objResponse->getXML();
-      }
+	function updateOrder($arg) {
+		global $Database;
+		$items = new Expanse('items');
+		$errors = array();
+		parse_str($arg);
+		ob_start();
+		$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+		$multiplier = EDIT_LIMIT != 0 ? (EDIT_LIMIT * $page - EDIT_LIMIT) : 0;
+		foreach($item as $k => $v) {
+			(int) $k++;
+			$k += $multiplier;
+			if(!is_numeric($v)) {
+				return;
+			}
+			$items->Get($v);
+			$items->order_rank = $k;
+			if($items->Save()) {
+				$errors[] = 1;
+			}
+		}
+		$arg = ob_get_contents();
+		ob_end_clean();
+		$arg = (!empty($errors)) ? sprintf(SUCCESS, L_REORDER_SUCCESS) : sprintf(FAILURE, L_REORDER_FAILURE);
+		$objResponse = new xajaxResponse();
+
+		$script = "var opacity = new fx.Opacity($('responseText') , {duration: 800});
+		opacity.setOpacity(0);
+		opacity.custom(0,1);
+		";
+		$objResponse->addAssign("responseText", "innerHTML", $arg);
+		$objResponse->addScript($script);
+
+		return $objResponse->getXML();
+	}
 	  function updateMenuOrder($arg, $table)
       {
           global $Database;
@@ -222,7 +222,7 @@ $script = "	var opacity = new fx.Opacity($('responseText') , {duration: 800});
                   continue;
               }
               $items->Get($v);
-              
+
 			  if(isset($items->public)){
 			  $items->public = 1;
 			  $items->order_rank = $k;
@@ -237,14 +237,14 @@ $script = "	var opacity = new fx.Opacity($('responseText') , {duration: 800});
           }
           $arg = ob_get_contents();
           ob_end_clean();
-		 //$debug = '<pre>'.print_r($final, 1).date('F d Y, g:i:s a').'</pre>';
+		 $debug = '<pre>'.print_r($final, 1).date('F d Y, g:i:s a').'</pre>';
 		  $debug = '';
           $arg = (empty($errors)) ? sprintf(SUCCESS, L_REORDER_MENU_SUCCESS).$debug : sprintf(FAILURE, L_REORDER_MENU_FAILURE).$debug;
           $objResponse = new xajaxResponse();
-		 
-			$script = "	
+
+			$script = "
 			if(getCookie('already_shown') != 'yes'){
-			
+
 			setCookie('already_shown', 'yes');
 			//if($('responseText').innerHTML != ''){
 			var opacity = new fx.Opacity($('responseText') , {duration: 800});

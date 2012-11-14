@@ -9,15 +9,15 @@ body{
 font-size: 76%;
 color: #fff;
 font: 68.5%/1.6em 'Lucida Sans Unicode','Lucida Grande', 'Lucida', Arial, Verdana, sans-serif;
-background:#fff url(/expanse/images/background.jpg) repeat-x;
+background:#fff url(/expanse/images/clouds.jpg) repeat-x;
 color:#333;
 }
 a {
-color: #363636; 
+color: #363636;
 text-decoration: underline;
 }
 a:hover {
-color: #900909; 
+color: #900909;
 text-decoration: none;
 }
 h1, h2, h3, h4, h5, h6{
@@ -56,7 +56,7 @@ if($reason == 'db_nocnx'){
 <h1>We cannot connect to your database<strong><?php echo !empty($CONFIG['host']) ? ' on '.$CONFIG['host'] : '' ?></strong>.</h1>
 <p>There are a few reasons why this may be happening. </p>
 <ul>
-<?php 
+<?php
 if(empty($CONFIG['host'])){
 ?> <li>It appears that you've left your hostname blank. Try putting in the host where expanse can find your database.</li><?php
 } if(empty($CONFIG['user'])){
@@ -64,7 +64,7 @@ if(empty($CONFIG['host'])){
 } if(empty($CONFIG['pass'])){
 ?> <li>It appears that you've left your password blank. Not all servers require a password, but many do. Try entering in a password.</li><?php
 } if(!@fsockopen($CONFIG['host'], 3306, $errno, $errstr, 30)){
-?> 
+?>
 <li>It appears that the host is currently unreachable. Your host can confirm the server status.</li>
 <li>Is <strong><?php echo $CONFIG['host'] ?></strong> spelled correctly?</li>
 <?php
@@ -76,14 +76,14 @@ if(empty($CONFIG['host'])){
 <p>Many times if you're experiencing a large amount of traffic, this can take down your database server, and hence, your entire site. Sites like <a href="http://digg.com" target="_blank">http://digg.com</a> and <a href="http://slashdot.com" target="_blank">http://slashdot.com</a> are particularly notorious for this. If this is the case, congratulations, you're popular!</p>
 <p>If you've ruled out all of the above, you have two options left.<br />
   You can contact your host and ask them for help, or you could even find help at the <a href="http://forums.expansecms.org/" target="_blank">expanse Forums</a>.  </p>
-<?php 
+<?php
 } elseif($reason == 'db_noselect'){
 ?>
 <img src="/expanse/images/db_noselect.gif" alt="Cannot select your database" width="381" height="70" />
 <h1>We cannot select your database<strong><?php echo !empty($CONFIG['db']) ? ', '.$CONFIG['db'] : '' ?></strong>.</h1> <p>We could connect to your database server, so feel confident that your username and password are correct, but we're having trouble selecting the right database to use.</p>
 <p>There are a few reasons why this may be happening. </p>
 <ul>
-<?php 
+<?php
 if(empty($CONFIG['db'])){
 ?> <li>It appears that you've left the name of your database blank. Try putting in the database name.</li><?php
 } else {

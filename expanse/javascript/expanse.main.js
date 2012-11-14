@@ -1,156 +1,883 @@
 /********* Expanse ***********/
+
+jQuery.fn.exists = function(){return this.length>0;}
+
 /*
 Language get function
 */
 function _l(constant){
-	var lconstant = $('L_JS_'+constant.toUpperCase());
-	return lconstant ? lconstant.value : 'Sorry, but you\'re missing a language setting.';
+	var lconstant = $('#L_JS_'+constant.toUpperCase()).val();
+	return lconstant ? lconstant : 'Sorry, but you\'re missing a language setting.';
+}
+
+function A(obj) {
+	var array = [];
+	// iterate backwards ensuring that length is an UInt32
+	for (var i = obj.length >>> 0; i--;) {
+		array[i] = obj[i];
 	}
+	return array;
+}
+
 /*
 EULA checking
 */
-function checkEula(e){
-		var eulaAgreed = $('eula_read');
-		if(eulaAgreed){
-				if(!eulaAgreed.checked){
-					alert(_l('EULA'));
-					Event.stop(e);
-						return false;
-					}
-				}
-				return true;		
+function checkEula(e) {
+	var eulaAgreed = $('#eula_read').exists();
+	if(eulaAgreed) {
+		if(!$('#eula_read').is(':checked')) {
+			alert(_l('EULA'));
+			e.preventDefault();
+			return false;
 		}
-//----- Browser check. For use when object detection wont work
-function checkIt(string)
-{
+	}
+	return true;
+}
+
+function confirmEula(){
+	if($('#eula_read')){
+		$('#post').submit(function() {
+			if(!checkEula) {
+				return false;
+			}
+			return true;
+		});
+	}
+}
+
+/*
+Browser check. For use when object detection wont work
+*/
+function checkIt(string) {
+
 	var detect = navigator.userAgent.toLowerCase();
 	var place = detect.indexOf(string) + 1;
 	var thestring = string;
 	return place;
 }
+
+/*
+Toggle Class name based on ID
+*/
 function toggleClassName(id, class1, class2) {
-  if (document.getElementById) {
-    var e = $(id);
-    if (e) {
-      if (e.className !== class1){
-			e.className = class1;
-		}else{
-			e.className = class2; 
+	if(document.getElementById) {
+		var e = $('#'+id);
+		if(e) {
+			if(e.attr('class') !== class1){
+				e.attr('class', class1);
+			}else{
+				e.attr('class', class2);
+			}
 		}
-    }  
-  }
+	}
 }
-function toggleBoxes(theElement) {
-	var theForm = theElement.form, z = 0;
-	theForm = $A(theForm);
-	theForm.each(function(i) {
-		if(i.type == 'checkbox' && i.name != 'checkall' && !i.disabled){
-		   i.checked = theElement.checked;
+
+
+window.expanse = window.expanse || {};
+expanse = expanse || {};
+
+/*
+Toggle all checkboxes
+*/
+expanse.toggleBox = Backbone.View.extend({
+	initialize: function () {
+		this.itemList = $('#itemList');
+		if(!this.itemList.exists()) {
+			return;
 		}
-	});
-}
-Element.addMethods({
-      insertionBefore: function(element, content) { new Insertion.Before(element, content); },
-      insertionAfter:  function(element, content) { new Insertion.After(element, content); },
-      insertionTop:    function(element, content) { new Insertion.Top(element, content);  },
-      insertionBottom: function(element, content) { new Insertion.Bottom(element, content); }
-    });
-var toggleBox = {
-	init : function(){
-		this.itemList = $('itemList');
-		if(!this.itemList){return;}
 		this.createBox();
-		},
-	createBox : function(){
+	},
+	createBox: function() {
 		var itemList = this.itemList;
-		var clear = document.createElement('br');
-		var divGroup = document.createElement('div');
-		var label = document.createElement('label');
-		var labelT = document.createTextNode(_l('CHECK_BOXES'));
-		label.setAttribute('for', 'checkThemAll');
-		label.appendChild(labelT);
-		
-		divGroup.id = 'checkGroup';
-		divGroup.setAttribute('class', 'input');
-		
-		var field = document.createElement('input');
-		field.setAttribute('id', 'checkThemAll');
-		field.setAttribute('name', 'checkThemAll');
-		field.setAttribute('type', 'checkbox');
-		field.className = 'checkbox';
-
-		divGroup.appendChild(label);
-		label.appendChild(field);
-
-		itemList.parentNode.insertBefore(divGroup,itemList);
+		itemList.before('<div id="checkGroup"><label for="checkThemAll" class="checkbox"><input type="checkbox" class="checkbox" id="checkThemAll" name="checkThemAll" />'+_l('CHECK_BOXES')+'</label></div>');
 		this.assign();
-		Event.observe(field,'click', this.run.bindAsEventListener(field));
-		},
-	run : function(){
-		var inputs = document.getElementsByTagName('input');
-		var thisBox = this;
-		$A(inputs).each(function(i){
-			if(i.type == 'checkbox' && i.id != 'checkThemAll' && !i.disabled){
-				if(!$('mark_'+i.id)){
-					domEl('img','',{src:'images/markedfordeletion.gif','class':'marked', id:'mark_'+i.id}, i.parentNode.parentNode);
+		$('#checkThemAll').click(_.bind(this.run, this));
+	},
+	run: function() {
+		var inputs = $(':input');
+		$.each(inputs, function(i) {
+			if($(this).is(':checkbox') && !$(this).is('#checkThemAll') && !$(this).is(':disabled')) {
+				if($(this).not('#mark_'+i)) {
+					$(this).parent().after('<img src="images/markedfordeletion.gif" class="marked" id="mark_item_delete_'+ i +'">');
+					$(this).parent().parent().toggleClass('deleting');
+					$(this).attr('checked', function(idx, oldAttr) {
+			            return !oldAttr;
+			        });
 				}
-				i.checked = thisBox.checked;
-				i.parentNode.parentNode.className = (i.checked) ? 'deleting' : '';
 			}
 		});
 	},
-	assign : function(){
-		var inputs = this.itemList.getElementsByTagName('input');
-		$A(inputs).each(function(i){
-		if(i.type != 'checkbox' || i.id == 'checkThemAll' || i.disabled){throw $continue;}
-		var fade = new fx.Opacity(i.parentNode.parentNode);
-		Event.observe(i,'click', function(){
-			if(!$('mark_'+i.id)){
-			domEl('img','',{src:'images/markedfordeletion.gif','class':'marked', id:'mark_'+i.id}, this.parentNode.parentNode);
-			}
-			this.parentNode.parentNode.className = this.checked ? 'deleting' : '';
-											  }.bindAsEventListener(i));
-								 });
+	assign: function() {
+		var inputs = $(':input');
+		$.each(inputs, function(i) {
+			if(!$(this).is(':checkbox') || $(this).is('#checkThemAll') || $(this).is(':disabled')) { return; }
+			$(this).click(function() {
+				$(this).parent().after('<img src="images/markedfordeletion.gif" class="marked" id="mark_item_delete_'+ i +'">');
+				$(this).parent().parent().toggleClass('deleting');
+			});
+		});
+	}
+});
+
+/*
+Confirm Uninstallation of Expanse
+*/
+expanse.confirmUninstall = Backbone.View.extend({
+	initialize: function () {
+		if($('#uninstall').exists()) {
+			$('#uninstall').click(function(e) {
+				var uninstall = confirm(_l('UNINSTALL'));
+				if(!uninstall) {
+					return (e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+				}
+			});
+		}
+		if($('#delete_uploads').exists()) {
+			$('delete_uploads').click(function(e) {
+				var deleteUploads = confirm(_l('DELETE_UPLOADS'));
+				if(!deleteUploads) {
+					e.preventDefault();
+				}
+			});
+		}
+		if($('#delete_db').exists()) {
+			$('#delete_db').click(function(e) {
+				var deleteDB = confirm(_l('DELETE_DB'));
+				if(!deleteDB) {
+					e.preventDefault();
+				}
+			});
+		}
+		if($('#delete_config').exists()) {
+			$('#delete_config').click(function(e) {
+				var deleteConfig = confirm(_l('DELETE_CONFIG'));
+				if(!deleteConfig) {
+					e.preventDefault();
+				}
+			});
 		}
 	}
-var confirmUninstall = {
-	init : function (){	
-		if($('uninstall')){
-			addEvent($('uninstall'), 'click', this.confirmIt);
-		}
-		if($('delete_uploads')){
-			Event.observe($('delete_uploads'), 'click', function(e){
-				var deleteUploads = confirm(_l('DELETE_UPLOADS'));
-				if(!deleteUploads){
-					Event.stop(e);
-				}
+});
+
+/*
+Reorder Main Menu
+*/
+expanse.reorderMenu = Backbone.View.extend({
+	sortContainer: Object,
+	beforeContainer: Object,
+	draggables: Array,
+	initialize: function() {
+		if($('#keepMenu').exists()) {
+			$('#keepMenu').addClass('connectedSortable');
+			$('#excludeMenu').addClass('connectedSortable');
+			this.sortContainer = $('#keepMenuContainer');
+			this.beforeContainer = $('#beforeMenuContainer');
+			var itemsCount = this.sortContainer.children().size();
+			var reorderL = '<a href="javascript:;" id="reorderLink" class="btn btn-primary">' + _l('REORDER_MENU') + '</a>';
+			var response = '<div id="responseText"></div>';
+
+			this.beforeContainer.before(reorderL);
+			this.beforeContainer.before(response);
+
+			$('#reorderLink').click(_.bind(this.create, this));
+			$('#reorderLink').mouseover(function() {
+				window.status=_l('REORDER_MENU');
+				return true;
 			});
-		}
-		if($('delete_db')){
-			Event.observe($('delete_db'), 'click', function(e){
-				var deleteDB = confirm(_l('DELETE_DB'));
-				if(!deleteDB){
-					Event.stop(e);
-				}
+			$('#reorderLink').mouseover(function() {
+				window.status='';
+				return true;
 			});
+
+			var check_or_no = $('#cb_subcats');
+			var includeSubcats = '<div class="control-group"><label for="include_subcats" class="checkbox"><input type="checkbox" id="include_subcats" '+(check_or_no == 'yes' ? 'checked="checked"' : '')+' />'+_l('MB_INCLUDE_SUBCATS')+'</label></div>';
+			$('#reorderLink').after(includeSubcats);
+			$('#include_subcats').click(_.bind(this.toggleSubcats, this));
+			this.primeSubcats();
 		}
-		if($('delete_config')){
-			Event.observe($('delete_config'), 'click', function(e) {
-				var deleteConfig = confirm(_l('DELETE_CONFIG'));
-				if(!deleteConfig){
-					Event.stop(e);
-				}
+	},
+	create: function() {
+		$('#reorderLink').unbind('click');
+		$('#reorderLink').click(_.bind(this.destroy, this)).text(_l('REORDER_FINISHED'));
+		$('#keepMenu, #excludeMenu').sortable({
+	        	connectWith: ".connectedSortable",
+	        	items: 'div',
+	        	receive: function(event, ui) {
+		        	$(ui.item).toggleClass('trashed').toggleClass('kept');
+	        	},
+	        	opacity: 0.5
+	    }).disableSelection().sortable('enable').addClass('reorderingMenu');
+	},
+	destroy: function() {
+		$('#reorderLink').unbind('click');
+		$('#reorderLink').click(_.bind(this.create, this)).text(_l('REORDER_MENU'));
+		$('#keepMenu, #excludeMenu').sortable('disable').removeClass('reorderingMenu');
+		this.updateOrder();
+	},
+	updateOrder: function() {
+		var sorted = this.serialize();
+		xajax_updateMenuOrder(sorted.sections, 'sections');
+		xajax_updateMenuOrder(sorted.pages, 'items');
+	},
+	toggleSubcats: function() {
+		var subcats = $('.sub_cat');
+		if($('#include_subcats').attr('checked') == false) {
+			xajax_update_option('mb_include_subcats', 1);
+		} else {
+			xajax_update_option('mb_include_subcats', 0);
+		}
+		subcats.each(function(el) {
+			$(this).toggle();
+		});
+	},
+	primeSubcats: function() {
+		var check_or_no = $('#cb_subcats');
+		if(check_or_no == 'yes'){ return; }
+		var subcats = $('.sub_cat');
+		subcats.each(function() {
+			$(this).hide();
+		});
+	},
+	serialize: function() {
+		var cats = '', items = '', id, itemsArr = new Array, catsArr = new Array, item_i = 0, cat_i = 0, vis_i = 1;
+		var keepMenu = $('#keepMenu > div');
+		keepMenu.each(function(el,i) {
+			if(!$(this).is(':visible')){ return; }
+			id = $(this).attr('id').replace('item_', '');
+
+			if($(this).hasClass('page')) {
+				itemsArr[item_i] = 'keepMenu['+vis_i+']='+id;
+				item_i++;
+			} else {
+				catsArr[cat_i] = 'keepMenu['+vis_i+']='+id;
+				cat_i++;
+			}
+			vis_i++;
+		});
+		items = itemsArr.join('&');
+		cats = catsArr.join('&');
+		return {sections:cats,pages:items};
+	}
+});
+
+/*
+Reorder itemList
+*/
+expanse.reorder = Backbone.View.extend({
+	sortContainer : Object,
+	draggables : Array,
+	initialize: function() {
+		if($('#itemList').exists()) {
+			this.sortContainer = $('#itemList');
+			var itemsCount = this.sortContainer.children().size();
+			if(itemsCount <= 1) {
+				return;
+			}
+			var reorderL = '<a href="javascript:;" id="reorderLink">' + _l('REORDER') + '</a>';
+			var response = '<div id="responseText"></div>';
+			$('#pageList').before(response);
+			this.sortContainer.before(reorderL);
+			$('#reorderLink').click(_.bind(this.create, this));
+			$('#reorderLink').mouseover(function() {
+				window.status = _l('REORDER');
+				return true;
+			});
+			$('#reorderLink').mouseover(function() {
+				window.status = '';
+				return true;
 			});
 		}
 	},
-	confirmIt : function(e){
-			if(!e){var e = window.event;}
-			var uninstall = confirm(_l('UNINSTALL'));
-			if(!uninstall) {
-				return (e.preventDefault) ? e.preventDefault() : e.returnValue = false;
+	create: function() {
+		if(($('#order_by').exists() && $('#order_by').val() !== 'order_rank')) {
+			return alert(_l('REORDER_NOTICE'));
+		}
+		$('#reorderLink').unbind('click');
+		$('#reorderLink').click(_.bind(this.destroy, this)).text(_l('REORDER_FINISHED'));
+		this.sortContainer.sortable({
+	        	items: 'div',
+	        	opacity: 0.5
+	    }).disableSelection().sortable('enable').addClass('reordering');
+	},
+	destroy: function() {
+		$('#reorderLink').unbind('click');
+		$('#reorderLink').click(_.bind(this.create, this)).text(_l('REORDER'));
+		this.updateOrder();
+		this.sortContainer.sortable('disable').removeClass('reordering');
+	},
+	updateOrder: function() {
+		xajax_updateOrder(this.sortContainer.sortable('enable').sortable('serialize'));
+	}
+});
+
+/*
+Resize Editor frame
+*/
+expanse.resizeEditor = Backbone.View.extend({
+	initialize: function() {
+		if($('#descr___Frame') || $('.descr')) {
+			this.createText();
+		}
+	},
+	createText: function() {
+		var sizerCont = '<span id="sizerContainer"><a href="javascript:;" id="increaseBox">+</a> <a href="javascript:;" id="decreaseBox">-</a></span>';
+		$('.descr').parent().after(sizerCont);
+		$('#increaseBox').mouseover(function() {window.status=_l('INCREASE_EDITOR'); return true;});
+		$('#increaseBox').mouseout(function() {window.status=''; return true;});
+		$('#decreaseBox').mouseover(function() {window.status=_l('DECREASE_EDITOR'); return true;});
+		$('#decreaseBox').mouseout(function() {window.status=''; return true;});
+		this.addActions();
+	},
+	addActions: function() {
+		var edObj = ($('#descr___Frame').exists()) ? $('#descr___Frame') : $('#descr');
+		$('#increaseBox').click(function() {
+			$(edObj).css("height","+=100");
+		});
+		$('#decreaseBox').click(function() {
+			$(edObj).css("height","-=100");
+		});
+	}
+});
+
+/*
+Highlight Inputs
+*/
+expanse.hiliteInput = Backbone.View.extend({
+	initialize: function() {
+		var fields = $('.shareField');
+		fields.each(function(i) {
+			$(this).click(function(e){
+				$(this).select();
+				e.preventDefault();
+			});
+		});
+	}
+});
+
+/*
+Set Checks for ever - keep this checked...
+*/
+expanse.setChecks = Backbone.View.extend({
+	checkBoxes: Array,
+	initialize: function() {
+		this.checkBoxes = ['#online', '#autothumb', '#comments', '#smilies', '#for_sale'];
+		this.doCheckBoxes();
+	},
+	assignRemember: function() {
+		var that = this;
+		var boxes = this.checkBoxes;
+		$.each(boxes, function(index, value) {
+			$(value).click(function() {
+				that.rememberChecks(this);
+			});
+		});
+	},
+	rememberChecks: function(obj) {
+		var that = this;
+		if(obj) {
+			var keepStateID = '#keepStateID'+obj.id;
+			var keepMessage;
+			if(obj.checked == true){
+				keepMessage = _l('KEEP_CHECKED');
+			} else {
+				keepMessage = _l('KEEP_UNCHECKED');
 			}
+			if($(keepStateID).exists()) {
+				$('#keepStateContainer').remove();
+			}
+			$('#'+obj.id).parent().append('<span id="keepStateContainer"><a href="javascript:;" id="keepStateID'+obj.id+'" class="keepState">'+keepMessage+'</a></span>').fadeIn();
+			$(keepStateID).mouseover(function() {window.status=keepMessage; return true;});
+			$(keepStateID).mouseover(function() {window.status=''; return true;});
+
+			setTimeout( function(){
+		    	$(keepStateID).fadeOut();
+		    }, 2000 );
+
+			$(keepStateID).click(function() {
+				that.setCheckBox(obj);
+			});
+		}
+	},
+	setCheckBox: function(obj) {
+		if(obj.checked == true) {
+			$.cookie(obj.id, 'checked');
+		} else {
+			$.cookie(obj.id, 'unchecked');
+		}
+	},
+	doCheckBoxes: function() {
+		var docloc = document.URL;
+		var add = /type=add/;
+		var edit = /type=edit/;
+		if((docloc.match(add) && !docloc.match(edit))) {
+			this.assignRemember();
+			this.assignGets();
+		}
+
+	},
+	getCheck: function(obj) {
+		if(obj) {
+			var cookie = $.cookie(obj.substring(1, obj.length));
+			if(cookie !== null) {
+				if(cookie == 'checked'){
+					$(obj).attr('checked', true);
+				} else {
+					$(obj).attr('checked', false);
+				}
+			}
+		}
+	},
+	assignGets: function() {
+		var that = this;
+		$.each(this.checkBoxes, function(index, value) {
+			that.getCheck(value);
+		});
+	}
+});
+
+/*
+Action the marking of extra images for delete
+*/
+expanse.markDelete = Backbone.View.extend({
+	boxes: Array,
+	initialize: function() {
+		var that = this;
+		this.boxes = $('.xtraImgDelete');
+		$.each(this.boxes, function(index, value) {
+			$('#'+value.id).click(function() {
+				var fade = $(this).parent();
+				that.mark(value, fade);
+			});
+		});
+	},
+	mark: function(value, fade) {
+		if($('#'+value.id).attr('checked')) {
+			fade.closest('.imgBox').css({ opacity: 0.5 });
+		} else {
+			fade.closest('.imgBox').css({ opacity: 1 });
+		}
+	}
+});
+
+function loadAlert() {
+	$('#post').submit(function() {
+		$('body').append('<div style="display:block;position:absolute;top:0;left:0;z-index:90;width:'+ $(document).width() +'px;height:'+ $(document).height() +'px;" id="overlay"></div>');
+		$('body').append('<blockquote class="overlayHelp" style="position:fixed;top:50%;left:50%;"><h4>'+_l('WAIT_NOTICE')+'</h4></blockquote>');
+		$('#submit').hide();
+		$('#submit').after(_l('WAIT_NOTICE'));
+		return new expanse.validate;
+	});
+}
+
+/*
+Validae form posts
+*/
+expanse.validate = Backbone.View.extend({
+	initialize: function() {
+		$('#post').submit(function() {
+			this.validateFields;
+		});
+	},
+	validateFields: function(e) {
+		if($('#confirmpassword') && !$('#edit_user')){
+ 			if($('#username') == '' || $('#password') == '') {
+				alert(_l('ENTER_USER_DETAILS'));
+				return false;
+			}
+		}
+	}
+});
+
+/*
+Magic Fields, append buttons to allow for additional adds
+*/
+var magicFields = Backbone.View.extend({
+	initialize: function(options) {
+		if(!options.firstField){return;}
+		this.optField = $(options.firstField);
+		this.fieldName = options.fieldName;
+
+		this.incrementLabel = options.incrementLabel || false;
+		this.addText = options.addText || _l('ADD_CUSTOM_FIELD');
+		this.removeText = options.removeText || _l('REMOVE_CUSTOM_FIELD');
+		this.clearText = options.clearText || _l('CLEAR_CUSTOM_FIELD');
+		this.labelText = options.labelText || _l('CUSTOM_FIELD');
+		this.confirmDelete = options.confirmDelete || _l('CLEAR_CONFIRM_CUSTOM_FIELD');
+
+		this.optGroup = this.optField.parent().parent().parent().parent().parent();
+		this.fieldCount = this.optGroup.find('input').length;
+		this.addLinkID = 'addLink_'+this.fieldName;
+		this.removeLinkID = 'removeLink_'+this.fieldName;
+		this.resetLinkID = 'resetLink_'+this.fieldName;
+		this.run();
+	},
+	run: function() {
+		this.optGroup.append('<a href="javascript:;" class="btn" id="'+this.addLinkID+'">'+this.addText+'</a> ');
+		this.optGroup.append('<a href="javascript:;" class="btn btn-info" id="'+this.removeLinkID+'">'+this.removeText+'</a> ');
+		this.optGroup.append('<a href="javascript:;" class="btn btn-danger" id="'+this.resetLinkID+'">'+this.clearText+'</a> ');
+
+		$('#'+this.addLinkID).click(_.bind(this.addField, this));
+		$('#'+this.removeLinkID).click(_.bind(this.removeFields, this));
+		$('#'+this.resetLinkID).click(_.bind(this.resetFields, this));
+	},
+	addField: function() {
+		var fieldCount = this.countFields()+1;
+		var optID = 'new_cat'+fieldCount;
+		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
+		var divHTML = '<div id="'+optID+'Group" class="row">'
+			+'<div class="span6">'
+			+'<div class="control-group">'
+			+'<label for="'+optID+'">'+this.labelText+incrementor+'</label>'
+			+'<div class="controls">'
+			+'<input type="text" value="" name="'+this.fieldName+'[]" id="'+optID+'" class="text" />'
+			+'</div>'
+			+'</div>'
+			+'</div>'
+			+'</div>';
+		$('#'+this.addLinkID).before(divHTML);
+	},
+	removeFields: function() {
+		this.fieldCount = this.countFields();
+		if(this.fieldCount === 1) {return}
+		var fieldset = this.optGroup;
+		var olddiv = this.optGroup.attr('id')+this.fieldCount+'Group';
+		$('#'+olddiv).remove();
+	},
+	resetFields: function() {
+		this.fieldCount = this.countFields();
+		if(this.fieldCount === 1) {return;}
+		var resetConf = confirm(this.confirmDelete);
+		if(resetConf) {
+			var fieldset = this.optGroup;
+			fieldset.find('div').remove();
+			this.addField();
+		}
+	},
+	countFields: function() {
+		this.Fields = this.optGroup.find('.row');
+		return this.fieldCount = this.Fields.length;
+	}
+});
+
+/*
+Magic Uploads, create more upload fields.
+*/
+var magicUploads = magicFields.extend({
+	addField: function() {
+		var fieldCount = this.countFields()+1;
+		var optID = this.fieldName+fieldCount;
+		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
+		var divHTML = '<div id="'+optID+'Group" class="row">'
+					+'<div class="span8">'
+					+'<div class="control-group">'
+					+'<label for="'+optID+'" class="control-label">'+this.labelText+incrementor+'</label>'
+					+'<div class="controls">'
+					+'<input type="file" name="'+this.fieldName+fieldCount+'"  id="'+optID+'"  class="formfields file" />'
+					+'</div>'
+					+'</div>'
+					+'<div class="control-group">'
+					+'<label for="'+optID+'" class="control-label">Caption'+incrementor+'</label>'
+					+'<div class="controls">'
+					+'<textarea name="caption['+optID+']" class="caption" id="'+optID+'"></textarea>'
+					+'</div>'
+					+'</div>'
+					+'</div>'
+					+'</div>';
+		$('#'+this.addLinkID).before(divHTML);
+	}
+});
+
+/*
+Magic custom fields
+*/
+var magicCustom = magicFields.extend({
+	initialize: function() {
+		magicFields.prototype.initialize.apply(this, arguments);
+		var label,
+			field,
+			customVar,
+			num = 0;
+		$.each($('#customGroup > div'), function(index, value) {
+			num++;
+			label = $('#'+value.id).find('.fieldLabel');
+			field = $('#'+value.id).find('.fieldValue');
+			customVar = $('#'+value.id).find('.variableField');
+			this.makeCustomVar(customVar, label);
+			this.insertSizers(field, num);
+			/*
+			new AutoSuggest(label,this.customLabels);
+			*/
+		}.bind(this));
+	},
+	addField: function() {
+		var fieldCount = this.countFields()+1;
+		var optID = this.fieldName+fieldCount;
+		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
+		var customLabelTxt = this.labelInnerText;
+		var customLabelID = 'customLabel'+fieldCount;
+		var customValueID = 'customValue'+fieldCount;
+		var customVarID = 'customVar'+fieldCount;
+		var customValueTxt = this.fieldInnerText;
+		var divHTML = '<div id="'+optID+'Group" class="row customFieldGroup">'
+					+'<div class="span6">'
+					+'<div class="control-group">'
+					+'<div class="controls">'
+					+'<input type="text" value="" class="span6 fieldLabel text" id="'+customLabelID+'" name="custom['+fieldCount+'][label]" autocomplete="off" value="" placeholder="Label" />'
+					+'</div>'
+					+'</div>'
+					+'<div class="control-group">'
+					+'<div class="controls">'
+					+'<textarea id="'+customValueID+'" name="custom['+fieldCount+'][value]" class="span6 fieldValue" placeholder="Value">'
+					+'</textarea>'
+					+'</div>'
+					+'</div>'
+					+'<div class="control-group">'
+					+'<label for="'+customVarID+'">'+_l('CUSTOM_VARIABLE_TEXT')+'</label>'
+					+'<div class="controls">'
+					+'<input type="text" class="shareField variableField uneditable-input" readonly="readonly" id="'+customVarID+'">'
+					+'</div>'
+					+'</div>'
+					+'</div>'
+					+'</div>';
+
+		$('#'+this.addLinkID).before(divHTML);
+		var label = $('#'+customLabelID);
+		var field = $('#'+customValueID);
+		var customVar = $('#'+customVarID);
+		this.makeCustomVar(customVar,label);
+		this.insertSizers(field, fieldCount);
+		/*
+		new AutoSuggest(label,this.customLabels);
+		*/
+	},
+	insertSizers: function(obj, num) {
+		var that = this;
+		var sizerCont = '<span class="sizerContainer" id="customValue'+obj.attr('id')+num+'">'
+			+'<a href="javascript:;" id="increaseBox'+num+'">+</a>'
+			+'<a href="javascript:;" id="decreaseBox'+num+'">-</a>'
+			+'<a href="javascript:;" title="'+_l('CUSTOM_DELETE_FIELD')+'" id="deleteLink_'+num+'" class="deleteLink">'+_l('CUSTOM_DELETE_FIELD')+'</a>'
+			+'</span>';
+		obj.after(sizerCont);
+		var increaseBox = $('#increaseBox'+num);
+		var decreaseBox = $('#decreaseBox'+num);
+		increaseBox.mouseover(function() { window.status=_l('INCREASE_FIELD_SIZE'); return true; })
+		increaseBox.mouseout(function() { window.status='';return true; })
+		decreaseBox.mouseover(function() { window.status=_l('DECREASE_FIELD_SIZE'); return true; })
+		decreaseBox.mouseout(function() { window.status='';return true; })
+
+		$('#increaseBox'+num).click(function() {
+			$(obj).css("height","+=100");
+		});
+		$('#decreaseBox'+num).click(function() {
+			$(obj).css("height","-=100");
+		});
+
+		var deleteLink = $('#deleteLink_'+num);
+		var optID = this.fieldName+num;
+		deleteLink.click((function() {
+			$('#'+optID).parent().parent().parent().parent().remove();
+			if(this.countFields() === 0) {
+				this.addField();
+			}
+		}).bind(this));
+	},
+	makeCustomVar: function(customVar, label) {
+		var that = this;
+		label.keyup(function(){
+			that.assembleVar(customVar, label);
+		});
+		label.blur(function() {
+			that.assembleVar(customVar, label);
+		});
+		label.focus(function() {
+			that.assembleVar(customVar, label);
+		});
+	},
+	assembleVar: function(customVar, label) {
+		customVar.val('{'+'custom_var'+label.attr('id').replace(/[^0-9]/gi,'')+'}');
+	},
+});
+
+/*
+Magic custom Subcats
+*/
+var magicSubs = magicFields.extend({
+	addField: function() {
+		var fieldCount = this.countFields()+1;
+		var optID = 'addSubcats'+fieldCount;
+		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
+		this.labelDescrText = _l('SUBCAT_DESCR');
+		var divHTML = '<div id="'+optID+'Group" class="row">'
+			+'<div class="span6">'
+			+'<div class="control-group">'
+			+'<label for="'+optID+'" class="control-label">'+this.labelText+incrementor+'</label>'
+			+'<div class="controls">'
+			+'<input type="text" value="" name="'+this.fieldName+'[]" id="'+optID+'" class="text" />'
+			+'</div>'
+			+'</div>'
+			+'<div class="control-group">'
+			+'<label for="'+optID+'" class="control-label">'+this.labelDescrText+incrementor+'</label>'
+			+'<div class="controls">'
+			+'<textarea name="'+this.fieldName+'_descr[]"></textarea>'
+			+'</div>'
+			+'</div>'
+			+'</div>';
+		$('#'+this.addLinkID).before(divHTML);
+	}
+});
+
+/*
+Chack all boxes if an admin user
+*/
+function checkAll(obj) {
+	if(obj) {
+		if(!$('#noteText').exists()) {
+			var sptxt = '<span id="noteText" class="alert alert-info formNote" style="visibility: visible; display: none;">'
+				+_l('ADMIN_RIGHTS')
+				+'</span>';
+			obj.parent().parent().after(sptxt);
+		}
+		obj.click(function() {
+			$('#noteText').fadeToggle();
+			if($('#disabled').attr('checked', false)) {
+				var checkBoxes = $("input[name=permissions\\[\\]]");
+				checkBoxes.attr("checked", !checkBoxes.attr("checked"));
+			}
+		});
+	}
+};
+/*
+		if(obj.attr('checked', true)) {
+			if(!$('#noteText')) {
+				var pEl = obj.parentNode.parentNode.parentNode;
+				var inputs = pEl.find('input');
+				var sptxt = '<span id="noteText" class="alert alert-info formNote" style="visibility: visible; opacity: 1;">'
+					+_l('ADMIN_RIGHTS')
+					+'</span>';
+				alert(obj.nextSibling.id);
+				pEl.after(sptxt);
+				for(var i=0; i<inputs.length;i++) {
+					if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck') {
+						inputs[i].checked = true;
+						addEvent(inputs[i], 'click', function(e) {
+							if($('adminCheck').checked) {
+								var input = (window.event) ? window.event.srcElement : this;
+								input.checked = true;
+							}
+						});
+					}
+				}
+			}
+		}
+		obj.click(function() {
+			if($('#disabled').attr('checked', false)) {
+				var pEl = obj.parent().parent().parent();
+				var inputs = pEl.find('input');
+				if(obj.attr('checked', true)){
+					if(!$('#noteText')){
+						var sptxt = '<span id="noteText" class="alert alert-info formNote" style="visibility: visible; opacity: 1;">'
+							+_l('ADMIN_RIGHTS')
+							+'</span>';
+						pEl.after(sptxt);
+					}
+					var noteFade = $('#noteText');
+					noteFade.hide();
+					noteFade.toggle();
+					for(var i=0; i<inputs.length;i++) {
+						if(inputs[i].type === 'checkbox' && inputs[i].id != 'adminCheck') {
+							inputs[i].checked = true;
+							inputs[i].click(function(e) {
+								if($('adminCheck').checked){
+									var input = (window.event) ? window.event.srcElement : this;
+									input.checked = true;
+								}
+							});
+						}
+
+					}
+				} else {
+					if(!$('#noteText')) {
+						for(var i=0; i<inputs.length;i++) {
+							if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck'){
+								inputs[i].checked = false;
+							}
+						}
+					}
+
+					if($('#noteText')) {
+						var noteFade = $('#noteText');
+						noteFade.toggle();
+						for(var i=0; i<inputs.length;i++) {
+							if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck'){
+								inputs[i].checked = false;
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 }
+*/
+
+$(function() {
+	new expanse.toggleBox;
+	new expanse.confirmUninstall;
+	new expanse.reorderMenu;
+	new expanse.reorder;
+	new expanse.hiliteInput;
+	new expanse.setChecks;
+	new expanse.markDelete
+	if($('.descr')){
+		FCKeditor.ReplaceAllTextareas('descr');
+	}
+	loadAlert();
+	new expanse.resizeEditor;
+	new magicFields({
+		firstField: '#option1',
+		fieldName : 'extraoptions',
+		addText:_l('ADD_OPTION'),
+		clearText:_l('CLEAR_OPTION'),
+		removeText:_l('REMOVE_OPTION'),
+		labelText: _l('OPTION_LABEL'),
+		confirmDelete : _l('OPTION_CLEAR_CONFIRM'),
+		incrementLabel : true
+	});
+	new magicUploads({
+		firstField: '#additional_images1',
+		fieldName : 'additional_images',
+		addText:_l('ADD_IMAGE'),
+		clearText:_l('CLEAR_IMAGE'),
+		removeText:_l('REMOVE_IMAGE'),
+		labelText: ($('additionalImages') && $('additionalImages').className == 'addFiles') ? _l('IMAGE_LABEL_FILE') : _l('IMAGE_LABEL'),
+		confirmDelete : _l('IMAGE_CLEAR_CONFIRM'),
+		incrementLabel : true
+	});
+	new magicCustom({
+		firstField: '#customLabel1',
+		fieldName: 'customLabel',
+		incrementLabel : true
+	});
+	new magicSubs({
+		firstField: '#new_cat1',
+		fieldName : 'addSubcats',
+		addText:_l('ADD_SUBCAT'),
+		clearText:_l('CLEAR_SUBCAT'),
+		removeText:_l('REMOVE_SUBCAT'),
+		labelText: _l('SUBCAT_LABEL'),
+		confirmDelete : _l('SUBCAT_CLEAR_CONFIRM')
+	});
+
+	checkAll($('#adminCheck'));
+
+	confirmEula();
+	if(typeof window.expanse == 'function') {
+		// function exists, so we can now call it
+		expanse();
+	}
+});
+
+/*
 function checkAll(obj) {
 	if(obj) {
 		if(obj.checked) {
@@ -171,9 +898,9 @@ function checkAll(obj) {
 							if($('adminCheck').checked) {
 								var input = (window.event) ? window.event.srcElement : this;
 								input.checked = true;
-							}						
+							}
 						});
-					}				
+					}
 				}
 			}
 		}
@@ -202,10 +929,10 @@ function checkAll(obj) {
 								if($('adminCheck').checked){
 									var input = (window.event) ? window.event.srcElement : this;
 									input.checked = true;
-								}							
+								}
 							});
 						}
-						
+
 					}
 				} else {
 					if(!$('noteText')){
@@ -215,7 +942,7 @@ function checkAll(obj) {
 					}
 					}
 					}
-					
+
 					if($('noteText')){
 					var noteFade = new fx.Opacity($('noteText'), {duration: 400});
 					noteFade.toggle();
@@ -226,7 +953,7 @@ function checkAll(obj) {
 					}
 					}
 				}
-			}		
+			}
 		});
 	}
 }
@@ -243,7 +970,7 @@ function disableBoxes(){
 				$('categoryBoxes').style.opacity = '1.0';
 				$('categoryBoxes').style.filter = 'alpha(opacity=100)';
 				$('categoryBoxes').style.backgroundColor = (document.all) ? '#fff' : 'none';
-			}					 
+			}
 		});
 	}
 }
@@ -254,24 +981,20 @@ function debug(obj, op) {
     if(!op){
 		alert(output);
 		} else{
-		document.write(output);		
+		document.write(output);
 		}
-	
+
 }
 function insertAfter(parent, node, referenceNode) {
 	parent.insertBefore(node, referenceNode.nextSibling);
 }
 
-/*
-	domEl() function - painless DOM manipulation
-	written by Pawel Knapik  //  pawel.saikko.com
-*/
 
 var domEl = function(e,c,a,p,x) {
 if(e||c) {
-	c=(typeof c=='string'||(typeof c=='object'&&!c.length))?[c]:c;	
-	e=(!e&&c.length==1)?document.createTextNode(c[0]):e;	
-	var n = (typeof e=='string')?document.createElement(e) : !(e&&e===c[0])?e.cloneNode(false):e.cloneNode(true);	
+	c=(typeof c=='string'||(typeof c=='object'&&!c.length))?[c]:c;
+	e=(!e&&c.length==1)?document.createTextNode(c[0]):e;
+	var n = (typeof e=='string')?document.createElement(e) : !(e&&e===c[0])?e.cloneNode(false):e.cloneNode(true);
 	if(e.nodeType!=3) {
 		c[0]===e?c[0]='':'';
 		for(var i=0,j=c.length;i<j;i++) typeof c[i]=='string'? ((c[i] =='') ? '': n.appendChild(document.createTextNode(c[i]))):n.appendChild(c[i].cloneNode(true));
@@ -291,13 +1014,13 @@ if(e||c) {
 				if(n.canHaveChildren){
 					p[i].appendChild(n.cloneNode(true));
 				} else if(p[i].canHaveChildren) {
-				p[i].appendChild(n.cloneNode(false));			
+				p[i].appendChild(n.cloneNode(false));
 				} else {
 					p[i].parentNode.appendChild(n);
 					}
 				}
-			} 
-	}	
+			}
+	}
 }
 
 function setDateFormat(){
@@ -345,9 +1068,7 @@ var inputLen = inputs.length;
 		inputs[i].className += ' '+inputs[i].getAttribute('type');
 	}
 }
-/*
-Cookie functions. Get, Set, and Delete
-*/
+
 function getCookie( name ) {
 	var start = document.cookie.indexOf( name + "=" );
 	var len = start + name.length + 1;
@@ -359,7 +1080,7 @@ function getCookie( name ) {
 	if ( end == -1 ) end = document.cookie.length;
 	return unescape( document.cookie.substring( len, end ) );
 }
-	
+
 function setCookie( name, value, expires, path, domain, secure ) {
 	var today = new Date();
 	today.setTime( today.getTime() );
@@ -373,13 +1094,13 @@ function setCookie( name, value, expires, path, domain, secure ) {
 		( ( domain ) ? ";domain=" + domain : "" ) +
 		( ( secure ) ? ";secure" : "" );
 }
-	
+
 function deleteCookie( name, path, domain ) {
 	if ( getCookie( name ) ) document.cookie = name + "=" +
 			( ( path ) ? ";path=" + path : "") +
 			( ( domain ) ? ";domain=" + domain : "" ) +
 			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
-}	
+}
 //ToolTip code courtesy of http://livsey.org/2005/03/17/help-tips-experiment/ & http://www.squidfingers.com/code/dhtml/
 document.getElementsByClassName = function (needle)
 {
@@ -411,7 +1132,7 @@ function addEvent( obj, type, fn ) {
 		obj["on"+type] = obj["e"+type+fn];
 	}
 		}
-	
+
 }
 function removeEvent(obj, evType, fn, useCapture){
   if (obj.removeEventListener){
@@ -423,7 +1144,7 @@ function removeEvent(obj, evType, fn, useCapture){
   } else {
     alert("Handler could not be removed");
   }
-}	
+}
 var EventCache = function(){
 	var listEvents = [];
 	return {
@@ -473,7 +1194,7 @@ HelpHover.prototype.init = function()
 			}
 			else if (e.clientX || e.clientY)
 			{
-				
+
 hh.mousePosX = (document.documentElement && document.documentElement.scrollLeft) ? e.clientX + document.documentElement.scrollLeft : e.clientX + document.body.scrollLeft;
 hh.mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e.clientY + document.documentElement.scrollTop : e.clientY + document.body.scrollTop;
 			}
@@ -542,7 +1263,7 @@ function toggleFrame(type){
 				$('hideFrame').style.display = 'none';
 				}
 			}
-	
+
 	}
 
 function theZone(){
@@ -557,12 +1278,7 @@ function theZone(){
       s += '-'+tz / 60;
    return(s);
 }
-function confirmEula(){
-	if($('eula_read')){
-		Event.observe(document.forms[0], 'submit', checkEula);
-		}
-	
-	}
+
 function dInit(){
 	if($('dateformat') && $('timeformat')){
 		addEvent($('dateformat'), 'blur', function(){
@@ -603,7 +1319,7 @@ function dInit(){
 			xajax_returnDate(dformat,offset);
 			xajax_returnTime(tformat,offset);
 		});
-			
+
 		}
 	}
 
@@ -615,7 +1331,7 @@ for(i=0;i<collSwitch.length;i++){
 			collBoxId = collSwitch[i].id+'Contents';
 			if($(collBoxId)){
 			fadeTheBox[collBoxId] = new fx.Combo($(collBoxId), {duration: 400});
-			fadeTheBox[collBoxId].hide($(collBoxId), 'height');		
+			fadeTheBox[collBoxId].hide($(collBoxId), 'height');
 				}
 			addEvent(collSwitch[i], 'click', function(e){
 				var divId = this.id+'Contents';
@@ -624,7 +1340,7 @@ for(i=0;i<collSwitch.length;i++){
 				}
 				});
 	}
-}	
+}
 function print_r(theObj){
   if(theObj.constructor == Array ||
      theObj.constructor == Object){
@@ -643,733 +1359,15 @@ document.write("<li>["+p+"] => "+theObj[p]+"</li>");
     document.write("</ul>")
   }
 }
-var setChecks = {
-	checkBoxes : Array,
-	init : function(){
-		this.checkBoxes = ['online', 'autothumb', 'comments', 'smilies', 'for_sale'];
-		this.doCheckBoxes();
-		},
-	assignRemember : function(){
-		var boxes = this.checkBoxes;
-		boxes.each(function(box){
-			addEvent($(box), 'click', function(){
-				setChecks.rememberChecks(this);
-			});	
-		});
-		},
-	rememberChecks :  function(obj){
-if(obj){
-	
-		var keepStateID = 'keepState'+obj.id;
-		var keepMessage;
-		if(obj.checked == true){
-			keepMessage = _l('KEEP_CHECKED');
-		} else {
-			keepMessage = _l('KEEP_UNCHECKED');
-		}
-		if($(keepStateID)){
-			$(keepStateID).parentNode.removeChild($(keepStateID));
-			}
-		insertAfter(obj.parentNode, domEl('span', domEl('a', keepMessage, {id : keepStateID, href : 'javascript:;', 'class' : 'keepState'}), {id : 'keepStateContainer'+obj.id}), obj);
-		Event.observe($(keepStateID), 'mouseover', function(){window.status=keepMessage; return true;});
-		Event.observe($(keepStateID), 'mouseout', function(){window.status='';return true;});
-		
-		
-		var keepState = $(keepStateID);
-		var opayk = new fx.Opacity(keepState, {duration: 4500});
-		opayk.toggle();
-		addEvent(keepState, 'click', function(){
-				setChecks.setCheckBox(obj);
-				opayk.duration = 1600;
-				opayk.toggle();
-										  });
-			}
-		},
-	setCheckBox : function(obj){
-		if(obj.checked == true){
-			setCookie(obj.id+'Checked', 'checked');
-			} else {
-			setCookie(obj.id+'Checked', 'unchecked');
-		}
-	},
-	doCheckBoxes : function(){
-		var docloc = document.URL;
-		var add = /type=add/;
-		var edit = /type=edit/;
-		if((docloc.match(add) && !docloc.match(edit))){
-			this.assignRemember();
-			this.assignGets();
-		}	
-	
-		},
-	assignGets : function(){
-		this.checkBoxes.each(function(box){
-				setChecks.getCheck($(box));
-			});
-		},
-	getCheck : function(obj){
-		if(obj){
-			var cookie = getCookie(obj.id+'Checked');
-			if(cookie !== null){
-				if(cookie == 'checked'){
-					obj.checked = true;
-					} else {
-					obj.checked = false;
-					}
-				}	
-		}
-		
-		}
-	}
-var reorderMenu = {
-	sortContainer : Object,
-	beforeContainer : Object,
-	draggables : Array,
-	init:function(){
-		
-		if($('keepMenu')){
-			this.sortContainer = $('keepMenuContainer');
-			this.beforeContainer = $('beforeMenuContainer');
-			var itemsCount = this.sortContainer.getElementsByTagName('div').length;
-			var reorderL = domEl('a', _l('REORDER_MENU'), {href:'javascript:;',id:'reorderLink',class:'btn primary'});
-			var response = domEl('div', '', {id:'responseText'});
-			Event.observe(reorderL, 'click',reorderMenu.create);
-			Event.observe(reorderL, 'mouseover', function(){window.status=_l('REORDER_MENU'); return true;});
-			Event.observe(reorderL, 'mouseout', function(){window.status='';return true;});
-			
-			this.beforeContainer.parentNode.insertBefore(response, this.beforeContainer);
-			this.beforeContainer.parentNode.insertBefore(reorderL, this.beforeContainer);
-			var check_or_no = $F('cb_subcats');
-			var includeSubcats = '<div class="clearfix"><div class="inputs-list"><label for="include_subcats"><input type="checkbox" id="include_subcats" '+(check_or_no == 'yes' ? 'checked="checked"' : '')+' /><span>'+_l('MB_INCLUDE_SUBCATS')+'</span></label></div></div>';
-			$('reorderLink').insertionAfter(includeSubcats);
-			var inc_cb = $('include_subcats');
-			Event.observe(inc_cb, 'click', reorderMenu.toggleSubcats.bindAsEventListener(inc_cb));
-			reorderMenu.primeSubcats();
-			}
-		},
-	create:function(){
-		$('reorderLink').childNodes[0].nodeValue = _l('REORDER_FINISHED');
-			Event.stopObserving($('reorderLink'), 'click', reorderMenu.create);
-			Event.observe($('reorderLink'), 'click', reorderMenu.destroy);
-			$('keepMenu', 'excludeMenu').each(function(el){
-			 	Element.addClassName(el, 'reorderingMenu');						   
-													   });
-		Sortable.create('keepMenu',{tag:'div',ghosting:false,constraint:false,hoverclass:'over'});
-		Sortable.create('excludeMenu',{tag:'div',ghosting:false,constraint:false,hoverclass:'over'});
-		var keepMenu = $A($('keepMenu').getElementsByTagName('div'));
-		var excludeMenu = $A($('excludeMenu').getElementsByTagName('div'));
-		keepMenu = keepMenu.concat(excludeMenu);
-		keepMenu.each(function(el){
-		new Draggable(el, {revert:true});						
-		});
-		Droppables.add('excludeMenu',{accept:'kept',onDrop:reorderMenu.drop,onHover:reorderMenu.hover, hoverclass:'menuHoverTrash'});
-		Droppables.add('keepMenu',{accept:'trashed',onDrop:reorderMenu.drop,onHover:reorderMenu.hover, hoverclass:'menuHover'});
-		},
-	drop : function(el, dropEl){
-		if(dropEl.id == 'keepMenu'){
-			el.className = el.className.replace('trashed', 'kept');
-			}
-		else {
-			el.className = el.className.replace('kept', 'trashed');
-			}
-		dropEl.appendChild(el);
-		
-		},
-	hover:function(el, dropEl){return;
-		},
-	destroy:function(){
-		Event.stopObserving($('reorderLink'), 'click', reorderMenu.destroy);
-		Event.observe($('reorderLink'), 'click', reorderMenu.create);
-		$('reorderLink').childNodes[0].nodeValue = _l('REORDER_MENU');
-		reorderMenu.updateOrder();
-		Sortable.destroy('keepMenu');
-		Sortable.destroy('excludeMenu');
-		Droppables.remove('keepMenu');
-		Droppables.remove('excludeMenu');
-		$('keepMenu', 'excludeMenu').each(function(el){
-			 	Element.removeClassName(el, 'reorderingMenu');						   
-													   });
-		},
-	updateOrder:function(){
-		var sorted = reorderMenu.serialize();
-	 xajax_updateMenuOrder(sorted.sections, 'sections');
-	 xajax_updateMenuOrder(sorted.pages, 'items');
-		},
-	toggleSubcats : function(){
-		var subcats = $A(document.getElementsByClassName('sub_cat'));
-		if(this.checked){
-			xajax_update_option('mb_include_subcats', 1);
-			} else {
-			xajax_update_option('mb_include_subcats', 0);
-			}
-		subcats.each(function(el){
-				el.toggle();
-				});
-		},
-	primeSubcats : function(){
-		var check_or_no = $F('cb_subcats');
-		if(check_or_no == 'yes'){return;}
-		var subcats = $A(document.getElementsByClassName('sub_cat'));
-		subcats.each(function(el){
-				Element.hide(el);
-				});
-		},
-	serialize : function(){
-		var cats = '', items = '', id, itemsArr = new Array, catsArr = new Array, item_i = 0, cat_i = 0, vis_i = 1;
-		var keepMenu = $A($('keepMenu').getElementsByTagName('div'));
-		keepMenu.each(function(el,i){
-			if(!Element.visible(el)){throw $continue;}
-				id = el.id.replace('item_', '');
-				if(el.className.indexOf('page') != -1){
-					itemsArr[item_i] = 'keepMenu['+vis_i+']='+id;
-					item_i++;
-					
-				} else {
-					catsArr[cat_i] = 'keepMenu['+vis_i+']='+id;
-					cat_i++;	
-			}
-			vis_i++;
-		});
-		items = itemsArr.join('&');
-		cats = catsArr.join('&');
-		return {sections:cats,pages:items};
-		}
-	};
-var reorder = {
-	sortContainer : Object,
-	draggables : Array,
-	init:function(){
-		
-		if($('itemList')){
-			this.sortContainer = $('itemList');
-			var itemsCount = this.sortContainer.getElementsByTagName('div').length;
-			if(itemsCount <= 1){
-				return;
-				}
-			var reorderL = domEl('a', _l('REORDER'), {href:'javascript:;',id:'reorderLink'});
-			var response = domEl('div', '', {id:'responseText'});
-			Event.observe(reorderL, 'click',reorder.create);
-			Event.observe(reorderL, 'mouseover', function(){window.status=_l('REORDER'); return true;});
-			Event.observe(reorderL, 'mouseout', function(){window.status='';return true;});
-			
-			this.sortContainer.parentNode.insertBefore(response, this.sortContainer);
-			this.sortContainer.parentNode.insertBefore(reorderL, this.sortContainer);
-			}
-		},
-	create:function(){
-		if(($('order_by') && $F('order_by') !== 'order_rank')){
-			return alert(_l('REORDER_NOTICE'));
-			}
-		$('reorderLink').childNodes[0].nodeValue = _l('REORDER_FINISHED');
-			Event.stopObserving($('reorderLink'), 'click', reorder.create);
-			Event.observe($('reorderLink'), 'click', reorder.destroy);
-		Element.addClassName(reorder.sortContainer, 'reordering');
-		Sortable.create('itemList',{tag:'div',ghosting:false,constraint:false,hoverclass:'over'});
-		},
-	destroy:function(){
-		Event.stopObserving($('reorderLink'), 'click', reorder.destroy);
-		Event.observe($('reorderLink'), 'click', reorder.create);
-		$('reorderLink').childNodes[0].nodeValue = 'Reorder your items';
-		reorder.updateOrder();
-		Sortable.destroy('itemList');
-		Element.removeClassName(reorder.sortContainer, 'reordering');
-		},
-	updateOrder:function(){
-	 xajax_updateOrder(Sortable.serialize('itemList'));
-		}
-	};
-//
-// getPageSize()
-// Returns array with page width, height and window width, height
-// Core code from - quirksmode.org
-// Edit for Firefox by pHaez
-//
-function getPageSize(){
-	
-	var xScroll, yScroll;
-	
-	if (window.innerHeight && window.scrollMaxY) {	
-		xScroll = document.body.scrollWidth;
-		yScroll = window.innerHeight + window.scrollMaxY;
-	} else if (document.body.scrollHeight > document.body.offsetHeight){ // all but Explorer Mac
-		xScroll = document.body.scrollWidth;
-		yScroll = document.body.scrollHeight;
-	} else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
-		xScroll = document.body.offsetWidth;
-		yScroll = document.body.offsetHeight;
-	}
-	
-	var windowWidth, windowHeight;
-	if (self.innerHeight) {	// all except Explorer
-		windowWidth = self.innerWidth;
-		windowHeight = self.innerHeight;
-	} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-		windowWidth = document.documentElement.clientWidth;
-		windowHeight = document.documentElement.clientHeight;
-	} else if (document.body) { // other Explorers
-		windowWidth = document.body.clientWidth;
-		windowHeight = document.body.clientHeight;
-	}	
-	
-	// for small pages with total height less then height of the viewport
-	if(yScroll < windowHeight){
-		pageHeight = windowHeight;
-	} else { 
-		pageHeight = yScroll;
-	}
-
-	// for small pages with total width less then width of the viewport
-	if(xScroll < windowWidth){	
-		pageWidth = windowWidth;
-	} else {
-		pageWidth = xScroll;
-	}
 
 
-	arrayPageSize = new Array(pageWidth,pageHeight,windowWidth,windowHeight) 
-	return arrayPageSize;
-}
-function getPageScroll(){
 
-	var yScroll;
 
-	if (self.pageYOffset) {
-		yScroll = self.pageYOffset;
-	} else if (document.documentElement && document.documentElement.scrollTop){	 // Explorer 6 Strict
-		yScroll = document.documentElement.scrollTop;
-	} else if (document.body) {// all other Explorers
-		yScroll = document.body.scrollTop;
-	}
 
-	arrayPageScroll = new Array('',yScroll) 
-	return arrayPageScroll;
-}
-function createOverlay(){
-	if(!$('overlay')){
-			var objBody = document.getElementsByTagName("body").item(0);
-			var arrayPageSize = getPageSize();
-			var objOverlay = domEl('div', ' ', {id:'overlay',style:'display:block;position:absolute;top:0;left:0;z-index:90;width:'+arrayPageSize[0] + 'px;height:'+arrayPageSize[1] + 'px'});
-			objBody.insertBefore(objOverlay, objBody.firstChild);
-	} else {
-	$('overlay').style.display = 'block';
-	}
-}
-function hideSelects(){
-	if(document.all){
-		var selects = document.getElementsByTagName('select');
-		for(i=0;i<selects.length;i++){
-				selects[i].className = 'hidden';
-			}
-		}
-	}
-function showSelects(){
-	if(document.all){
-		var selects = document.getElementsByTagName('select');
-		for(i=0;i<selects.length;i++){
-				selects[i].className = 'formfields';
-			}
-		}
-	}
-function makeAlert(){
-	button = $('submit');
-	if(button){
-		var dims = getPageSize();
-		var middlePos = getPageScroll()[1] + (getPageSize()[3] / 3)+'px';
-		var note = domEl('blockquote', domEl('h4', _l('WAIT_NOTICE')),{id:'overlay','class':'helpContents','style':'position:absolute;top:'+middlePos+';left:40%;'});	
-		createOverlay();
-		hideSelects();
-		$('overlay').className += ' submit';
-		button.style.visibility='hidden';
-		$('post').appendChild(note);
-		button.parentNode.insertBefore(document.createTextNode(_l('WAIT_NOTICE')), button);
-	}
-}
-function loadAlert(){
-	if($('submit')){
-		Event.observe($('post'), 'submit', makeAlert);
-		validate.init();
-		}
-	}
-var resizeEditor = {
-	init : function(){
-		if($('descr___Frame') || $('descr')){
-			this.createText();
-			}
-		},
-	createText : function(){
-		var sizerCont = domEl('span', [domEl('a', '+', {href : 'javascript:;', id : 'increaseBox'}), domEl('a', '-', {href : 'javascript:;', id : 'decreaseBox'})], {id : 'sizerContainer'});
-		insertAfter($('descr').parentNode, sizerCont, $('descr'));
-		Event.observe($('increaseBox'), 'mouseover', function(){window.status=_l('INCREASE_EDITOR'); return true;});
-		Event.observe($('increaseBox'), 'mouseout', function(){window.status='';return true;});
-		Event.observe($('decreaseBox'), 'mouseover', function(){window.status=_l('DECREASE_EDITOR'); return true;});
-		Event.observe($('decreaseBox'), 'mouseout', function(){window.status='';return true;});
-		this.addActions();
-	},
-	addActions : function() {
-		var edObj = ($('descr___Frame')) ? $('descr___Frame') : $('descr');
-		if($('safari_descr')) {
-			edObj = $('safari_descr');
-		}
-		remDescr = new fx.RememberHeight(edObj, 365, {
-			duration: 400
-		});
-		addEvent($('increaseBox'), 'click', function(){
-			remDescr.resize(100);
-		});
-		addEvent($('decreaseBox'), 'click', function(){
-			remDescr.resize(-100);
-		});
-	}
-};
 
-	
-var accordion = {
-	divs : Array,
-	links: Array,
-	toggler: Object,
-	init : function() {
-		this.divs = document.getElementsByClassName('stretch');
-		this.links = document.getElementsByClassName('stretchToggle');
-		this.run();
-	},
-	run : function() {
-		this.toggler = new fx.Accordion(this.links, this.divs, {opacity: true});
-		this.hideDefault();
-		this.toggler.showThisHideOpen = function(toShow){
-			this.elements.each(function(el, i) {
-				if (el.offsetHeight > 0 && el != toShow) this.clearAndToggle(el);
-			}.bind(this));
-			setTimeout(function(){this.clearAndToggle(toShow);}.bind(this), this.options.delay);
-		};
-	},
-	hideDefault : function() {
-		if(this.checkHash()){return;}
-		if(this.links.length > 1 || (this.links.length == 1 && this.links[0].id != 'wedge')) {
-			this.toggler.showThisHideOpen(this.divs[0]);
-		}
-	},
-	checkHash : function() {
-		var found = false;
-		this.links.each(function(h3, i){
-			if(window.location.href.indexOf(h3.title) > 0) {
-				accordion.toggler.showThisHideOpen(accordion.divs[i]);
-				found=true;
-			}
-		});
-		return found;
-	}
-};
 
-		
-var hiliteInput = {
-	init : function(){
-		var fields = document.getElementsByClassName('shareField');
-		fields = $A(fields);
-		fields.each(function(i){
-			Event.observe(i, 'focus', function(){i.select();});
-		});
-	}
-}
 
-/*   Magic Fields - creates, removes, and clears multiple fields w/label   //-------------------------------*/
-var magicFields = Base.extend({
-	constructor : function(options){
-		if(!$(options.firstField)){return;}
-		/*   Required   //-------------------------------*/
-		this.optField = $(options.firstField);
-		this.fieldName = options.fieldName;
-		/*   Optional   //-------------------------------*/
-		this.incrementLabel = options.incrementLabel || false;
-		this.addText = options.addText || _l('ADD_CUSTOM_FIELD');
-		this.removeText = options.removeText || _l('REMOVE_CUSTOM_FIELD');
-		this.clearText = options.clearText || _l('CLEAR_CUSTOM_FIELD');
-		this.labelText = options.labelText || _l('CUSTOM_FIELD');
-		this.confirmDelete = options.confirmDelete || _l('CLEAR_CONFIRM_CUSTOM_FIELD');
-		/*----//----*/
-		this.optGroup = this.optField.parentNode.parentNode.parentNode.parentNode.parentNode;
-		this.fieldCount = this.optGroup.getElementsByTagName('input').length;
-		this.addLinkID = 'addLink_'+this.fieldName;
-		this.removeLinkID = 'removeLink_'+this.fieldName;
-		this.resetLinkID = 'resetLink_'+this.fieldName;
-		this.run();
-	},
-	run : function(){
-		domEl('a', this.addText, {href : 'javascript:;', id : this.addLinkID, class: 'linky btn'}, this.optGroup);
-		domEl('a', this.removeText, {href : 'javascript:;', id : this.removeLinkID, title: this.optGroup.id, class: 'linky btn info'}, this.optGroup);
-		domEl('a', this.clearText, {href : 'javascript:;', id : this.resetLinkID, class: 'linky btn danger'}, this.optGroup);
-		var addLink = $(this.addLinkID);
-		var removeLink = $(this.removeLinkID);
-		var resetLink = $(this.resetLinkID);
-		Event.observe(addLink, 'mouseover', function(){window.status=this.addText; return true;});
-		Event.observe(addLink, 'mouseout', function(){window.status='';return true;});
-		Event.observe(removeLink, 'mouseover', function(){window.status=this.removeText; return true;});
-		Event.observe(removeLink, 'mouseout', function(){window.status='';return true;});
-		Event.observe(resetLink, 'mouseover', function(){window.status=this.clearText; return true;});
-		Event.observe(resetLink, 'mouseout', function(){window.status='';return true;});
-		Event.observe(addLink, 'click', this.addField.bindAsEventListener(this));	
-		Event.observe(removeLink, 'click', this.removeFields.bindAsEventListener(this));	
-		Event.observe(resetLink, 'click', this.resetFields.bindAsEventListener(this));	
-	},
-	addField : function(){
-		var fieldCount = this.countFields()+1;
-		var optID = 'new_cat'+fieldCount;
-		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
-		var divHTML = '<div id="'+optID+'Group" class"row"><div class="span6"><div class="clearfix"><label for="'+optID+'">'+this.labelText+incrementor+'</label><div class="input"><input type="text" value="" name="'+this.fieldName+'[]" id="'+optID+'" class="text" /></div></div></div></div>';
-		$(this.addLinkID).insertionBefore(divHTML);
-	},
-	removeFields : function(){
-		this.fieldCount = this.countFields();
-		var fieldset = this.optGroup;
-		var olddiv = document.getElementById(this.optGroup.id+this.fieldCount+'Group');
-		fieldset.removeChild(olddiv);
-		
-	},
-	resetFields : function(){
-		this.fieldCount = this.countFields();
-		if(this.fieldCount < 2){return;}
-		var resetConf = confirm(this.confirmDelete);
-		if(resetConf){
-			var fieldset = this.optGroup;
-			var divs = fieldset.getElementsByTagName('div');
-			divs.length.times(function(n){
-				fieldset.removeChild(divs[0]);
-			});
-			this.optField.value = '';
-		}
-	},
-	countFields : function(){
-		this.Fields = this.optGroup.getElementsByTagName('input');
-		return this.fieldCount = this.Fields.length;
-	}
-});
-/*   Multiple Upload Fields   //-------------------------------*/
 
-var magicSubs = magicFields.extend({
-	addField : function(){
-		var fieldCount = this.countFields()+1;
-		var optID = 'addSubcats'+fieldCount;
-		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
-		this.labelDescrText = _l('SUBCAT_DESCR');
-		var divHTML = '<div id="'+optID+'Group" class="row"><div class="span6"><div class="clearfix"><label for="'+optID+'">'+this.labelText+incrementor+'</label><div class="input"><input type="text" value="" name="'+this.fieldName+'[]" id="'+optID+'" class="text" /></div></div><div class="clearfix"><label for="'+optID+'">'+this.labelDescrText+incrementor+'</label><div class="input"><textarea name="'+this.fieldName+'_descr[]"></textarea></div></div>';
-		$(this.addLinkID).insertionBefore(divHTML);
-	}
-});
-/*   Multiple Upload Fields   //-------------------------------*/
-var magicUploads = magicFields.extend({
-	addField : function(){
-		var fieldCount = this.countFields()+1;
-		var optID = this.fieldName+fieldCount;
-		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
-		var divHTML = '<div id="'+optID+'Group" class="row">'
-					+'<div class="span8">'
-					+'<div class="clearfix">'
-					+'<label for="'+optID+'">'+this.labelText+incrementor+'</label>'
-					+'<div class="input">'
-					+'<input type="file" name="'+this.fieldName+fieldCount+'"  id="'+optID+'"  class="formfields file" />'
-					+'</div>'
-					+'</div>'
-					+'<div class="clearfix">'
-					+'<label for="'+optID+'">Caption'+incrementor+'</label>'
-					+'<div class="input">'
-					+'<textarea name="caption['+optID+']" class="caption" id="'+optID+'"></textarea>'
-					+'</div>'
-					+'</div>'
-					+'</div>'
-					+'</div>';
-		$(this.addLinkID).insertionBefore(divHTML);	
-	}	
-});
-/*  Magic Custom Fields   //-------------------------------*/
-var magicCustom = magicFields.extend({
-	constructor : function(options){
-		if(!$('customList')){return;}
-		this.base(options);
-		this.customLabels = eval($F('customList'));
-		this.initialize();
-	},
-	run : function(){
-		this.optGroup = this.optField.parentNode.parentNode.parentNode.parentNode.parentNode;
-		this.base();
-	},
-	initialize : function(){
-		this.labelInnerText = _l('CUSTOM_LABEL_TEXT');
-		this.fieldInnerText = _l('CUSTOM_FIELD_TEXT');
-		var label, field, customVar, num = 0;
-		$$('#customGroup div').each(function(obj){
-			num++;
-			Element.cleanWhitespace(obj);
-			label = document.getElementById('customLabel'+num);
-			if(!label) { return; }
-			var labelvalue = jQuery(label).val();
-			(labelvalue == '') ? this.labelInnerText : jQuery(label).val();
-			label.className += ' fieldLabel';
-			field = document.getElementById('customValue'+num);
-			customVar = document.getElementById('customVar'+num);
-			this.toggleValue(this.labelInnerText, label);
-			field.value = (field.value == '') ? this.fieldInnerText : field.value;
-			field.className += ' fieldValue';
-			this.toggleValue(this.fieldInnerText, field);
-			this.makeCustomVar(customVar,label);
-			if($('increaseBox'+num)){throw $continue;}
-			this.insertSizers(field, num);
-			new AutoSuggest(label,this.customLabels);
-		}.bind(this));
-	},
-	addField : function(){
-		var fieldCount = this.countFields()+1;
-		var optID = this.fieldName+fieldCount;
-		var incrementor = this.incrementLabel == true ? ' '+fieldCount : '';
-				/*--*/
-		var customLabelTxt = this.labelInnerText;
-		var customLabelID = 'customLabel'+fieldCount;
-		var customValueID = 'customValue'+fieldCount;
-		var customVarID = 'customVar'+fieldCount;
-		var customValueTxt = this.fieldInnerText;
-		var divHTML = 
-		'<div id="'+optID+'Group" class="row customLabelGroup">'
-		+'<div class="span8">'
-		+'<div class="clearfix">'
-		+'<div class="input">'
-		+'<input type="text" value="'+customLabelTxt+'" class="span6 fieldLabel text" id="'+customLabelID+'" name="custom['+fieldCount+'][label]" autocomplete="off" />'
-		+'</div>'
-		+'</div>'
-		+'<div class="clearfix">'
-		+'<div class="input">'
-		+'<textarea id="'+customValueID+'" name="custom['+fieldCount+'][value]" class="span6 fieldValue">'+customValueTxt+'</textarea>'
-		+'</div>'
-		+'</div>'
-		+'<div class="clearfix">'
-		+'<label for="'+customVarID+'">'+_l('CUSTOM_VARIABLE_TEXT')+'</label>'
-		+'<div class="input">'
-		+'<input type="text" class="shareField variableField uneditable-input" id="'+customVarID+'">'
-		+'</div>'
-		+'</div>'
-		+'</div>'
-		+'</div>'
-		/*
-		var divHTML = '<div id="'+optID+'Group" class="customFieldGroup overflowhidden">'
-					+'<input type="text" value="'+customLabelTxt+'" class="fieldLabel text" id="'+customLabelID+'" name="custom['+fieldCount+'][label]" />'
-					+'<textarea id="'+customValueID+'" name="custom['+fieldCount+'][value]" class="fieldValue">'
-					+customValueTxt
-					+'</textarea><br />'
-					+'<label for="'+customVarID+'">'+_l('CUSTOM_VARIABLE_TEXT')+'</label><input type="text" class="text shareField variableField" id="'+customVarID+'"><br /><br />'
-					+'</div>';
-		*/	
-		$(this.addLinkID).insertionBefore(divHTML);
-		var label = $(customLabelID);
-		var field = $(customValueID);
-		var customVar = $(customVarID);
-		this.toggleValue(customLabelTxt, label);
-		this.toggleValue(customValueTxt, field);
-		this.makeCustomVar(customVar,label);
-		this.insertSizers(field,fieldCount);
-		new AutoSuggest(label,this.customLabels);
-	},
-	resetFields : function(){
-		if(this.fieldCount <= 1){return;}
-		this.base();
-		this.initialize();
-		this.addField();
-		},
-	removeGroup : function(obj){
-		this.parentNode.removeChild(this);
-		if(obj.countFields() == 0){obj.addField();}
-		},
-	toggleValue : function(origValue, obj){
-		Event.observe(obj, 'focus', function(){
-		this.value = (this.value == origValue) ? '' : this.value;
-		}.bindAsEventListener(obj));
-		Event.observe(obj, 'blur', function(){
-		this.value = (this.value == '') ? origValue : this.value;
-		}.bindAsEventListener(obj));
-		},
-	countFields : function(){
-		this.Fields = jQuery('.customLabelGroup').size();
-		return this.fieldCount = this.Fields;
-	},
-	makeCustomVar : function(customVar,label){
-		Event.observe(label, 'keyup', this.assembleVar.bind(label,customVar, this));
-		Event.observe(label, 'blur', this.assembleVar.bind(label,customVar,this));
-		Event.observe(label, 'focus', this.assembleVar.bind(label,customVar, this));
-		Event.observe(customVar, 'keypress', this.preventCustomMake);
-		},
-	assembleVar : function(customVar, obj){
-		var nlabel;
-		nlabel = (this.value == obj.labelInnerText || this.value == '') ? '' : '{'+'custom_var'+this.id.replace(/[^0-9]/gi,'')+'}';
-		customVar.value = nlabel;
-		},
-	varSelect : function(customVar){
-		Event.observe(customVar, 'focus', function(){this.select();}.bind(customVar));
-		},
-	preventCustomMake : function(e){
-		Event.stop(e);
-		},
-	insertSizers : function(obj, num){
-		var sizerCont = '<span class="sizerContainer" id="customValue'+obj.id+'">'
-						+'<a href="javascript:;" id="increaseBox'+num+'">+</a>'
-						+'<a href="javascript:;" id="decreaseBox'+num+'">-</a>'
-						+'<a href="javascript:;" title="'+_l('CUSTOM_DELETE_FIELD')+'" id="deleteLink_'+num+'" class="deleteLink">'+_l('CUSTOM_DELETE_FIELD')+'</a>'
-						+'</span>';
-		
-		obj.insertionAfter(sizerCont);
-		var increaseBox = $('increaseBox'+num);
-		var decreaseBox = $('decreaseBox'+num);
-		Event.observe(increaseBox, 'mouseover', function(){window.status=_l('INCREASE_FIELD_SIZE'); return true;});
-		Event.observe(increaseBox, 'mouseout', function(){window.status='';return true;});
-		Event.observe(decreaseBox, 'mouseover', function(){window.status=_l('DECREASE_FIELD_SIZE'); return true;});
-		Event.observe(decreaseBox, 'mouseout', function(){window.status='';return true;});
-		if(typeof(fx) == 'undefined'){fx = false;}
-		if(!fx){
-			var remHeight = {
-				init : function(obj){
-					this.el = obj;
-					this.height = this.el.offsetHeight; 
-					this.el.style.height = this.height+'px';
-					return this;
-				},
-				resize : function(size){
-					this.height = this.el.offsetHeight; 
-					var calcHeight = (this.height + size);
-					if(calcHeight < 60 || calcHeight > 300){return;}
-					this.el.style.height = calcHeight+'px';
-				}
-			}.init(obj);
-		} else {
-			var remHeight = new fx.RememberHeight(obj, 365, {duration: 400});	
-		}
-		Event.observe(increaseBox, 'click', function(){
-			remHeight.resize(100);
-								 });
-		Event.observe(decreaseBox, 'click', function(){
-			if(remHeight.el.offsetHeight < 60){return;}
-			remHeight.resize(-100);
-								 });
-		var deleteLink = $('deleteLink_'+num);
-		var optID = this.fieldName+num;
-		Event.observe(deleteLink, 'click', this.removeGroup.bind($(optID+'Group'), this));
-	}
-});
-var validate = {
-	init : function(){
-		var theform = $('post');
-		if(theform){
-			Event.observe(theform, 'submit', this.validateFields);
-		}
-		
-	},
-	validateFields : function(e){
-		if($('confirmpassword') && !$('edit_user')){
-			if($F('username') == '' || $F('password') == ''){
-			alert(_l('ENTER_USER_DETAILS'));
-			Event.stopObserving($('post'), 'submit', makeAlert);
-			return window.event ? event.returnValue = false : e.preventDefault();
-			}
-		}
-		
-		
-		}
-	
-	};
 var createFooter = {
 	init : function(){
 		this.mainContainer = $('mainContainer');
@@ -1380,27 +1378,6 @@ var createFooter = {
 	createElements : function(){
 		domEl('div', '', {id : 'footerBottom'}, this.mainContainer);
 		$('footerBottom').appendChild($('footer'))
-		}
-	};
-var markDelete = {
-	boxes : Array,
-	init : function(){
-		this.boxes = $A(document.getElementsByClassName('xtraImgDelete',$('extraImages')));
-		this.boxes.each(function(i){
-								 
-			addEvent(i,'click', function(){
-										 var fade = new fx.Opacity(i.parentNode);
-										 markDelete.mark(i, fade);
-										 });
-			});
-		},
-	mark : function(i, fade){
-			if(i.checked){
-				fade.custom(1, 0.5);
-				} else{
-					fade.custom(0.5, 1);
-					}
-			
 		}
 	};
 
@@ -1417,15 +1394,15 @@ var Bookmark = {
 		Event.observe($('bookmarkLink'), 'click', this.run);
 		},
 	run : function(){
-			var title = document.title;   
-			var url = window.location.href;  
+			var title = document.title;
+			var url = window.location.href;
 
-			if (window.sidebar) { 
-			//Firefox	
-				window.sidebar.addPanel(title, url,"");	
-			} else if( window.external ) { 
+			if (window.sidebar) {
+			//Firefox
+				window.sidebar.addPanel(title, url,"");
+			} else if( window.external ) {
 			// IE
-				window.external.AddFavorite( url, title); 
+				window.external.AddFavorite( url, title);
 			}
 		}
 	};
@@ -1444,7 +1421,6 @@ var page = {
 		var hh = new HelpHover();
 		hh.init();
 		markDelete.init();
-		accordion.init();
 		createFooter.init();
 		setChecks.init();
 		confirmEula();
@@ -1456,44 +1432,43 @@ var page = {
 		Bookmark.init();
 		toggleBox.init();
 		sortCats.init();
-		/*   Custom fields objects   //-------------------------------*/
-		var addSubs = new magicSubs({ 
+
+		var addSubs = new magicSubs({
 			firstField: 'new_cat1',
 			addText:_l('ADD_SUBCAT'),
 			clearText:_l('CLEAR_SUBCAT'),
 			removeText:_l('REMOVE_SUBCAT'),
-			labelText: _l('SUBCAT_LABEL'), 
-			fieldName : 'new_cat', 
+			labelText: _l('SUBCAT_LABEL'),
+			fieldName : 'new_cat',
 			confirmDelete : _l('SUBCAT_CLEAR_CONFIRM')
 		});
-		var addOptions = new magicFields({ 
+		var addOptions = new magicFields({
 			firstField: 'option1',
 			fieldName : 'extraoptions',
 			addText:_l('ADD_OPTION'),
 			clearText:_l('CLEAR_OPTION'),
 			removeText:_l('REMOVE_OPTION'),
-			labelText: _l('OPTION_LABEL'), 
+			labelText: _l('OPTION_LABEL'),
 			confirmDelete : _l('OPTION_CLEAR_CONFIRM'),
 			incrementLabel : true
 		});
-		var addImages = new magicUploads({ 
+		var addImages = new magicUploads({
 			firstField: 'additional_images1',
 			fieldName : 'additional_images',
 			addText:_l('ADD_IMAGE'),
 			clearText:_l('CLEAR_IMAGE'),
 			removeText:_l('REMOVE_IMAGE'),
-			labelText: ($('additionalImages') && $('additionalImages').className == 'addFiles') ? _l('IMAGE_LABEL_FILE') : _l('IMAGE_LABEL'), 
+			labelText: ($('additionalImages') && $('additionalImages').className == 'addFiles') ? _l('IMAGE_LABEL_FILE') : _l('IMAGE_LABEL'),
 			confirmDelete : _l('IMAGE_CLEAR_CONFIRM'),
 			incrementLabel : true
 		});
-		
-		var addCustom = new magicCustom({ 
+
+		var addCustom = new magicCustom({
 			firstField: 'customLabel1',
 			fieldName : 'customLabel',
 			incrementLabel : true
 		});
-		/*--*/
-		
+
 		if($('toggleBox')){
 			addEvent($('toggleBox'),'click',function(){
 				toggleBoxes($('toggleBox'));
@@ -1504,9 +1479,9 @@ var page = {
 			dInit();
 		}
 		if($('descr')){
-			FCKeditor.ReplaceAllTextareas('descr');	
+			FCKeditor.ReplaceAllTextareas('descr');
 		}
-		
+
 		if($('timeoffset') && $F('timeoffset') == ''){
 			$('timeoffset').value = theZone();
 		}
@@ -1518,10 +1493,9 @@ var page = {
 			expanse();
 		}
 	}
-};	
+};
 
-	
-	Event.onDOMReady(page.init);
-$.noConflict();
+Event.onDOMReady(page.init);
+*/
 jQuery(document).ready(function () {
 });

@@ -1,20 +1,21 @@
 <?php
 /********* Expanse ***********/
-class userAuth
-  {
-      var $Username;
-      var $ProtectedPages = array();
-      var $Admin = 0;
-      var $Permissions = array();
-      var $Authorized = false;
-	  var $DisplayName = '';
-	  function userAuth(){
-	  $this->users = get_dao('users');
-	  $this->sections = get_dao('sections');  
-	  }
-	  function isLoggedIn(){
-	  	$users = $this->users;
-		if((isset($_SESSION['id']) && isset($_SESSION['displayname']) && isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['email']))){
+class userAuth {
+	var $Username;
+	var $ProtectedPages = array();
+	var $Admin = 0;
+	var $Permissions = array();
+	var $Authorized = false;
+	var $DisplayName = '';
+
+	function userAuth() {
+		$this->users = get_dao('users');
+		$this->sections = get_dao('sections');
+	}
+
+	function isLoggedIn() {
+		$users = $this->users;
+		if((isset($_SESSION['id']) && isset($_SESSION['displayname']) && isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['email']))) {
 			$userarray =& $_SESSION;
 		} elseif (isset($_COOKIE['baked'])) {
 			$userarray = unserialize(base64_decode($_COOKIE['baked']));
@@ -23,19 +24,19 @@ class userAuth
 			return false;
 		}
 		$user = $users->GetList(array(array('id', '=', $userarray['id']), array('username', '=', $userarray['username']), array('password', '=', $userarray['password']), array('email', '=', $userarray['email'])));
-	if(!empty($user)){
+		if(!empty($user)) {
 			$user = $user[0];
-			  $this->Id = $_SESSION['id'] = $user->id;
-			  $this->Username = $_SESSION['username'] = $user->username;
-			  $this->DisplayName = $_SESSION['displayname'] = $user->displayname;
-			  $this->Email = $_SESSION['email'] = $user->email;
-			  $this->Admin = $user->admin;
-			  $this->SectionAdmin = $user->section_admin;
-			  $this->Permissions = unserialize($user->permissions);
-			  $this->Disabled = $user->disabled;
-			  $_SESSION['password'] = $user->password;
-			  $this->Authorized = $this->isAuthorized(); 
-			if($this->Disabled){
+			$this->Id = $_SESSION['id'] = $user->id;
+			$this->Username = $_SESSION['username'] = $user->username;
+			$this->DisplayName = $_SESSION['displayname'] = $user->displayname;
+			$this->Email = $_SESSION['email'] = $user->email;
+			$this->Admin = $user->admin;
+			$this->SectionAdmin = $user->section_admin;
+			$this->Permissions = unserialize($user->permissions);
+			$this->Disabled = $user->disabled;
+			$_SESSION['password'] = $user->password;
+			$this->Authorized = $this->isAuthorized();
+			if($this->Disabled) {
 				$this->sanitizePost();
 				return false;
 			}
@@ -43,7 +44,7 @@ class userAuth
 		}
 		$this->sanitizePost();
 		return false;
-	  }
+	}
 	  function isAuthorized(){
 	  $cat = check_get_alphanum('cat');
 	  $cat_id = check_get_id('cat_id');
@@ -57,7 +58,7 @@ class userAuth
 		  return true;
 		  }
 		  return false;
-	  }  
+	  }
       function login()
       {
           $expiration = time() + 3600 * 24 * 14;
@@ -88,13 +89,13 @@ class userAuth
 			  header("Location: $redirect");
 			  }
               setcookie('entry_page', '', time() - 3600);
-              
+
           } else {
               $this->sanitizePost();
               printOut(FAILURE, L_BAD_LOGIN);
           }
-      }  
-      
+      }
+
 	function createMenu() {
 		$sections = $this->sections;
 		$auth = $this->Permissions;
@@ -102,24 +103,23 @@ class userAuth
 		$menu_list = $sections->GetList('SELECT * FROM *table* WHERE id='.implode(' OR id=',$auth));
 		$menu_list = applyOzoneAction('admin_menu',$menu_list);
 		foreach($menu_list as $val) {
-			$menu .= '<li class="type '.$val->cat_type.'">
-				<a href="index.php?type=edit&amp;cat_id=' . $val->id . '" title="'.L_MENU_EDIT.'">' . ucwords($val->sectionname) . '</a>
-				<a href="index.php?type=add&amp;cat_id=' . $val->id . '" class="addTo">'.L_MENU_ADD.'</a>
-			</li>
-			<li class="divider"></li>';
+			$menu .= '
+				<li class="nav-header '.$val->cat_type.'">'.ucwords($val->sectionname).'</li>
+				<li><a href="index.php?type=edit&amp;cat_id=' . $val->id . '" title="'.L_MENU_EDIT.'">' . L_MENU_EDIT . '</a></li>
+				<li><a href="index.php?type=add&amp;cat_id=' . $val->id . '" class="addTo">'.L_MENU_ADD.'</a></li>
+				<li class="divider"></li>';
 		}
 		$menu .= '</ul>';
 		$menu = applyOzoneAction('admin_menu_html',$menu, $menu_list);
 		return $menu;
 	}
-       function createSummary()
-      {
+       function createSummary() {
           global $Database;
           $sections = get_dao('sections');
           $auth = $this->Permissions;
 		  $ov_list = $sections->GetList('SELECT * FROM *table* WHERE id='.implode(' OR id=',$auth));
 		  $ov_list = applyOzoneAction('admin_summary',$ov_list);
-		  $ov = '<ul>';
+		  $ov = '<ul class="nav nav-pills nav-stacked">';
 		  foreach($ov_list as $val){
 			  if ($val->cat_type == 'pages') {
 				  $Database->Query("SELECT COUNT(id) as itemcount FROM ".PREFIX."items WHERE type='static'");
@@ -189,7 +189,7 @@ class userAuth
       function sanitizePost()
       {
               $_POST = array();
-          
+
       }
       function retrievePassword()
       {
@@ -200,15 +200,15 @@ class userAuth
           }
           $users = new Expanse('users');
           $user = $users->GetList(array(array('username', '=', $username), array('email', '=', $email)));
-          
+
           if (empty($user)) {
               return printOut(FAILURE, L_CANT_RETRIEVE);
           }
           $users->Get($user[0]->id);
           $key = substr(md5(uniqid(microtime())), 0, 50);
           $users->reset_key = $key;
-          
-          
+
+
           $reset->request = true;
           $reset->expanseurl = EXPANSE_URL;
 		  $reset->company_url = COMPANY_URL;
@@ -219,9 +219,9 @@ class userAuth
 		  $reset->L_MAILER_REQUEST_TITLE = sprintf(L_MAILER_REQUEST_TITLE,$users->username);
 		  $reset->L_MAILER_REQUEST_BODY = sprintf(L_MAILER_REQUEST_BODY,$reset_url, $reset_url);
           $reset->L_MAILER_POWERED_BY = sprintf(L_MAILER_POWERED_BY,COMPANY_URL, CMS_NAME);
-          
+
           $adminemail = $users->email;
-          
+
           require(dirname(__FILE__) . '/template.class.php');
           require(dirname(__FILE__) . '/mail.class.php');
           $templatebody = sprintt($reset, dirname(__FILE__) . '/misc/@reset_pass_mailer.tpl.html');
@@ -246,7 +246,7 @@ class userAuth
           $reset_key = preg_replace('([^[:alnum:]])', '', $_GET['reset_key']);
           $users = new Expanse('users');
           $user = $users->GetList(array(array('reset_key', '=', $reset_key)));
-          
+
           if (empty($user)) {
               return printOut(FAILURE, L_PASSWORD_INVALID_KEY);
           }
@@ -254,8 +254,8 @@ class userAuth
           $new_pass = substr(md5(uniqid(microtime())), 0, 6);
           $users->password = md5($new_pass);
           $users->reset_key = '';
-          
-          
+
+
           $reset->expanseurl = EXPANSE_URL;
 		  $reset->company_url = COMPANY_URL;
 		  $reset->cms_name = CMS_NAME;
@@ -266,9 +266,9 @@ class userAuth
 		  $reset->L_MAILER_CHANGED_DETAILS = sprintf(L_MAILER_CHANGED_DETAILS, $users->username, $new_pass);
 		  $reset->L_MAILER_CHANGED_DETAILS_TITLE = L_MAILER_CHANGED_DETAILS_TITLE;
 		  $reset->L_MAILER_POWERED_BY = sprintf(L_MAILER_POWERED_BY,COMPANY_URL, CMS_NAME);
-		  
+
           $adminemail = $users->email;
-          
+
           require(dirname(__FILE__) . '/template.class.php');
           require(dirname(__FILE__) . '/mail.class.php');
           $templatebody = sprintt($reset, dirname(__FILE__) . '/misc/@reset_pass_mailer.tpl.html');

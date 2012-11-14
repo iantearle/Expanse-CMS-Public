@@ -58,7 +58,7 @@ function add()
 				} else {
 					$items->{$ind} = trim($val);
 				}
-                
+
             }
         }
         //Set individual fields
@@ -136,7 +136,6 @@ function edit()
 	   //global $items;
 	   $items =& $this->items;
 	   $images = new Expanse('images');
-		//$images = new Expanse('images');
 		$items->Get($item_id);
 		$object_vars = get_object_vars($items);
         //Loop through POST
@@ -153,14 +152,14 @@ function edit()
 				} else {
 					$items->{$ind} = trim($val);
 				}
-                
+
             }
         }
         //Set individual fields
 		if (!empty($uploads['files'])) {
 		$mainimage = isset($uploads['files']['img_main']['name']) ? $uploads['files']['img_main']['name'] : NULL;
 		$thumbimage = isset($uploads['files']['img_thumb']['name']) ? $uploads['files']['img_thumb']['name'] : NULL;
-		
+
 			if(isset($mainimage) && !empty($items->image)){
 				if($items->image != $mainimage && file_exists($uploaddir.'/'.$mainimage)){
 						if(!empty($items->image) && file_exists($uploaddir.'/'.$items->image)){
@@ -168,13 +167,13 @@ function edit()
 						}
 					}
 			}
-			
+
 			if(isset($thumbimage) && !empty($items->thumbnail)){
 				if($items->thumbnail != $thumbimage && file_exists($uploaddir.'/'.$thumbimage)){
 					if(!empty($items->thumbnail) && file_exists($uploaddir.'/'.$items->thumbnail)){
 					 unlink($uploaddir.'/'.$items->thumbnail);
 					}
-					
+
 				}
 			}
             $items->image = !is_null($mainimage) ? $mainimage : $items->image;
@@ -182,9 +181,9 @@ function edit()
             $items->width = isset($uploads['files']['img_main']['width']) ? $uploads['files']['img_main']['width'] : $items->width;
             $items->height = isset($uploads['files']['img_main']['height']) ? $uploads['files']['img_main']['height'] : $items->height;
         }
-		
+
 		if(!empty($xtra_img_uploads['files'])){
-			
+
 			$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
 			foreach($xtra_img_uploads['files'] as $xi => $xv){
 				$images->image = $xv['name'];
@@ -201,7 +200,7 @@ function edit()
 			if(!empty($images->image) && file_exists($uploaddir.'/'.$items->image)){
 				unlink($uploaddir.'/'.$images->image);
 			}
-			
+
 			$images->Delete();
 		}
         $items->created = dateTimeProcess($items->created);
@@ -209,7 +208,7 @@ function edit()
         $items->dirtitle = set_dirtitle($items);
 		$items->paypal_amount = (isset($_POST['paypal_amount'])) ? (float) $_POST['paypal_amount'] : 0;
 		$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
-		
+
 		//Clean extroptions of empty values
 		foreach($_POST['extraoptions'] as $ek => $ev){
 			if(empty($ev)){
@@ -219,10 +218,10 @@ function edit()
 		$items->extraoptions = (!empty($_POST['extraoptions'])) ? serialize($_POST['extraoptions']) : '';
 		$items->use_default_thumbsize = (!empty($_POST['use_default_thumbsize'])) ? 1 : 0;
 		$title = empty($items->title) ? L_NO_TEXT_IN_TITLE : $items->title;
-		
+
 		//Add a subcat
 		$items->cid = $this->addSubcat();
-		
+
         //Save the info
         if ($items->Save()) {
 			$items = applyOzoneAction('item_edit', $items);
@@ -282,20 +281,20 @@ function galleryUpload(){
 						} else {
 						 $items->{$ind} = trim($val);
 						}
-						
+
 					}
 				}
 		foreach($resource_files['files'] as $i => $val){
 				$base_file = $base_folder.'/'.$val;
 				$file = UPLOADS.'/'.$base_folder.'/'.$val;
-				
+
 				$file_dims = @getimagesize($file);
 				if(!$file_dims){$errors[] = $file; continue; }
 					$items->width = $file_dims[0];
 					$items->height = $file_dims[1];
 					$items->image = $base_file;
-					
-        
+
+
 				$items->pid = $this->cat_id;
 				$items->title = remExtension($val);
 				$items->online = isset($_POST['online']) ? 1 : 0;
@@ -307,9 +306,9 @@ function galleryUpload(){
 				$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
 				if(!$items->SaveNew()){
 					$errors[] = $i;
-				}	
-			
-		}	
+				}
+
+		}
 			if(!empty($resource_files) && empty($errors)){
 			$_POST = array();
 			printOut(SUCCESS, L_GALLERY_FTP_UPLOAD_SUCCESS);
@@ -330,13 +329,13 @@ function galleryUpload(){
 	if(file_exists($pathfile) && is_file($pathfile)){
 	unlink($pathfile);
 	}
-  } else {  
+  } else {
   $images = array();
   $nonimages = array();
   $results = array();
   foreach($exfiles as $ind => $val){
-	 
-	  if(file_exists($val['filename'])){ 
+
+	  if(file_exists($val['filename'])){
 	  $val['filename'] = renameExtracted($val['filename']);
 		  if(!getimagesize($val['filename'])){
 		 		$nonimages[] = $val['stored_filename'];
@@ -381,13 +380,13 @@ function galleryUpload(){
 	  } else{
 			unset($exfiles[$ind]);
 	  }
-		 
-		
+
+
 	  }
 	  if(file_exists($pathfile) && is_file($pathfile)){
 	  unlink($pathfile);
 	  }
-	  
+
 	  if(isset($results['success']) && count($results['success']) > 0){
 		  foreach($results['success'] as $v){
 			  $messages[] = "<li><strong>$v</strong></li>";
@@ -420,77 +419,95 @@ function doThumbnails(){
 	$items =& $this->items;
 	?>
 	<div class="row">
-		<div class="span7">
-			<div class="clearfix">
-				<label for="crop_x"><?php echo L_GALLERY_THUMB_X ?></label>
-				<div class="input">
+		<div class="span5">
+			<div class="control-group">
+				<label for="crop_x" class="control-label"><?php echo L_GALLERY_THUMB_X ?></label>
+				<div class="controls">
 					<input type="text" name="crop_x" value="<?php echo $items->crop_x;?>" class="infields" id="crop_x"  />
 				</div>
 			</div>
-			<div class="clearfix">
-				<label for="crop_y"><?php echo L_GALLERY_THUMB_Y ?></label>
-				<div class="input">
+			<div class="control-group">
+				<label for="crop_y" class="control-label"><?php echo L_GALLERY_THUMB_Y ?></label>
+				<div class="controls">
 					<input type="text" name="crop_y" value="<?php echo $items->crop_y;?>" class="infields" id="crop_y"  />
 				</div>
 			</div>
 		</div>
-		<div class="span7">
-			<div class="clearfix">
-				<label for="thumb_w"><?php echo L_GALLERY_THUMB_W ?></label>
-				<div class="input">
+		<div class="span5">
+			<div class="control-group">
+				<label for="thumb_w" class="control-label"><?php echo L_GALLERY_THUMB_W ?></label>
+				<div class="controls">
 					<input type="text" name="thumb_w" value="<?php echo $items->thumb_w;?>" class="infields" id="thumb_w"  />
 				</div>
 			</div>
-			<div class="clearfix">
-				<label for="thumb_h"><?php echo L_GALLERY_THUMB_H ?></label>
-				<div class="input">
+			<div class="control-group">
+				<label for="thumb_h" class="control-label"><?php echo L_GALLERY_THUMB_H ?></label>
+				<div class="controls">
 					<input type="text" name="thumb_h" value="<?php echo $items->thumb_h;?>" class="infields" id="thumb_h"  />
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="span7">
-			<div class="clearfix">
-				<label for="thumb_max"><?php echo L_GALLERY_THUMB_MAX ?></label>
-				<div class="input">
+		<div class="span5">
+			<div class="control-group">
+				<label for="thumb_max" class="control-label"><?php echo L_GALLERY_THUMB_MAX ?></label>
+				<div class="controls">
 					<input type="text" name="thumb_max" value="<?php echo $items->thumb_max;?>" class="infields" id="thumb_max"  />
 				</div>
 			</div>
 		</div>
-		<div class="span7">
-			<div class="clearfix">
-				<label for="use_default_thumbsize"><?php echo L_GALLERY_THUMB_KEEP_DEFAULT ?></label>
-				<div class="input">
-					<input type="checkbox" name="use_default_thumbsize" value="1" class="cBox" id="use_default_thumbsize"  <?php echo ($items->use_default_thumbsize == 1) ? 'checked="checked"' : '';?>  />
-				</div>
-			</div>
+		<div class="span5">
+			<label for="use_default_thumbsize" class="checkbox">
+				<input type="checkbox" name="use_default_thumbsize" value="1" id="use_default_thumbsize"  <?php echo ($items->use_default_thumbsize == 1) ? 'checked="checked"' : '';?>  />
+				<?php echo L_GALLERY_THUMB_KEEP_DEFAULT ?>
+			</label>
 		</div>
-	</div>	
+	</div>
 	<?php
 }
 	function doPaypal() {
 		$items =& $this->items;
 		global $currencysymbols;
 		?>
-		<label for="for_sale"><?php echo L_GALLERY_PP_FOR_SALE ?></label><input type="hidden" name="for_sale" value="0" /><input type="checkbox" name="for_sale" value="1" class="cBox" id="for_sale"  <?php echo ($items->for_sale == 1) ? 'checked="checked"' : '';?>  /><br />
-		<label for="paypal_amount"> <?php echo L_GALLERY_PP_PRICE;
-		$paypal_currency_code = getOption('paypal_currency_code');
-		 echo (isset($paypal_currency_code)) ? $currencysymbols[$paypal_currency_code] : $currencysymbols['USD']; ?></label><input type="text" name="paypal_amount" value="<?php echo $items->paypal_amount;?>" class="infields" id="paypal_amount"  /><br />
-		<label for="paypal_handling"><?php echo L_GALLERY_PP_HANDLING_COST ?></label><input type="text" name="paypal_handling" value="<?php echo $items->paypal_handling;?>" class="infields" id="paypal_handling"  /><?php echo L_GALLERY_PP_HANDLING_NOTE ?><br />
-		
+		<label for="for_sale" class="checkbox">
+			<input type="hidden" name="for_sale" value="0" />
+			<input type="checkbox" name="for_sale" value="1" id="for_sale"  <?php echo ($items->for_sale == 1) ? 'checked="checked"' : '';?>  />
+			<?php echo L_GALLERY_PP_FOR_SALE ?>
+		</label>
+		<div class="control-group">
+			<label for="paypal_amount"> <?php echo L_GALLERY_PP_PRICE; ?></label>
+			<div class="controls">
+				<div class="input-prepend">
+					<span class="add-on"><?php $paypal_currency_code = getOption('paypal_currency_code'); echo (isset($paypal_currency_code)) ? $currencysymbols[$paypal_currency_code] : $currencysymbols['USD']; ?></span>
+					<input type="text" name="paypal_amount" value="<?php echo $items->paypal_amount;?>" class="infields" id="paypal_amount"  />
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="paypal_handling"><?php echo L_GALLERY_PP_HANDLING_COST ?></label>
+			<div class="controls">
+				<div class="input-prepend">
+					<span class="add-on"><?php echo (isset($paypal_currency_code)) ? $currencysymbols[$paypal_currency_code] : $currencysymbols['USD'];?></span>
+					<input type="text" name="paypal_handling" value="<?php echo $items->paypal_handling;?>" class="infields" id="paypal_handling"  />
+					<span class="note"><?php echo L_GALLERY_PP_HANDLING_NOTE ?></span>
+				</div>
+			</div>
+		</div>
+
+
 		<fieldset id="new_cat">
 			<legend><?php echo L_GALLERY_PP_MORE_OPTIONS; tooltip(L_GALLERY_PP_MORE_OPTIONS, L_GALLERY_PP_MORE_OPTIONS_HELP); ?></legend>
-			<?php 
+			<?php
 			if(!empty($items->extraoptions)){
 				$extraoptions = unserialize($items->extraoptions);
 				foreach($extraoptions as $k => $val){
 				$ok = $k+1;
 				if($ok === 1){
 					?>
-					<div class="clearfix">
+					<div class="control-group">
 						<label for="option<?php echo $ok ?>"><?php echo L_JS_OPTION_LABEL ?> <?php echo $ok ?></label>
-						<div class="input">
+						<div class="controls">
 							<input type="text" name="extraoptions[]" id="option<?php echo $ok ?>" value="<?php echo view($val) ?>" class="formfields"  />
 						</div>
 					</div>
@@ -498,33 +515,33 @@ function doThumbnails(){
 				} else {
 				?>
 					<div id="option<?php echo $ok ?>Group">
-						<div class="clearfix">
+						<div class="control-group">
 							<label for="option<?php echo $ok ?>"><?php echo L_JS_OPTION_LABEL ?> <?php echo $ok ?></label>
-							<div class="input">
+							<div class="controls">
 								<input type="text" name="extraoptions[]" id="option<?php echo $ok ?>" value="<?php echo view($val) ?>" class="formfields"  />
 							</div>
 						</div>
 					</div>
 				<?php
 				}
-				
+
 				}
 			} else {
 				?>
 				<div class="row" id="new_cat1Group">
 					<div class="span6">
-						<div class="clearfix">
-							<label for="option1"><?php echo L_JS_OPTION_LABEL ?> 1</label>
-							<div class="input">
+						<div class="control-group">
+							<label for="option1" class="control-label"><?php echo L_JS_OPTION_LABEL ?> 1</label>
+							<div class="controls">
 								<input type="text" name="extraoptions[]" id="option1" value="" class="formfields" />
 							</div>
 						</div>
 					</div>
 				</div>
-				<?php				
+				<?php
 			}
 			?>
-		
+
 		</fieldset>
 		<?php
 	}

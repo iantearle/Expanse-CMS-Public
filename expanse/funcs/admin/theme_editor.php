@@ -1,5 +1,5 @@
-<?php 
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');} 
+<?php
+if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
 /*   Themes   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=theme_editor">'.L_ADMIN_EDIT_THEMES.'</a>',array(),'themeEditor');
 if($admin_sub !== 'theme_editor'){return;}
@@ -47,15 +47,15 @@ function theme_content() {
 			$style_sheet = file_get_contents("$theme_dir/css/styles.css");
 			$users = new Expanse('users');
 			$users->Get($auth->Id);
-			$style_sheet = str_replace('/*__CSS_META__*/', 
-			'/*
-			Theme Name: '.$proper_theme_name.'
-			Theme URL: '.$yoursite.'
-			Description: Courteously provided by your friends at '.COMPANY_NAME.' We heart your face.
-			Version: 1.0
-			Author: '.((!empty($auth->DisplayName)) ? $auth->DisplayName : $auth->Username).'
-			Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $yoursite).'
-			*/', $style_sheet);
+			$style_sheet = str_replace('/*__CSS_META__*/',
+'/*
+Theme Name: '.$proper_theme_name.'
+Theme URL: '.$yoursite.'
+Description: Courteously provided by your friends at '.COMPANY_NAME.' We heart your face.
+Version: 1.0
+Author: '.((!empty($auth->DisplayName)) ? $auth->DisplayName : $auth->Username).'
+Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $yoursite).'
+*/', $style_sheet);
 			$fp = fopen("$theme_dir/css/styles.css", 'w+');
 			fwrite($fp, $style_sheet);
 			fclose($fp);
@@ -67,7 +67,7 @@ function theme_content() {
 		} else {
 			printOut(FAILURE,L_THEME_FAILURE);
 		}
-	}	
+	}
 	$themename = isset($_GET['theme']) ? $_GET['theme'] : '';
 	$themename = str_replace($special_chars, '', $themename);
 	$themename = str_replace('.', '', $themename);
@@ -87,14 +87,14 @@ function theme_content() {
 				$file_contents = $_POST['file_contents'];
 				$file_contents = applyOzoneAction('theme_update_file', $file_contents);
 				if(is_file($filename)){
-					$fp = fopen($filename,'wb');	
+					$fp = fopen($filename,'wb');
 					if(fwrite($fp,$file_contents)){
 						printOut(SUCCESS, L_THEME_FILE_UPDATED);
 					}
-				}		
+				}
 				fclose($fp);
 			}
-			if(is_posting(L_BUTTON_CREATE)) { 
+			if(is_posting(L_BUTTON_CREATE)) {
 				$create_in = isset($_POST['create_in']) && $_POST['create_in'] != 'main' ? $theme.'/'.$_POST['create_in']: $theme;
 				$create_in_base = isset($_POST['create_in']) && $_POST['create_in'] == 'main' ? '' : $_POST['create_in'].'%2F';//
 				$filename = isset($_POST['filename']) ? trim($_POST['filename']) : '';
@@ -106,7 +106,7 @@ function theme_content() {
 				$filepath = $create_in.'/'.$filename; /*echo  $create_in_base;*/
 				if(!empty($filename)) {
 					if(!file_exists($filepath) && !is_file($filepath)){
-						$fp = fopen($filepath,'w+');	
+						$fp = fopen($filepath,'w+');
 						if(fwrite($fp,$file_contents)){
 							printOut(SUCCESS, sprintf(L_THEME_FILE_CREATED,$themename,$create_in_base.$filename));
 						}
@@ -123,114 +123,126 @@ function theme_content() {
 		</form>
 		<div id="themeEditor">
 			<?php echo $output ;?>
-			<div class="stretchContainer">
-				<h3 class="stretchToggle" id="wedge"><span><?php echo L_THEME_CREATE_NEW_FILE ?></span></h3>
-				<form action="" method="post" class="stretch form-stacked">
-					<div class="row">
-						<div class="span7">
-							<div class="clearfix">
-								<label for="create_in"><?php echo L_THEME_CREATE_IN_FOLDER ?></label>
-								<div class="input">
-									<select name="create_in" id="create_in" class="infields span7">
-										<option value="main"><?php echo $themename; ?></option> <?php 
-										foreach($themes['dirs'][$themename]['dirs'] as $k => $v) {
-											if(!in_array($k, $blocked_dirs)){ ?>
-												<option value="<?php echo $k ?>">&mdash; <?php echo $k ?></option>
-											<?php
-											}
-										} ?>
-									</select>
-								</div>	
-							</div>
+			<div class="accordion" id="stretchContainer">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#stretchContainer" href="#themeEditorStretch"><?php echo L_THEME_CREATE_NEW_FILE ?></a>
+					</div>
+					<div id="themeEditorStretch" class="accordion-body collapse">
+						<div class="accordion-inner">
+							<form action="" method="post" class="form-horizontal">
+								<div class="row">
+									<div class="span5">
+										<div class="control-group">
+											<label for="create_in" class="control-label"><?php echo L_THEME_CREATE_IN_FOLDER ?></label>
+											<div class="controls">
+												<select name="create_in" id="create_in" class="infields">
+													<option value="main"><?php echo $themename; ?></option> <?php
+													foreach($themes['dirs'][$themename]['dirs'] as $k => $v) {
+														if(!in_array($k, $blocked_dirs)){ ?>
+															<option value="<?php echo $k ?>">&mdash; <?php echo $k ?></option>
+															<?php
+														}
+													} ?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="span5">
+										<div class="control-group">
+											<label for="filename" class="control-label"><?php echo L_THEME_CREATE_FILENAME ?></label>
+											<div class="controls">
+												<input type="text" value="" id="filename" name="filename" class="" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-actions">
+									<input id="submit" type="submit" name="submit" value="<?php echo L_BUTTON_CREATE ?>" class="btn btn-primary pull-right" />
+								</div>
+							</form>
 						</div>
-						<div class="span7">
-							<div class="clearfix">
-								<label for="filename"><?php echo L_THEME_CREATE_FILENAME ?></label>
-								<div class="input">
-									<input type="text" value="" id="filename" name="filename" class="span7" />
+					</div>
+				</div>
+			</div>
+			<form method="get" action="" class="form-horizontal">
+							<input name="cat" type="hidden" value="admin" />
+							<input name="sub" type="hidden" value="theme_editor" />
+							<div class="row">
+								<div class="span6">
+									<div class="well">
+										<div class="control-group">
+											<label for="theme" class="control-label"><?php echo L_THEME_SELECT_THEME ?></label>
+											<div class="controls">
+												<select name="theme" id="theme"> <?php
+													foreach($themes['dirs'] as $k => $val){
+														if($k != $themename){ ?>
+															<option value="<?php echo $k ?>"><?php echo str_replace('_', ' ', $k); ?></option> <?php
+														} else { ?>
+															<option selected="selected" value="<?php echo $k ?>"><?php echo str_replace('_', ' ', $k); ?></option> <?php
+														}
+													} ?>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="span6">
+									<div class="well">
+										<div class="control-group">
+											<label for="themefile" class="control-label"><?php echo L_THEME_SELECT_FILE ?></label>
+											<div class="controls">
+												<select id="themefile" name="themefile"> <?php
+													ksort($themes['dirs'][$themename]['dirs']);
+													foreach($themes['dirs'] as $ind => $val) {
+														if($ind == $themename){
+															foreach($val['dirs'] as $k => $v) {
+																if(!in_array($k, $blocked_dirs)) { ?>
+																	<optgroup label="<?php echo $k; ?>"> <?php
+																	asort($v['files']);
+																	foreach($v['files'] as $files) {
+																		if($themefile != $k.'/'.$files) { ?>
+																			<option value="<?php echo $k.'/'.$files; ?>"><?php echo $files; ?></option> <?php
+																		} else { ?>
+																			<option selected="selected" value="<?php echo $k.'/'.$files; ?>" class="current">&raquo; <?php echo $files; ?></option> <?php
+																		}
+																	} ?>
+																	</optgroup> <?php
+																}
+															}
+															if(!empty($val['files'])) { ?>
+																<optgroup label="<?php echo L_THEME_MAIN_FOLDER ?>"> <?php
+																	foreach($val['files'] as $mfiles) {
+																		if($themefile != $mfiles){?>
+																			<option value="<?php echo $mfiles; ?>"><?php echo $mfiles; ?></option> <?php
+																		} else { ?>
+																			<option selected="selected" value="<?php echo $mfiles; ?>">&raquo; <?php echo $mfiles; ?></option> <?php
+																		}
+																	} ?>
+																</optgroup> <?php
+															}
+														}
+													} ?>
+												</select>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="actions">
-						<input id="submit" type="submit" name="submit" value="<?php echo L_BUTTON_CREATE ?>" class="btn primary" />
-					</div>
-				</form>
-			</div>
-			<form method="get" action="" class="form-stacked">	
-				<input name="cat" type="hidden" value="admin" />
-				<input name="sub" type="hidden" value="theme_editor" />
-				<div class="row">
-					<div class="span8">
-						<div class="clearfix">
-							<label for="theme"><?php echo L_THEME_SELECT_THEME ?></label>
-							<div class="input">
-								<select name="theme" id="theme"> <?php 
-									foreach($themes['dirs'] as $k => $val){
-										if($k != $themename){ ?>
-											<option value="<?php echo $k ?>"><?php echo str_replace('_', ' ', $k); ?></option> <?php	
-										} else { ?>
-											<option selected="selected" value="<?php echo $k ?>"><?php echo str_replace('_', ' ', $k); ?></option> <?php	
-										}
-									} ?>
-								</select>
+							<div class="form-actions">
+								<input id="submit" type="submit" value="<?php echo L_BUTTON_EDIT ?>" class="btn btn-primary pull-right" />
 							</div>
-						</div>
-					</div>
-					<div class="span8">
-						<div class="clearfix">
-							<label for="themefile"><?php echo L_THEME_SELECT_FILE ?></label>
-							<div class="input">
-								<select id="themefile" name="themefile"> <?php 
-									ksort($themes['dirs'][$themename]['dirs']);
-									foreach($themes['dirs'] as $ind => $val) {
-										if($ind == $themename){
-											foreach($val['dirs'] as $k => $v) {
-												if(!in_array($k, $blocked_dirs)) { ?>
-													<optgroup label="<?php echo $k; ?>"> <?php
-													asort($v['files']);
-													foreach($v['files'] as $files) { 
-														if($themefile != $k.'/'.$files) { ?>
-															<option value="<?php echo $k.'/'.$files; ?>"><?php echo $files; ?></option> <?php 
-														} else { ?>
-															<option selected="selected" value="<?php echo $k.'/'.$files; ?>" class="current">&raquo; <?php echo $files; ?></option> <?php 
-														}
-													} ?>
-													</optgroup> <?php 
-												}
-											}
-											if(!empty($val['files'])) { ?>
-												<optgroup label="<?php echo L_THEME_MAIN_FOLDER ?>"> <?php
-													foreach($val['files'] as $mfiles) {
-														if($themefile != $mfiles){?>
-															<option value="<?php echo $mfiles; ?>"><?php echo $mfiles; ?></option> <?php 
-														} else { ?>
-															<option selected="selected" value="<?php echo $mfiles; ?>">&raquo; <?php echo $mfiles; ?></option> <?php 
-														}
-													} ?>
-												</optgroup> <?php
-											} 
-										}
-									} ?>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="actions">
-					<input id="submit" type="submit" value="<?php echo L_BUTTON_EDIT ?>" class="btn primary" />
-				</div>
-			</form>
-		
+						</form>
 		<form action="" method="post" accept-charset="utf-8" class="form-stacked">
 			<div class="row">
-				<div class="span16"> <?php 
+				<div class="span12"> <?php
 					$filename = urldecode($theme.'/'.$themefile);
 					if(!empty($themefile) && is_file($filename)) {
 						$filecontents = $filename;
 						$properfilename = $themename.'/'.$themefile;
 					} else {
-						$filecontents = "$theme/css/$themename.css";			
+						$filecontents = "$theme/css/$themename.css";
 						$filecontents = file_exists("$theme/css/$themename.css") ? "$theme/css/$themename.css" : "$theme/css/styles.css";
 						$properfilename = file_exists("$themename/css/$themename.css") ? "$themename/css/$themename.css" : "$themename/css/styles.css";
 					}
@@ -238,20 +250,20 @@ function theme_content() {
 					$filecontents =  view($filecontents); ?>
 					<h2>Editing <?php echo $properfilename; ?></h2>
 					<?php if(CUSTOM_INSTALL != true && preg_match('/\.tpl\.html$/', $themefile)){printf(NOTE.'<br />',L_THEME_EDITOR_VAR_NOTE); }?>
-					<textarea name="file_contents" id="file_contents" class="span16"><?php echo $filecontents;  ?></textarea>
+					<textarea name="file_contents" id="file_contents" class="span12"><?php echo $filecontents;  ?></textarea>
 				</div>
-			</div> 
-			<div class="actions">
-				<input type="submit" name="submit" id="submit" value="update" class="btn primary" /> 
+			</div>
+			<div class="form-actions">
+				<input type="submit" name="submit" id="submit" value="update" class="btn btn-primary" />
 			</div>
 		</div><?php
 	} else { ?>
 		<div id="themeEditor" class="row">
-			<div class="span16">
+			<div class="span12">
 				<?php echo $output ;?>
 				<p class="contentnote"><?php echo L_THEME_EDIT_CHOOSE_NOTE ?></p>
-				<table id="themeList" class="zebra-striped"> 
-					<tbody> <?php 
+				<table id="themeList" class="table table-striped table-hover">
+					<tbody> <?php
 					$expanse_dir = EXPANSEPATH;
 					$yoursite = YOUR_SITE;
 					$active_theme = getOption('theme');
@@ -259,16 +271,16 @@ function theme_content() {
 						$preview_img = "$expanse_dir/themes/$theme/images/preview.png";
 						$preview_img_url = EXPANSE_URL."themes/$theme/images/preview.png"; ?>
 							<tr<?php echo ($theme == $active_theme) ?  ' class="activeTheme"' : (($ind % 2) ? ' class="altRow"' : ''); ?>>
-								<td> <?php 
+								<td> <?php
 									if(file_exists($preview_img)) {
 										echo '<img src="'.$preview_img_url.'" />';
 									} ?>
 								</td>
-								<td class="themeInfo"> <?php 
+								<td class="themeInfo"> <?php
 									$theme_css_file = file_exists("$expanse_dir/themes/$theme/css/$theme.css") ? "$expanse_dir/themes/$theme/css/$theme.css" : "$expanse_dir/themes/$theme/css/styles.css";
 									$theme_info = theme_info($theme_css_file);
 									if(has_theme_info($theme_info)) { ?>
-										<h3><?php echo !empty($theme_info->Name) ? $theme_info->Name : str_replace('_', ' ', $theme); echo !empty($theme_info->Author) ? '<small> '.L_THEME_BY.' '.$theme_info->Author.'</small>' : ''; ?></h3> <?php 
+										<h3><?php echo !empty($theme_info->Name) ? $theme_info->Name : str_replace('_', ' ', $theme); echo !empty($theme_info->Author) ? '<small> '.L_THEME_BY.' '.$theme_info->Author.'</small>' : ''; ?></h3> <?php
 										echo !empty($theme_info->Version) ? '<h4>'.L_THEME_VERSION.' '.$theme_info->Version.'</h4>' : '';
 										echo !empty($theme_info->Description) ? '<p>'.$theme_info->Description.'</p>' : '';
 									} else {
@@ -282,40 +294,31 @@ function theme_content() {
 								<td>
 									<a href="index.php?cat=admin&amp;sub=theme_editor&amp;theme=<?php echo $theme ?>" class="editLink btn primary"><?php echo L_THEME_EDIT_TEXT ?></a>
 								</td>
-								<td> <?php 
+								<td> <?php
 									if($theme != $active_theme) { ?>
-										<div class="clearfix">
-											<div class="input">
-												<label for="activate_this_<?php echo $ind?>">
-													<input type="radio" id="activate_this_<?php echo $ind?>" name="activate_this" value="<?php echo $theme; ?>" /> 
-													<span><?php echo L_THEME_ACTIVATE_TEXT ?></span>
-												</label>
-											</div> 
-										</div> <?php 
+										<label for="activate_this_<?php echo $ind?>" class="radio">
+											<input type="radio" id="activate_this_<?php echo $ind?>" name="activate_this" value="<?php echo $theme; ?>" />
+											<?php echo L_THEME_ACTIVATE_TEXT ?>
+										</label>
+									<?php
 									} else {
 										echo 'Active Theme';
 									} ?>
 								</td>
 							</tr>  <?php
 					} ?>
-					</tbody>                   
+					</tbody>
 				</table>
 			</div>
 		</div>
-		<div class="actions">
-			<div class="row">
+		<div class="form-actions">
 			<div class="pull-right">
-				<div class="clearfix">
-					<div class="input">
-						<input type="submit" name="submit" id="submit" value="<?php echo L_BUTTON_ACTIVATE ?>" class="btn success" />
-					</div>
-				</div>
+				<input type="submit" name="submit" id="submit" value="<?php echo L_BUTTON_ACTIVATE ?>" class="btn btn-success" />
 			</div>
-			</div>
-		</div> <?php 
+		</div> <?php
 		if(is_writable(EXPANSEPATH.'/themes')) { ?>
 		<div class="row">
-			<div class="span16">
+			<div class="span12">
 				<fieldset>
 					<legend><?php echo L_THEME_CREATE_TITLE ?></legend>
 					<p><?php echo L_THEME_CREATE_DETAIL ?></p>
@@ -324,10 +327,10 @@ function theme_content() {
 					<div class="actions">
 						<input type="submit" value="<?php echo L_BUTTON_MAKE_NEW_THEME ?>" name="new_submit" id="new_submit" class="btn primary" />
 					</div>
-				</fieldset> 
+				</fieldset>
 			</div>
-		</div> <?php 
+		</div> <?php
 		}
 	}
 }
-?> 		
+?>

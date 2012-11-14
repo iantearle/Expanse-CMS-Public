@@ -4,6 +4,7 @@
 define('IS_FRONTEND', true);
 define('IS_BACKEND', false);
 require(dirname(__FILE__) . '/common.functions.php');
+/*Turn off globals*/
 turnOffGlobals();
 //Grab config
 $config_file = realpath(dirname(__FILE__).'/../config.php');
@@ -25,24 +26,23 @@ require(dirname(__FILE__) . '/ozone.default.php');
 require(dirname(__FILE__) . '/template.class.php');
 require(dirname(__FILE__) . '/common.vars.php');
 
-/*Turn off globals*/
-turnOffGlobals();
 /*Instatiate Objects*/
-$outmess = new outputMessages;
+$outmess = new outputMessages();
 $output = '';
 /*Template Objects*/
 $sections = new Expanse('sections');
 $comments = new Expanse('comments');
 $images = new Expanse('images');
-$layout = new stdClass;
+$layout = new stdClass();
 $items = new Expanse('items');
 $users = new Expanse('users');
 /*Do Not Change Below*/
 $option = getAllOptions();
-$header = new stdClass;
-$main = new stdClass;
-$menu = new stdClass;
-$footer = new stdClass;
+$header = new stdClass();
+$main = new stdClass();
+$user_pages = new stdClass();
+$menu = new stdClass();
+$footer = new stdClass();
 if(CLEAN_URLS) {
 	$pinfo = isset($_SERVER['PATH_INFO']) ? explode('?', $_SERVER['PATH_INFO']) : array('');
 	$pinfo = $pinfo[0];
@@ -65,7 +65,7 @@ if(CLEAN_URLS) {
 	$self = trim($self, '/');
 	if(preg_match('|^(search)(/[\w\d-]+)*$|', $request_uri, $matches)) {
 		// is a search
-		$_GET['search'] = trim($matches[2], '/');
+		$_GET['search'] = trim($matches[1], '/');
 	} elseif(preg_match('|^([\w\d-]+)$|', $request_uri, $matches)) {
 		$check = $sections->GetList(array(array('dirtitle', '=', $matches[1]),array('pid', '=', 0)));
 		if(!empty($check)) {
@@ -141,7 +141,7 @@ define('LOGGED_IN', isLoggedIn());
 define('PREVIEW', ($preview == 'true' && LOGGED_IN ? true : false));
 
 if(LOGGED_IN){
-	error_reporting(E_ALL | E_STRICT);
+	error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 }
 
 $option->yoursite = checkTrailingSlash($option->yoursite);
@@ -154,12 +154,12 @@ define('THEME_URL', YOUR_SITE.$themedir.'/');
 define('TEMPLATES', $themetemplates.'/');
 $themecss = file_exists("$themedir/css/$use_theme.css") ? "$themedir/css/$use_theme.css" : "$themedir/css/styles.css";
 $themejs = file_exists("$themedir/javascript/$use_theme.js") ? "$themedir/javascript/$use_theme.js" : "$themedir/javascript/javascript.js";
-$themejquery = file_exists("$themedir/javascript/jquery.js") ? "$themedir/javascript/jquery.js" : "$themedir/javascript/jquery.$use_theme.js";
-$thememodernizr = file_exists("$themedir/javascript/modernizr.js") ? "$themedir/javascript/modernizr.js" : "$themedir/javascript/modernizr.$use_theme.js";
+$themejquery = file_exists("$themedir/javascript/jquery.js") ? YOUR_SITE."$themedir/javascript/jquery.js" : "http://code.jquery.com/jquery.min.js";
+$thememodernizr = file_exists("$themedir/javascript/modernizr.min.js") ? "$themedir/javascript/modernizr.min.js" : "";
 $themeimages = "$themedir/images";
 $css_link = YOUR_SITE.$themecss;
 $javascript_link = YOUR_SITE.$themejs;
-$jquery = YOUR_SITE.$themejquery;
+$jquery = $themejquery;
 $modernizr = YOUR_SITE.$thememodernizr;
 $images_link = YOUR_SITE.$themeimages;
 $uploads_url = EXPANSE_URL.'uploads/';
@@ -176,7 +176,7 @@ $xmlpage = 'feed.php';
 define('XML_PAGE', $xmlpage);
 $tplext = TPL_EXT;
 
-	if (file_exists("$themetemplates/logic.php")) {
+	if(file_exists("$themetemplates/logic.php")) {
 		include("$themetemplates/logic.php");
 	}
 
@@ -195,8 +195,8 @@ $tplext = TPL_EXT;
 	$addExtras->themeimages = $themeimages;
 	$addExtras->css_link = $css_link;
 	$addExtras->javascript_link = $javascript_link;
-	$addExtras->jquery = $jquery;
-	$addExtras->modernizr = $modernizr;
+	$addExtras->jquery_link = $jquery;
+	$addExtras->modernizr_link = $modernizr;
 	$addExtras->theme_folder = YOUR_SITE."$themedir/";
 	$addExtras->images_folder = YOUR_SITE."$themedir/images/";
 	$addExtras->smilies_folder = YOUR_SITE."$themedir/images/smilies/";
@@ -215,7 +215,7 @@ $tplext = TPL_EXT;
 		$header->{$optname} = $optval;
 		$footer->{$optname} = $optval;
 		$menu->{$optname} = $optval;
-		//$userpage->{$optname} = $optval;
+		$user_pages->{$optname} = $optval;
 		$xmlvars[$optname] = $optval;
 		$layout->{$optname} = $optval;
 	}
@@ -223,14 +223,13 @@ $tplext = TPL_EXT;
 		$header->{$xp} = $xv;
 		$footer->{$xp} = $xv;
 		$menu->{$xp} = $xv;
-		//$userpage->{$xp} = $xv;
+		$user_pages->{$xp} = $xv;
 		$xmlvars[$xp] = $xv;
 		$user_vars['main'][$xp] = $xv;
 		$layout->{$xp} = $xv;
 	}
-
   // =================== HTML ================
-	if (!is_feed()) {
+	if(!is_feed()) {
 		$header->pcat = $pcat;
 		$header->subcat = $subcat;
 		$footer->pcat = $pcat;
@@ -238,7 +237,6 @@ $tplext = TPL_EXT;
 		$header = make_header();
 		$footer = make_footer();
 		$menu = make_menu();
-		$fof = '';
 
 		if(is_search()) { //performing a search
 			$tplfile = file_exists("$themetemplates/search{$tplext}") ? "search{$tplext}" : '';
@@ -273,7 +271,7 @@ $tplext = TPL_EXT;
 				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 				$main = expanse("type:static|id:{$items->id}|template:$tplfile", $user_vars['main'], true);
 			}
-		} elseif (is_userpage()) { //On a user page
+		} elseif(is_userpage()) { //On a user page
 			$items->Get($ucat);
 			if (!empty($items->id) && $items->type == 'static') {
 				$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
@@ -310,6 +308,7 @@ $tplext = TPL_EXT;
 		}
 		if(!empty($fof)) {
 			printOut(FAILURE, L_PAGE_NOT_FOUND);
+			$userpage = new stdClass();
 			$userpage->output = $output;
 			$tplfile = safe_tpl("$themetemplates/@misc{$tplext}");
 			$main = sprintt($userpage, $tplfile);

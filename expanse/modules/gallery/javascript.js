@@ -107,7 +107,7 @@ var Drag = {
     {
         document.onmousemove = null;
         document.onmouseup   = null;
-        Drag.obj.root.onDragEnd(    parseInt(Drag.obj.root.style[Drag.obj.hmode ? "left" : "right"]), 
+        Drag.obj.root.onDragEnd(    parseInt(Drag.obj.root.style[Drag.obj.hmode ? "left" : "right"]),
                                     parseInt(Drag.obj.root.style[Drag.obj.vmode ? "top" : "bottom"]));
         Drag.obj = null;
     },
@@ -138,39 +138,39 @@ resetMessage = _l('CROP_RESET');
 function statMess(txt){
 	window.status = txt;
 	return true;
-	}	
+	}
 function rememberCrop(){
 
 	var crop_x = $('crop_x').value;
 	var crop_y = $('crop_y').value;
 	var thumb_w =  $('thumb_w').value;
 	var thumb_h =  $('thumb_h').value;
-	var dragBox = $("dragBox");	
-	
+	var dragBox = $("dragBox");
+
 	var x = crop_x;
 	var y = crop_y;
 	var w = thumb_w;
 	var h = thumb_h;
-	
+
 	dragBox.style.display = "block";
 	dragBox.style.width = w + "px";
 	dragBox.style.height = h + "px";
 	dragBox.style.left = x + "px";
 	dragBox.style.top =  y + "px";
-	
+
 	}
 function rememberScale(){
 
 	var thumb_max =  $('thumb_max').value;
-	var sHandle = $("handle");	
+	var sHandle = $("handle");
 	var scaleSize = parseInt(($('thumb_max').value/$('thumb_w').value)*194);
-	
+
 	sHandle.style.position = "relative";
 	sHandle.style.left = scaleSize+"px";
-	
+
 	}
-function mouseDown(e) {  
-	if (!e) var e = window.event; 
+function mouseDown(e) {
+	if (!e) var e = window.event;
 			if (e.pageX || e.pageY)
 			{
 				mousePosX = e.pageX;
@@ -178,7 +178,7 @@ function mouseDown(e) {
 			}
 			else if (e.clientX || e.clientY)
 			{
-				
+
 mousePosX = (document.documentElement && document.documentElement.scrollLeft) ? e.clientX + document.documentElement.scrollLeft : e.clientX + document.body.scrollLeft;
 mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e.clientY + document.documentElement.scrollTop : e.clientY + document.body.scrollTop;
 			}
@@ -192,10 +192,10 @@ mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e
 	if (targetEl.id==canvasImgId) {
 		canvasEl = $("canvas");
 		imageEl = $(canvasImgId);
-		dragBox = $("dragBox");	
+		dragBox = $("dragBox");
 		oldX = mousePosX;
 		oldY = mousePosY;
-		
+
 		mouseMoved=false;
 	}
 	else
@@ -209,7 +209,7 @@ mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e
 
 function mouseMove(e) {
 	if (!e) var e = window.event;
-	if (imageEl == null) { return };	
+	if (imageEl == null) { return };
 			if (e.pageX || e.pageY)
 			{
 				mousePosX = e.pageX;
@@ -217,7 +217,7 @@ function mouseMove(e) {
 			}
 			else if (e.clientX || e.clientY)
 			{
-				
+
 mousePosX = (document.documentElement && document.documentElement.scrollLeft) ? e.clientX + document.documentElement.scrollLeft : e.clientX + document.body.scrollLeft;
 mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e.clientY + document.documentElement.scrollTop : e.clientY + document.body.scrollTop;
 			}
@@ -239,13 +239,13 @@ mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e
 	h = Math.min( h, (imageH-y));
 	w = Math.max( w, 1);
 	h = Math.max( h, 1);
-	
+
 	if(e.shiftKey){
 		if(h <= imageW){
 			w = h;
 			}
 			}
-	
+
 	dragBox.style.display = "block";
 	dragBox.style.width = w + "px";
 	dragBox.style.height = h + "px";
@@ -283,7 +283,7 @@ function loadScale(){
 function saveChanges(){
 	$('canvas').style.display = 'none';
 	showSelects();
-	xajax_saveCrop(xajax.getFormValues('post'));	
+	xajax_saveCrop(xajax.getFormValues('post'));
 	$('thumb_max').value = $('thumb_w').value;
 	if($('handle')){
 		$('scaleImg').style.width = document.images['scaleImg'].width = $('thumb_max').value;
@@ -328,7 +328,7 @@ function saveScale(mw){
 	showSelects();
 	xajax_saveCrop(xajax.getFormValues('post'));
 	hideOverlay();
-	}	
+	}
 function discardScale(mw){
 	$('thumb_max').value = mw;
 	rememberScale();
@@ -359,8 +359,8 @@ function hideOverlay(){
 						$('cropLinksContainer').style.padding = '';
 
 		}
-		
-	}	
+
+	}
 
 function mvThumbOR(where){
 	var box = $('keepThumbSize');
@@ -369,13 +369,13 @@ function mvThumbOR(where){
 	$('use_default_thumbsize').checked = checked;
 	}
 function createCropDivs(){
-	
+
 	if($('canvas')){
-		
+
 		$('canvas').style.display = 'block';
-		
+
 		} else {
-		
+
 	var canvasDiv = document.createElement("div");
 	var dragBoxDiv = document.createElement("div");
 	var controlLinks = document.createElement("p");
@@ -383,13 +383,13 @@ function createCropDivs(){
 	var savDimsL = document.createElement("a");
 	var discardDimsL = document.createElement("a");
 	var resetDimsL = document.createElement("a");
-		
+
 	var origX = $('crop_x').value;
 	var origY = $('crop_y').value;
 	var origW = $('thumb_w').value;
 	var origH = $('thumb_h').value;
-	var origUTD = $('use_default_thumbsize').checked; 
-	
+	var origUTD = $('use_default_thumbsize').checked;
+
 	canvasDiv.id = 'canvas';
 	canvasDiv.style.display = 'block';
 	canvasDiv.style.position = 'absolute';
@@ -401,7 +401,7 @@ function createCropDivs(){
 	$('canvasImg').parentNode.insertBefore(canvasDiv,$('canvasImg'));
 	canvasDiv.appendChild($('canvasImg'));
 	dragBoxDiv.id = 'dragBox';
-	
+
 	controlLinks.className = 'controllinks';
 	controlLinks.id = 'controlLinksCrop';
 	savDimsL.id = 'saveDims';
@@ -419,13 +419,13 @@ function createCropDivs(){
 	savDimsL.appendChild(savDimsT);
 	discardDimsL.appendChild(discardDimsT);
 	resetDimsL.appendChild(resetDimsT);
-	
-	
+
+
 	//tHandle = document.createTextNode('+');
 	//handle.appendChild(tHandle);
 	domEl('span', '+', {id:'thandlespan'}, handle);
 	handle.id = 'theHandle';
-	
+
 	canvasDiv.appendChild(handle);
 	canvasDiv.appendChild(dragBoxDiv);
 	canvasDiv.appendChild(controlLinks);
@@ -433,7 +433,7 @@ function createCropDivs(){
 	controlLinks.appendChild(savDimsL);
 	controlLinks.appendChild(discardDimsL);
 	controlLinks.appendChild(resetDimsL);
-	
+
 	//canvasDiv.parentNode.replaceChild(domEl('div', [handle,controlLinks,canvasDiv], {id:'canvasDivContainer'}), canvasDiv);
 		Event.observe(savDimsL, 'mouseover', function(){window.status=saveMessage; return true;});
 		Event.observe(savDimsL, 'mouseout', function(){window.status='';return true;});
@@ -447,23 +447,23 @@ function createCropDivs(){
 	addEvent($('canvas'),'mousedown',mouseDown);
 	addEvent($('canvas'),'mousemove',mouseMove);
 	addEvent($('canvas'),'mouseup',mouseUp);
-	
+
 	var mwidth = $('canvasImg').width - parseInt($('thumb_w').value);
 	var mheight = $('canvasImg').height -  parseInt($('thumb_h').value);
 	var positionX = (!isNaN(parseInt($('dragBox').style.left))) ? parseInt($('dragBox').style.left) : parseInt($('crop_x').value);
 	var positionY = (!isNaN(parseInt($('dragBox').style.top))) ? parseInt($('dragBox').style.top) : parseInt($('crop_y').value);
 	var dragBoxWidth;
 	var dragBoxHeight;
-	
-	
-			
-	addEvent($('dragBox'), 'mousedown', function(){	
+
+
+
+	addEvent($('dragBox'), 'mousedown', function(){
 		dragBoxWidth = (!isNaN(parseInt($('dragBox').style.width))) ? parseInt($('dragBox').style.width) : parseInt($('thumb_w').value);
 		dragBoxHeight = (!isNaN(parseInt($('dragBox').style.height))) ? parseInt($('dragBox').style.height) : parseInt($('thumb_h').value);
-		
+
 		mwidth = $('canvasImg').width - dragBoxWidth;
 		mheight = $('canvasImg').height - dragBoxHeight;
-		
+
 		positionX = parseInt($('dragBox').style.left);
 		positionY = parseInt($('dragBox').style.top);
 
@@ -471,14 +471,14 @@ function createCropDivs(){
 		$('dragBox').onDrag = function(x,y){
 			$('crop_x').value = x;
 			$('crop_y').value = y;
-		}	
+		}
 		$('dragBox').onDrag(positionX,positionY);/**/
-		
-	});	
+
+	});
 
 	Drag.init($('dragBox'), null, 0, mwidth, 0, mheight);
 	Drag.init($('theHandle'),$('canvas'));
-		
+
 	addEvent(savDimsL, 'click', function(){
 				saveChanges();
 				origX = $('crop_x').value;
@@ -496,14 +496,14 @@ function createCropDivs(){
 	addEvent($('canvas'), 'mousedown', function(){
 		winFocus($('canvas'), $('scaleCanvas'));
 		winFocus($('dragBox'), $('canvas'));
-											 });											
+											 });
 	}
 function toggleMaxThumbSize(){
 	if($('overRideSize').checked == true){
 		$('thumb_max').value = 0;
 		$('scaleLink').style.visibility = 'hidden';
 		} else {
-		
+
 		$('thumb_max').value = $F('thumb_w');
 		$('scaleLink').style.visibility = 'visible';
 		}
@@ -511,13 +511,13 @@ function toggleMaxThumbSize(){
 function createScaleDivs(){
 	if($('scaleCanvas')){
 		$('scaleCanvas').style.display = 'block';
-		
+
 		} else {
-	
+
 	var rootMax = $('thumb_w').value;
 	var origMax = $('thumb_max').value;
 	var scaleSize = parseInt(($('thumb_max').value/$('thumb_w').value)*194);
-	
+
 	var canvasDiv = document.createElement("div");
 	var imgContainer = document.createElement("div");
 	var output = document.createElement("div");
@@ -528,7 +528,7 @@ function createScaleDivs(){
 	var savDimsL = document.createElement("a");
 	var discardDimsL = document.createElement("a");
 	var resetDimsL = document.createElement("a");
-	
+
 	canvasDiv.id = 'scaleCanvas';
 	canvasDiv.style.display = 'block';
 	canvasDiv.style.position = 'absolute';
@@ -539,7 +539,7 @@ function createScaleDivs(){
 	canvasDiv.style.height = $('scaleImg').height;
 	//$('scaleImg').parentNode.insertBefore(canvasDiv,$('scaleImg'));
 	$('post').appendChild(canvasDiv);
-	
+
 	controlLinks.className = 'controllinks';
 	savDimsL.id = 'saveScaleDims';
 	savDimsL.href = 'javascript:;';
@@ -550,7 +550,7 @@ function createScaleDivs(){
 	resetDimsL.id = 'resetScaleDims';
 	resetDimsL.href = 'javascript:;';
 	resetDimsL.className = 'resetDims';
-	
+
 
 	var savDimsT = document.createTextNode(saveMessage);
 	var discardDimsT = document.createTextNode(discardMessage);
@@ -571,7 +571,7 @@ function createScaleDivs(){
 
 	mHandle.id = 'theScaleHandle';
 	domEl('span', '+', {id:'thandlespan'}, mHandle);
-	
+
 	imgContainer.id = 'imgContainer';
 	output.id = 'scaleOutput';
 	scaleTrack.id = 'scaleTrack';
@@ -580,7 +580,7 @@ function createScaleDivs(){
 	scaleTrack.style.position = 'relative';
 	scaleTrack.style.backgroundImage = 'url(images/scale_track.gif)';
 	scaleTrack.style.backgroundRepeat = 'no-repeat';
-	
+
 	handle.id = 'handle';
 	handle.src = 'images/scale_slider.gif';
 	handle.name = '';
@@ -589,18 +589,18 @@ function createScaleDivs(){
 	handle.style.left = (!isNaN(scaleSize)) ? scaleSize+'px' : '194px';
 	handle.style.backgroundImage = 'url(images/scale_slider.gif)';
 	handle.style.backgroundRepeat = 'no-repeat';
-	
+
 	canvasDiv.appendChild(mHandle);
 	canvasDiv.appendChild(controlLinks);
-	
+
 	canvasDiv.appendChild(imgContainer);
 	canvasDiv.appendChild(scaleTrack);
 	canvasDiv.appendChild(output);
-	
+
 	imgContainer.appendChild($('scaleImg'));
 	scaleTrack.appendChild(handle);
-	
-	
+
+
 		}
 	createOverlay();
 	addEvent(savDimsL, 'click', function(){
@@ -613,14 +613,14 @@ function createScaleDivs(){
 	addEvent(resetDimsL, 'click', function(){
 		resetScale(origMax);
 	});
-	
+
 	addEvent($('scaleCanvas'), 'mousedown', function(){
-		winFocus($('scaleCanvas'), $('canvas'));									 
+		winFocus($('scaleCanvas'), $('canvas'));
 											 });
 Drag.init($('handle'), null, -6, 194, 0, 0);
 Drag.init($('theScaleHandle'),$('scaleCanvas'));
 addEvent($('scaleCanvas'), 'mousedown', function(){
-	winFocus($('scaleCanvas'), $('canvas'));									 
+	winFocus($('scaleCanvas'), $('canvas'));
 										 });
 document.images['scaleImg'].width = $('thumb_max').value;
 var imgWidth = document.images['scaleImg'].width;
@@ -631,9 +631,9 @@ $('imgContainer').style.height = $('thumb_h').value+'px';
 $('imgContainer').style.minHeight = $('thumb_h').value+'px';
 $('handle').onDrag = function(x,y){
 scaleIt(x, $('thumb_w').value);
-		
-	}	
-	
+
+	}
+
 
 	}
 function createOverlay(){
@@ -674,14 +674,14 @@ function createCropLinks(){
 	toggleScaleLink();
 		}
 	}
-	
+
 function winFocus(obj, currObj){
 	if(obj && currObj){
-		obj.style.zIndex = currObj.style.zIndex + 1; 
+		obj.style.zIndex = currObj.style.zIndex + 1;
 		}
-	
-	
-	}	
+
+
+	}
 function scaleIt(v, origImgWidth) {
 
 	var scaleImage = $('scaleImg');
@@ -692,7 +692,7 @@ function scaleIt(v, origImgWidth) {
 	var percentage = offset/trackW;
 	var size  = Math.round(origImgWidth*percentage);
 	$('thumb_max').value = size;
-	
+
   	$('scaleOutput').innerHTML = 'Thumbnail Width: '+ size+'px<br />';
 	$('scaleOutput').innerHTML += 'Thumbnail Height: '+ scaleImage.height+'px<br />';
 	scaleImage.style.width = size+'px';
@@ -703,7 +703,7 @@ function toggleScaleLink(){
 		if(Element.visible($('scaleLink'))){
 			Element.toggle($('scaleLink'));
 			}
-		
+
 		if($('scaleCanvas')){
 			if(Element.visible($('scaleCanvas'))){
 				$('scaleCanvas').style.display = 'none';
@@ -718,17 +718,17 @@ function toggleScaleLink(){
 			if(!Element.visible($('sizeNotice'))){
 				Element.toggle($('sizeNotice'));
 				}
-			
+
 			} else {
-			domEl('span', '* This preview may be a different size than what is shown in your portfolio.', {id:'sizeNotice'}, $('thumbNails'));	
+			domEl('span', '* This preview may be a different size than what is shown in your portfolio.', {id:'sizeNotice'}, $('thumbNails'));
 			}
-		
+
 	}
 }
 
 /*
 Why do this? To make sure IE caches the image before the event fires for the scaler.
-*/
+
 function preloadImgCache(){
 	if($('autothumb')){
 	domEl('img', '', {'class': 'hidden', src:'images/scale_track.gif', id:'ntest'}, $('post').parentNode);
@@ -753,7 +753,7 @@ var autoThumb = {
 		var inputs = this.inputs;
 			inputs = $A(inputs);
 			inputs.each(function(i){
-								 
+
 			if(i.type == "checkbox" && i.name == "autothumb"){
 				addEvent(i, 'click', function(){
 						toggleClassName('thumbField', 'visible', 'hidden');
@@ -780,20 +780,25 @@ var autoThumb = {
 						if($('thumbField')){$('thumbField').className = 'visible';}
 						if($('thumbNailThumb')){$('thumbNailThumb').style.cursor = '';}
 					}
-				
+
 				}
-			
+
 								 });
 
-		
+
 
 		}
 }
-function expanse(){
+
+
 	setMessages();
 autoThumb.init();
 preloadImgCache();
 if($('use_default_thumbsize')){
 	Event.observe($('use_default_thumbsize'),'click',toggleScaleLink);
 	}
+}
+*/
+function expanse() {
+
 }

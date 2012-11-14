@@ -19,78 +19,62 @@ if(ADDING):	?>
 	<input type="hidden" name="MAX_FILE_SIZE" value="300000000000000" />
 
 	<div class="row">
-		<div class="span8">
-			<div class="clearfix">
-				<label for="title"><?php echo L_TITLE ?></label>
-				<div class="input">
-					<input name="title" type="text" class="span8 formfields" id="title" value="<?php echo @$_POST['title']; ?>" />
+		<div class="span6">
+			<div class="control-group">
+				<label for="title" class="control-label"><?php echo L_TITLE ?></label>
+				<div class="controls">
+					<input name="title" type="text" class="span6 formfields" id="title" value="<?php echo @$_POST['title']; ?>" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="url" class="control-label"><?php echo L_URL; ?></label>
+				<div class="controls">
+					<input name="url" type="text" class="span6 formfields" id="url" value="<?php echo @$_POST['url']; ?>" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="image" class="control-label"><?php echo L_IMAGE; ?></label>
+				<div class="controls">
+					<input type="file" id="image" name="image" class="spna6 formfields" />
 				</div>
 			</div>
 		</div>
-		<div class="span4">
-			<div class="clearfix">
+		<div class="span6">
+			<div class="control-group">
 				<label for="optionsCheckboxes">Post options</label>
-				<div class="input">
-					<ul class="inputs-list">
-						<li>
-							<label>
-								<input name="smilies" class="cBox" type="checkbox" id="smilies" value="1" checked="checked" />
-								<span><?php echo L_USE_SMILIES ?></span>
-							</label>
-						</li>
-						<li>
-							<label>
-								<input name="comments" class="cBox" type="checkbox" id="comments" value="1" checked="checked" />
-								<span><?php echo L_ALLOW_COMMENTS ?></span>
-							</label>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="span4">
-			<div class="clearfix">
-				<label for="online"><?php echo L_ONLINE ?></label>
-				<div class="input">
-					<input name="online" class="cBox" type="checkbox" id="online" value="1" checked="checked" />
+				<div class="controls">
+					<label for="online" class="checkbox">
+						<input name="online" type="checkbox" id="online" value="1" checked="checked" />
+						<?php echo L_ONLINE ?>
+					</label>
+					<label for="smilies" class="checkbox">
+						<input name="smilies" type="checkbox" id="smilies" value="1" checked="checked" />
+						<?php echo L_USE_SMILIES ?>
+					</label>
+					<label for="comment" class="checkbox">
+						<input name="comments" type="checkbox" id="comments" value="1" checked="checked" />
+						<?php echo L_ALLOW_COMMENTS ?>
+					</label>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="span8">
-			<div class="clearfix">
-				<label for="url"><?php echo L_URL; ?></label>
-				<div class="input">
-					<input name="url" type="text" class="span8 formfields" id="url" size="30" />
-				</div>
-			</div>
-		</div>
-		<div class="span8">
-			<div class="clearfix">
-				<label for="image"><?php echo L_IMAGE; ?></label>
-				<div class="input">
-					<input type="file" id="image" name="image" size="30" class="formfields" />
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span16">
-			<div class="clearfix">
-				<label for="descr"><?php echo L_BODY; ?></label>
-				<div class="input border-descr">
+		<div class="span12">
+			<div class="control-group">
+				<label for="descr" class="control-label"><?php echo L_BODY; ?></label>
+				<div class="controls border-descr">
 					<textarea name="descr" cols="30" rows="5" id="descr" class="descr formfields"><?php echo @$_POST['descr']; ?></textarea>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="span10">
+		<div class="span12">
 		<?php $the_module->custom_fields(); ?>
 		</div>
 	</div>
-	<div class="stretchContainer">
+	<div class="accordion" id="stretchContainer">
 	<?php
 	$the_module->more_options(
 		array(
@@ -100,8 +84,8 @@ if(ADDING):	?>
 	$the_module->more_options(L_POST_TIME_ADD, 'doDateTimeForms', 'editDateTimeContainer');
 	?>
 	</div>
-	<div class="actions">
-		<input name="submit" type="submit" class="btn primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
+	<div class="form-actions">
+		<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 	</div>
 <?php endif; ?>
 <?php
@@ -113,93 +97,71 @@ if(EDITING):
 		<input type="hidden" name="MAX_FILE_SIZE" value="3000000000" />
 
 		<div class="row">
-			<div class="span16">
+			<div class="span6">
+				<div class="control-group">
+					<label for="title" class="control-label"><?php echo L_TITLE ?></label>
+					<div class="controls">
+						<input name="title" type="text" class="span6 formfields" id="title" value="<?php echo view($items->title);?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="url" class="control-label"><?php echo L_URL; ?></label>
+					<div class="controls">
+						<input name="url" type="text" class="span6 formfields" id="url" value="<?php echo $items->url; ?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="image" class="control-label"><?php echo L_IMAGE; ?></label>
+					<div class="controls">
+						<input type="file" id="image" name="image" class="formfields" />
+						<img src="funcs/tn.lib.php?dim=100&amp;id=<?php echo $items->id ?>&amp;<?php echo time(); ?>" alt="<?php echo $items->image ?>" id="thumbNailMain" class="thumbnails" />
+					</div>
+				</div>
+			</div>
+			<div class="span3">
+				<div class="control-group">
+					<label for="optionsCheckboxes" class="control-label">Post options</label>
+					<div class="controls">
+						<label for="online" class="checkbox">
+							<input type="hidden" name="online" id="" value="0" />
+							<input type="checkbox" name="online" id="online" <?php echo ($items->online == 1) ? 'checked="checked"' : '';?> value="1" />
+							<?php echo L_ONLINE ?>
+						</label>
+						<label for="smilies" class="checkbox">
+							<input type="hidden" name="smilies" value="0" />
+							<input type="checkbox" name="smilies" id="smilies" <?php echo ($items->smilies == 1) ? 'checked="checked"' : '';?>  value="1" />
+							<?php echo L_USE_SMILIES ?>
+						</label>
+						<label for="comments" class="checkbox">
+							<input type="hidden" name="comments" value="0" id="" />
+							<input type="checkbox" name="comments" id="comments" <?php echo ($items->comments == 1) ? 'checked="checked"' : ''; ?> value="1" />
+							<?php echo L_ALLOW_COMMENTS ?>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="span3">
 				<div class="pull-right">
 				<?php echo preview_link(); ?>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="span8">
-				<div class="clearfix">
-					<label for="title"><?php echo L_TITLE ?></label>
-					<div class="input">
-						<input name="title" type="text" class="span8 formfields" id="title" value="<?php echo view($items->title);?>" />
-					</div>
-				</div>
-			</div>
-			<div class="span4">
-				<div class="clearfix">
-					<label for="optionsCheckboxes">Post options</label>
-					<div class="input">
-						<ul class="inputs-list">
-							<li>
-								<label>
-									<input type="hidden" name="smilies" value="0" />
-									<input type="checkbox" name="smilies" id="smilies" <?php echo ($items->smilies == 1) ? 'checked="checked"' : '';?>  value="1" class="cBox" />
-									<span><?php echo L_USE_SMILIES ?></span>
-								</label>
-							</li>
-							<li>
-								<label>
-									<input type="hidden" name="comments" value="0" id="" />
-									<input type="checkbox" name="comments" id="comments" <?php echo ($items->comments == 1) ? 'checked="checked"' : ''; ?> value="1" class="cBox" />
-									<span><?php echo L_ALLOW_COMMENTS ?></span>
-								</label>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="span4">
-				<div class="clearfix">
-					<label for="online"><?php echo L_ONLINE ?></label>
-					<div class="input">
-						<input type="hidden" name="online" id="" value="0" />
-						<input type="checkbox" name="online" id="online" <?php echo ($items->online == 1) ? 'checked="checked"' : '';?> value="1" class="cBox" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="span8">
-				<div class="clearfix">
-					<label for="url"><?php echo L_URL; ?></label>
-					<div class="input">
-						<input name="url" type="text" class="span8 formfields" id="url" value="<?php echo $items->url; ?>" size="30" />
-					</div>
-				</div>
-			</div>
-			<div class="span4">
-				<div class="clearfix">
-					<label for="image"><?php echo L_IMAGE; ?></label>
-					<div class="input">
-						<input type="file" id="image" name="image" size="30" class="formfields" />
-					</div>
-				</div>
-			</div>
-			<div class="span4">
-				<div class="clearfix">
-					<img src="funcs/tn.lib.php?dim=100&amp;id=<?php echo $items->id ?>&amp;<?php echo time(); ?>" alt="<?php echo $items->image ?>" id="thumbNailMain" class="thumbnails" />
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="span16">
-				<div class="clearfix">
-					<label for="descr"><?php echo L_BODY ?></label>
-						<div class="input border-descr">
+			<div class="span12">
+				<div class="control-group">
+					<label for="descr" class="control-label"><?php echo L_BODY ?></label>
+					<div class="controls border-descr">
 						<textarea name="descr" cols="60" rows="5" id="descr" class="formfields descr"><?php echo view($items->descr); ?></textarea>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="span10">
+			<div class="span12">
 			<?php $the_module->custom_fields(); ?>
 			</div>
 		</div>
-		<div class="stretchContainer">
+		<div class="accordion" id="stretchContainer">
 		<?php
 		$the_module->more_options(
 			array(
@@ -214,55 +176,59 @@ if(EDITING):
 		<div class="actions">
 			<input name="submit" type="submit" class="btn primary" id="submit" value="edit" />
 		</div>
-
 	<?php elseif(EDIT_LIST): ?>
-		<div class="span16">
-			<?php
-				$the_module->doSort();
-				$itemsList = paginate($itemsList, '', EDIT_LIMIT);
-				$numitems = count($itemsList);
-				$hasitems = $numitems > 0 ? true : false;
-			?>
-			<div id="itemList">
-			<?php foreach($itemsList as $ind => $item):
-				$item->title = trim_title($item->title);
-				$item->descr = trim_excerpt($item->descr);
-				$users->Get($item->aid);
-				$the_displayname = $users->displayname;
-				$the_username = $users->username;
-				$has_subcat = ($item->cid != $item->pid && $item->cid != 0) ? true : false;
-				if($has_subcat){
-					$sections->Get($item->cid);
-					$category = $sections->sectionname;
-				}
+		<div class="row">
+				<?php $the_module->doSort(); ?>
+			<div class="span12">
+				<?php
+					$itemsList = paginate($itemsList, '', EDIT_LIMIT);
+					$numitems = count($itemsList);
+					$hasitems = $numitems > 0 ? true : false;
 				?>
-				<div id="item_<?php echo $item->id ?>" title="<?php echo strip_tags($item->descr) ?>">
-					<img class="thumbnails" src="funcs/tn.lib.php?dim=70&thumb=1&id=<?php echo $item->id ?>" alt="<?php echo $item->thumbnail ?>" />
-					<h1><?php echo $item->title ?></h1>
-					<p class="<?php echo ($item->online == 0) ? 'offline' : 'online'; ?>"><?php echo ($item->online == 0) ? L_ITEM_OFFLINE : L_ITEM_ONLINE; ?></p>
-					<p><?php printf(L_POSTED_BY, $the_displayname, $the_username) ?></p>
-					<?php if($has_subcat){ ?>
-						<h3><?php echo L_SUB_CATEGORY ?>: <?php echo $category; ?></h3>
-					<?php } ?>
-					<a href="<?php echo edit_link($item->id); ?>" title="<?php echo L_EDIT_ITEM ?>" class="btn success"><?php echo L_EDIT_ITEM ?></a>
-					<a href="<?php echo edit_link($item->id); ?>#sharing" title="<?php echo L_SHARE_ITEM ?>" class="btn shareLink"><?php echo L_SHARE_ITEM ?></a>
-					<fieldset>
-						<input type="checkbox" name="del[]" value="<?php echo $item->id; ?>" id="item_delete_<?php echo $item->id; ?>" /><label for="item_delete_<?php echo $item->id; ?>"><?php echo L_DELETE_ITEM ?></label>
-					</fieldset>
-				</div>
-			<?php endforeach; ?>
 
-				<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
-			</div>
-			<?php if($hasitems): ?>
-			<div class="actions">
-				<div class="clearfix">
+				<div id="itemList">
+				<?php foreach($itemsList as $ind => $item):
+					$item->title = trim_title($item->title);
+					$item->descr = trim_excerpt($item->descr);
+					$users->Get($item->aid);
+					$the_displayname = $users->displayname;
+					$the_username = $users->username;
+					$has_subcat = ($item->cid != $item->pid && $item->cid != 0) ? true : false;
+					if($has_subcat){
+						$sections->Get($item->cid);
+						$category = $sections->sectionname;
+						if(empty($category)){
+							$has_subcat = false;
+						}
+					}
+
+					?>
+					<div id="item_<?php echo $item->id ?>" title="<?php echo strip_tags($item->descr) ?>">
+						<span class="pull-right <?php echo ($item->online == 0) ? 'label' : 'label label-success'; ?>"><?php echo ($item->online == 0) ? L_ITEM_OFFLINE : L_ITEM_ONLINE; ?></span>
+						<img src="funcs/tn.lib.php?dim=70&thumb=1&id=<?php echo $item->id ?>" alt="<?php echo $item->thumbnail ?>" />
+						<h1><?php echo $item->title ?></h1>
+						<p><?php printf(L_POSTED_BY, $the_displayname, $the_username) ?></p>
+						<?php if($has_subcat){ ?>
+							<h3><?php echo L_SUB_CATEGORY ?>: <?php echo $category; ?></h3>
+						<?php } ?>
+						<a href="<?php echo edit_link($item->id); ?>" title="<?php echo L_EDIT_ITEM ?>" class="btn btn-success"><?php echo L_EDIT_ITEM ?></a>
+						<a href="<?php echo edit_link($item->id); ?>#sharing" title="<?php echo L_SHARE_ITEM ?>" class="btn shareLink"><?php echo L_SHARE_ITEM ?></a>
+						<fieldset>
+							<input type="checkbox" name="del[]" value="<?php echo $item->id; ?>" id="item_delete_<?php echo $item->id; ?>" /><label for="item_delete_<?php echo $item->id; ?>"><?php echo L_DELETE_ITEM ?></label>
+						</fieldset>
+					</div>
+				<?php endforeach; ?>
+
+					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
+				</div>
+				<?php if($hasitems): ?>
+				<div class="form-actions">
 					<div class="pull-right">
-						<input name="submit" type="submit" class="btn danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
+						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
 					</div>
 				</div>
+				<?php endif; ?>
 			</div>
-			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 <?php endif; ?>

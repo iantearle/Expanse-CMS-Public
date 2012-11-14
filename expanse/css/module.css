@@ -23,10 +23,6 @@ User Module - Global styling
 		Misc
 		------------------------------------------------------------
 		*/
-		#categoryOptions label,
-		#categoryOptions input{
-		margin:0.5em 0 0;
-		}
 		#categoryOptions #cid{margin-bottom:1em;}
 		#categoryOptions #new_home{margin-top:0.5em;}
 		#add_subcat{margin-bottom:1em;}
@@ -50,44 +46,47 @@ User Module - Global styling
 		*/
 		#categoryDetails{}
 			#categoryDetails h3{
-			margin: 1em 0.2em 0.2em 0.5em;
 			font-size:1.1em;
 			color: #069;
-			}
-			#categoryDetails select{
-			margin: 1em 0.2em 0.2em;
 			}
 		/*
 		Item list
 		------------------------------------------------------------
 		*/
-		#itemList div{
-		border:1px solid #D3EBF2;
-		border-bottom-color:#A0CFDD;
-		border-right-color:#A0CFDD;
-		padding:15px;
-		margin: 0 0 10px;
-		background:#fff url(../images/item_list_bkg.gif) repeat-x;
-		position:relative;
-		clear:both;
+		#itemList div {
+			border:1px solid #D3EBF2;
+			border-bottom-color:#A0CFDD;
+			border-right-color:#A0CFDD;
+			padding:15px;
+			margin: 0 0 10px;
+			background-color: #dddddd;
+			background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#ffffff));
+			background-image: -webkit-linear-gradient(top, #dddddd, #ffffff);
+			background-image: -moz-linear-gradient(top, #dddddd, #ffffff);
+			background-image: -o-linear-gradient(top, #dddddd, #ffffff);
+			background-image: -ms-linear-gradient(top, #dddddd, #ffffff);
+			background-image: linear-gradient(top, #dddddd, #ffffff);
+			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#dddddd', EndColorStr='#ffffff');
+			position:relative;
+			clear:both;
 		}
-		#itemList h1{
-		font-size:1em;
-		margin:0;
-		color: #000;
+		#itemList h1 {
+			font-size:1em;
+			margin:0;
+			color: #000;
 		}
 		#itemList h2{font-size:1em;font-weight:normal;margin:0;}
 		#itemList h3{font-size:1em;font-weight:normal;margin:0;}
 		#itemList .online{color:#70B10F;}
 		#itemList .offline{color:#636363;}
-		#itemList div img{
-		border:1px solid #ddd;
-		border-bottom-color:#ccc;
-		border-right-color:#ccc;
-		padding:4px;
-		float:left;
-		margin-right:10px;
-		background:#fff;
+		#itemList div img {
+			border:1px solid #ddd;
+			border-bottom-color:#ccc;
+			border-right-color:#ccc;
+			padding:4px;
+			float:left;
+			margin-right:10px;
+			background:#fff;
 		}
 		#itemList strong{
 		color:#333;
@@ -104,7 +103,6 @@ User Module - Global styling
 		color:#CC2C0D;
 		font-weight:normal;
 		width:auto;
-		margin:1px 0 0 15px;
 		padding:0;
 		display:inline;
 		cursor:pointer;
@@ -150,7 +148,7 @@ User Module - Global styling
 		#itemList ul>ul{
 		margin-left:2em;
 		}
-		
+
 		#itemList ul label{
 		margin:0 3px 0 0;
 		padding:0;
@@ -168,8 +166,8 @@ User Module - Global styling
 		Custom Fields
 		------------------------------------------------------------
 		*/
-		#customFieldsContainer input, 
-		#customFieldsContainer textarea, 
+		#customFieldsContainer input,
+		#customFieldsContainer textarea,
 		#customFieldsContainer select{
 		}
 		#customFieldsContainer textarea{
@@ -196,7 +194,7 @@ User Module - Global styling
 		.linky {
 			margin: 0 5px 0 0;
 		}
-	
+
 				.sizerContainer {
 					position:relative;
 					float: right;
@@ -221,7 +219,7 @@ User Module - Global styling
 				 border: 1px solid #8CC739;
 				 width:350px;
 			 }
-			
+
 			 .suggestion_list ul {
 				 padding: 0;
 				 margin: 0;
@@ -230,25 +228,25 @@ User Module - Global styling
 			 .suggestion_list li {
 				 padding:5px;
 			 }
-			
+
 			 .suggestion_list a {
 				 text-decoration: none;
 				 color: #004CA3;
 			 }
-			
+
 			 .suggestion_list .selected {
 				 background: #8CC739;
 				 color: #fff;
 			 }
-			
+
 			 .suggestion_list .selected a {
 				 color: #fff;
 			 }
-			
+
 			 #autosuggest {
 				 display: none;
 			 }
-		 
+
 		/*
 		Date editing styling
 		------------------------------------------------------------

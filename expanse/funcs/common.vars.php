@@ -36,17 +36,17 @@ define('CMS_NAME', (empty($cms_name) || !$private_label ? 'Expanse' : $cms_name)
 define('COMPANY_NAME', empty($company_name) || !$private_label ? 'Expanse Content Management System' : $company_name);
 define('COMPANY_URL', empty($company_url) || !$private_label ? 'http://expansecms.org/' : $company_url);
 define('COMPANY_LOGO', (empty($company_logo) ? false : $company_logo));
-define('CMS_VERSION', '2.0');
+define('CMS_VERSION', '2.8');
 define('EXPANSE_FOLDER', (empty($expanse_folder) ? 'expanse' : $expanse_folder));
 define('USER_IP', $_SERVER['REMOTE_ADDR']);
 define('PREFIX', (isset($Database) && is_object($Database) ? $Database->Prefix : (isset($CONFIG) ? $CONFIG['prefix'] : '')));
 define('EXPANSE_NEWS_URL', (empty($custom_news_feed) ? 'http://news.expansecms.org/feed.php?feed=rss&pcat=1' : $custom_news_feed));
 define('ERROR_IMG', 'error.png');
 define('FILE_IMG', 'attached_file.png');
-define('SUCCESS', '<div class="alert-message success fade in" data-alert="alert"><a class="close" href="#">×</a><p>%s</p></div>');
-define('FAILURE', '<div class="alert-message error fade in" data-alert="alert"><a class="close" href="#">×</a><p>%s</p></div>');
-define('ALERT', '<div class="alert-message warning fade in" data-alert="alert"><a class="close" href="#">×</a><p>%s</p></div>');
-define('NOTE', '<div class="alert-message block-message info fade in" data-alert="alert"><a class="close" href="#">×</a><p>%s</p></div>');
+define('SUCCESS', '<div class="alert alert-block alert-success fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
+define('FAILURE', '<div class="alert alert-block alert-error fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
+define('ALERT', '<div class="alert alert-block alert-warning fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
+define('NOTE', '<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
 define('TPL_EXT', '.tpl.html');
 //Detect the server OS
 $using_apache = (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache') !== FALSE || strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'litespeed') !== FALSE) ? TRUE : FALSE;

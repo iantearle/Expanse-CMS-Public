@@ -3,69 +3,71 @@
 Installer styles
 ============================================================
 */
-		#vanilla #content{
-		}
-		#vanilla #content h1{
-
-		}
 		#vanilla p.bottomStep{
+		float: right;
+		margin: 0.5em;
 		}
-		#vanilla label { 
-		}
-		#vanilla input.formfields, #vanilla textarea.formfields, #vanilla select.formfields {
-		}
-		#vanilla input.buttons{
-		}
-		 #vanilla #content .contenterror{
+		#vanilla #content .contenterror{
+		background: #FFF1ED url(../images/error.gif) no-repeat 0.5em 50%;
+		padding: 0.5em 0.5em 0.5em 2.2em;
+		border: 1px solid #900;
+		width: 50%;
+		margin: 0.15em auto;
 		}
 		 #vanilla #content .contentsuccess{
+		background: #F4FDEF url(../images/success.gif) no-repeat 0.5em 50%;
+		padding: 0.5em 0.5em 0.5em 2.2em;
+		border: 1px solid #3F9305;
+		width: 50%;
+		margin: 0.15em auto;
 		}
 		 #vanilla #content .contentalert{
+		background: #FEFFDF url(../images/alert.gif) no-repeat 0.5em 10%;
+		padding: 0.5em 0.5em 0.5em 2.2em;
+		border: 1px solid #EFEFEF;
+		width: 80%;
+		margin: 0.15em auto;
 		}
 		 #vanilla #content .contentalert strong{
-
+		font-size: 110%;
 		}
 		#vanilla .comparisonTable{
-
+		border-collapse: collapse;
 		}
 		#vanilla .comparisonTable td{
+		padding: 1em;
+		border-bottom: 1px solid #D0DFFA;
 		}
-		#vanilla #eula{
+		#eula{
+		overflow: auto;
+		height:200px;
+		text-align:left;
+		padding:20px;
+		margin: 20px 0;
+		border: solid #cfcfcf 1px;
 		}
 		#vanilla #eula h1{
-
+		font-size: 120%;
 		}
 		#vanilla #eula h2{
+		font-size: 110%;
+		border-bottom: 1px solid #D0DFFA;
 		}
 		#vanilla #eula #boilerplate {
-
-		}
-		#vanilla #eula dt{
-		}
-		#vanilla #eula dd{
-		}
-		#vanilla #content p{
-
-		}
-		#vanilla #eula label{
-		}
-		#vanilla #eula input{
-
-		}
-		#vanilla #step2{
-		
+		color: #444;
 		}
 		#vanilla .errortext,#vanilla .successtext{
-
+		text-align: right;
 		}
 		#vanilla p#loginDetails{
-		}
-		#install{
-
+		background: #F4FDEF;
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		border: 1px solid #3F9305;
+		margin: 0.15em auto;
 		}
 		.errortext{
-
+		color:#C00;
 		}
 		.successtext{
-
+		color:#090;
 		}

@@ -1,29 +1,10 @@
 /*
 ------------------------------------------------------------
-Admin Module - Misc
-============================================================
-*/
-		#editSubs input{
-
-		}
-		#editSubs label{
-
-		}
-		
-		#sitedescr, .caption{
-
-		}
-		.formatSettings, .formatSettingsL{
-
-		}
-/*
-------------------------------------------------------------
 Admin Module - Main Page
 ============================================================
 */
 		#catList{
 		list-style:none;
-		margin-bottom:2em;
 		}
 		.adminList li{
 		padding: 0 0 0 20px;
@@ -62,53 +43,9 @@ Admin Module - Main Page
 		}
 /*
 ------------------------------------------------------------
-Admin Module - Categories 
-============================================================
-*/
-		#categoryMod{
-		}
-		#categoryMod h3{
-		}
-		#addCats{
-		}
-		#addCats dt{
-		}
-		#addCats dt input.radio, #addCats dt input[type=radio]{
-		}
-		#addCats dd{
-		}
-		#categoryMod #categoriesList{
-		}
-		#categoriesList td{
-
-		}
-		#categoriesList th{
-
-		}
-		#categoriesList tr input, #categoriesList tr label{
-		}
-		#categoriesList td{
-
-		}
-		table{
-		}
-/*
-------------------------------------------------------------
-Admin Module - Comments
-============================================================
-*/
-		table.commentBlock{
-		}
-		table.commentBlock td{
-
-		}
-		.commentBlock h3 a{
-		}
-/*
-------------------------------------------------------------
 Admin Module - Plugins
 ============================================================
-*/		
+*/
 		.installed td{
 		background: #C6DFF5;
 		}
@@ -116,7 +53,7 @@ Admin Module - Plugins
 ------------------------------------------------------------
 Admin Module - Menu Builder
 ============================================================
-*/		
+*/
 	#keepMenu, #excludeMenu{
 	padding:2em;
 	margin:0 auto 2em;
@@ -125,15 +62,14 @@ Admin Module - Menu Builder
 	border-radius: 3px;
 	}
 			#keepMenuContainer h2, #excludeMenuContainer h2{
-			font-size:1.3em;
 			font-weight:bold;
-			padding:22px 0 22px 82px;
+			padding:0 0 0 62px;
 			}
 		#keepMenu h2{
-		background: url(../images/final_menu.gif) no-repeat 20px 10px
+		background: url(../images/final_menu.gif) no-repeat;
 		}
 		#excludeMenu h2{
-		background:  url(../images/menu_trash.gif) no-repeat 20px 10px;
+		background:  url(../images/menu_trash.gif) no-repeat;
 		}
 		#keepMenu{
 		border:1px solid #698dac;
@@ -167,6 +103,7 @@ Admin Module - Menu Builder
 			background-image: linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
 			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,StartColorStr='#036f9c', EndColorStr='#074a7e');
 			color:#fff;
+			margin: 0;
 			}
 			#keepMenu div h3 span, #excludeMenu div h3 span {
 				background:url(../images/menu_item_body_hover.gif) no-repeat -999% center;
@@ -201,7 +138,7 @@ Admin Module - Theme Editor
 		#themeEditor ul{
 		padding:0;
 		width:30%;
-		
+
 		list-style:none;
 		}
 		#themeEditor table{
@@ -232,9 +169,6 @@ Admin Module - Theme Editor
 		font: 1.2em "Courier New", Courier, mono;
 		color:#000;
 		}
-		#themefile, #theme{
-		margin: 2em 0 0;
-		}
 		#content td.themeInfo h2, .themeInfo h3{
 		font-size: 0.9em;
 		font-weight:normal;
@@ -247,8 +181,8 @@ Admin Module - Theme Editor
 		padding:0.25em;
 		border:3px solid #C6DFF5;
 		}
-			.activeTheme{
-			background:#C6DFF5;
+			.activeTheme td {
+			background-color:#C6DFF5 !important;
 			}
 				#themeList .activeTheme td img{
 				padding:0.25em;
@@ -288,3 +222,21 @@ Admin Module - Users
 		.permBox{
 		margin-left: 0.5em;
 		}
+
+.footer {
+  padding: 70px 0;
+  margin-top: 70px;
+  border-top: 1px solid #e5e5e5;
+  background-color: #f5f5f5;
+}
+.footer p {
+  margin-bottom: 0;
+  color: #777;
+}
+.footer-links {
+  margin: 10px 0;
+}
+.footer-links li {
+  display: inline;
+  margin-right: 10px;
+}

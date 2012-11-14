@@ -11,7 +11,7 @@ if(!defined('EXPANSE')){
 class Blog extends Module {
 	var $name = L_BLOG_NAME;
 	var $description = L_BLOG_DESCRIPTION;
-	
+
 	//Inherit the rest of the category meta-data and add/edit/delete methods
 }
  ?>

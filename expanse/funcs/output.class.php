@@ -9,13 +9,13 @@ class outputMessages {
 				$report[$level] = array_unique($report[$level]);
 			}
 			foreach($report['error'] as $val){
-				$output .= '<div class="alert-message error fade in" data-alert="alert"><a class="close" href="#">×</a><p>'.$val.'</p></div>';
+				$output .= '<div class="alert alert-block alert-error fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>'.$val.'</p></div>';
 			}
 			foreach($report['success'] as $val){
-				$output .= '<div class="alert-message success fade in" data-alert="alert"><a class="close" href="#">×</a><p>'.$val.'</p></div>';
+				$output .= '<div class="alert alert-block alert-success fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>'.$val.'</p></div>';
 			}
 			foreach($report['alert'] as $val){
-				$output .= '<div class="alert-message warning fade in" data-alert="alert"><a class="close" href="#">×</a><p>'.$val.'</p></div>';
+				$output .= '<div class="alert alert-block alert-warning fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>'.$val.'</p></div>';
 			}
 
 		} else {
@@ -35,7 +35,7 @@ class outputMessages {
 	 * @param int $is_install
 	 * @return void
 	 */
-	function write_header ($pagetitle, $is_vanilla=0, $is_install=0) {
+	function write_header($pagetitle, $is_vanilla=0, $is_install=0) {
 		global $auth, $xajax, $sections, $items, $module_css, $module_js, $page_meta, $headerDate, $cat_id, $cat;
 		$finaltitle = CMS_NAME.L_MENU_SEPARATOR.CMS_VERSION.' ';
 		add_title($finaltitle, 1);
@@ -68,9 +68,7 @@ class outputMessages {
 		$finaltitle = make_title();
 		$finaltitle = applyOzone('admin_title',$finaltitle);
 		$main_css = 'css/expanse.css.php'.($is_install ? '?extend=install': '');
-		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
 		$main_css = applyOzoneAction('admin_css_url', $main_css);
-		$main_js = applyOzoneAction('admin_js_url', $main_js);
 		?>
 		<!DOCTYPE html>
 		<html lang="en" class="no-js">
@@ -85,16 +83,13 @@ class outputMessages {
 			<meta name="revisit-after" content="7" />
 			<meta name="distribution" content="global" />
 			<meta name="author" content="Ian Tearle, Nate Cavanaugh, Jason Morrison" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<link rel="shortcut icon" href="favicon.ico" />
-			<link href="<?php echo $main_css ?>" rel="stylesheet" type="text/css" />
-			<?php echo (!empty($module_css)) ? '<link href="'.$module_css.'" rel="stylesheet" type="text/css" />' : ''; ?>
-			<script language="JavaScript" type="text/javascript">document.write('<link href="css/expanse.js.css" rel="stylesheet" type="text/css" />');</script>
-			<script src="javascript/modernizr.js"></script>
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" id="jquery"></script>
-			<script>var jQuery = jQuery.noConflict();</script>
+			<link rel="stylesheet" type="text/css" href="<?php echo $main_css ?>" />
+			<?php echo (!empty($module_css)) ? '<link rel="stylesheet" type="text/css" href="'.$module_css.'" />' : ''; ?>
+			<script type="text/javascript">document.write('<link rel="stylesheet" type="text/css" href="css/expanse.js.css" />');</script>
+			<script type="text/javascript" src="javascript/modernizr.min.js"></script>
 			<script type="text/javascript" src="funcs/FCKeditor/fckeditor.js"></script>
-			<?php echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>' : ''; ?>
-			<script type="text/javascript" src="<?php echo $main_js ?>"></script>
 			<?php if(isset($xajax) && is_object($xajax)) { $xajax->printJavascript("./funcs/"); }
 			$company_logo = COMPANY_LOGO;
 			if(!empty($company_logo) && CUSTOM_INSTALL) { ?>
@@ -106,14 +101,13 @@ class outputMessages {
 			<?php  }
 			applyOzoneAction('admin_header');
 			?>
-			<style> body { padding-top: 60px; } </style>
 		</head>
 		<body<?php if($is_vanilla){ ?> id="vanilla"<?php } if(isset($_GET['cat'])) { echo ' class="'. dirify($_GET['cat']) .'"'; } else {echo ' class="build"';} ?>>
 		<?php
 		if(!$is_install) {
 			if(PENDING_UPDATE && CAT != 'upgrade' && LOGGED_IN) {
 				echo '<div id="upgradeOverlay"></div>';
-				echo '<div class="alert-message block-message info fade in" data-alert="alert"><a class="close" href="#">×</a><p>'.sprintf(L_UPGRADE_INSTRUCTIONS,CMS_NAME, CMS_VERSION).'</p></div>';
+				echo '<div class="alert-message block-message info fade in" data-alert="alert"><a class="close" href="#">&times;</a><p>'.sprintf(L_UPGRADE_INSTRUCTIONS,CMS_NAME, CMS_VERSION).'</p></div>';
 			}
 		}
 	}
@@ -133,12 +127,13 @@ class outputMessages {
 		$category_header = $section;
 		add_breadcrumb('<a href="./">'.L_CRUMB_HOME.'</a>', 1);
 		if(ADDING) {
+			add_breadcrumb('<a href="index.php?type=edit&amp;cat_id='.$sections->id.'">'.sprintf(L_CRUMB_EDIT,ucwords($section)).'</a>', 2);
 			add_breadcrumb(sprintf(L_CRUMB_ADD,ucwords($section)), 2);
 		} elseif(EDITING) {
-			if(!empty($section)){
-				if(EDIT_LIST){
+			if(!empty($section)) {
+				if(EDIT_LIST) {
 					add_breadcrumb(sprintf(L_CRUMB_EDIT,ucwords($section)), 2);
-				} else{
+				} else {
 					global $the_module;
 					$items = $the_module->items;
 					$title = !empty($items->title) ? $items->title : L_NO_TEXT_IN_TITLE;
@@ -169,10 +164,13 @@ class outputMessages {
 	 * @return void
 	 */
 	function write_footer() {
-		global $auth;
+		global $auth, $module_js;
 		$is_admin = (isset($auth) && is_object($auth) && $auth->Admin == true);
 		$upgradable = (defined('UPGRADE_AVAILABLE') && UPGRADE_AVAILABLE == true);
-		$show_label = (isset($_SESSION['username']) && $upgradable && $is_admin); ?>
+		$show_label = (isset($_SESSION['username']) && $upgradable && $is_admin);
+		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
+		$main_js = applyOzoneAction('admin_js_url', $main_js);
+		?>
 		<!-- Begin Footer -->
 		<footer class="footer">
 			<div class="container">
@@ -189,7 +187,9 @@ class outputMessages {
 		echo '<div class="hide">';
 		echo is_array($LEX_JS) ? implode("\n",$LEX_JS) : '';
 		echo '</div>';
-		applyOzoneAction('admin_footer'); ?>
+		echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>' : ''; ?>
+		<script type="text/javascript" src="<?php echo $main_js ?>"></script>
+		<?php applyOzoneAction('admin_footer'); ?>
 		</body>
 		</html> <?php
 	}
