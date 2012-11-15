@@ -1,11 +1,54 @@
 <?php
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
 /*   DB Connection   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=dbcnx">'.L_ADMIN_DB_SETTINGS.'</a>',array(),'mysql');
-if($admin_sub !== 'dbcnx'){return;}
+if($admin_sub !== 'dbcnx') { return; }
 add_breadcrumb(L_DBCNX_TITLE);
 add_title(L_DBCNX_TITLE);
 ozone_action('admin_page', 'dbcnx_content');
+
 function dbcnx_content() {
 	global $output, $CONFIG;
 	if(is_posting(L_BUTTON_EDIT)) {
@@ -15,7 +58,7 @@ function dbcnx_content() {
 			$sqluser	= $CONFIG['user'];
 			$sqlpass 	= $CONFIG['pass'];
 			printOut(FAILURE, L_DB_NEW_CNX_FAILED);
-		} elseif (!mysql_select_db($_POST['db'])) {
+		} elseif(!mysql_select_db($_POST['db'])) {
 			$sqldb = $CONFIG['db'];
 			printOut(FAILURE, L_DB_NEW_SELECT_FAILED);
 		} else {
@@ -53,12 +96,13 @@ Expanse Config File
 	}
 	$link = mysql_connect($CONFIG['host'],$CONFIG['user'],$CONFIG['pass']);
 	$db = mysql_select_db($CONFIG['db']);
-	if($link){
+	if($link) {
 		printOut(SUCCESS,L_DB_CNX_WORKING);
 	} else {
 		printOut(FAILURE,L_DB_CNX_BROKEN);
 	}
-	echo $output; ?>
+	echo $output;
+	?>
 	<div class="row">
 		<div class="span12">
 			<div class="control-group">
@@ -90,13 +134,13 @@ Expanse Config File
 		</div>
 	</div>
     <?php
-	if(is_writable(EXPANSEPATH.'/config.php')){
+	if(is_writable(EXPANSEPATH.'/config.php')) {
 	?>
 		<div class="form-actions">
 			<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php } else {
+	<?php
+	} else {
 		printf(ALERT, L_DB_NEEDS_PERMISSIONS);
 	}
 }
-?>

@@ -1,9 +1,51 @@
 <?php
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
 /*   Users   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=users&amp;action=edit">'.L_ADMIN_MANAGE_USERS.'</a>','', 'users');
 global $admin_menu, $admin_sub;
-if($admin_sub !== 'users'){return;}
+if($admin_sub !== 'users') { return; }
 $users = isset($users) && is_object($users) ? $users : new Expanse('users');
 if(ACTION == 'add') {
 	add_breadcrumb('<a href="index.php?cat=admin&sub=users&action=edit">'.L_USER_EDIT_TITLE.'</a>');
@@ -25,8 +67,8 @@ ozone_action('admin_page', 'users_content');
 
 function users_content() {
 	global $output, $auth, $item_id, $users;
-	if (ACTION == 'add') {
-		if (is_posting(L_BUTTON_ADD)) {
+	if(ACTION == 'add') {
+		if(is_posting(L_BUTTON_ADD)) {
 			$the_username = preg_replace('([^[:alnum:]_])', '',$_POST['username']);
 			$the_displayname = preg_replace('([^[:alnum:]_[:space:].])', '',$_POST['displayname']);
 			$url = htmlentities($_POST['url'], ENT_QUOTES);
@@ -164,11 +206,12 @@ function users_content() {
 				</div>
 			</div>
 		</div>
-	<?php } elseif (ACTION == 'edit') {
-		if (!empty($item_id)) {
+	<?php
+	} elseif(ACTION == 'edit') {
+		if(!empty($item_id)) {
 			$users = get_dao('users');
 			$users->Get($item_id);
-			if (is_posting(L_BUTTON_EDIT)) {
+			if(is_posting(L_BUTTON_EDIT)) {
 				$the_username = preg_replace('([^[:alnum:]_])', '',$_POST['username']);
 				$the_displayname = preg_replace('([^[:alnum:]_[:space:].])', '',$_POST['displayname']);
 				$url = htmlentities($_POST['url'], ENT_QUOTES);
@@ -181,8 +224,8 @@ function users_content() {
 				$section_admin = (int) $_POST['section_admin'];
 				$created = isset($_POST['created']) ? $_POST['created'] : time();
 
-				if(!empty($opass)){
-					if(($password == $confirmpassword) && !empty($password) && strlen($password) >= 6){
+				if(!empty($opass)) {
+					if(($password == $confirmpassword) && !empty($password) && strlen($password) >= 6) {
 						$passwordok = true;
 					} else {
 						$passwordok = false;
@@ -191,17 +234,17 @@ function users_content() {
 					$passwordok = true;
 				}
 				if($passwordok) {
-					if(isset($_POST['permissions']) && !empty($_POST['permissions'])){
-						if(!empty($the_username)){
+					if(isset($_POST['permissions']) && !empty($_POST['permissions'])) {
+						if(!empty($the_username)) {
 							$user = $users->GetList(array(array('username','=', $the_username)));
-							if(empty($user)  || $the_username == $users->username){
+							if(empty($user)  || $the_username == $users->username) {
 								$users->username = $the_username;
 								$users->displayname = $the_displayname;
 								$users->password =  ($passwordok && !empty($opass)) ? md5(trim($_POST['password'])) : $users->password;
 								$users->email = $email;
 								$users->url = $url;
 								$users->section_admin = $section_admin;
-								if($users->primary_user){
+								if($users->primary_user) {
 									$users->permissions = $users->permissions;
 									$users->admin = 1;
 									$users->disabled = 0;
@@ -210,7 +253,7 @@ function users_content() {
 									$users->admin = $admin;
 									$users->disabled = $disabled;
 								}
-								if($users->Save()){
+								if($users->Save()) {
 									printOut(SUCCESS, sprintf(L_EDIT_SUCCESS, $users->username));
 									$_POST = array();
 								} else {
@@ -234,11 +277,15 @@ function users_content() {
 			$cats = $sections->GetList(array(array('pid', '=', 0)));
 			$hasitems = !empty($user) ? true : false; ?>
 			<?php echo $output ;?>
-			<?php if($user->primary_user) {?>
+			<?php
+			if($user->primary_user) {
+			?>
 				<div class="alert alert-block info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p><?php echo L_USER_PRIMARY_NOTE ?></p></div>
-			<?php }
-			if($hasitems){
-				$user->permissions = unserialize($user->permissions); ?>
+			<?php
+			}
+			if($hasitems) {
+				$user->permissions = unserialize($user->permissions);
+			?>
 				<div class="row">
 					<div class="span4">
 						<input type="hidden" value="1" id="edit_user" />
@@ -282,9 +329,13 @@ function users_content() {
 					</div>
 
 					<div class="span4">
-						<?php if($user->primary_user) {?>
+						<?php
+						if($user->primary_user) {
+						?>
 							<div class="hidden">
-						<?php } ?>
+						<?php
+						}
+						?>
 						<fieldset id="categoryBoxes">
 							<legend><?php echo L_USER_PRIVILEGES ?></legend>
 							<input type="hidden" name="permissions" value="" />
@@ -306,21 +357,33 @@ function users_content() {
 								<?php echo L_USER_MODERATOR_USER; ?>
 							</label>
 
-							<?php foreach($cats as $s) { ?>
+							<?php
+							foreach($cats as $s) {
+							?>
 								<label for="perm_<?php echo $s->sectionname ?>" class="checkbox">
 									<input type="checkbox" name="permissions[]" <?php echo in_array($s->id, $user->permissions) || $user->admin == 1 ? 'checked="checked"' : ''; ?> id="perm_<?php echo $s->sectionname ?>" value="<?php echo $s->id ?>" />
 									<?php echo $s->sectionname ?>
 								</label>
-							<?php } ?>
+							<?php
+							}
+							?>
 						</fieldset>
-						<?php if($user->primary_user) {?>
+						<?php
+						if($user->primary_user) {
+						?>
 							</div>
-						<?php } ?>
+						<?php
+						}
+						?>
 					</div>
 					<div class="span4">
-						<?php if($user->primary_user) { ?>
+						<?php
+						if($user->primary_user) {
+						?>
 						<div class="hidden">
-						<?php } ?>
+						<?php
+						}
+						?>
 							<fieldset>
 								<legend><?php echo L_USER_DISABLE_ACCOUNT ?></legend>
 								<p><?php echo L_USER_DISABLE_ACCOUNT_NOTE ?></p>
@@ -331,91 +394,102 @@ function users_content() {
 									</label>
 								</div>
 							</fieldset>
-						<?php if($user->primary_user) {?>
+						<?php
+						if($user->primary_user) {
+						?>
 							</div>
-						<?php } ?>
+						<?php
+						}
+						?>
 					</div>
 				</div>
 
-				<?php if($user->primary_user) {?>
+				<?php
+				if($user->primary_user) {
+				?>
 				</div>
-				<?php } ?>
+				<?php
+				}
+				?>
 				<div class="form-actions">
 					<input name="submit" type="submit" class="btn btn-primary" id="submit" value="edit" />
 				</div>
 				<?php
 			}
-		} elseif (empty($item_id)) {
-				$users = isset($users) && is_object($users) ? $users : new Expanse('users');
-				if(is_posting(L_BUTTON_DELETE)){
-					if(isset($_POST['del'])){
-						foreach($_POST['del'] as $id){
-							$us = new Expanse('users');
-							$us->Get($id);
-							$result = array();
-							if(empty($us->username)){
-								continue;
-							}
-							$the_username =  $us->username;
-							if($us->primary_user != 1){
-								if(deleteItem($id, 'users')){
-									$result[] = sprintf('<li>'.L_USER_ACCOUNT_DELETED.'</li>', $the_username);
-								} else {
-									$result[] = sprintf('<li>'.L_USER_ACCOUNT_NOT_DELETED.'</li>', $the_username);
-								}
-							} else {
-								$result[] = sprintf('<li>'.L_USER_ACCOUNT_PRIMARY_NOT_DELETED.'</li>', $the_username);
-							}
+		} elseif(empty($item_id)) {
+			$users = isset($users) && is_object($users) ? $users : new Expanse('users');
+			if(is_posting(L_BUTTON_DELETE)) {
+				if(isset($_POST['del'])) {
+					foreach($_POST['del'] as $id) {
+						$us = new Expanse('users');
+						$us->Get($id);
+						$result = array();
+						if(empty($us->username)) {
+							continue;
 						}
-						if(!empty($result)){
-							$result = '<ul>'.implode('', $result).'</ul>';
-							printOut(SUCCESS, $result);
+						$the_username =  $us->username;
+						if($us->primary_user != 1) {
+							if(deleteItem($id, 'users')) {
+								$result[] = sprintf('<li>'.L_USER_ACCOUNT_DELETED.'</li>', $the_username);
+							} else {
+								$result[] = sprintf('<li>'.L_USER_ACCOUNT_NOT_DELETED.'</li>', $the_username);
+							}
+						} else {
+							$result[] = sprintf('<li>'.L_USER_ACCOUNT_PRIMARY_NOT_DELETED.'</li>', $the_username);
 						}
 					}
+					if(!empty($result)) {
+						$result = '<ul>'.implode('', $result).'</ul>';
+						printOut(SUCCESS, $result);
+					}
 				}
-				$userList = $users->GetList(array(array('id','>', 0)));
-				$hasitems = !empty($userList) ? true : false;
-				?>
-				<?php echo $output ;?>
-				<table id="users" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>Username</th>
-							<th>Action</th>
-							<th><?php if($hasitems){ ?><label for="toggleBox" class="checkbox"><input type="checkbox" id="toggleBox" value="" /><?php echo L_DELETE_ITEM ?></label><?php } ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php
-					foreach($userList as $ind => $user){
-						$user->username = trim_title($user->username,L_USER_NO_USERNAME); ?>
-						<tr<?php echo $ind % 2 ? ' class="altRow"' : ''; ?><?php echo $user->primary_user == 1 ? ' id="primaryUser"' : ''; ?>>
-						<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>"  title=" <?php echo $user->username; ?>" class="<?php echo $user->primary_user != 1 ? 'user' : 'primary'; ?>"><?php echo $user->username; ?></a></td>
-						<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>" title=" Edit <?php echo $user->username; ?>" class="editLink"><?php echo L_USER_EDIT_TEXT ?></a></td>
-						<td>
-							<div class="control-group">
-								<label for="del<?php echo $user->id; ?>" class="control-label"></label>
-								<div class="controls">
-									<input id="del<?php echo $user->id; ?>" name="del[]" type="checkbox" value="<?php echo $user->id; ?>"<?php if($user->primary_user == 1){ ?>disabled="disabled" title="<?php printf(strip_tags(L_USER_ACCOUNT_PRIMARY_NOT_DELETED), $user->username); ?>"<?php } ?> />
-								</div>
-							</div>
-						</td>
+			}
+			$userList = $users->GetList(array(array('id','>', 0)));
+			$hasitems = !empty($userList) ? true : false;
+			echo $output;
+			?>
+			<table id="users" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Action</th>
+						<th><?php if($hasitems){ ?><label for="toggleBox" class="checkbox"><input type="checkbox" id="toggleBox" value="" /><?php echo L_DELETE_ITEM ?></label><?php } ?></th>
 					</tr>
-					<?php
-					} //End While
-					?>
-					</tbody>
-				</table>
-				<div class="form-actions">
-					<a href="index.php?cat=admin&sub=users&action=add" class="btn btn-success"><?php echo L_USER_ADD_TITLE ?></a>
-					<?php if(count($userList) > 1){?>
-					<div class="pull-right">
-						<input name="submit" id="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
-					</div>
-					<?php } ?>
+				</thead>
+				<tbody>
+				<?php
+				foreach($userList as $ind => $user) {
+					$user->username = trim_title($user->username,L_USER_NO_USERNAME); ?>
+					<tr<?php echo $ind % 2 ? ' class="altRow"' : ''; ?><?php echo $user->primary_user == 1 ? ' id="primaryUser"' : ''; ?>>
+					<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>"  title=" <?php echo $user->username; ?>" class="<?php echo $user->primary_user != 1 ? 'user' : 'primary'; ?>"><?php echo $user->username; ?></a></td>
+					<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>" title=" Edit <?php echo $user->username; ?>" class="editLink"><?php echo L_USER_EDIT_TEXT ?></a></td>
+					<td>
+						<div class="control-group">
+							<label for="del<?php echo $user->id; ?>" class="control-label"></label>
+							<div class="controls">
+								<input id="del<?php echo $user->id; ?>" name="del[]" type="checkbox" value="<?php echo $user->id; ?>"<?php if($user->primary_user == 1){ ?>disabled="disabled" title="<?php printf(strip_tags(L_USER_ACCOUNT_PRIMARY_NOT_DELETED), $user->username); ?>"<?php } ?> />
+							</div>
+						</div>
+					</td>
+				</tr>
+				<?php
+				} //End While
+				?>
+				</tbody>
+			</table>
+			<div class="form-actions">
+				<a href="index.php?cat=admin&sub=users&action=add" class="btn btn-success"><?php echo L_USER_ADD_TITLE ?></a>
+				<?php
+				if(count($userList) > 1) {
+				?>
+				<div class="pull-right">
+					<input name="submit" id="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
 				</div>
 				<?php
+				}
+				?>
+			</div>
+			<?php
 		} //end isset item id
 	}
 }
-?>

@@ -1,15 +1,56 @@
 <?php
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
 /*   Categories   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=categories&amp;action=edit">'.L_ADMIN_MANAGE_CATEGORIES.'</a>',array(),'categories');
-//'<a href="?cat=admin&amp;sub=categories&amp;action=manage">'.L_CATEGORY_MANAGE_TYPES.'</a>'
-if($admin_sub !== 'categories'){return;}
-if(ACTION == 'add'){
+if($admin_sub !== 'categories') { return; }
+if(ACTION == 'add') {
 	add_breadcrumb('<a href="?cat=admin&amp;sub=categories&amp;action=edit">'.L_CATEGORY_EDIT_TITLE.'</a>');
 	add_breadcrumb(L_CATEGORY_ADD_TITLE);
 	add_title(L_CATEGORY_ADD_TITLE);
-} elseif(ACTION == 'edit'){
-	if(!empty($item_id)){
+} elseif(ACTION == 'edit') {
+	if(!empty($item_id)) {
 		$sections->Get(ITEM_ID);
 		$section = !empty($sections->sectionname) ? $sections->sectionname : L_NO_TEXT_IN_TITLE;
 		add_breadcrumb('<a href="?cat=admin&sub=categories&action=edit">'.L_CATEGORY_EDIT_TITLE.'</a>');
@@ -20,30 +61,29 @@ if(ACTION == 'add'){
 		add_breadcrumb(L_CATEGORY_EDIT_TITLE);
 		add_title(L_CATEGORY_EDIT_TITLE);
 	}
-} elseif(ACTION == 'manage'){
+} elseif(ACTION == 'manage') {
 
 }
 ozone_action('admin_page', 'category_content');
 
-function category_content(){
+function category_content() {
 	global $output, $modules_dir, $auth, $Database;
 	$item_id = ITEM_ID;
 	?>
 	<div class="row" id="categoryMod">
 		<?php
-		if(ACTION == 'add'){
-			if(is_posting(L_BUTTON_ADD)){
+		if(ACTION == 'add') {
+			if(is_posting(L_BUTTON_ADD)) {
 				$sections = get_dao('sections');
 				$sections->sectionname = isset($_POST['sectionname']) ?  trim(save(strip_tags($_POST['sectionname']))) : '';
 				$sections->descr = isset($_POST['cat_descr']) ?  trim(save(strip_tags($_POST['cat_descr']))) : '';
-
 				$sections->dirtitle =  unique_dirtitle(dirify($sections->sectionname), 'sections');
 				$sections->cat_type = isset($_POST['cat_type']) ? trim($_POST['cat_type']) : '';
 				$sections->public = 0;
-				if(empty($sections->cat_type) || empty($sections->sectionname)){
+				if(empty($sections->cat_type) || empty($sections->sectionname)) {
 					printOut(FAILURE, L_MISSING_CATEGORY_DETAIL);
 				} else {
-					if($sections->SaveNew()){
+					if($sections->SaveNew()) {
 						$auth->updateAdmins();
 						printOut(SUCCESS, sprintf(L_CATEGORY_ADDED, $sections->sectionname, $sections->id));
 					} else {
@@ -51,7 +91,8 @@ function category_content(){
 					}
 				}
 			}
-			echo $output; ?>
+			echo $output;
+			?>
 			<div class="span6">
 				<h3><?php echo L_CATEGORY_GIVE_NAME ?></h3>
 				<div class="control-group">
@@ -102,8 +143,9 @@ function category_content(){
 							}
 						}?>
 					</div>
-				</div><?php
-				if(!empty($uninstalled_cats)){
+				</div>
+				<?php
+				if(!empty($uninstalled_cats)) {
 					?>
 					<dl>
 						<dt><?php echo L_CATEGORY_PENDING_INSTALL_LIST ?></dt>
@@ -127,16 +169,16 @@ function category_content(){
 			<div class="form-actions">
 				<input type="submit" name="submit" value="<?php echo L_BUTTON_ADD ?>" class="btn btn-primary" />
 			</div>
-	<?php
-		} elseif(ACTION == 'manage'){
-			if(is_posting(L_BUTTON_INSTALL)){
+		<?php
+		} elseif(ACTION == 'manage') {
+			if(is_posting(L_BUTTON_INSTALL)) {
 				$install = $Database->Escape($_POST['category']);
 				$install = str_replace('..', '', $install);
-				if(file_exists("$modules_dir/{$install}/controller.php") && file_exists("$modules_dir/{$install}/view.php")){
+				if(file_exists("$modules_dir/{$install}/controller.php") && file_exists("$modules_dir/{$install}/view.php")) {
 					include_once("$modules_dir/{$install}/controller.php");
 					$func_arr = array($install,'install');
-					if(is_callable($func_arr)){
-						if(!getOption('category', $install)){
+					if(is_callable($func_arr)) {
+						if(!getOption('category', $install)) {
 							call_user_func($func_arr);
 							setOption('category', $install);
 							printOut( SUCCESS, L_CATEGORY_INSTALLED);
@@ -146,14 +188,14 @@ function category_content(){
 					}
 				}
 			}
-			if(is_posting(L_BUTTON_UNINSTALL)){
+			if(is_posting(L_BUTTON_UNINSTALL)) {
 				$uninstall = $Database->Escape($_POST['category']);
 				$uninstall = str_replace('..', '', $uninstall);
 				if(file_exists("$modules_dir/{$uninstall}/controller.php") && file_exists("$modules_dir/{$uninstall}/view.php")){
 					include_once("$modules_dir/{$uninstall}/controller.php");
 					$func_arr = array($uninstall,'uninstall');
-					if(is_callable($func_arr)){
-						if(getOption('category', $uninstall)){
+					if(is_callable($func_arr)) {
+						if(getOption('category', $uninstall)) {
 							call_user_func($func_arr);
 							deleteOption('category', $uninstall);
 							printOut(SUCCESS, L_CATEGORY_UNINSTALLED);
@@ -163,7 +205,8 @@ function category_content(){
 					}
 				}
 			}
-			echo $output; ?>
+			echo $output;
+			?>
 			</form>
 			<p><?php echo L_CATEGORY_FINISHED_MANAGING ?></p>
 			<dl id="addCats">
@@ -208,15 +251,16 @@ function category_content(){
 									<input name="category" type="hidden" value="<?php echo $k; ?>" />
 									<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_UNINSTALL ?>" />
 								</form>
-								<?php
+							<?php
 							}
-						?></dd>
-						<?php
+							?>
+						</dd>
+					<?php
 					}
 				}
 				?>
 			</dl>
-	<?php
+		<?php
 		}
 		if(ACTION == 'edit') {
 			if(!empty($item_id)) {
@@ -224,12 +268,12 @@ function category_content(){
 				$errs = array();
 				if(is_posting(L_BUTTON_DELETE)) {
 					if(isset($_POST['del'])) {
-						foreach($_POST['del'] as $id){
+						foreach($_POST['del'] as $id) {
 							$st = get_dao('sections');
 							$st->Get($id);
 							$title = $st->sectionname;
 							$reason = empty($title) ? L_CATEGORY_MISSING : $title;
-							if(deleteItem($id, 'sections')){
+							if(deleteItem($id, 'sections')) {
 								$result[] = '<li>'.sprintf(L_SUBCATEGORY_DELETED, $title).'</li>';
 							} else {
 								$result[] = '<li>'.sprintf(L_SUBCATEGORY_NOT_DELETED, $title, $reason).'</li>';
@@ -237,18 +281,18 @@ function category_content(){
 							}
 						}
 						$result = '<ul>'.implode('', $result).'</ul>';
-						if(empty($errs)){
+						if(empty($errs)) {
 							printOut(SUCCESS, $result);
 						} else {
 							printOut(FAILURE, $result);
 						}
 					}
 				}
-				if(is_posting(L_BUTTON_EDIT)){
+				if(is_posting(L_BUTTON_EDIT)) {
 					$subs->Get($item_id);
 					$section_name = trim(save(strip_tags($_POST['catTitle'])));
 					$subs->descr = isset($_POST['cat_descr']) ? trim(save(strip_tags($_POST['cat_descr']))) : '';
-					if($subs->sectionname != $section_name){
+					if($subs->sectionname != $section_name) {
 						$subs->sectionname = empty($section_name) ? $subs->sectionname : $section_name;
 						$subs->dirtitle =  unique_dirtitle(dirify($subs->sectionname), 'sections');
 					}
@@ -258,12 +302,12 @@ function category_content(){
 					$subcats_list = isset($_POST['sectionname']) && is_array($_POST['sectionname']) ? $_POST['sectionname'] : array();
 					$subcats_list_descr = isset($_POST['sectionname_descr']) && is_array($_POST['sectionname_descr']) ? $_POST['sectionname_descr'] : array();
 					$subsection =& get_dao('sections');
-					foreach($subcats_list as $i => $sl){
+					foreach($subcats_list as $i => $sl) {
 						$sl = trim($sl);
-						if(empty($sl)){continue;}
+						if(empty($sl)) { continue; }
 						$subsection->Get($i);
 						$subsection->sectionname = $sl;
-						if(isset($subcats_list_descr[$i])){
+						if(isset($subcats_list_descr[$i])) {
 							$subsection->descr = trim(save(strip_tags($subcats_list_descr[$i])));
 						}
 						$subsection->dirtitle = unique_dirtitle(dirify($subsection->sectionname), 'sections');
@@ -271,32 +315,32 @@ function category_content(){
 					}
 					$sub_result = array('good' => array(), 'bad' => array());
 					$subadd = '';
-					if(!empty($new_cat)){
+					if(!empty($new_cat)) {
 						$newsubs =& get_dao('sections');
-						foreach($new_cat as $i => $v){
+						foreach($new_cat as $i => $v) {
 							$v = trim(save(strip_tags($v)));
-							if(empty($v)){continue;}
-							if(isset($new_cat_descr[$i]) && !empty($new_cat_descr[$i])){
+							if(empty($v)) { continue; }
+							if(isset($new_cat_descr[$i]) && !empty($new_cat_descr[$i])) {
 								$newsubs->descr = trim(save(strip_tags($new_cat_descr[$i])));
 							}
 							$newsubs->sectionname = $v;
 							$newsubs->dirtitle =  unique_dirtitle(dirify($newsubs->sectionname), 'sections');
 							$newsubs->pid = $subs->id;
 							$newsubs->public = 0;
-							if($newsubs->SaveNew()){
+							if($newsubs->SaveNew()) {
 								$sub_result['good'][] = $newsubs->sectionname;
 							} else {
 								$sub_result['bad'][] = $newsubs->sectionname;
 							}
 						}
 					}
-					if(!empty($sub_result['good'])){
+					if(!empty($sub_result['good'])) {
 						$subadd .= '<br />'.sprintf(L_NEW_SUBCATEGORY_ADDED,proper_list($sub_result['good']));
 					}
-					if(!empty($sub_result['bad'])){
+					if(!empty($sub_result['bad'])) {
 						$subadd .='<br />'.sprintf(L_NEW_SUBCATEGORY_NOT_ADDED,proper_list($sub_result['bad']));
 					}
-					if($subs->Save()){
+					if($subs->Save()) {
 						$auth->updateAdmins();
 						printOut(SUCCESS, vsprintf(L_EDIT_CATEGORY_SUCCESS,array($subs->sectionname, $subadd)));
 					} else {
@@ -310,7 +354,8 @@ function category_content(){
 					<?php echo $output; ?>
 				</div>
 				<?php
-				if(!empty($subs->id)){	?>
+				if(!empty($subs->id)) {
+				?>
 					<div class="span6">
 						<h3><?php echo L_CATEGORY_ADD_TITLE; ?></h3>
 						<div class="well">
@@ -329,7 +374,8 @@ function category_content(){
 						</div>
 					</div>
 					<?php
-					if($subs->cat_type !== 'pages') { ?>
+					if($subs->cat_type !== 'pages') {
+					?>
 					<div class="span6" id="addSubcats">
 						<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
 						<div id="addSubcats1Group" class="row">
@@ -350,11 +396,14 @@ function category_content(){
 						</div>
 					</div>
 					<div class="span12">
-					<?php
-						if(!empty($subc)){ ?>
+						<?php
+						if(!empty($subc)) {
+						?>
 							<h3><?php echo L_EDIT_SUBCATEGORY_NAME_LABEL; ?></h3>
 							<table class="table table-striped">
-								<?php foreach($subc as $subCat){ ?>
+								<?php
+								foreach($subc as $subCat) {
+								?>
 								<tr>
 									<td>
 										<div class="control-group">
@@ -379,9 +428,13 @@ function category_content(){
 										</div>
 									</td>
 								</tr>
-								<?php } ?>
+								<?php
+								}
+								?>
 							</table>
-						<?php } ?>
+						<?php
+						}
+						?>
 					</div>
 					<div class="span12">
 						<div class="form-actions">
@@ -391,27 +444,31 @@ function category_content(){
 							</div>
 						</div>
 					</div>
-						<?php
-					} else { ?>
+					<?php
+					} else {
+					?>
 						<div class="span12">
 							<div class="form-actions">
 								<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
 							</div>
-						</div><?php
+						</div>
+					<?php
 					}
 				} else {
 					printf(FAILURE, L_CATEGORY_MISSING);
 				}
-			} else{
-				?><div class="span12"><?php
+			} else {
+			?>
+				<div class="span12">
+				<?php
 				if(is_posting(L_BUTTON_DELETE)) {
-					if(isset($_POST['del'])){
-						foreach($_POST['del'] as $id){
+					if(isset($_POST['del'])) {
+						foreach($_POST['del'] as $id) {
 							$st = get_dao('sections');
 							$st->Get($id);
 							$title = $st->sectionname;
 							$reason = empty($title) ? ' '.L_CATEGORY_DOES_NOT_EXIST : $title;
-							if(deleteItem($id, 'sections')){
+							if(deleteItem($id, 'sections')) {
 								$result[] = '<li>'.sprintf(L_CATEGORY_DELETED, $title).'</li>';
 								$itm = get_dao('sections');
 								$di = $itm->GetList(array(array('pid', '=', $id)));
@@ -468,18 +525,22 @@ function category_content(){
 								<td><?php echo $c->dirtitle.$tplext ?></td>
 								<td><a href="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>&amp;id=<?php echo $c->id; ?>" class="editLink">Edit</a></td>
 								<td><?php
-									if($c->cat_type != 'pages'){
-										?><input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php
-									} ?>
+									if($c->cat_type != 'pages') {
+									?>
+										<input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php
+									}
+									?>
 								</td>
 							</tr>
-							<?php
+						<?php
 						}
 						?>
 					</tbody>
 				</table>
 				<p class="alert alert-danger"><?php echo L_DELETE_CATEGORY_ALERT ?></p>
-				<?php if($hasitems){ ?>
+				<?php
+				if($hasitems) {
+				?>
 					<div class="form-actions">
 						<div class="clearfix">
 							<div class="pull-right">
@@ -487,12 +548,12 @@ function category_content(){
 							</div>
 						</div>
 					</div>
-				<?php } ?>
 				<?php
+				}
 			}
-		} ?>
+		}
+		?>
 	</div>
 </div>
 <?php
 }
-?>

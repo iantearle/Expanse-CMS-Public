@@ -1,14 +1,57 @@
 <?php
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
 /*   Preferences   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=prefs">'.L_ADMIN_PREFS.'</a>',array(),'preferences');
-if($admin_sub !== 'prefs'){return;}
+if($admin_sub !== 'prefs') { return; }
 add_breadcrumb(L_PREFS_TITLE);
 add_title(L_PREFS_TITLE);
 ozone_action('admin_page', 'prefs_content');
+
 function prefs_content() {
 	global $output, $currencysymbols , $themesdir;
-	if (is_posting(L_BUTTON_UPDATE)) {
+	if(is_posting(L_BUTTON_UPDATE)) {
 		manageOptions("submit,rettimeformat,retdateformat,utctime,resettime");
 		$use_clean_urls = getOption('use_clean_urls');
 		if($use_clean_urls == 1 && CAN_REWRITE) {
@@ -34,7 +77,8 @@ function prefs_content() {
 		applyOzoneAction('manage_options');
 	}
 	$option = getAllOptions();
-	echo $output; ?>
+	echo $output;
+	?>
 	<div class="accordion" id="prefs">
 		<!--
 		/*

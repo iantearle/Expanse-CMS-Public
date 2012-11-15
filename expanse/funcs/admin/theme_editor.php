@@ -1,10 +1,52 @@
 <?php
-if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
 /*   Themes   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=theme_editor">'.L_ADMIN_EDIT_THEMES.'</a>',array(),'themeEditor');
-if($admin_sub !== 'theme_editor'){return;}
+if($admin_sub !== 'theme_editor') { return; }
 $themename = check_get_alphanum('theme');
-if(!empty($themename)){
+if(!empty($themename)) {
 	$theme = !empty($themename) ? THEMES.'/'.$themename : '';
 	$theme = str_replace($special_chars, '', $theme);
 	$theme = realpath($theme);
@@ -24,11 +66,12 @@ if(!empty($themename)){
 	add_title(L_THEME_EDITOR_TITLE);
 }
 ozone_action('admin_page', 'theme_content');
+
 function theme_content() {
 	global $output, $special_chars, $themesdir, $filearr, $auth;
 	if(is_posting(L_BUTTON_ACTIVATE) && isset($_POST['activate_this']) && !empty($_POST['activate_this'])) {
 		$activate_theme = preg_replace('([^[:alnum:]_[:space:]])', '',  trim($_POST['activate_this']));
-		if(setOption('theme',$activate_theme)){
+		if(setOption('theme',$activate_theme)) {
 			printOut(SUCCESS, L_THEME_ACTIVATE_SUCCESS);
 		} else {
 			printOut(FAILURE, L_THEME_ACTIVATE_FAILURE);
@@ -42,7 +85,7 @@ function theme_content() {
 		$expanse_dir = EXPANSEPATH;
 		$theme_dir = "$expanse_dir/themes/$new_theme_name";
 		$yoursite = YOUR_SITE;
-		if(!file_exists($theme_dir)){
+		if(!file_exists($theme_dir)) {
 			copyr("$expanse_dir/funcs/misc/theme_prototype/", $theme_dir);
 			$style_sheet = file_get_contents("$theme_dir/css/styles.css");
 			$users = new Expanse('users');
@@ -59,7 +102,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 			$fp = fopen("$theme_dir/css/styles.css", 'w+');
 			fwrite($fp, $style_sheet);
 			fclose($fp);
-			if(empty($errors)){
+			if(empty($errors)) {
 				printOut(SUCCESS,L_THEME_CREATED);
 			} else {
 				printOut(FAILURE,L_THEME_FAILURE);
@@ -77,18 +120,18 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 	$themefile = isset($_GET['themefile']) ? $_GET['themefile'] : '';
 	$themefile = str_replace($special_chars, '', $themefile);
 	$writable = is_writable($theme) ? true : false;
-	if (!empty($theme) && is_dir($theme) && basename($theme) != 'themes' && in_array($themename, $themes)) {
-		if(!$writable){
+	if(!empty($theme) && is_dir($theme) && basename($theme) != 'themes' && in_array($themename, $themes)) {
+		if(!$writable) {
 			printOut(ALERT,L_THEME_NO_PERMISSIONS);
 		}
 		if($writable) {
-			if(is_posting(L_BUTTON_UPDATE)){
+			if(is_posting(L_BUTTON_UPDATE)) {
 				$filename =(!empty($themefile) && is_file($theme.'/'.$themefile)) ? $theme.'/'.$themefile : "$theme/css/$themename.css";
 				$file_contents = $_POST['file_contents'];
 				$file_contents = applyOzoneAction('theme_update_file', $file_contents);
-				if(is_file($filename)){
+				if(is_file($filename)) {
 					$fp = fopen($filename,'wb');
-					if(fwrite($fp,$file_contents)){
+					if(fwrite($fp,$file_contents)) {
 						printOut(SUCCESS, L_THEME_FILE_UPDATED);
 					}
 				}
@@ -107,7 +150,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 				if(!empty($filename)) {
 					if(!file_exists($filepath) && !is_file($filepath)){
 						$fp = fopen($filepath,'w+');
-						if(fwrite($fp,$file_contents)){
+						if(fwrite($fp,$file_contents)) {
 							printOut(SUCCESS, sprintf(L_THEME_FILE_CREATED,$themename,$create_in_base.$filename));
 						}
 						fclose($fp);
@@ -119,7 +162,8 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 				}
 			}
 		}
-		$themes = getFiles($themesdir, 'all', 1); ?>
+		$themes = getFiles($themesdir, 'all', 1);
+		?>
 		</form>
 		<div id="themeEditor">
 			<?php echo $output ;?>
@@ -230,10 +274,10 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 								</div>
 							</div>
 						</div>
-							<div class="form-actions">
-								<input id="submit" type="submit" value="<?php echo L_BUTTON_EDIT ?>" class="btn btn-primary pull-right" />
-							</div>
-						</form>
+						<div class="form-actions">
+							<input id="submit" type="submit" value="<?php echo L_BUTTON_EDIT ?>" class="btn btn-primary pull-right" />
+						</div>
+					</form>
 		<form action="" method="post" accept-charset="utf-8" class="form-stacked">
 			<div class="row">
 				<div class="span12"> <?php
@@ -256,8 +300,10 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 			<div class="form-actions">
 				<input type="submit" name="submit" id="submit" value="update" class="btn btn-primary" />
 			</div>
-		</div><?php
-	} else { ?>
+		</div>
+	<?php
+	} else {
+	?>
 		<div id="themeEditor" class="row">
 			<div class="span12">
 				<?php echo $output ;?>
@@ -303,10 +349,13 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 									<?php
 									} else {
 										echo 'Active Theme';
-									} ?>
+									}
+									?>
 								</td>
-							</tr>  <?php
-					} ?>
+							</tr>
+					<?php
+					}
+					?>
 					</tbody>
 				</table>
 			</div>
@@ -315,8 +364,10 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 			<div class="pull-right">
 				<input type="submit" name="submit" id="submit" value="<?php echo L_BUTTON_ACTIVATE ?>" class="btn btn-success" />
 			</div>
-		</div> <?php
-		if(is_writable(EXPANSEPATH.'/themes')) { ?>
+		</div>
+		<?php
+		if(is_writable(EXPANSEPATH.'/themes')) {
+		?>
 		<div class="row">
 			<div class="span12">
 				<fieldset>
@@ -329,8 +380,8 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 					</div>
 				</fieldset>
 			</div>
-		</div> <?php
+		</div>
+		<?php
 		}
 	}
 }
-?>
