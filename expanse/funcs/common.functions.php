@@ -1,5 +1,44 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 
 /*
 ------------------------------------------------------------
@@ -12,24 +51,9 @@ These are not specific to expanse and are not the core
 functionality.
 ============================================================
 */
-if(isset($_GET['debug']) && $_GET['debug'] == 'true'){
+if(isset($_GET['debug']) && $_GET['debug'] == 'true') {
 	set_error_handler('expanse_error_handler');
 }
-
-//@ob_start('ob_gzhandler');
-
-/* CHANGE OCT5
-if(get_magic_quotes_gpc()) {
-      function stripslashes_deep($value) {
-          $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
-          return $value;
-      }
-      $_POST = array_map('stripslashes_deep', $_POST);
-      $_GET = array_map('stripslashes_deep', $_GET);
-      $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
-      define('MAGIC_QUOTES_OFF', true);
-}
-*/
 
 function stripslashes_deep($value) {
 	if(is_array($value)) {
@@ -51,11 +75,6 @@ $_GET = array_map('stripslashes_deep', $_GET);
 $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 
 function turnOffGlobals() {
-	/* CHANGE OCT4
-	if(!ini_get('register_globals')) {
-		return;
-	}
-	*/
 	if(isset($_REQUEST['GLOBALS'])) {
 		die('GLOBALS overwrite attempt detected');
 	}
@@ -68,6 +87,7 @@ function turnOffGlobals() {
 		}
 	}
 }
+
 /**
 * Returns a portion of a string while leaving
 * intact any words in that string. Also removes all HTML.
@@ -87,22 +107,23 @@ function trim_excerpt($text, $alt_text = L_NO_TEXT_IN_DESCRIPTION, $keep_line_br
 	}
 	$paragraph .= '&hellip;</p>';
 	$text = $paragraph;
-	//       $text = $keep_line_breaks ? str_replace('</p>', '<br /><br />', $text) : $text;
-	//       $acceptable_tags = $keep_line_breaks ? '<br><br />' : '';
-	//       $acceptable_tags .= '<strong><em><b><i><a><ul><ol><li><dl><dt><dd>';
-	//       $text = strip_tags($text,$acceptable_tags);
+	// $text = $keep_line_breaks ? str_replace('</p>', '<br /><br />', $text) : $text;
+	// $acceptable_tags = $keep_line_breaks ? '<br><br />' : '';
+	// $acceptable_tags .= '<strong><em><b><i><a><ul><ol><li><dl><dt><dd>';
+	// $text = strip_tags($text,$acceptable_tags);
 	// $text = $newlines ? $text : str_replace(array("\n", "\t", "\r"), '', $text);
-	//       $excerpt_length = DESCR_LENGTH;
-	//       $text = trim($text);
-	//       $text = empty($text) && !empty($alt_text) ? $alt_text : $text;
-	//       $words = explode(' ', $text, $excerpt_length + 1);
-	//       if (count($words) > $excerpt_length) {
-	//           array_pop($words);
-	//           array_push($words, '&hellip;');
-	//           $text = implode(' ', $words);
-	//       }
+	// $excerpt_length = DESCR_LENGTH;
+	// $text = trim($text);
+	// $text = empty($text) && !empty($alt_text) ? $alt_text : $text;
+	// $words = explode(' ', $text, $excerpt_length + 1);
+	// if(count($words) > $excerpt_length) {
+	// 		array_pop($words);
+	//		array_push($words, '&hellip;');
+	//		$text = implode(' ', $words);
+	// }
 	return $text;
 }
+
 /**
 * Returns the title, while inserting line breaks if the title is too long
 * @param string $text
@@ -118,7 +139,7 @@ function trim_title($title, $alt_text = L_NO_TEXT_IN_TITLE) {
 }
 
 function expanse_error_handler( $errno, $errstr, $errfile, $errline, $errcontext) {
-	if(error_reporting() == 0){
+	if(error_reporting() == 0) {
 		return;
 	}
 	echo '<div style="background:#fff;color:#000;border:1px solid #333;padding:10px;">'.
@@ -132,7 +153,6 @@ function expanse_error_handler( $errno, $errstr, $errfile, $errline, $errcontext
 }
 
 function backtrace() {
-//	ob_start();
 	$debug_array = debug_backtrace();
 	$counter = count($debug_array);
 	echo '
@@ -196,8 +216,5 @@ function backtrace() {
 			echo("<div class=\"called_by\" style=\"left:{$margin}px\">was called by:</div>");
 		}
 	}
-//	$error_contents = ob_get_contents();
-//	ob_end_clean();
 	return $error_contents;
 }
-?>

@@ -1,6 +1,47 @@
 <?php
-/********* Expanse ***********/
-/*   Do no edit below this line.   //---------------------------*/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
+/*   Do no edit below this line.
+//---------------------------*/
 define('IS_FRONTEND', true);
 define('IS_BACKEND', false);
 require(dirname(__FILE__) . '/common.functions.php');
@@ -8,7 +49,7 @@ require(dirname(__FILE__) . '/common.functions.php');
 turnOffGlobals();
 //Grab config
 $config_file = realpath(dirname(__FILE__).'/../config.php');
-if ($config_file) {
+if($config_file) {
 	require($config_file);
 }
 require(dirname(__FILE__) . '/functions.php');
@@ -29,6 +70,7 @@ require(dirname(__FILE__) . '/common.vars.php');
 /*Instatiate Objects*/
 $outmess = new outputMessages();
 $output = '';
+
 /*Template Objects*/
 $sections = new Expanse('sections');
 $comments = new Expanse('comments');
@@ -36,6 +78,7 @@ $images = new Expanse('images');
 $layout = new stdClass();
 $items = new Expanse('items');
 $users = new Expanse('users');
+
 /*Do Not Change Below*/
 $option = getAllOptions();
 $header = new stdClass();
@@ -43,6 +86,7 @@ $main = new stdClass();
 $user_pages = new stdClass();
 $menu = new stdClass();
 $footer = new stdClass();
+
 if(CLEAN_URLS) {
 	$pinfo = isset($_SERVER['PATH_INFO']) ? explode('?', $_SERVER['PATH_INFO']) : array('');
 	$pinfo = $pinfo[0];
@@ -64,9 +108,12 @@ if(CLEAN_URLS) {
 	$self = str_replace($home_path, '', $self);
 	$self = trim($self, '/');
 	if(preg_match('|^(search)(/[\w\d-]+)*$|', $request_uri, $matches)) {
+
 		// is a search
 		$_GET['search'] = trim($matches[1], '/');
+
 	} elseif(preg_match('|^([\w\d-]+)$|', $request_uri, $matches)) {
+
 		$check = $sections->GetList(array(array('dirtitle', '=', $matches[1]),array('pid', '=', 0)));
 		if(!empty($check)) {
 			//is a category
@@ -81,30 +128,39 @@ if(CLEAN_URLS) {
 				$_GET['ucat']= '';
 			}
 		}
+
 	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)$|', $request_uri, $matches)) {
+
 		$check = $items->GetList(array(array('dirtitle','=',$matches[2])));
 		if(!empty($check)){
-		//is a single item
-		$_GET['pcat'] = $check[0]->pid;
-		$_GET['item'] = $check[0]->id;
+
+			//is a single item
+			$_GET['pcat'] = $check[0]->pid;
+			$_GET['item'] = $check[0]->id;
+
 		} else {
 			$check_parent = $sections->GetList(array(array('dirtitle', '=', $matches[1])));
 			$check_parent = $check_parent[0]->id;
 			$check = $sections->GetList(array(array('dirtitle', '=', $matches[2]), array('pid','=',$check_parent)));
-			if(!empty($check)){
+			if(!empty($check)) {
+
 				//is a subcategory
 				$_GET['pcat'] = $check[0]->pid;
 				$_GET['subcat'] = $check[0]->id;
+
 			}
 		}
+
 	} elseif(preg_match('|^([\w\d-]+)/page/([\d]+)$|', $request_uri,$matches)) {
+
 		//paging category
 		$check = $sections->GetList(array(array('dirtitle','=',$matches[1])));
-		if(!empty($check)){
+		if(!empty($check)) {
 			$_GET['pcat']= $check[0]->id;
 			$_GET['page']=$matches[2];
 		}
 	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)/page/([\d]+)$|', $request_uri,$matches)) {
+
 		//paging subcat
 		$check_sub = $sections->GetList(array(array('dirtitle','=',$matches[2])));
 
@@ -116,6 +172,7 @@ if(CLEAN_URLS) {
 		}
 	}
 }	// <- Ends if (CLEAN_URLS)
+
 /*   Page sections   //-------------------------------*/
 $search = check_get_alphanum('search');
 $pid = check_get_id('pid');
@@ -140,7 +197,7 @@ define('TEST_THEME', $test_theme);
 define('LOGGED_IN', isLoggedIn());
 define('PREVIEW', ($preview == 'true' && LOGGED_IN ? true : false));
 
-if(LOGGED_IN){
+if(LOGGED_IN) {
 	error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 }
 
@@ -176,196 +233,214 @@ $xmlpage = 'feed.php';
 define('XML_PAGE', $xmlpage);
 $tplext = TPL_EXT;
 
-	if(file_exists("$themetemplates/logic.php")) {
-		include("$themetemplates/logic.php");
-	}
+if(file_exists("$themetemplates/logic.php")) {
+	include("$themetemplates/logic.php");
+}
 
-	/*Comment & Contact hooks*/
-	applyOzoneAction('is_commenting');
-	applyOzoneAction('is_contacting');
+/*Comment & Contact hooks*/
+applyOzoneAction('is_commenting');
+applyOzoneAction('is_contacting');
 
-	$addExtras = new stdClass();
-	$addExtras->copyrightdate = isset($addExtras->copyrightdate) ? $addExtras->copyrightdate : date('Y');
-	$addExtras->logged_in = LOGGED_IN;
-	$addExtras->themedir = $themedir;
-	$addExtras->themefilepath = $themefilepath;
-	$addExtras->themetemplates = $themetemplates;
-	$addExtras->themecss = $themecss;
-	$addExtras->themejs = $themejs;
-	$addExtras->themeimages = $themeimages;
-	$addExtras->css_link = $css_link;
-	$addExtras->javascript_link = $javascript_link;
-	$addExtras->jquery_link = $jquery;
-	$addExtras->modernizr_link = $modernizr;
-	$addExtras->theme_folder = YOUR_SITE."$themedir/";
-	$addExtras->images_folder = YOUR_SITE."$themedir/images/";
-	$addExtras->smilies_folder = YOUR_SITE."$themedir/images/smilies/";
-	$addExtras->templates_folder = YOUR_SITE."$themedir/templates/";
-	$addExtras->css_folder = YOUR_SITE."$themedir/css/";
-	$addExtras->javascript_folder = YOUR_SITE."$themedir/javascript/";
-	$addExtras->images_link = $images_link;
-	$addExtras->uploads_url = $uploads_url;
-	$addExtras->rss_feed = $rss_feed;
-	$addExtras->atom_feed = $atom_feed;
-	$addExtras->cms_name = CMS_NAME;
-	$addExtras->company_url = COMPANY_URL;
-	$addExtras->expanse_url = EXPANSE_URL;
+$addExtras = new stdClass();
+$addExtras->copyrightdate = isset($addExtras->copyrightdate) ? $addExtras->copyrightdate : date('Y');
+$addExtras->logged_in = LOGGED_IN;
+$addExtras->themedir = $themedir;
+$addExtras->themefilepath = $themefilepath;
+$addExtras->themetemplates = $themetemplates;
+$addExtras->themecss = $themecss;
+$addExtras->themejs = $themejs;
+$addExtras->themeimages = $themeimages;
+$addExtras->css_link = $css_link;
+$addExtras->javascript_link = $javascript_link;
+$addExtras->jquery_link = $jquery;
+$addExtras->modernizr_link = $modernizr;
+$addExtras->theme_folder = YOUR_SITE."$themedir/";
+$addExtras->images_folder = YOUR_SITE."$themedir/images/";
+$addExtras->smilies_folder = YOUR_SITE."$themedir/images/smilies/";
+$addExtras->templates_folder = YOUR_SITE."$themedir/templates/";
+$addExtras->css_folder = YOUR_SITE."$themedir/css/";
+$addExtras->javascript_folder = YOUR_SITE."$themedir/javascript/";
+$addExtras->images_link = $images_link;
+$addExtras->uploads_url = $uploads_url;
+$addExtras->rss_feed = $rss_feed;
+$addExtras->atom_feed = $atom_feed;
+$addExtras->cms_name = CMS_NAME;
+$addExtras->company_url = COMPANY_URL;
+$addExtras->expanse_url = EXPANSE_URL;
 
-	foreach ($option as $optname => $optval) {
-		$header->{$optname} = $optval;
-		$footer->{$optname} = $optval;
-		$menu->{$optname} = $optval;
-		$user_pages->{$optname} = $optval;
-		$xmlvars[$optname] = $optval;
-		$layout->{$optname} = $optval;
-	}
-	foreach ($addExtras as $xp => $xv) {
-		$header->{$xp} = $xv;
-		$footer->{$xp} = $xv;
-		$menu->{$xp} = $xv;
-		$user_pages->{$xp} = $xv;
-		$xmlvars[$xp] = $xv;
-		$user_vars['main'][$xp] = $xv;
-		$layout->{$xp} = $xv;
-	}
-  // =================== HTML ================
-	if(!is_feed()) {
-		$header->pcat = $pcat;
-		$header->subcat = $subcat;
-		$footer->pcat = $pcat;
-		$footer->subcat = $subcat;
-		$header = make_header();
-		$footer = make_footer();
-		$menu = make_menu();
+foreach($option as $optname => $optval) {
+	$header->{$optname} = $optval;
+	$footer->{$optname} = $optval;
+	$menu->{$optname} = $optval;
+	$user_pages->{$optname} = $optval;
+	$xmlvars[$optname] = $optval;
+	$layout->{$optname} = $optval;
+}
 
-		if(is_search()) { //performing a search
-			$tplfile = file_exists("$themetemplates/search{$tplext}") ? "search{$tplext}" : '';
-			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-			$main = expanse("search:$search|template:$tplfile|ignore_paging:true", $user_vars['main'], true);
-		} elseif(is_home()) { //on the home page
-			$start_cat = $option->startcategory;
-			if(strpos($start_cat, ':P') === FALSE) { //using a (sub)category for the home page
-				$sections->Get($start_cat);
-				if ($sections->pid != 0) {
-					$subname = $sections->sectionname;
-					$sections->Get($sections->pid);
-					$parentname = $sections->sectionname;
-					$cleanedname = $sections->dirtitle;
-					$cat_type = $sections->cat_type;
-					$tplfile = file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext;
-					$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
-					$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-					$main = expanse("category:$parentname|subcategory:$subname|template:$tplfile", $user_vars['main'], true);
-				} else {
-					$tplfile = file_exists("$themetemplates/$sections->dirtitle{$tplext}") ? $sections->dirtitle.$tplext : $sections->cat_type.$tplext;
-					$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
-					$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-					$main = expanse("category:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
-				}
-			} else { //using a user page for the home page
-				$items->Get($start_cat);
-				$cleanedname = $items->dirtitle;
-				$cat_type = 'page';
-				$tplfile = file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext;
-				$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
-				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-				$main = expanse("type:static|id:{$items->id}|template:$tplfile", $user_vars['main'], true);
-			}
-		} elseif(is_userpage()) { //On a user page
-			$items->Get($ucat);
-			if (!empty($items->id) && $items->type == 'static') {
-				$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
-				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-				$main = expanse("type:static|id:$ucat|template:@$tplfile", $user_vars['main'], true);
-			} else {
-				trigger_404();
-			}
-		} elseif(is_category()) { //Inside a category
-			$sections->Get($pcat);
-			if(is_subcat()){ // In the subcategory
+foreach($addExtras as $xp => $xv) {
+	$header->{$xp} = $xv;
+	$footer->{$xp} = $xv;
+	$menu->{$xp} = $xv;
+	$user_pages->{$xp} = $xv;
+	$xmlvars[$xp] = $xv;
+	$user_vars['main'][$xp] = $xv;
+	$layout->{$xp} = $xv;
+}
+// =================== HTML ================
+if(!is_feed()) {
+	$header->pcat = $pcat;
+	$header->subcat = $subcat;
+	$footer->pcat = $pcat;
+	$footer->subcat = $subcat;
+	$header = make_header();
+	$footer = make_footer();
+	$menu = make_menu();
+
+	//performing a search
+	if(is_search()) {
+
+		$tplfile = file_exists("$themetemplates/search{$tplext}") ? "search{$tplext}" : '';
+		$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+		$main = expanse("search:$search|template:$tplfile|ignore_paging:true", $user_vars['main'], true);
+
+	//on the home page
+	} elseif(is_home()) {
+
+		$start_cat = $option->startcategory;
+
+		// using a (sub)category for the home page
+		if(strpos($start_cat, ':P') === FALSE) {
+			$sections->Get($start_cat);
+			if($sections->pid != 0) {
+				$subname = $sections->sectionname;
+				$sections->Get($sections->pid);
 				$parentname = $sections->sectionname;
 				$cleanedname = $sections->dirtitle;
 				$cat_type = $sections->cat_type;
-				$sections->Get($subcat);
-				$tplfile = file_exists("$themetemplates/sub_{$sections->dirtitle}{$tplext}") ? "sub_{$sections->dirtitle}{$tplext}" : (file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext);
+				$tplfile = file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext;
+				$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
 				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-				$main = expanse("category:$parentname|subcategory:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
-			} elseif(is_single()) { //Viewing a single item
-				$tplfile = file_exists("$themetemplates/{$sections->dirtitle}_full{$tplext}") ? "{$sections->dirtitle}_full{$tplext}" : "{$sections->cat_type}_full{$tplext}";
-				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
-				$main = expanse("category:$sections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
-			} else { // Viewing just the category
-				if($sections->pid != 0) {
-					$sections->Get($sections->pid);
-				}
-				if(empty($sections->id)) {
-					trigger_404();
-				}
+				$main = expanse("category:$parentname|subcategory:$subname|template:$tplfile", $user_vars['main'], true);
+			} else {
 				$tplfile = file_exists("$themetemplates/$sections->dirtitle{$tplext}") ? $sections->dirtitle.$tplext : $sections->cat_type.$tplext;
+				$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
 				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 				$main = expanse("category:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
 			}
+		//using a user page for the home page
+		} else {
+			$items->Get($start_cat);
+			$cleanedname = $items->dirtitle;
+			$cat_type = 'page';
+			$tplfile = file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext;
+			$tplfile = (!has_homepage()) ? $tplfile : "home{$tplext}";
+			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+			$main = expanse("type:static|id:{$items->id}|template:$tplfile", $user_vars['main'], true);
 		}
-		if(!empty($fof)) {
-			printOut(FAILURE, L_PAGE_NOT_FOUND);
-			$userpage = new stdClass();
-			$userpage->output = $output;
-			$tplfile = safe_tpl("$themetemplates/@misc{$tplext}");
-			$main = sprintt($userpage, $tplfile);
+
+	//On a user page
+	} elseif(is_userpage()) {
+		$items->Get($ucat);
+		if(!empty($items->id) && $items->type == 'static') {
+			$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
+			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+			$main = expanse("type:static|id:$ucat|template:@$tplfile", $user_vars['main'], true);
+		} else {
+			trigger_404();
 		}
+
+	// Inside a category
+	} elseif(is_category()) {
+		$sections->Get($pcat);
+
+		// In the subcategory
+		if(is_subcat()) {
+			$parentname = $sections->sectionname;
+			$cleanedname = $sections->dirtitle;
+			$cat_type = $sections->cat_type;
+			$sections->Get($subcat);
+			$tplfile = file_exists("$themetemplates/sub_{$sections->dirtitle}{$tplext}") ? "sub_{$sections->dirtitle}{$tplext}" : (file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext);
+			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+			$main = expanse("category:$parentname|subcategory:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
+
+		//Viewing a single item
+		} elseif(is_single()) {
+			$tplfile = file_exists("$themetemplates/{$sections->dirtitle}_full{$tplext}") ? "{$sections->dirtitle}_full{$tplext}" : "{$sections->cat_type}_full{$tplext}";
+			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+			$main = expanse("category:$sections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
+
+		// Viewing just the category
+		} else {
+			if($sections->pid != 0) {
+				$sections->Get($sections->pid);
+			}
+			if(empty($sections->id)) {
+				trigger_404();
+			}
+			$tplfile = file_exists("$themetemplates/$sections->dirtitle{$tplext}") ? $sections->dirtitle.$tplext : $sections->cat_type.$tplext;
+			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+			$main = expanse("category:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
+		}
+	}
+	if(!empty($fof)) {
+		printOut(FAILURE, L_PAGE_NOT_FOUND);
+		$userpage = new stdClass();
+		$userpage->output = $output;
+		$tplfile = safe_tpl("$themetemplates/@misc{$tplext}");
+		$main = sprintt($userpage, $tplfile);
+	}
 
 // ============== FEED =============
+} else {
+	$extraVars = array();
+	if($feed != 'atom') {
+		$feedtemplate = "rss{$tplext}";
+		$xmlvars['copyrightdate'] = date('Y');
+		$xmlvars['lastmodified'] = date('Y');
+		$feedtype = 'rss';
 	} else {
-		$extraVars = array();
-		if ($feed != 'atom') {
-			$feedtemplate = "rss{$tplext}";
-			$xmlvars['copyrightdate'] = date('Y');
-			$xmlvars['lastmodified'] = date('Y');
-			$feedtype = 'rss';
-		} else {
-			$feedtemplate = "atom{$tplext}";
-			$feedtype = 'atom';
-		}
-		$feedtemplate = safe_tpl($feedtemplate);
+		$feedtemplate = "atom{$tplext}";
+		$feedtype = 'atom';
+	}
+	$feedtemplate = safe_tpl($feedtemplate);
 
-		if (is_search()) {
-			$xml = expanseXML("search:$search|template:$feedtemplate|ignore_paging:true|feedtype:$feedtype", $xmlvars, true);
-		} elseif (is_home()) {
-			$sections->Get($option->startcategory);
-			if ($sections->pid == 0) {
-				$catname = $sections->sectionname;
-				$subname = '';
-			} else {
-				$subname = "|subcategory:$sections->sectionname";
-				$sections->Get($sections->pid);
-				$catname = $sections->sectionname;
-			}
-			$xml = expanseXML("category:$catname{$subname}|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
+	if(is_search()) {
+		$xml = expanseXML("search:$search|template:$feedtemplate|ignore_paging:true|feedtype:$feedtype", $xmlvars, true);
+	} elseif(is_home()) {
+		$sections->Get($option->startcategory);
+		if($sections->pid == 0) {
+			$catname = $sections->sectionname;
+			$subname = '';
 		} else {
-			$sections->Get($pcat);
-			if (!is_subcat()) {
-				$xml = expanseXML("category:$sections->sectionname|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
-			} else {
-				$parentname = $sections->sectionname;
-				$sections->Get($subcat);
-				$xml = expanseXML("category:$parentname|subcategory:$sections->sectionname|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
-			}
+			$subname = "|subcategory:$sections->sectionname";
+			$sections->Get($sections->pid);
+			$catname = $sections->sectionname;
+		}
+		$xml = expanseXML("category:$catname{$subname}|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
+	} else {
+		$sections->Get($pcat);
+		if(!is_subcat()) {
+			$xml = expanseXML("category:$sections->sectionname|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
+		} else {
+			$parentname = $sections->sectionname;
+			$sections->Get($subcat);
+			$xml = expanseXML("category:$parentname|subcategory:$sections->sectionname|template:$feedtemplate|feedtype:$feedtype", $xmlvars, true);
 		}
 	}
+}
 
-	if($feed) {
-		$layout->header = $header;
-		$layout->main_content = $main;
-		$layout->menu = $menu;
-		$layout->footer = $footer;
-		$layout_file = "layout{$tplext}";
-		$layout = (file_exists("$themetemplates/".$layout_file)) ? sprintt($layout, "$themetemplates/@".$layout_file) : $main;
-	} else {
-	  	$layout->header = $header;
-	  	$layout->main_content = $main;
-	  	$layout->menu = $menu;
-	  	$layout->footer = $footer;
-	  	$layout_file = "layout{$tplext}";
-	  	$layout = (file_exists("$themetemplates/".$layout_file)) ? sprintt($layout, "$themetemplates/@".$layout_file) : $header . $menu . $main . $footer;
-	}
-?>
+if($feed) {
+	$layout->header = $header;
+	$layout->main_content = $main;
+	$layout->menu = $menu;
+	$layout->footer = $footer;
+	$layout_file = "layout{$tplext}";
+	$layout = (file_exists("$themetemplates/".$layout_file)) ? sprintt($layout, "$themetemplates/@".$layout_file) : $main;
+} else {
+  	$layout->header = $header;
+  	$layout->main_content = $main;
+  	$layout->menu = $menu;
+  	$layout->footer = $footer;
+  	$layout_file = "layout{$tplext}";
+  	$layout = (file_exists("$themetemplates/".$layout_file)) ? sprintt($layout, "$themetemplates/@".$layout_file) : $header . $menu . $main . $footer;
+}

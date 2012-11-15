@@ -1,5 +1,45 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
 class Expanse {
 	var $pog_query;
 	var $Fields = array();
@@ -10,7 +50,7 @@ class Expanse {
 		$this->RootName = $tablename;
 		if(isset($_SESSION["{$tablename}_fields"]) && !empty($_SESSION["{$tablename}_fields"])) {
 			$this->Fields = $_SESSION["{$tablename}_fields"];
-			foreach ($this->Fields as $val) {
+			foreach($this->Fields as $val) {
 				$this->{$val} = '';
 			}
 		} else {
@@ -55,7 +95,7 @@ class Expanse {
 		$Database = new DatabaseConnection();
 		$this->pog_query = "SELECT * FROM `{$this->TableName}` WHERE `{$this->Fields['primary']}`='" . intval($id) . "' LIMIT 1";
 		$Database->Query($this->pog_query);
-		foreach ($this->Fields as $k => $v) {
+		foreach($this->Fields as $k => $v) {
 			$this->{$v} = $Database->Unescape($Database->Result(0, $v));
 		}
 		return $this;
@@ -74,12 +114,12 @@ class Expanse {
 		$Database = new DatabaseConnection();
 		if(is_string($fcv_array)) {
 			$fcv_array = trim($fcv_array);
-			if(empty($fcv_array)){
+			if(empty($fcv_array)) {
 				return array();
 			}
 			$this->pog_query = str_replace('*table*', "`{$this->TableName}`", $fcv_array);
 		} else {
-			if(count($fcv_array) == 0){
+			if(count($fcv_array) == 0) {
 				return $fcv_array;
 			}
 
@@ -89,14 +129,14 @@ class Expanse {
 			$what = empty($what) ? '*' : $what;
 			$tableList = array();
 			$this->pog_query = "SELECT $what FROM `{$this->TableName}` WHERE ";
-			for ($i = 0, $c = sizeof($fcv_array) - 1; $i < $c; $i++) {
+			for($i = 0, $c = sizeof($fcv_array) - 1; $i < $c; $i++) {
 				$this->pog_query .= "`" . strtolower($fcv_array[$i][0]) . "` " . $fcv_array[$i][1] . " '" . $Database->Escape($fcv_array[$i][2]) . "' AND ";
 			}
 			$this->pog_query .= "`" . strtolower($fcv_array[$i][0]) . "` " . $fcv_array[$i][1] . " '" . $Database->Escape($fcv_array[$i][2]) . "' ORDER BY `$orderBy` $asc $sqlLimit";
 		}
 		$query = $Database->Query($this->pog_query);
 		$tableList = array();
-		while ($array = mysql_fetch_object($query)) {
+		while($array = mysql_fetch_object($query)) {
 			$tableList[] = $array;
 		}
 		return $tableList;
@@ -199,4 +239,3 @@ class Expanse {
 		return $Database->AffectedRows() > 0 ? true : false;
 	}
 }
-?>

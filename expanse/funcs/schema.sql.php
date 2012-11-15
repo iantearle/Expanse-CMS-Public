@@ -1,4 +1,45 @@
-<?php 
+<?php
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
 $default_install_values = array();
 $default_install_values['your_name'] = isset($yourname) ? $Database->Escape($yourname) : '';
 $default_install_values['admin_email'] = isset($adminemail) ? $Database->Escape($adminemail) : '';
@@ -13,10 +54,10 @@ $default_install_values['active_plugins'] = serialize(array("alter_menu.php", "t
 
 
 $schema = array(
-			'prepare' => '',
-			'structure' => '',
-			'populate'
-			);
+		'prepare' => '',
+		'structure' => '',
+		'populate'
+	);
 $schema['prepare'] =
 "DROP TABLE IF EXISTS `{$Database->Prefix}items`;
 DROP TABLE IF EXISTS `{$Database->Prefix}images`;
@@ -28,7 +69,7 @@ DROP TABLE IF EXISTS `{$Database->Prefix}sections`;
 DROP TABLE IF EXISTS `{$Database->Prefix}users`;
 ";
 
-$schema['structure'] = 
+$schema['structure'] =
 "CREATE TABLE `items` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `online` tinyint(1) NOT NULL default '0',
@@ -49,7 +90,7 @@ $schema['structure'] =
   `descr` longtext NOT NULL,
   `created` int(10) default NULL,
   `dirtitle` varchar(255) NOT NULL default '',
-  `event_date` varchar(45) NOT NULL default '',
+  `event_date` int(10) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
   `comments` tinyint(1) NOT NULL default '0',
   `smilies` tinyint(1) NOT NULL default '0',
@@ -144,7 +185,7 @@ CREATE TABLE `sessions` (
 ";
 
 $schema['populate'] =
-"INSERT INTO `items` ( `online` , `order_rank` , `title` , `materials` , `rating` , `image` , `thumbnail` , `height` , `width` , `crop_x` , `crop_y` , `thumb_w` , `thumb_h` , `thumb_max` , `use_default_thumbsize` , `descr` , `created` , `dirtitle` , `event_date` , `url` , `comments` , `smilies` , `type` , `menu_order` , `aid` , `cid` , `pid` , `autothumb` , `extraoptions` , `for_sale` , `paypal_amount` , `paypal_item_number` , `paypal_handling` ) 
+"INSERT INTO `items` ( `online` , `order_rank` , `title` , `materials` , `rating` , `image` , `thumbnail` , `height` , `width` , `crop_x` , `crop_y` , `thumb_w` , `thumb_h` , `thumb_max` , `use_default_thumbsize` , `descr` , `created` , `dirtitle` , `event_date` , `url` , `comments` , `smilies` , `type` , `menu_order` , `aid` , `cid` , `pid` , `autothumb` , `extraoptions` , `for_sale` , `paypal_amount` , `paypal_item_number` , `paypal_handling` )
 VALUES (
 '1', '1', 'Contact', '', '', '0', '', '', '', '0', '0', '0', '0', '50', '1', '<p>Put any content you would like above your contact form here.</p>', '$default_install_values[time]', 'contact', '', '', '0', '1', 'static', '7', '1', '0', '0', '0', '', '0', '', '0', '');
 
@@ -187,7 +228,4 @@ INSERT INTO `sections` VALUES (4, 'Press','', 4, 0, 1, 'press', 'press');
 INSERT INTO `sections` VALUES (5, 'Links','', 5, 0, 1, 'links', 'links');
 INSERT INTO `sections` VALUES (6, 'Blog', '', 6, 0, 1, 'blog', 'blog');
 
-
-INSERT INTO `users` VALUES ('1', 'admin', '$default_install_values[your_name]', '$default_install_values[random_password_md5]', '$default_install_values[admin_email]', '$default_install_values[site_url]', '$default_install_values[permissions]', '$default_install_values[time]' , '1', '1', '0', '', '1');
-";
-?>
+INSERT INTO `users` VALUES ('1', 'admin', '$default_install_values[your_name]', '$default_install_values[random_password_md5]', '$default_install_values[admin_email]', '$default_install_values[site_url]', '$default_install_values[permissions]', '$default_install_values[time]' , '1', '1', '0', '', '1');";

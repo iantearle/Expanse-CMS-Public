@@ -1,5 +1,44 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 
 class commentProcess {
 	var $Template;
@@ -9,7 +48,6 @@ class commentProcess {
 
 	function commentHandle() {
 		global $comments, $option;
-
 		if($this->isFlooding($option->floodcontrol)) {
 			return printOut(FAILURE, sprintf(L_FLOODING_MESSAGE, $option->floodcontrol));
 		}
@@ -23,30 +61,28 @@ class commentProcess {
 		$extravars = array();
 		$commentvars = get_object_vars($comments);
 		foreach($bannedips as $value) {
-			if ($_SERVER['REMOTE_ADDR'] == $value) {
+			if($_SERVER['REMOTE_ADDR'] == $value) {
 				return printOut(FAILURE, L_ADD_COMMENT_FAILURE);
 			}
 		}
-
 		$RequiredFields = array('email_required_email','name_required','message_required');
 		$checks = array('_email','_url','_alnum','_required');
-
 		$errors = array(
-			'missing' => array(),
-			'wrong_format' => array(
-				'alnum' => array(),
-				'email' => array(),
-				'phone_number' => array(),
-				'ssn' => array()
-			),
-			'final' => ''
-		);
+				'missing' => array(),
+				'wrong_format' => array(
+						'alnum' => array(),
+						'email' => array(),
+						'phone_number' => array(),
+						'ssn' => array()
+					),
+				'final' => ''
+			);
 		$domain_check_options = array('allowed_schemes' => $allowed_protocols, 'domain_check' => $check_for_url_dns);
 		foreach($_POST as $ind => $val) {
 			$val = trim($val);
 			$post_index = strtolower($ind);
-			foreach ($bannedwords as $value) {
-				if (strpos(strtolower(" " . $val), trim(strtolower($value)))) {
+			foreach($bannedwords as $value) {
+				if(strpos(strtolower(" " . $val), trim(strtolower($value)))) {
 					return printOut(FAILURE, L_ADD_COMMENT_FAILURE);
 				}
 			}
@@ -69,28 +105,28 @@ class commentProcess {
 				break;
 				case strpos($post_index, '_alnum'):
 					$ind = str_replace('_alnum', '', $ind);
-					if(!ctype_alnum($val)){
+					if(!ctype_alnum($val)) {
 						$errors['wrong_format']['alnum'][] = $ind;
 					}
 				break;
 				case strpos($post_index, '_required'):
 					$ind = str_replace('_required', '', $ind);
-					if(empty($val)){
+					if(empty($val)) {
 						$errors['missing'][] = $ind;
 					}
 				break;
 			}
-			if(!strpos($post_index, '_allow_html')){
+			if(!strpos($post_index, '_allow_html')) {
 				$val = strip_tags($val);
 			}
 			if(array_key_exists($ind, $commentvars)) {
 				if(is_array($val)) {
-				foreach ($val as $k => $v) {
-					$val[$k] = trim($v);
-					if (empty($v)) {
-						unset($val[$k]);
+					foreach($val as $k => $v) {
+						$val[$k] = trim($v);
+						if(empty($v)) {
+							unset($val[$k]);
+						}
 					}
-				}
 					$comments->{$ind} = !empty($val) ? serialize($val) : '';
 				} else {
 					$comments->{$ind} = trim($val);
@@ -104,7 +140,6 @@ class commentProcess {
 			foreach($array_diff as $string) {
 				$errors['missing'][] = str_replace($checks, '', $string);
 			}
-
 		}
 		if(!empty($errors['missing'])) {
 			$errors['final'] .= sprintf(L_MISSING_FIELDS, '<strong>'.proper_list($errors['missing']).'</strong>');
@@ -162,4 +197,3 @@ class commentProcess {
 		return($diff < $flood) ? true : false;
 	}
 }
-?>

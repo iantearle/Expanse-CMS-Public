@@ -1,13 +1,50 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
 
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
 
 /*
 ------------------------------------------------------------
 Common variables
 ============================================================
 */
-
 $private_label 	= false;
 $company_name	= '';
 $company_url	= '';
@@ -16,7 +53,7 @@ $cms_name		= '';
 $custom_news_feed = '';
 $expanse_folder = 'expanse';
 $custom_install_file = dirname(__FILE__).'/custom_install.php';
-if(file_exists($custom_install_file)){
+if(file_exists($custom_install_file)) {
 	include($custom_install_file);
 }
 $company_name		= trim($company_name);
@@ -26,6 +63,7 @@ $cms_name			= trim($cms_name);
 $cms_name			= empty($cms_name) ? $company_name : $cms_name;
 $custom_news_feed 	= trim($custom_news_feed);
 $expanse_folder 	= trim($expanse_folder);
+
 /*
 -------------------------------------------------
 Reusable Variables
@@ -48,7 +86,8 @@ define('FAILURE', '<div class="alert alert-block alert-error fade in" data-alert
 define('ALERT', '<div class="alert alert-block alert-warning fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
 define('NOTE', '<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>');
 define('TPL_EXT', '.tpl.html');
-//Detect the server OS
+
+// Detect the server OS
 $using_apache = (strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'apache') !== FALSE || strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'litespeed') !== FALSE) ? TRUE : FALSE;
 define('_APACHE',$using_apache);
 $using_iis = (_APACHE == FALSE && strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'microsoft-iis') !== FALSE ) ? TRUE :  FALSE;
@@ -76,7 +115,6 @@ if(isset($CONFIG)) {
 }
 define('CUSTOM_INSTALL', $private_label);
 
-
 /*
 -------------------------------------------------
 Plugins
@@ -85,12 +123,13 @@ Plugins
 $all_plugins = isset($CONFIG) ? getOption('active_plugins') : false;
 if($all_plugins !== false) {
 	$all_plugins = is_array($all_plugins) ? $all_plugins : array();
-	foreach ($all_plugins as $plugin) {
-		if (!empty($plugin) && file_exists(PLUGINS.'/'. $plugin)){
+	foreach($all_plugins as $plugin) {
+		if(!empty($plugin) && file_exists(PLUGINS.'/'. $plugin)) {
 			include_once(PLUGINS.'/'. $plugin);
 		}
 	}
 }
+
 /* Language  //-------------------------------*/
 $LEX = array();
 $LEX_JS = array();
@@ -111,16 +150,15 @@ foreach($LEX as $flag => $term) {
 
 applyOzoneAction('common_vars');
 $output = isset($output) ? $output : '';
+
 /****************************
 * Main Variables			*
 ****************************/
-
 $themesdir = 'themes';
 $report = array(
-	'error' => array(),
-	'success' => array(),
-	'alert' => array(),
-);
+		'error' => array(),
+		'success' => array(),
+		'alert' => array(),
+	);
 $admin_install = false;
 $admin_uninstall = false;
-?>

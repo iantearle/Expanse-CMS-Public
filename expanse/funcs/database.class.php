@@ -1,9 +1,50 @@
 <?php
-/********* Expanse ***********/
+/****************************************************************
+
+                    `-+oyhdNMMMMMMMNdhyo/-`
+                .+ymNNmys+:::....-::/oshmNNdy/.
+             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
+          .smMdo-`.:::.`               `.-::-`:smMd/`
+        .yMNy- -::`                         `-::`:hMmo`
+      `yMNo``:/`                               `-/--yMN+
+     /mMy.`:-                                  ```./--dMd.
+    sMN/ //`                                    `..`-/`sMN/
+   yMm-`s.                                       `.-.`+-/NN+
+  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
+ +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
+`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
++MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
+mMy    ````````....`````````                         ````  `dMo
+MM+            ````                                  ````   yMy
+MM:                                                  ````   yMd
+MM+                                                  ````   yMy
+dMy                                                  ````  `dM+
++Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
+`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
+ /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
+  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
+   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
+    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
+     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
+      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
+        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
+          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
+             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
+                .+yNMNmhs+/::....-::/oshmNNdy/.
+                    .-+oyhdNMMMMMMMNdhyo/-`
+
+Expanse - Content Management For Web Designers, By A Web Designer
+			  Extended by Ian Tearle, @iantearle
+		Started by Nate Cavanaugh and Jason Morrison
+			www.alterform.com & www.dubtastic.com
+
+****************************************************************/
+
 class DatabaseConnection {
 	var $connection;
 	var $databaseName;
 	var $result;
+
 	// -------------------------------------------------------------
 	function __construct() {
 		global $CONFIG;
@@ -25,14 +66,17 @@ class DatabaseConnection {
 			exit();
 		}
 	}
+
 	// -------------------------------------------------------------
 	function Close() {
 		mysql_close($this->connection);
 	}
+
 	// -------------------------------------------------------------
 	function GetConnection() {
 		return $this->connection;
 	}
+
 	// -------------------------------------------------------------
 	function Query($query) {
 		$this->result = mysql_query($query, $this->connection);
@@ -41,6 +85,7 @@ class DatabaseConnection {
 		}
 		return $this->result;
 	}
+
 	// -------------------------------------------------------------
 	function Rows() {
 		if($this->result != false) {
@@ -48,10 +93,12 @@ class DatabaseConnection {
 		}
 		return null;
 	}
+
 	// -------------------------------------------------------------
 	function AffectedRows() {
 		return mysql_affected_rows();
 	}
+
 	// -------------------------------------------------------------
 	function Result($row, $name) {
 		if($this->Rows() > 0) {
@@ -65,6 +112,7 @@ class DatabaseConnection {
 		$this->result = mysql_query($query, $this->connection);
 		return($this->AffectedRows() > 0);
 	}
+
 	function Escape($text) {
 		if(!is_numeric($text)) {
 			if(get_magic_quotes_gpc() && !defined('MAGIC_QUOTES_OFF')) {
@@ -74,6 +122,7 @@ class DatabaseConnection {
 		}
 		return $text;
 	}
+
 	// -------------------------------------------------------------
 	function Fetch($type = 'object') {
 		$type = "mysql_fetch_$type";
@@ -83,14 +132,17 @@ class DatabaseConnection {
 			return mysql_fetch_object($this->result);
 		}
 	}
+
 	// -------------------------------------------------------------
 	function Unescape($text) {
 		return $text;
 	}
+
 	// -------------------------------------------------------------
 	function GetCurrentId() {
 		return intval(mysql_insert_id($this->connection));
 	}
+
 	// -------------------------------------------------------------
 	function GetCol($query='', $x=0) {
 		$query = empty($query) ? $this->result : $this->Query($query);
@@ -100,6 +152,7 @@ class DatabaseConnection {
 		}
 		return $tableList;
 	}
+
 	// -------------------------------------------------------------
 	function GetResults($query='') {
 		$query = empty($query) ? $this->result : $this->Query($query);
@@ -119,5 +172,5 @@ class DatabaseConnection {
 		return $tableList;
 	}
 }
+
 $Database = new DatabaseConnection();
-?>
