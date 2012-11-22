@@ -820,6 +820,19 @@ function checkAll(obj) {
 }
 */
 
+expanse.sortCats = Backbone.View.extend({
+	initialize: function() {
+		var sort_submit = $('#sort_submit');
+		if(!sort_submit.exists()){ return; }
+		sort_submit.click(_.bind(this.changeMethod, this));
+	},
+	changeMethod: function() {
+		form = $("#post");
+        form.attr("method", "get");
+        form.submit();
+	}
+});
+
 $(function() {
 	new expanse.toggleBox;
 	new expanse.confirmUninstall;
@@ -828,6 +841,8 @@ $(function() {
 	new expanse.hiliteInput;
 	new expanse.setChecks;
 	new expanse.markDelete
+	new expanse.sortCats;
+
 	if($('.descr')){
 		FCKeditor.ReplaceAllTextareas('descr');
 	}
