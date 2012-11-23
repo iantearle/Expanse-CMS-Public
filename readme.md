@@ -1,3 +1,4 @@
+<pre><code>
                     `-+oyhdNMMMMMMMNdhyo/-`
                 .+ymNNmys+:::....-::/oshmNNdy/.
              :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
@@ -33,6 +34,7 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 	    Extended by Ian Tearle, @iantearle
        Started by Nate Cavanaugh and Jason Morrison
+</code></pre>
 
 ### MIT License
 
