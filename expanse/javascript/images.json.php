@@ -23,7 +23,7 @@ if(LOGGED_IN) {
 
 	    $file = array(
 	    	'name' => $file,
-	    	'size' => filesize('../uploads/' . $file),
+	    	'size' => filesize(UPLOADS . $file),
 	    	'url' => UPLOADS_DIR .'/'. $file,
 	    	'delete_type' => 'DELETE',
 	    	'width' => $dims[0],

@@ -9,12 +9,7 @@ if(LOGGED_IN) {
 
 	$xtra_img_uploads = checkFiles($_FILES, $uploaddir, true, '/^asset\d/i');
 
-	if(!empty($uploads['errors']) || !empty($xtra_img_uploads['errors'])) {
-		foreach($uploads['errors'] as $val) {
-			foreach($val as $v) {
-				$messages[] = "<li>$v</li>";
-			}
-		}
+	if(!empty($xtra_img_uploads['errors'])) {
 		foreach($xtra_img_uploads['errors'] as $val) {
 			foreach($val as $v) {
 				$messages[] = "<li>$v</li>";
@@ -24,8 +19,9 @@ if(LOGGED_IN) {
 		// Send a message if there are errors
 		$messages = "<ul>".implode('', $messages)."</ul>";
 		printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
+
+		return;
 	} else {
-//		print_r($xtra_img_uploads['files']);
 		$files = array();
 	    $file = array(
 	    	'name' => $xtra_img_uploads['files']['asset']['name'],
@@ -40,7 +36,5 @@ if(LOGGED_IN) {
 	    $files[] = $file;
 
 		echo json_encode($files);
-
 	}
-
 }
