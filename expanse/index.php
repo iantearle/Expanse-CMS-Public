@@ -36,10 +36,11 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
+
 require('funcs/admin.php');
+
 if(LOGGED_IN) {
 	if((ADDING || EDITING) && !empty($catid)) {
 		$cats = $sections->GetList(array(array('id', '=', $catid),array('pid', '=', 0)));
@@ -72,17 +73,14 @@ if(LOGGED_IN) {
 					if(is_posting(L_BUTTON_EDIT)) {
 						$the_module->edit();
 					}
-
 					$items = $the_module->get_single();
 				} elseif(EDIT_LIST) {
-					if(is_posting(L_BUTTON_DELETE)){
+					if(is_posting(L_BUTTON_DELETE)) {
 						$the_module->delete();
 					}
-
 					$itemsList = $the_module->get_list();
 				}
 			}
-
 			$the_module->add_title();
 		}
 	} // end adding or editing
@@ -97,19 +95,20 @@ $outmess->write_header($pagetitle);
 			<div class="container">
 				<a class="brand" href="./"><?php echo CMS_NAME ?></a>
 				<ul class="nav">
-					<?php if(LOGGED_IN) { ?>
-						<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						Content
-						<b class="caret"></b>
-						</a>
-						<?php echo $menu; ?>
+					<?php
+					if(LOGGED_IN) {
+					?>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+							<?php echo $menu; ?>
 						</li>
-					<?php } ?>
+					<?php
+					}
+					?>
 				</ul>
 				<?php
 				if(!isset($is_install)) {
-					$gravatar = (isset($_SESSION['email'])) ? md5( strtolower( trim( $_SESSION['email'] ) ) ) : ''; ?>
+					if(LOGGED_IN) {
+						$gravatar = (isset($_SESSION['email'])) ? md5( strtolower( trim( $_SESSION['email'] ) ) ) : ''; ?>
 						<ul class="nav pull-right">
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -117,35 +116,30 @@ $outmess->write_header($pagetitle);
 									<span class="hidden-phone"><?php printf(L_WELCOME, HEADER_ID);?></span>
 									<b class="caret"></b>
 					            </a>
-					            <?php $showAdminSettings = ($auth->Admin) ? '<li><a href="index.php?cat=admin">'. L_MENU_ADMIN_SETTINGS. '</a></li><li class="divider"></li>' : ''; ?>
-					            <?php echo (LOGGED_IN == true) ? '
-					            <ul class="dropdown-menu">'.
-									$showAdminSettings
-									.'<li><a href="'.YOUR_SITE.INDEX_PAGE.'" target="_blank">'.L_MENU_VIEW_SITE.'</a></li>
-									<li><a href="index.php?action=logout" id="logoutLink">'.L_LOGOUT.'</a></li>
-								</ul>' : ''; ?>
+					            <ul class="dropdown-menu">
+					            	<?php
+					            	echo ($auth->Admin) ? '<li><a href="index.php?cat=admin">'. L_MENU_ADMIN_SETTINGS. '</a></li><li class="divider"></li>' : '';
+					            	?>
+									<li><a href="<?php echo YOUR_SITE.INDEX_PAGE; ?>" target="_blank"><?php echo L_MENU_VIEW_SITE; ?></a></li>
+									<li><a href="index.php?action=logout" id="logoutLink"><?php echo L_LOGOUT; ?></a></li>
+								</ul>
 							</li>
 						</ul>
-					<p class="pull-right">
-				<?php
+					<?php
+					}
 				} else {
-				?>
-				<p>
-				<?php
 					$install_step = check_get_alphanum('step');
 					$uninstall_type = check_get_alphanum('uninstall_type');
-					if($install_step == 'install'){
-						$step ='Installing '.CMS_NAME;
+					if($install_step == 'install') {
+						$step ='<p>Installing '.CMS_NAME.'</p>';
 					} elseif($install_step == 'uninstall') {
-						$step = 'Uninstalling '.CMS_NAME;
+						$step = '<p>Uninstalling '.CMS_NAME.'</p>';
 						$step .= ($uninstall_type == 'manual') ? ': Manually' : '';
 					} else {
-						$step = CMS_NAME.' wants to know what you\'re doing';
+						$step = '<p>'.CMS_NAME.' wants to know what you\'re doing</p>';
 					}
 					echo $step;
-				}
-				?>
-				</p>
+				} ?>
 			</div>
 		</div>
 	</div>
@@ -158,114 +152,82 @@ if(LOGGED_IN) {
 			if(!(empty($catid) && empty($cat))) {
 				echo $outmess->generateBreadCrumbs($catid, 'edit');
 			}
-			echo $output;
-				if(ADDING && !empty($catid)) {
-					include('add.php');
-				} elseif(EDITING && !empty($catid)) {
-					include('edit.php');
-				}  elseif (CAT == 'admin' && $auth->Admin) {
-					if (empty($admin_sub)) {
-						echo $output;
+			if(ADDING && !empty($catid)) {
+				echo $output;
+				include('add.php');
+			} elseif(EDITING && !empty($catid)) {
+				echo $output;
+				include('edit.php');
+			} elseif(CAT == 'admin' && $auth->Admin) {
+				if(empty($admin_sub)) {
+					echo $output;
 					?>
-						<div class="well">
-							<ul id="catList" class="nav nav-tabs nav-stacked adminList">
-								<?php
-								applyOzoneAction('admin_menu_list', $admin_menu['details']);
-								foreach($admin_menu['details'] as $menu_item) {
-									?>
-									<li id="<?php echo $menu_item['id']; ?>">
-										<?php echo $menu_item['title']; ?>
-									</li>
-									<?php
-								}
-								applyOzoneAction('admin_menu'); ?>
-							</ul>
-						</div>
-					<?php
-					} elseif(!empty($admin_sub)) {
-						applyOzoneAction('admin_page');
-					}
-				} elseif(is_home()) {
-				?>
-					<div class="row">
-				<?php
-					include('main.php');
-				?>
+					<div class="well">
+						<ul id="catList" class="nav nav-tabs nav-stacked adminList">
+						<?php
+						applyOzoneAction('admin_menu_list', $admin_menu['details']);
+						foreach($admin_menu['details'] as $menu_item) {
+							?>
+							<li id="<?php echo $menu_item['id']; ?>">
+								<?php echo $menu_item['title']; ?>
+							</li>
+							<?php
+						}
+						applyOzoneAction('admin_menu');
+						?>
+						</ul>
 					</div>
-				<?php
-				} elseif(CAT == 'upgrade') {
-					include('upgrade.php');
-				} else {
-					echo L_NOTHING_HERE;
+					<?php
+				} elseif(!empty($admin_sub)) {
+					applyOzoneAction('admin_page');
 				}
-				?>
+			} elseif(is_home()) {
+				include('main.php');
+			} elseif(CAT == 'upgrade') {
+				include('upgrade.php');
+			} else {
+				echo '<p>'.L_NOTHING_HERE.'</p>';
+			}
+			?>
+		</form>
 	</div>
 <?php
 } else {
 ?>
 	<div class="container login">
-		<h1><?php printf(L_MAIN_TITLE,CMS_NAME); ?></h1>
-		<form method="post" action="" id="post" name="post">
-		<?php
-		echo $output;
-		if(isset($_GET['action']) && $_GET['action'] == 'forgot') {
-			if(!isset($_GET['reset_key'])) {
-			?>
-				<div class="control-group">
-					<label for="username" class="control-label"><?php echo L_LOGIN_USERNAME ?></label>
-					<div class="controls">
-						<input name="username" id="username" type="text" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label for="email" class="control-label"><?php echo L_LOGIN_EMAIL ?></label>
-					<div class="controls">
-						<input name="email" id="email" type="text" />
-					</div>
-				</div>
-				<div class="form-actions">
-					<input name="get_password" id="get_password" type="submit" class="btn error" value="<?php echo L_BUTTON_GET_INFO ?>" />
-				</div>
+		<form method="post" action="" id="post" name="post" class="form-signin">
 			<?php
+			echo $output;
+			if(isset($_GET['action']) && $_GET['action'] == 'forgot') {
+				if(!isset($_GET['reset_key'])) {
+				?>
+					<h2 class="form-signin-heading"><?php echo L_LOGIN_FORGOT_PASSWORD ?></h2>
+					<input type="text" name="username" id="username" class="input-block-level" placeholder="<?php echo L_LOGIN_USERNAME ?>">
+					<input type="text" name="email" id="email" class="input-block-level" placeholder="<?php echo L_LOGIN_EMAIL ?>">
+					<input type="submit" name="get_password" id="get_password" class="btn" value="<?php echo L_BUTTON_GET_INFO ?>">
+				<?php
+				} else {
+				?>
+					<a href="./"><?php echo L_LOGIN_GO_BACK ?></a>
+				<?php
+				}
 			} else {
 			?>
-				<a href="./"><?php echo L_LOGIN_GO_BACK ?></a>
+				<h2 class="form-signin-heading"><?php echo L_GET_STARTED ?></h2>
+				<input name="username" type="text" id="username" class="input-block-level" value="<?php echo @$_POST['username'] ?>" placeholder="<?php echo L_LOGIN_USERNAME ?>">
+				<input name="password" type="password" id="password" class="input-block-level" placeholder="<?php echo L_LOGIN_PASSWORD ?>">
+				<label for="rememberme" class="checkbox">
+					<input name="rememberme" type="checkbox" id="rememberme" value="1">
+					<?php echo L_LOGIN_REMEMBER_ME ?>
+				</label>
+				<input name="login" type="submit" id="login" value="Submit" class="btn btn-large btn-primary" />
+				<a href="index.php?action=forgot" title="<?php echo L_LOGIN_FORGOT_PASSWORD ?>" class="pull-right"><?php echo L_LOGIN_FORGOT_PASSWORD ?></a>
 			<?php
 			}
-		} else {
-		?>
-			<h3><?php echo L_GET_STARTED ?></h3>
-			<div class="control-group">
-				<label for="username" class="control-label"><?php echo L_LOGIN_USERNAME ?></label>
-				<div class="controls">
-					<input name="username" type="text" id="username" value="<?php echo @$_POST['password'] ?>" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="password" class="control-label"><?php echo L_LOGIN_PASSWORD ?></label>
-				<div class="controls">
-					<input name="password" type="password" id="password" />
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<label for="rememberme" class="checkbox">
-						<input name="rememberme" type="checkbox" id="rememberme" value="1" />
-						<?php echo L_LOGIN_REMEMBER_ME ?>
-					</label>
-				</div>
-			</div>
-			<div class="form-actions">
-				<input name="login" type="submit" id="login" value="Submit" class="btn btn-primary" />
-				<a href="index.php?action=forgot" title="<?php echo L_LOGIN_FORGOT_PASSWORD ?>" id="forgotLink"><?php echo L_LOGIN_FORGOT_PASSWORD ?></a>
-			</div>
-		<?php
-		} //Not resetting
-?>
+			?>
+		</form>
 	</div>
 <?php
 }
-?>
-	</form>
-<?php
+
 $outmess->write_footer();

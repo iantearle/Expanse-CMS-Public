@@ -36,12 +36,11 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
 class outputMessages {
-	function outputMessages(){
+	function outputMessages() {
 
 	}
 	function printOut($message, $more="") {
@@ -59,6 +58,7 @@ class outputMessages {
 			foreach($report['alert'] as $val) {
 				$output .= '<div class="alert alert-block alert-warning fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>'.$val.'</p></div>';
 			}
+
 		} else {
 			if(empty($more)) {
 				$output .= $message;
@@ -71,12 +71,12 @@ class outputMessages {
 	}
 
 	/**
-	* Writes the header
-	* @param string $pagetitle
-	* @param int $is_vanilla
-	* @param int $is_install
-	* @return void
-	*/
+	 * Writes the header
+	 * @param string $pagetitle
+	 * @param int $is_vanilla
+	 * @param int $is_install
+	 * @return void
+	 */
 	function write_header($pagetitle, $is_vanilla=0, $is_install=0) {
 		global $auth, $xajax, $sections, $items, $module_css, $module_js, $page_meta, $headerDate, $cat_id, $cat;
 		$finaltitle = CMS_NAME.L_MENU_SEPARATOR.CMS_VERSION.' ';
@@ -84,22 +84,22 @@ class outputMessages {
 		$default = L_DEFAULT_TITLE;
 		$type = check_get_alphanum('type');
 		if(!$is_install) {
-			switch(true) {
+			switch (true) {
 				case ADDING:
 				case EDITING:
-				break;
+					break;
 				case CAT == 'admin':
 					add_title(L_MENU_ADMIN_SETTINGS, 2);
-				break;
+					break;
 				case !ADDING && !EDITING && CAT != 'admin' && empty($type) && LOGGED_IN:
 					add_title(sprintf(L_MAIN_TITLE,CMS_NAME), 2);
-				break;
+					break;
 				case !LOGGED_IN:
 					add_title(sprintf(L_LOGIN_TITLE,CMS_NAME), 2);
-				break;
+					break;
 				default:
 					add_title($default, 2);
-				break;
+					break;
 			}
 		}
 		if($is_vanilla && $is_install) {
@@ -111,6 +111,8 @@ class outputMessages {
 		$finaltitle = applyOzone('admin_title',$finaltitle);
 		$main_css = 'css/expanse.css.php'.($is_install ? '?extend=install': '');
 		$main_css = applyOzoneAction('admin_css_url', $main_css);
+		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
+		$main_js = applyOzoneAction('admin_js_url', $main_js);
 		?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -128,31 +130,27 @@ class outputMessages {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $main_css ?>" />
-<?php
-	echo (!empty($module_css)) ? '<link rel="stylesheet" type="text/css" href="'.$module_css.'" />' : '';
-?>
-
+	<?php echo (!empty($module_css)) ? '<link rel="stylesheet" type="text/css" href="'.$module_css.'" />' : ''; ?>
 	<script type="text/javascript">document.write('<link rel="stylesheet" type="text/css" href="css/expanse.js.css" />');</script>
 	<script type="text/javascript" src="javascript/modernizr.min.js"></script>
-	<script type="text/javascript" src="funcs/FCKeditor/fckeditor.js"></script>
-<?php
-	if(isset($xajax) && is_object($xajax)) {
-		$xajax->printJavascript("./funcs/");
-	}
+	<script type="text/javascript" src="<?php echo $main_js ?>"></script>
+	<?php
+	echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>' : '';
+	if(isset($xajax) && is_object($xajax)) { $xajax->printJavascript("./funcs/"); }
 	$company_logo = COMPANY_LOGO;
 	if(!empty($company_logo) && CUSTOM_INSTALL) { ?>
 		<style>
-		#header h1 a, #header h1 a:hover{
+			#header h1 a, #header h1 a:hover{
 			background: url(<?php echo $company_logo; ?>) no-repeat;
-		}
+			}
 		</style>
-<?php
-	}
+	<?php  }
 	applyOzoneAction('admin_header');
-?>
+	?>
 </head>
-<body<?php if($is_vanilla) { ?> id="vanilla"<?php } if(isset($_GET['cat'])) { echo ' class="'. dirify($_GET['cat']) .'"'; } else { echo ' class="build"'; } ?>>
-<?php
+<body<?php if($is_vanilla){ ?> id="vanilla"<?php } if(isset($_GET['cat'])) { echo ' class="'. dirify($_GET['cat']) .'"'; } else { echo ' class="build"';} ?>>
+	<div id="wrap">
+		<?php
 		if(!$is_install) {
 			if(PENDING_UPDATE && CAT != 'upgrade' && LOGGED_IN) {
 				echo '<div id="upgradeOverlay"></div>';
@@ -162,11 +160,11 @@ class outputMessages {
 	}
 
 	/**
-	* Creates the breadcrumbs HTML
-	* @param string $section
-	* @param $type
-	* @return void
-	*/
+	 * Creates the breadcrumbs HTML
+	 * @param string $section
+	 * @param $type
+	 * @return void
+	 */
 	function generateBreadCrumbs($section, $type) {
 		global $Database, $admin_menu;
 		$item_id = ITEM_ID;
@@ -204,25 +202,25 @@ class outputMessages {
 			add_breadcrumb(sprintf(L_UPDATE_CRUMB,CMS_NAME), 2);
 		}
 		$category_header = applyOzoneAction('category_header', $category_header);
-		$breadcrumbs = make_breadcrumbs();
-		?>
+		$breadcrumbs = make_breadcrumbs(); ?>
 		<ul class="breadcrumb">
 			<li><?php echo $breadcrumbs ?></li>
-		</ul> <?php
+		</ul>
+		<?php
 	}
 
 	/**
-	* Writes a footer
-	* @return void
-	*/
+	 * Writes a footer
+	 * @return void
+	 */
 	function write_footer() {
 		global $auth, $module_js;
 		$is_admin = (isset($auth) && is_object($auth) && $auth->Admin == true);
 		$upgradable = (defined('UPGRADE_AVAILABLE') && UPGRADE_AVAILABLE == true);
 		$show_label = (isset($_SESSION['username']) && $upgradable && $is_admin);
-		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
-		$main_js = applyOzoneAction('admin_js_url', $main_js);
 		?>
+		<div id="push"></div>
+	</div>
 	<footer class="footer">
 		<div class="container">
 			<div class="row">
@@ -230,21 +228,20 @@ class outputMessages {
 			</div>
 		</div>
 	</footer>
-	<?php
-	if($show_label) {
-	?>
-		<p id="upgrade"><a href="http://expansecms.org/download/" target="_blank"><?php printf(L_UPGRADE_AVAILABLE, UPGRADE_VERSION); ?></a></p>
-	<?php
-	}
-	global $LEX_JS;
-	echo '<div class="hidden">';
-	echo is_array($LEX_JS) ? implode("\n",$LEX_JS) : '';
-	echo '</div>';
-	echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>' : ''; ?>
-	<script type="text/javascript" src="<?php echo $main_js ?>"></script>
-	<?php applyOzoneAction('admin_footer'); ?>
+		<?php
+		if($show_label) {
+			?>
+			<p id="upgrade"><a href="http://expansecms.org/download/" target="_blank"><?php printf(L_UPGRADE_AVAILABLE, UPGRADE_VERSION); ?></a></p>
+			<?php
+		}
+		global $LEX_JS;
+		echo '<div class="hide">';
+		echo is_array($LEX_JS) ? implode("\n",$LEX_JS) : '';
+		echo '</div>';
+		applyOzoneAction('admin_footer');
+		?>
 </body>
 </html>
-<?php
+		<?php
 	}
 }

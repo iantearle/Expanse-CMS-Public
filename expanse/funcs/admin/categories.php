@@ -36,15 +36,19 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
-if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+if(!defined('EXPANSE')) {
+	die('Sorry, but this file cannot be directly viewed.');
+}
 
 /*   Categories   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=categories&amp;action=edit">'.L_ADMIN_MANAGE_CATEGORIES.'</a>',array(),'categories');
-if($admin_sub !== 'categories') { return; }
+//'<a href="?cat=admin&amp;sub=categories&amp;action=manage">'.L_CATEGORY_MANAGE_TYPES.'</a>'
+if($admin_sub !== 'categories') {
+	return;
+}
 if(ACTION == 'add') {
 	add_breadcrumb('<a href="?cat=admin&amp;sub=categories&amp;action=edit">'.L_CATEGORY_EDIT_TITLE.'</a>');
 	add_breadcrumb(L_CATEGORY_ADD_TITLE);
@@ -71,154 +75,161 @@ function category_content() {
 	$item_id = ITEM_ID;
 	?>
 	<div class="row" id="categoryMod">
-		<?php
-		if(ACTION == 'add') {
-			if(is_posting(L_BUTTON_ADD)) {
-				$sections = get_dao('sections');
-				$sections->sectionname = isset($_POST['sectionname']) ?  trim(save(strip_tags($_POST['sectionname']))) : '';
-				$sections->descr = isset($_POST['cat_descr']) ?  trim(save(strip_tags($_POST['cat_descr']))) : '';
-				$sections->dirtitle =  unique_dirtitle(dirify($sections->sectionname), 'sections');
-				$sections->cat_type = isset($_POST['cat_type']) ? trim($_POST['cat_type']) : '';
-				$sections->public = 0;
-				if(empty($sections->cat_type) || empty($sections->sectionname)) {
-					printOut(FAILURE, L_MISSING_CATEGORY_DETAIL);
+	<?php
+	if(ACTION == 'add') {
+		if(is_posting(L_BUTTON_ADD)) {
+			$sections = get_dao('sections');
+			$sections->sectionname = isset($_POST['sectionname']) ?  trim(save(strip_tags($_POST['sectionname']))) : '';
+			$sections->descr = isset($_POST['cat_descr']) ?  trim(save($_POST['cat_descr'])) : '';
+			$sections->dirtitle =  unique_dirtitle(dirify($sections->sectionname), 'sections');
+			$sections->cat_type = isset($_POST['cat_type']) ? trim($_POST['cat_type']) : '';
+			$sections->public = 0;
+			if(empty($sections->cat_type) || empty($sections->sectionname)) {
+				printOut(FAILURE, L_MISSING_CATEGORY_DETAIL);
+			} else {
+				if($sections->SaveNew()) {
+					$auth->updateAdmins();
+					printOut(SUCCESS, sprintf(L_CATEGORY_ADDED, $sections->sectionname, $sections->id));
 				} else {
-					if($sections->SaveNew()) {
-						$auth->updateAdmins();
-						printOut(SUCCESS, sprintf(L_CATEGORY_ADDED, $sections->sectionname, $sections->id));
-					} else {
-						printOut(FAILURE, L_CATEGORY_NOT_ADDED);
-					}
+					printOut(FAILURE, L_CATEGORY_NOT_ADDED);
 				}
 			}
-			echo $output;
-			?>
-			<div class="span6">
-				<h3><?php echo L_CATEGORY_GIVE_NAME ?></h3>
-				<div class="control-group">
-					<label for="sectionname" class="control-label"><?php echo L_CATEGORY_NAME ?></label>
-					<div class="controls">
-						<input type="text" id="sectionname" name="sectionname" class="span6 formfields" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
-					<div class="controls">
-						<textarea name="cat_descr" id="cat_descr" class="span6"></textarea>
-					</div>
+		}
+		echo $output;
+		?>
+		<div class="span6">
+			<h3><?php echo L_CATEGORY_GIVE_NAME ?></h3>
+			<div class="control-group">
+				<label for="sectionname" class="control-label"><?php echo L_CATEGORY_NAME ?></label>
+				<div class="controls">
+					<input type="text" id="sectionname" name="sectionname" class="span6 formfields" />
 				</div>
 			</div>
-			<div class="span6">
-				<h3><?php echo L_CATEGORY_GIVE_TYPE ?></h3>
-				<div class="control-group">
-					<div class="controls">
-						<?php
-						$uninstalled_cats = array();
-						$modfilesdir = EXPANSEPATH."/$modules_dir";
-						$modfiles = getFiles($modfilesdir, 'all',1);
-						foreach($modfiles['dirs'] as $k => $v) {
-							if(!(in_array("view.php",$v['files']) && in_array("controller.php",$v['files']))){continue;}
-							include("$modfilesdir/$k/controller.php");
-							$info = (object) get_class_vars($k);
-							if($info->Exclude == true){continue;}
-							if(is_callable(array($k,'install'))){
-								if(getOption('category', $k)){
-								?>
-								<label for="cat<?php echo $info->name; ?>" class="checkbox">
-									<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
-									<span><?php echo $info->name; ?></span>
-									<span class="help-block"><strong>Note:</strong> <?php echo $info->description; ?></span>
-								</label>
-								<?php
-								} else {
-									$uninstalled_cats[] = $info->name;
-								}
-							} else { ?>
-								<label for="cat<?php echo $info->name; ?>" class="checkbox">
-									<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" />
-									<span><?php echo $info->name; ?></span>
-									<span class="help-block"><strong>Note:</strong> <?php echo $info->description; ?></span>
-								</label>
-							<?php
-							}
-						}?>
-					</div>
+			<div class="control-group">
+				<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+				<div class="controls">
+					<textarea name="cat_descr" id="cat_descr" class="span6 descr"></textarea>
 				</div>
-				<?php
-				if(!empty($uninstalled_cats)) {
-					?>
-					<dl>
-						<dt><?php echo L_CATEGORY_PENDING_INSTALL_LIST ?></dt>
-						<dd>
-							<ul>
-								<?php
-								foreach($uninstalled_cats as $ind => $uncat){
-									?><li><a href="?cat=admin&amp;sub=categories&amp;action=manage#cat<?php echo $uncat; ?>"><?php echo $uncat; ?></a></li><?php
-								}
-								?>
-							</ul>
-						</dd>
-					</dl>
+			</div>
+		</div>
+		<div class="span6">
+			<h3><?php echo L_CATEGORY_GIVE_TYPE ?></h3>
+			<div class="control-group">
+				<div class="controls">
 					<?php
-				}
+					$uninstalled_cats = array();
+					$modfilesdir = EXPANSEPATH."/$modules_dir";
+					$modfiles = getFiles($modfilesdir, 'all',1);
+					foreach($modfiles['dirs'] as $k => $v) {
+						if(!(in_array("view.php",$v['files']) && in_array("controller.php",$v['files']))) {
+							continue;
+						}
+						include("$modfilesdir/$k/controller.php");
+						$info = (object) get_class_vars($k);
+						if($info->Exclude == true) {
+							continue;
+						}
+						if(is_callable(array($k,'install'))) {
+							if(getOption('category', $k)) {
+								?>
+								<label for="cat<?php echo $info->name; ?>" class="radio">
+									<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" <?php popOver('right', 'Note', $info->description); ?> />
+									<?php echo $info->name; ?>
+								</label>
+								<?php
+							} else {
+								$uninstalled_cats[] = $info->name;
+							}
+						} else {
+							?>
+							<label for="cat<?php echo $info->name; ?>" class="radio">
+								<input type="radio" id="cat<?php echo $info->name; ?>" name="cat_type" value="<?php echo $k; ?>" <?php popOver('right', 'Note', $info->description); ?> />
+								<?php echo $info->name; ?>
+							</label>
+							<?php
+						}
+					}
+					?>
+				</div>
+			</div>
+			<?php
+			if(!empty($uninstalled_cats)) {
 				?>
-			</div>
-				<input type="hidden" name="pid" value="0">
-			</div>
-
-			<div class="form-actions">
-				<input type="submit" name="submit" value="<?php echo L_BUTTON_ADD ?>" class="btn btn-primary" />
-			</div>
-		<?php
-		} elseif(ACTION == 'manage') {
-			if(is_posting(L_BUTTON_INSTALL)) {
-				$install = $Database->Escape($_POST['category']);
-				$install = str_replace('..', '', $install);
-				if(file_exists("$modules_dir/{$install}/controller.php") && file_exists("$modules_dir/{$install}/view.php")) {
-					include_once("$modules_dir/{$install}/controller.php");
-					$func_arr = array($install,'install');
-					if(is_callable($func_arr)) {
-						if(!getOption('category', $install)) {
-							call_user_func($func_arr);
-							setOption('category', $install);
-							printOut( SUCCESS, L_CATEGORY_INSTALLED);
-						} else {
-							printOut( FAILURE, L_CATEGORY_ALREADY_INSTALLED);
-						}
-					}
-				}
+				<dl>
+					<dt><?php echo L_CATEGORY_PENDING_INSTALL_LIST ?></dt>
+					<dd>
+						<ul>
+							<?php
+							foreach($uninstalled_cats as $ind => $uncat) {
+								?>
+								<li><a href="?cat=admin&amp;sub=categories&amp;action=manage#cat<?php echo $uncat; ?>"><?php echo $uncat; ?></a></li>
+								<?php
+							}
+							?>
+						</ul>
+					</dd>
+				</dl>
+				<?php
 			}
-			if(is_posting(L_BUTTON_UNINSTALL)) {
-				$uninstall = $Database->Escape($_POST['category']);
-				$uninstall = str_replace('..', '', $uninstall);
-				if(file_exists("$modules_dir/{$uninstall}/controller.php") && file_exists("$modules_dir/{$uninstall}/view.php")){
-					include_once("$modules_dir/{$uninstall}/controller.php");
-					$func_arr = array($uninstall,'uninstall');
-					if(is_callable($func_arr)) {
-						if(getOption('category', $uninstall)) {
-							call_user_func($func_arr);
-							deleteOption('category', $uninstall);
-							printOut(SUCCESS, L_CATEGORY_UNINSTALLED);
-						} else {
-							printOut( FAILURE, L_CATEGORY_ALREADY_UNINSTALLED);
-						}
-					}
-				}
-			}
-			echo $output;
 			?>
-			</form>
-			<p><?php echo L_CATEGORY_FINISHED_MANAGING ?></p>
+			</div>
+			<input type="hidden" name="pid" value="0">
+		</div>
+
+		<div class="form-actions">
+			<input type="submit" name="submit" value="<?php echo L_BUTTON_ADD ?>" class="btn btn-primary" />
+		</div>
+		<?php
+	} elseif(ACTION == 'manage') {
+		if(is_posting(L_BUTTON_INSTALL)) {
+			$install = $Database->Escape($_POST['category']);
+			$install = str_replace('..', '', $install);
+			if(file_exists("$modules_dir/{$install}/controller.php") && file_exists("$modules_dir/{$install}/view.php")) {
+				include_once("$modules_dir/{$install}/controller.php");
+				$func_arr = array($install,'install');
+				if(is_callable($func_arr)) {
+					if(!getOption('category', $install)) {
+						call_user_func($func_arr);
+						setOption('category', $install);
+						printOut( SUCCESS, L_CATEGORY_INSTALLED);
+					} else {
+						printOut( FAILURE, L_CATEGORY_ALREADY_INSTALLED);
+					}
+				}
+			}
+		}
+		if(is_posting(L_BUTTON_UNINSTALL)) {
+			$uninstall = $Database->Escape($_POST['category']);
+			$uninstall = str_replace('..', '', $uninstall);
+			if(file_exists("$modules_dir/{$uninstall}/controller.php") && file_exists("$modules_dir/{$uninstall}/view.php")) {
+				include_once("$modules_dir/{$uninstall}/controller.php");
+				$func_arr = array($uninstall,'uninstall');
+				if(is_callable($func_arr)) {
+					if(getOption('category', $uninstall)) {
+						call_user_func($func_arr);
+						deleteOption('category', $uninstall);
+						printOut(SUCCESS, L_CATEGORY_UNINSTALLED);
+					} else {
+						printOut( FAILURE, L_CATEGORY_ALREADY_UNINSTALLED);
+					}
+				}
+			}
+		}
+		echo $output;
+		?>
+		</form>
+		<div class="span12">
+			<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p><?php echo L_CATEGORY_FINISHED_MANAGING ?></p></div>
 			<dl id="addCats">
 				<?php
 				$modfilesdir = EXPANSEPATH."/$modules_dir";
 				$modfiles = getFiles($modfilesdir, 'all', 1);
-				foreach($modfiles['dirs'] as $k => $v){
-					if(in_array("controller.php",$v['files']) && in_array("view.php",$v['files'])){
+				foreach($modfiles['dirs'] as $k => $v) {
+					if(in_array("controller.php",$v['files']) && in_array("view.php",$v['files'])) {
 						include_once("$modfilesdir/{$k}/controller.php");
 						$info = (object) get_class_vars($k);
-						if(is_array($info->author)){
-							foreach($info->author as $name => $url){
+						if(is_array($info->author)) {
+							foreach($info->author as $name => $url) {
 								$authors[] = (!empty($url)) ? '<a href="'.$url.'" target="_blank">'.$name.'</a>' : "$ind";
 							}
 							$info->author = implode(', ', $authors);
@@ -227,159 +238,166 @@ function category_content() {
 						}
 						$authors = array();
 						?>
-						<dt class="collSwitsch" id="cat<?php echo $info->name; ?>">
-							<?php echo $info->name; ?>
-						</dt>
+						<dt class="collSwitsch" id="cat<?php echo $info->name; ?>"><?php echo $info->name; ?></dt>
 						<dd id="cat<?php echo $info->name; ?>Contents">
 							by <?php echo $info->author;  ?><br />
 							v.<?php echo $info->version ?><br />
 							<p><?php echo $info->description; ?></p>
 							<?php
-							if(is_callable(array($k,'install')) && !getOption('category', $k)){?>
+							if(is_callable(array($k,'install')) && !getOption('category', $k)) {
+								?>
 								<p class="contentalert"><?php echo L_CATEGORY_PENDING_INSTALL ?><br />
-									<form method="post" action="">
-										<input name="category" type="hidden" value="<?php echo $k; ?>" />
-										<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_INSTALL ?>" />
-									</form>
+								<form method="post" action="">
+									<input name="category" type="hidden" value="<?php echo $k; ?>" />
+									<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_INSTALL ?>" />
+								</form>
 								</p>
-							<?php
+								<?php
 							}
-							if(is_callable(array($k,'uninstall')) && getOption('category', $k)){ ?>
+							if(is_callable(array($k,'uninstall')) && getOption('category', $k)) {
+								?>
 								<form method="post" action="">
 									<h6><?php echo L_CATEGORY_PENDING_UNINSTALL ?></h6>
 									<?php echo L_CATEGORY_PENDING_UNINSTALL_WARNING ?>
 									<input name="category" type="hidden" value="<?php echo $k; ?>" />
 									<input type="submit" name="submit" class="buttons" value="<?php echo L_BUTTON_UNINSTALL ?>" />
 								</form>
-							<?php
+								<?php
 							}
 							?>
 						</dd>
-					<?php
+						<?php
 					}
 				}
 				?>
 			</dl>
+		</div>
 		<?php
-		}
-		if(ACTION == 'edit') {
-			if(!empty($item_id)) {
-				$subs =& get_dao('sections');
-				$errs = array();
-				if(is_posting(L_BUTTON_DELETE)) {
-					if(isset($_POST['del'])) {
-						foreach($_POST['del'] as $id) {
-							$st = get_dao('sections');
-							$st->Get($id);
-							$title = $st->sectionname;
-							$reason = empty($title) ? L_CATEGORY_MISSING : $title;
-							if(deleteItem($id, 'sections')) {
-								$result[] = '<li>'.sprintf(L_SUBCATEGORY_DELETED, $title).'</li>';
-							} else {
-								$result[] = '<li>'.sprintf(L_SUBCATEGORY_NOT_DELETED, $title, $reason).'</li>';
-								$errs[] = 1;
-							}
-						}
-						$result = '<ul>'.implode('', $result).'</ul>';
-						if(empty($errs)) {
-							printOut(SUCCESS, $result);
+	}
+	if(ACTION == 'edit') {
+		if(!empty($item_id)) {
+			$subs =& get_dao('sections');
+			$errs = array();
+			if(is_posting(L_BUTTON_DELETE)) {
+				if(isset($_POST['del'])) {
+					foreach($_POST['del'] as $id) {
+						$st = get_dao('sections');
+						$st->Get($id);
+						$title = $st->sectionname;
+						$reason = empty($title) ? L_CATEGORY_MISSING : $title;
+						if(deleteItem($id, 'sections')) {
+							$result[] = '<li>'.sprintf(L_SUBCATEGORY_DELETED, $title).'</li>';
 						} else {
-							printOut(FAILURE, $result);
+							$result[] = '<li>'.sprintf(L_SUBCATEGORY_NOT_DELETED, $title, $reason).'</li>';
+							$errs[] = 1;
 						}
 					}
-				}
-				if(is_posting(L_BUTTON_EDIT)) {
-					$subs->Get($item_id);
-					$section_name = trim(save(strip_tags($_POST['catTitle'])));
-					$subs->descr = isset($_POST['cat_descr']) ? trim(save(strip_tags($_POST['cat_descr']))) : '';
-					if($subs->sectionname != $section_name) {
-						$subs->sectionname = empty($section_name) ? $subs->sectionname : $section_name;
-						$subs->dirtitle =  unique_dirtitle(dirify($subs->sectionname), 'sections');
-					}
-					$new_cat = isset($_POST['new_cat']) && is_array($_POST['new_cat']) ? $_POST['new_cat'] : array();
-					$new_cat_descr = isset($_POST['new_cat_descr']) && is_array($_POST['new_cat_descr']) ? $_POST['new_cat_descr'] : array();
-					$subadd = '';
-					$subcats_list = isset($_POST['sectionname']) && is_array($_POST['sectionname']) ? $_POST['sectionname'] : array();
-					$subcats_list_descr = isset($_POST['sectionname_descr']) && is_array($_POST['sectionname_descr']) ? $_POST['sectionname_descr'] : array();
-					$subsection =& get_dao('sections');
-					foreach($subcats_list as $i => $sl) {
-						$sl = trim($sl);
-						if(empty($sl)) { continue; }
-						$subsection->Get($i);
-						$subsection->sectionname = $sl;
-						if(isset($subcats_list_descr[$i])) {
-							$subsection->descr = trim(save(strip_tags($subcats_list_descr[$i])));
-						}
-						$subsection->dirtitle = unique_dirtitle(dirify($subsection->sectionname), 'sections');
-						$subsection->Save();
-					}
-					$sub_result = array('good' => array(), 'bad' => array());
-					$subadd = '';
-					if(!empty($new_cat)) {
-						$newsubs =& get_dao('sections');
-						foreach($new_cat as $i => $v) {
-							$v = trim(save(strip_tags($v)));
-							if(empty($v)) { continue; }
-							if(isset($new_cat_descr[$i]) && !empty($new_cat_descr[$i])) {
-								$newsubs->descr = trim(save(strip_tags($new_cat_descr[$i])));
-							}
-							$newsubs->sectionname = $v;
-							$newsubs->dirtitle =  unique_dirtitle(dirify($newsubs->sectionname), 'sections');
-							$newsubs->pid = $subs->id;
-							$newsubs->public = 0;
-							if($newsubs->SaveNew()) {
-								$sub_result['good'][] = $newsubs->sectionname;
-							} else {
-								$sub_result['bad'][] = $newsubs->sectionname;
-							}
-						}
-					}
-					if(!empty($sub_result['good'])) {
-						$subadd .= '<br />'.sprintf(L_NEW_SUBCATEGORY_ADDED,proper_list($sub_result['good']));
-					}
-					if(!empty($sub_result['bad'])) {
-						$subadd .='<br />'.sprintf(L_NEW_SUBCATEGORY_NOT_ADDED,proper_list($sub_result['bad']));
-					}
-					if($subs->Save()) {
-						$auth->updateAdmins();
-						printOut(SUCCESS, vsprintf(L_EDIT_CATEGORY_SUCCESS,array($subs->sectionname, $subadd)));
+					$result = '<ul>'.implode('', $result).'</ul>';
+					if(empty($errs)) {
+						printOut(SUCCESS, $result);
 					} else {
-						printOut(FAILURE, vsprintf(L_EDIT_CATEGORY_FAILURE,array($subs->sectionname,$subadd, mysql_error())));
+						printOut(FAILURE, $result);
 					}
 				}
+			}
+			if(is_posting(L_BUTTON_EDIT)) {
 				$subs->Get($item_id);
-				$subc = !empty($subs->id) ? $subs->GetList(array(array('pid', '=', $subs->id))) : array();
-				?>
-				<div class="span12">
-					<?php echo $output; ?>
-				</div>
-				<?php
-				if(!empty($subs->id)) {
-				?>
-					<div class="span6">
-						<h3><?php echo L_CATEGORY_ADD_TITLE; ?></h3>
-						<div class="well">
+				$section_name = trim(save(strip_tags($_POST['catTitle'])));
+				$subs->descr = isset($_POST['cat_descr']) ? trim(save($_POST['cat_descr'])) : '';
+				if($subs->sectionname != $section_name) {
+					$subs->sectionname = empty($section_name) ? $subs->sectionname : $section_name;
+					$subs->dirtitle =  unique_dirtitle(dirify($subs->sectionname), 'sections');
+				}
+				$new_cat = isset($_POST['new_cat']) && is_array($_POST['new_cat']) ? $_POST['new_cat'] : array();
+				$new_cat_descr = isset($_POST['new_cat_descr']) && is_array($_POST['new_cat_descr']) ? $_POST['new_cat_descr'] : array();
+				$subadd = '';
+				$subcats_list = isset($_POST['sectionname']) && is_array($_POST['sectionname']) ? $_POST['sectionname'] : array();
+				$subcats_list_descr = isset($_POST['sectionname_descr']) && is_array($_POST['sectionname_descr']) ? $_POST['sectionname_descr'] : array();
+				$subsection =& get_dao('sections');
+				foreach($subcats_list as $i => $sl) {
+					$sl = trim($sl);
+					if(empty($sl)) {
+						continue;
+					}
+					$subsection->Get($i);
+					$subsection->sectionname = $sl;
+					if(isset($subcats_list_descr[$i])) {
+						$subsection->descr = trim(save($subcats_list_descr[$i]));
+					}
+					$subsection->dirtitle = unique_dirtitle(dirify($subsection->sectionname), 'sections');
+					$subsection->Save();
+				}
+				$sub_result = array('good' => array(), 'bad' => array());
+				$subadd = '';
+				if(!empty($new_cat)) {
+					$newsubs =& get_dao('sections');
+					foreach($new_cat as $i => $v) {
+						$v = trim(save(strip_tags($v)));
+						if(empty($v)) {
+							continue;
+						}
+						if(isset($new_cat_descr[$i]) && !empty($new_cat_descr[$i])) {
+							$newsubs->descr = trim(save($new_cat_descr[$i]));
+						}
+						$newsubs->sectionname = $v;
+						$newsubs->dirtitle =  unique_dirtitle(dirify($newsubs->sectionname), 'sections');
+						$newsubs->pid = $subs->id;
+						$newsubs->public = 0;
+						if($newsubs->SaveNew()) {
+							$sub_result['good'][] = $newsubs->sectionname;
+						} else {
+							$sub_result['bad'][] = $newsubs->sectionname;
+						}
+					}
+				}
+				if(!empty($sub_result['good'])) {
+					$subadd .= '<br />'.sprintf(L_NEW_SUBCATEGORY_ADDED,proper_list($sub_result['good']));
+				}
+				if(!empty($sub_result['bad'])) {
+					$subadd .='<br />'.sprintf(L_NEW_SUBCATEGORY_NOT_ADDED,proper_list($sub_result['bad']));
+				}
+				if($subs->Save()) {
+					$auth->updateAdmins();
+					printOut(SUCCESS, vsprintf(L_EDIT_CATEGORY_SUCCESS,array($subs->sectionname, $subadd)));
+				} else {
+					printOut(FAILURE, vsprintf(L_EDIT_CATEGORY_FAILURE,array($subs->sectionname,$subadd, mysql_error())));
+				}
+			}
+			$subs->Get($item_id);
+			$subc = !empty($subs->id) ? $subs->GetList(array(array('pid', '=', $subs->id))) : array();
+			?>
+			<div class="span12">
+				<?php echo $output; ?>
+			</div>
+			<?php
+			if(!empty($subs->id)) {
+			?>
+				<div class="span6">
+					<h3><?php echo L_CATEGORY_ADD_TITLE; ?></h3>
+					<div class="well">
+						<div class="row-fluid">
 							<div class="control-group">
 								<label for="catTitle" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
 								<div class="controls">
-									<input name="catTitle" id="catTitle" value="<?php echo $subs->sectionname; ?>" type="text" class="formfields" />
+									<input name="catTitle" id="catTitle" value="<?php echo $subs->sectionname; ?>" type="text" class="span12" />
 								</div>
 							</div>
 							<div class="control-group">
 								<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
 								<div class="controls">
-									<textarea name="cat_descr" id="cat_descr"><?php echo view($subs->descr); ?></textarea>
+									<textarea name="cat_descr" id="cat_descr" class="descr span12"><?php echo view($subs->descr); ?></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
-					<?php
-					if($subs->cat_type !== 'pages') {
-					?>
-					<div class="span6" id="addSubcats">
-						<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
-						<div id="addSubcats1Group" class="row">
-							<div class="span6">
+				</div>
+				<?php
+				if($subs->cat_type !== 'pages') {
+						?>
+						<div class="span6" id="addSubcats">
+							<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
+							<div id="addSubcats1Group" class="row">
+								<div class="span6">
 								<div class="control-group">
 									<label for="new_cat1" class="control-label"><?php echo L_JS_SUBCAT_LABEL ?></label>
 									<div class="controls">
@@ -395,44 +413,45 @@ function category_content() {
 							</div>
 						</div>
 					</div>
+
 					<div class="span12">
 						<?php
 						if(!empty($subc)) {
-						?>
+							?>
 							<h3><?php echo L_EDIT_SUBCATEGORY_NAME_LABEL; ?></h3>
 							<table class="table table-striped">
 								<?php
 								foreach($subc as $subCat) {
-								?>
-								<tr>
-									<td>
-										<div class="control-group">
-											<label for="cat<?php echo $subCat->id; ?>" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
-											<div class="controls">
-												<input type="text" name="sectionname[<?php echo $subCat->id; ?>]" id="cat<?php echo $subCat->id; ?>" value="<?php echo $subCat->sectionname; ?>" class="formfields" />
+									?>
+									<tr>
+										<td>
+											<div class="control-group">
+												<label for="cat<?php echo $subCat->id; ?>" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
+												<div class="controls">
+													<input type="text" name="sectionname[<?php echo $subCat->id; ?>]" id="cat<?php echo $subCat->id; ?>" value="<?php echo $subCat->sectionname; ?>" class="formfields" />
+												</div>
+												<label for="sectionname_descr[<?php echo $subCat->id; ?>]" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+												<div class="controls">
+													<textarea name="sectionname_descr[<?php echo $subCat->id; ?>]"><?php echo view($subCat->descr); ?></textarea>
+												</div>
 											</div>
-											<label for="sectionname_descr[<?php echo $subCat->id; ?>]" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
-											<div class="controls">
-												<textarea name="sectionname_descr[<?php echo $subCat->id; ?>]"><?php echo view($subCat->descr); ?></textarea>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="control-group">
-											<div class="controls">
+										</td>
+										<td>
+											<div class="control-group">
+												<div class="controls">
 												<label for="del<?php echo $subCat->id; ?>" class="checkbox pull-right">
 													<input id="del<?php echo $subCat->id; ?>" name="del[]" type="checkbox" value="<?php echo $subCat->id; ?>" />
 													<?php echo L_DELETE_ITEM ?>
 												</label>
+												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
-								<?php
+										</td>
+									</tr>
+									<?php
 								}
 								?>
 							</table>
-						<?php
+							<?php
 						}
 						?>
 					</div>
@@ -445,21 +464,21 @@ function category_content() {
 						</div>
 					</div>
 					<?php
-					} else {
-					?>
-						<div class="span12">
-							<div class="form-actions">
-								<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
-							</div>
-						</div>
-					<?php
-					}
 				} else {
-					printf(FAILURE, L_CATEGORY_MISSING);
+					?>
+					<div class="span12">
+						<div class="form-actions">
+							<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
+						</div>
+					</div>
+					<?php
 				}
 			} else {
+				printf(FAILURE, L_CATEGORY_MISSING);
+			}
+		} else {
 			?>
-				<div class="span12">
+			<div class="span12">
 				<?php
 				if(is_posting(L_BUTTON_DELETE)) {
 					if(isset($_POST['del'])) {
@@ -512,48 +531,54 @@ function category_content() {
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						foreach($sec as $ind => $c){
-							if($c->cat_type == 'pages' && $c->id != 1){ continue; }
-							$itemCount = $Database->Query("SELECT COUNT(id) as count FROM ".PREFIX."items WHERE pid=$c->id");
-							$itemCount = $Database->Result(0, 'count');
-							?>
-							<tr<?php echo ($ind % 2) ? ' class="altRow"' : ''; ?>>
-								<td><?php echo $c->sectionname ?></td>
-								<td><?php echo $itemCount ?></td>
-								<td><?php echo $c->cat_type ?></td>
-								<td><?php echo $c->dirtitle.$tplext ?></td>
-								<td><a href="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>&amp;id=<?php echo $c->id; ?>" class="editLink">Edit</a></td>
-								<td><?php
-									if($c->cat_type != 'pages') {
-									?>
-										<input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php
-									}
-									?>
-								</td>
-							</tr>
-						<?php
+					<?php
+					foreach($sec as $ind => $c) {
+						if($c->cat_type == 'pages' && $c->id != 1) {
+							continue;
 						}
+						$itemCount = $Database->Query("SELECT COUNT(id) as count FROM ".PREFIX."items WHERE pid=$c->id");
+						$itemCount = $Database->Result(0, 'count');
 						?>
+						<tr<?php echo ($ind % 2) ? ' class="altRow"' : ''; ?>>
+							<td><?php echo $c->sectionname ?></td>
+							<td><?php echo $itemCount ?></td>
+							<td><?php echo $c->cat_type ?></td>
+							<td><?php echo $c->dirtitle.$tplext ?></td>
+							<td><a href="<?php echo htmlentities($_SERVER['REQUEST_URI']) ?>&amp;id=<?php echo $c->id; ?>" class="editLink">Edit</a></td>
+							<td><?php
+							if($c->cat_type != 'pages') {
+								?><input id="del<?php echo $c->id; ?>" name="del[]" type="checkbox" value="<?php echo $c->id; ?>" /><?php
+							}
+							?>
+							</td>
+						</tr>
+						<?php
+					}
+					?>
 					</tbody>
 				</table>
 				<p class="alert alert-danger"><?php echo L_DELETE_CATEGORY_ALERT ?></p>
 				<?php
 				if($hasitems) {
 				?>
-					<div class="form-actions">
-						<div class="clearfix">
-							<div class="pull-right">
-								<input name="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
-							</div>
+				<div class="form-actions">
+					<div class="clearfix">
+						<div class="pull-right">
+							<input name="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
 						</div>
 					</div>
+				</div>
 				<?php
 				}
-			}
+				?>
+			</div>
+		<?php
 		}
 		?>
+		</div>
+		<?php
+	}
+	?>
 	</div>
-</div>
-<?php
+	<?php
 }

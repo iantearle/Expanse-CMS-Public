@@ -7,12 +7,13 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 //Must be included at the top of all mod files.
-if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
-$size_note = sprintf('<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>', sprintf(L_SIZE_NOTE,MAX_UPLOAD));
+if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
 
+$size_note = sprintf('<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>', sprintf(L_SIZE_NOTE,MAX_UPLOAD));
+ ?>
+<?php
 //If you're adding content, use this block
-if(ADDING) {
-?>
+if(ADDING) { ?>
 	<input type="hidden" name="aid" value="<?php echo $_SESSION['id']; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $catid; ?>" />
 	<?php
@@ -98,12 +99,12 @@ if(ADDING) {
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="span12">
+				<div class="descr-well">
+					<div class="row-fluid">
 						<div class="control-group">
 							<label for="descr" class="control-label"><?php echo L_BODY ?></label>
-							<div class="controls border-descr">
-								<textarea name="descr" id="descr" class="formfields descr"></textarea>
+							<div class="controls">
+								<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
 							</div>
 						</div>
 					</div>
@@ -130,9 +131,7 @@ if(ADDING) {
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_MASS_UPLOAD ?>" />
 		</div>
-	<?php
-	} else {
-	?>
+	<?php } else { ?>
 		<div class="row">
 			<div class="span12">
 				<div class="pull-right">
@@ -207,31 +206,35 @@ if(ADDING) {
 				</div>
 			</div>
 		</div>
-		<fieldset id="additional_images">
-			<legend><?php echo L_GALLERY_ADDITIONAL_IMAGES;tooltip(L_GALLERY_ADDITIONAL_IMAGES, L_GALLERY_ADDITIONAL_IMAGES_HELP) ?></legend>
-				<div class="row" id="additional_images1Group">
-					<div class="span8" id="third">
-						<div class="control-group" id="second">
-							<label for="additional_images1" class="control-label"><?php echo L_IMAGE ?> 1</label>
-							<div class="controls" id="first">
-								<input name="additional_images1" type="file" class="formfields" id="additional_images1" />
-							</div>
-						</div>
-						<div class="control-group">
-							<label for="caption1" class="control-label"><?php echo L_CAPTION ?> 1</label><br />
-							<div class="controls">
-								<textarea name="caption[additional_images1]" class="caption" id="caption1"></textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-		</fieldset>
 		<div class="row">
 			<div class="span12">
+				<fieldset id="additional_images">
+					<legend><?php echo L_GALLERY_ADDITIONAL_IMAGES;tooltip(L_GALLERY_ADDITIONAL_IMAGES, L_GALLERY_ADDITIONAL_IMAGES_HELP) ?></legend>
+						<div class="row-fluid" id="additional_images1Group">
+							<div class="span8" id="third">
+								<div class="control-group" id="second">
+									<label for="additional_images1" class="control-label"><?php echo L_IMAGE ?> 1</label>
+									<div class="controls" id="first">
+										<input name="additional_images1" type="file" class="formfields" id="additional_images1" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="caption1" class="control-label"><?php echo L_CAPTION ?> 1</label><br />
+									<div class="controls">
+										<textarea name="caption[additional_images1]" class="caption" id="caption1"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="descr-well">
+			<div class="row-fluid">
 				<div class="control-group">
-					<label for="descr"><?php echo L_GALLERY_BODY ?></label>
-					<div class="controls border-descr">
-						<textarea name="descr" cols="30" rows="5" id="descr" class="span12 descr formfields"></textarea>
+					<label for="descr" class="control-label"><?php echo L_GALLERY_BODY ?></label>
+					<div class="controls">
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
 					</div>
 				</div>
 			</div>
@@ -257,12 +260,12 @@ if(ADDING) {
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 		</div><?php
-	}
+		}
 }
-
 if(EDITING) {
 	//If you're editing one specific item, use this block
 	if(EDIT_SINGLE) {
+		$format = new format;
 	?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
@@ -349,17 +352,22 @@ if(EDITING) {
 			<div class="span12">
 				<fieldset id="additional_images">
 					<legend><?php echo L_GALLERY_ADDITIONAL_IMAGES;tooltip(L_GALLERY_ADDITIONAL_IMAGES, L_GALLERY_ADDITIONAL_IMAGES_HELP) ?></legend>
-						<div id="extraImages">
+						<div class="row-fluid">
 							<?php
 							$add_images = $images->GetList(array(array('itemid', '=', $item_id)));
 							$count = count($add_images);
 							$count++;
+							$i=0;
 							foreach($add_images as $ximg) {
 								?>
-								<div class="imgBox">
-									<img src="funcs/tn.lib.php?image_id=<?php echo $ximg->id ?>&amp;dim=100" title="<?php echo view($ximg->caption); ?>" alt="<?php echo view($ximg->caption); ?>" id="addImg<?php echo $ximg->id ?>" class="thumbnails hasHelp" />
-									<blockquote class="helpContents" id="addImg<?php echo $ximg->id ?>Help"><h5>Image caption</h5><?php echo view($ximg->caption); ?></blockquote>
+								<div class="span3"<?php echo ($i % 4 == 0) ? ' style="margin: 0;"' : null; echo $count; ?>>
+									<img src="funcs/tn.lib.php?image_id=<?php echo $ximg->id ?>&amp;dim=100" title="<?php echo view($ximg->caption); ?>" alt="<?php echo view($ximg->caption); ?>" id="addImg<?php echo $ximg->id ?>" class="thumbnails" />
 									<div class="control-group">
+										<label for="caption<?php echo $ximg->id ?>" class="control-label">Image Caption</label>
+										<div class="controls">
+											<input type="hidden" name="existing_image[<?php echo $ximg->id ?>]" id="existing_image[<?php echo $ximg->id ?>]" value="<?php echo $ximg->id ?>" />
+											<textarea name="caption[<?php echo $ximg->id ?>]" id="caption<?php echo $ximg->id ?>" class="span12"><?php echo $ximg->caption; ?></textarea>
+										</div>
 										<label for="delete_additional<?php echo $ximg->id ?>" class="checkbox">
 											<input type="checkbox" id="delete_additional<?php echo $ximg->id ?>" name="delete_additional[]" value="<?php echo $ximg->id ?>" class="xtraImgDelete" />
 											<?php echo L_GALLERY_ADDITIONAL_IMAGES_DELETE ?>
@@ -367,6 +375,7 @@ if(EDITING) {
 									</div>
 								</div>
 								<?php
+								$i++;
 							}
 							?>
 						</div>
@@ -389,12 +398,12 @@ if(EDITING) {
 				</fieldset>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span12">
+		<div class="descr-well">
+			<div class="row-fluid">
 				<div class="control-group">
-					<label for="descr" class="contol-label"><?php echo L_GALLERY_BODY ?></label>
-					<div class="controls border-descr">
-						<textarea name="descr" cols="30" rows="5" id="descr" class="descr formfields"><?php echo view($items->descr); ?></textarea>
+					<label for="descr" class="control-label"><?php echo L_GALLERY_BODY ?></label>
+					<div class="controls">
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
 					</div>
 				</div>
 			</div>
@@ -425,9 +434,7 @@ if(EDITING) {
 		<div class="form-actions">
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php
-	} elseif(EDIT_LIST) {
-	?>
+	<?php } elseif(EDIT_LIST) { ?>
 		<div class="row">
 				<?php $the_module->doSort(); ?>
 			<div class="span12">
@@ -438,18 +445,17 @@ if(EDITING) {
 				?>
 
 				<div id="itemList">
-				<?php
-				foreach($itemsList as $ind => $item):
+				<?php foreach($itemsList as $ind => $item):
 					$item->title = trim_title($item->title);
 					$item->descr = trim_excerpt($item->descr);
 					$users->Get($item->aid);
 					$the_displayname = $users->displayname;
 					$the_username = $users->username;
 					$has_subcat = ($item->cid != $item->pid && $item->cid != 0) ? true : false;
-					if($has_subcat) {
+					if($has_subcat){
 						$sections->Get($item->cid);
 						$category = $sections->sectionname;
-						if(empty($category)) {
+						if(empty($category)){
 							$has_subcat = false;
 						}
 					}
@@ -469,25 +475,20 @@ if(EDITING) {
 							<input type="checkbox" name="del[]" value="<?php echo $item->id; ?>" id="item_delete_<?php echo $item->id; ?>" /><label for="item_delete_<?php echo $item->id; ?>"><?php echo L_DELETE_ITEM ?></label>
 						</fieldset>
 					</div>
-				<?php
-				endforeach;
-				?>
+				<?php endforeach; ?>
 
 					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
 				</div>
-				<?php
-				if($hasitems):
-				?>
+
 				<div class="form-actions">
+					<a class="btn btn-primary" href="index.php?type=add&amp;cat_id=<?php echo $item->pid ?>"><?php echo L_MENU_ADD ?></a>
+					<?php if($hasitems): ?>
 					<div class="pull-right">
 						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
 					</div>
+					<?php endif; ?>
 				</div>
-				<?php
-				endif;
-				?>
 			</div>
-		</div>
-<?php
+		</div><?php
 	}
 }

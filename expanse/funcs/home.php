@@ -36,14 +36,13 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
-/*   Do no edit below this line.
-//---------------------------*/
+/*   Do no edit below this line.   //---------------------------*/
 define('IS_FRONTEND', true);
 define('IS_BACKEND', false);
+date_default_timezone_set('UTC');
 require(dirname(__FILE__) . '/common.functions.php');
 /*Turn off globals*/
 turnOffGlobals();
@@ -78,15 +77,12 @@ $images = new Expanse('images');
 $layout = new stdClass();
 $items = new Expanse('items');
 $users = new Expanse('users');
-
-/*Do Not Change Below*/
 $option = getAllOptions();
 $header = new stdClass();
 $main = new stdClass();
 $user_pages = new stdClass();
 $menu = new stdClass();
 $footer = new stdClass();
-
 if(CLEAN_URLS) {
 	$pinfo = isset($_SERVER['PATH_INFO']) ? explode('?', $_SERVER['PATH_INFO']) : array('');
 	$pinfo = $pinfo[0];
@@ -111,16 +107,16 @@ if(CLEAN_URLS) {
 
 		// is a search
 		$_GET['search'] = trim($matches[1], '/');
-
 	} elseif(preg_match('|^([\w\d-]+)$|', $request_uri, $matches)) {
-
 		$check = $sections->GetList(array(array('dirtitle', '=', $matches[1]),array('pid', '=', 0)));
 		if(!empty($check)) {
+
 			//is a category
 			$_GET['pcat'] = $check[0]->id;
 		} else {
 			$check = $items->GetList(array(array('dirtitle', '=',$matches[1])));
 			if(!empty($check)) {
+
 				//is a page
 				$_GET['ucat']= $check[0]->id;
 			} else {
@@ -128,16 +124,13 @@ if(CLEAN_URLS) {
 				$_GET['ucat']= '';
 			}
 		}
-
 	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)$|', $request_uri, $matches)) {
-
 		$check = $items->GetList(array(array('dirtitle','=',$matches[2])));
 		if(!empty($check)){
 
 			//is a single item
 			$_GET['pcat'] = $check[0]->pid;
 			$_GET['item'] = $check[0]->id;
-
 		} else {
 			$check_parent = $sections->GetList(array(array('dirtitle', '=', $matches[1])));
 			$check_parent = $check_parent[0]->id;
@@ -147,10 +140,8 @@ if(CLEAN_URLS) {
 				//is a subcategory
 				$_GET['pcat'] = $check[0]->pid;
 				$_GET['subcat'] = $check[0]->id;
-
 			}
 		}
-
 	} elseif(preg_match('|^([\w\d-]+)/page/([\d]+)$|', $request_uri,$matches)) {
 
 		//paging category
@@ -171,7 +162,7 @@ if(CLEAN_URLS) {
 			$_GET['page'] = $matches[3];
 		}
 	}
-}	// <- Ends if (CLEAN_URLS)
+}
 
 /*   Page sections   //-------------------------------*/
 $search = check_get_alphanum('search');
@@ -219,7 +210,7 @@ $javascript_link = YOUR_SITE.$themejs;
 $jquery = $themejquery;
 $modernizr = YOUR_SITE.$thememodernizr;
 $images_link = YOUR_SITE.$themeimages;
-$uploads_url = EXPANSE_URL.'uploads/';
+$uploads_url = UPLOADS_DIR;
 $rss_feed = YOUR_SITE."feed.php?feed=rss";
 $rss_feed .= !empty($pcat) ? "&amp;pcat=$pcat" : '';
 $rss_feed .= !empty($subcat) ? "&amp;subcat=$subcat" : '';
@@ -276,7 +267,6 @@ foreach($option as $optname => $optval) {
 	$xmlvars[$optname] = $optval;
 	$layout->{$optname} = $optval;
 }
-
 foreach($addExtras as $xp => $xv) {
 	$header->{$xp} = $xv;
 	$footer->{$xp} = $xv;
@@ -286,6 +276,7 @@ foreach($addExtras as $xp => $xv) {
 	$user_vars['main'][$xp] = $xv;
 	$layout->{$xp} = $xv;
 }
+
 // =================== HTML ================
 if(!is_feed()) {
 	$header->pcat = $pcat;
@@ -296,20 +287,19 @@ if(!is_feed()) {
 	$footer = make_footer();
 	$menu = make_menu();
 
-	//performing a search
 	if(is_search()) {
 
+		//performing a search
 		$tplfile = file_exists("$themetemplates/search{$tplext}") ? "search{$tplext}" : '';
 		$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 		$main = expanse("search:$search|template:$tplfile|ignore_paging:true", $user_vars['main'], true);
-
-	//on the home page
 	} elseif(is_home()) {
 
+		//on the home page
 		$start_cat = $option->startcategory;
-
-		// using a (sub)category for the home page
 		if(strpos($start_cat, ':P') === FALSE) {
+
+			//using a (sub)category for the home page
 			$sections->Get($start_cat);
 			if($sections->pid != 0) {
 				$subname = $sections->sectionname;
@@ -327,8 +317,9 @@ if(!is_feed()) {
 				$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 				$main = expanse("category:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
 			}
-		//using a user page for the home page
 		} else {
+
+			//using a user page for the home page
 			$items->Get($start_cat);
 			$cleanedname = $items->dirtitle;
 			$cat_type = 'page';
@@ -337,9 +328,9 @@ if(!is_feed()) {
 			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 			$main = expanse("type:static|id:{$items->id}|template:$tplfile", $user_vars['main'], true);
 		}
-
-	//On a user page
 	} elseif(is_userpage()) {
+
+		//On a user page
 		$items->Get($ucat);
 		if(!empty($items->id) && $items->type == 'static') {
 			$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
@@ -348,13 +339,13 @@ if(!is_feed()) {
 		} else {
 			trigger_404();
 		}
-
-	// Inside a category
 	} elseif(is_category()) {
-		$sections->Get($pcat);
 
-		// In the subcategory
+		//Inside a category
+		$sections->Get($pcat);
 		if(is_subcat()) {
+
+			// In the subcategory
 			$parentname = $sections->sectionname;
 			$cleanedname = $sections->dirtitle;
 			$cat_type = $sections->cat_type;
@@ -362,15 +353,15 @@ if(!is_feed()) {
 			$tplfile = file_exists("$themetemplates/sub_{$sections->dirtitle}{$tplext}") ? "sub_{$sections->dirtitle}{$tplext}" : (file_exists("$themetemplates/$cleanedname{$tplext}") ? $cleanedname.$tplext : $cat_type.$tplext);
 			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 			$main = expanse("category:$parentname|subcategory:$sections->sectionname|template:$tplfile", $user_vars['main'], true);
-
-		//Viewing a single item
 		} elseif(is_single()) {
+
+			//Viewing a single item
 			$tplfile = file_exists("$themetemplates/{$sections->dirtitle}_full{$tplext}") ? "{$sections->dirtitle}_full{$tplext}" : "{$sections->cat_type}_full{$tplext}";
 			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 			$main = expanse("category:$sections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
-
-		// Viewing just the category
 		} else {
+
+			// Viewing just the category
 			if($sections->pid != 0) {
 				$sections->Get($sections->pid);
 			}
@@ -428,12 +419,8 @@ if(!is_feed()) {
 		}
 	}
 }
-
 if($feed) {
-	$layout->header = $header;
 	$layout->main_content = $main;
-	$layout->menu = $menu;
-	$layout->footer = $footer;
 	$layout_file = "layout{$tplext}";
 	$layout = (file_exists("$themetemplates/".$layout_file)) ? sprintt($layout, "$themetemplates/@".$layout_file) : $main;
 } else {

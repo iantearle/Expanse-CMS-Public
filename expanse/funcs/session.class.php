@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -60,12 +59,14 @@ class Session {
 		if(!is_object($this->Database)) {
 			return false;
 		}
+
 		// get session-lifetime
 		$this->lifetime = get_cfg_var("session.gc_maxlifetime");
 		return true;
 	}
 
 	function close() {
+
 		// close database-connection
 		return $this->Database->Close();
 	}
@@ -80,6 +81,7 @@ class Session {
 	}
 
 	function write($session_id,$session_data) {
+
 		// new session-expire-time
 		$new_exp = time() + $this->lifetime;
 		$session = $this->session;
@@ -94,6 +96,7 @@ class Session {
 	}
 
 	function destroy($session_id) {
+
 		// delete session-data
 		$sessions = $this->session;
 		if($sessions->Delete($session_id)) {
@@ -103,12 +106,14 @@ class Session {
 	}
 
 	function gc($sessMaxLifeTime) {
+
 		// delete old sessions
 		$Database = $this->Database;
 		$Database->Query('DELETE FROM '.$Database->Prefix.'sessions WHERE expires < '.time());
 	}
 
 }
+
 session_start();
 
 $session = new Session($Database);

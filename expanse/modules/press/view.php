@@ -23,13 +23,16 @@ if(ADDING):	?>
 			<div class="control-group">
 				<label for="title" class="control-label"><?php echo L_TITLE ?></label>
 				<div class="controls">
-					<input name="title" type="text" class="span6 formfields" id="title" value="<?php echo @$_POST['title']; ?>" />
+					<input name="title" type="text" class="span6 formfields" id="title" value="" />
 				</div>
 			</div>
 			<div class="control-group">
-				<label for="url" class="control-label"><?php echo L_URL; ?></label>
+				<label for="url"><?php echo L_URL ?></label>
 				<div class="controls">
-					<input name="url" type="text" class="span6 formfields" id="url" value="<?php echo @$_POST['url']; ?>" />
+					<div class="input-prepend">
+	                	<span class="add-on">http://</span>
+						<input type="text" name="url" class="span5 formfields" id="url" />
+					</div>
 				</div>
 			</div>
 			<div class="control-group">
@@ -59,12 +62,12 @@ if(ADDING):	?>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="span12">
+	<div class="descr-well">
+		<div class="row-fluid">
 			<div class="control-group">
-				<label for="descr" class="control-label"><?php echo L_BODY; ?></label>
-				<div class="controls border-descr">
-					<textarea name="descr" cols="30" rows="5" id="descr" class="descr formfields"><?php echo @$_POST['descr']; ?></textarea>
+				<label for="descr" class="control-label"><?php echo L_BODY ?></label>
+				<div class="controls">
+					<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
 				</div>
 			</div>
 		</div>
@@ -91,7 +94,9 @@ if(ADDING):	?>
 <?php
 #If you're editing content, use this block
 if(EDITING):
-	if(EDIT_SINGLE): ?>
+	if(EDIT_SINGLE):
+		$format = new format;
+	?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
 		<input type="hidden" name="MAX_FILE_SIZE" value="3000000000" />
@@ -105,9 +110,12 @@ if(EDITING):
 					</div>
 				</div>
 				<div class="control-group">
-					<label for="url" class="control-label"><?php echo L_URL; ?></label>
+					<label for="url"><?php echo L_URL ?></label>
 					<div class="controls">
-						<input name="url" type="text" class="span6 formfields" id="url" value="<?php echo $items->url; ?>" />
+						<div class="input-prepend">
+		                	<span class="add-on">http://</span>
+							<input type="text" name="url" class="span5 formfields" id="url" value="<?php echo view($items->url); ?>" />
+						</div>
 					</div>
 				</div>
 				<div class="control-group">
@@ -146,12 +154,12 @@ if(EDITING):
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span12">
+		<div class="descr-well">
+			<div class="row-fluid">
 				<div class="control-group">
 					<label for="descr" class="control-label"><?php echo L_BODY ?></label>
-					<div class="controls border-descr">
-						<textarea name="descr" cols="60" rows="5" id="descr" class="formfields descr"><?php echo view($items->descr); ?></textarea>
+					<div class="controls">
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
 					</div>
 				</div>
 			</div>
@@ -221,13 +229,15 @@ if(EDITING):
 
 					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
 				</div>
-				<?php if($hasitems): ?>
+
 				<div class="form-actions">
+					<a class="btn btn-primary" href="index.php?type=add&amp;cat_id=<?php echo $item->pid ?>"><?php echo L_MENU_ADD ?></a>
+					<?php if($hasitems): ?>
 					<div class="pull-right">
 						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
 					</div>
+					<?php endif; ?>
 				</div>
-				<?php endif; ?>
 			</div>
 		</div>
 	<?php endif; ?>

@@ -36,19 +36,21 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
-//Must be included at the top of all included files.
-if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
 
+if(!defined('EXPANSE')) {
+	die('Sorry, but this file cannot be directly viewed.');
+}
 $pagetitle = "Editing ";
 if($module_exists) {
 	if(empty($errors)) {
-		if((!empty($item_id) && !empty($items->id)) || (empty($item_id) && !empty($itemsList))){
-			include("$modules_dir/$cat_type/view.php");
+		if((!empty($item_id) && !empty($items->id)) || (empty($item_id) && !empty($itemsList))) {
+		 	include("$modules_dir/$cat_type/view.php");
 		}
 	}
 } else {
 	echo L_NOTHING_HERE;
 }
+?>
+</form>

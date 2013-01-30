@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -50,7 +49,7 @@ class Expanse {
 		$this->RootName = $tablename;
 		if(isset($_SESSION["{$tablename}_fields"]) && !empty($_SESSION["{$tablename}_fields"])) {
 			$this->Fields = $_SESSION["{$tablename}_fields"];
-			foreach($this->Fields as $val) {
+			foreach ($this->Fields as $val) {
 				$this->{$val} = '';
 			}
 		} else {
@@ -95,7 +94,7 @@ class Expanse {
 		$Database = new DatabaseConnection();
 		$this->pog_query = "SELECT * FROM `{$this->TableName}` WHERE `{$this->Fields['primary']}`='" . intval($id) . "' LIMIT 1";
 		$Database->Query($this->pog_query);
-		foreach($this->Fields as $k => $v) {
+		foreach ($this->Fields as $k => $v) {
 			$this->{$v} = $Database->Unescape($Database->Result(0, $v));
 		}
 		return $this;
@@ -122,7 +121,6 @@ class Expanse {
 			if(count($fcv_array) == 0) {
 				return $fcv_array;
 			}
-
 			$asc = $ascending == 'ASC' ? 'ASC' : 'DESC';
 			$orderBy = !empty($sortBy) ? $sortBy : (isset($this->Fields['primary']) ? $this->Fields['primary'] : 'id');
 			$sqlLimit = empty($limit) ? '' : "LIMIT $limit";
@@ -136,7 +134,7 @@ class Expanse {
 		}
 		$query = $Database->Query($this->pog_query);
 		$tableList = array();
-		while($array = mysql_fetch_object($query)) {
+		while ($array = mysql_fetch_object($query)) {
 			$tableList[] = $array;
 		}
 		return $tableList;

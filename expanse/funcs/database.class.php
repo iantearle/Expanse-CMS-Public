@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -45,7 +44,6 @@ class DatabaseConnection {
 	var $databaseName;
 	var $result;
 
-	// -------------------------------------------------------------
 	function __construct() {
 		global $CONFIG;
 		$this->databaseName = $CONFIG['db'];
@@ -67,17 +65,14 @@ class DatabaseConnection {
 		}
 	}
 
-	// -------------------------------------------------------------
 	function Close() {
 		mysql_close($this->connection);
 	}
 
-	// -------------------------------------------------------------
 	function GetConnection() {
 		return $this->connection;
 	}
 
-	// -------------------------------------------------------------
 	function Query($query) {
 		$this->result = mysql_query($query, $this->connection);
 		if(!$this->result) {
@@ -86,7 +81,6 @@ class DatabaseConnection {
 		return $this->result;
 	}
 
-	// -------------------------------------------------------------
 	function Rows() {
 		if($this->result != false) {
 			return mysql_num_rows($this->result);
@@ -94,12 +88,10 @@ class DatabaseConnection {
 		return null;
 	}
 
-	// -------------------------------------------------------------
 	function AffectedRows() {
 		return mysql_affected_rows();
 	}
 
-	// -------------------------------------------------------------
 	function Result($row, $name) {
 		if($this->Rows() > 0) {
 			return mysql_result($this->result, $row, $name);
@@ -107,7 +99,6 @@ class DatabaseConnection {
 		return null;
 	}
 
-	// -------------------------------------------------------------
 	function InsertOrUpdate($query) {
 		$this->result = mysql_query($query, $this->connection);
 		return($this->AffectedRows() > 0);
@@ -123,7 +114,6 @@ class DatabaseConnection {
 		return $text;
 	}
 
-	// -------------------------------------------------------------
 	function Fetch($type = 'object') {
 		$type = "mysql_fetch_$type";
 		if(function_exists($type)) {
@@ -133,17 +123,14 @@ class DatabaseConnection {
 		}
 	}
 
-	// -------------------------------------------------------------
 	function Unescape($text) {
 		return $text;
 	}
 
-	// -------------------------------------------------------------
 	function GetCurrentId() {
 		return intval(mysql_insert_id($this->connection));
 	}
 
-	// -------------------------------------------------------------
 	function GetCol($query='', $x=0) {
 		$query = empty($query) ? $this->result : $this->Query($query);
 		$tableList = array();
@@ -153,7 +140,6 @@ class DatabaseConnection {
 		return $tableList;
 	}
 
-	// -------------------------------------------------------------
 	function GetResults($query='') {
 		$query = empty($query) ? $this->result : $this->Query($query);
 		$tableList = array();

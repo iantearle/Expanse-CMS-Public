@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -73,7 +72,7 @@ if(!empty($item_id)) {
 	}
 	if(isset($_GET['dim'])) {
 		$maxwidth = $maxheight = $thumb_max = (int) $_GET['dim'];
-	} elseif ($items->use_default_thumbsize == 1) {
+	} elseif($items->use_default_thumbsize == 1) {
 		$maxwidth = $maxheight = $thumb_max = (!empty($option->thumbsize) ? $option->thumbsize : 100);
 	}
 } elseif(!empty($image_id)) {
@@ -109,12 +108,15 @@ if($ext == 'jpg' || $ext == 'jpeg') {
 	$img = @imagecreatefromjpeg($image_path);
 } elseif($ext == 'png') {
 	$img = @imagecreatefrompng($image_path);
+
 	//Only if your version of GD includes GIF support
 } elseif($ext == 'gif') {
 	$img = @imagecreatefromgif($image_path);
 }
+
 //If an image was successfully loaded, test the image for size
 if($img) {
+
 	//Get image size and scale ratio
 	$width = imagesx($img);
 	$height = imagesy($img);
@@ -175,4 +177,5 @@ if($ext == 'jpg' || $ext == 'jpeg') {
 } else {
 	header('Content-type: image/jpeg');
 }
+
 imagepng($img);

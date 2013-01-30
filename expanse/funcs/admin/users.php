@@ -36,16 +36,19 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
-if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+if(!defined('EXPANSE')) {
+	die('Sorry, but this file cannot be directly viewed.');
+}
 
 /*   Users   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=users&amp;action=edit">'.L_ADMIN_MANAGE_USERS.'</a>','', 'users');
 global $admin_menu, $admin_sub;
-if($admin_sub !== 'users') { return; }
+if($admin_sub !== 'users') {
+	return;
+}
 $users = isset($users) && is_object($users) ? $users : new Expanse('users');
 if(ACTION == 'add') {
 	add_breadcrumb('<a href="index.php?cat=admin&sub=users&action=edit">'.L_USER_EDIT_TITLE.'</a>');
@@ -68,7 +71,7 @@ ozone_action('admin_page', 'users_content');
 function users_content() {
 	global $output, $auth, $item_id, $users;
 	if(ACTION == 'add') {
-		if(is_posting(L_BUTTON_ADD)) {
+		if (is_posting(L_BUTTON_ADD)) {
 			$the_username = preg_replace('([^[:alnum:]_])', '',$_POST['username']);
 			$the_displayname = preg_replace('([^[:alnum:]_[:space:].])', '',$_POST['displayname']);
 			$url = htmlentities($_POST['url'], ENT_QUOTES);
@@ -102,7 +105,7 @@ function users_content() {
 								printOut(FAILURE, vsprintf(L_USER_NOT_ADDED, array($users->username, mysql_error())));
 							}
 						} else {
-						printOut(FAILURE,sprintf(L_USER_DUPLICATE_USERNAME, $user[0]->username));
+							printOut(FAILURE,sprintf(L_USER_DUPLICATE_USERNAME, $user[0]->username));
 						}
 					} else {
 						printOut(FAILURE, sprintf(L_MISSING_FIELDS, 'username'));
@@ -120,7 +123,7 @@ function users_content() {
 		<div class="row">
 			<?php echo $output; ?>
 			<div class="span4">
-				<p class="contentnote"><?php echo L_USER_PASSWORD_NOTE ?></p>
+				<div class="alert alert-info fade in"><?php echo L_USER_PASSWORD_NOTE ?></div>
 				<div class="control-group">
 					<label for="username" class="control-label"><?php echo L_USER_USERNAME ?></label>
 					<div class="controls">
@@ -158,8 +161,9 @@ function users_content() {
 					</div>
 				</div>
 			</div>
+
 			<div class="span4">
-				<fieldset id="categoryBoxes">
+				<fieldset id="adminBox">
 					<legend><?php echo L_USER_PRIVILEGES ?></legend>
 					<input type="hidden" name="permissions" value="" />
 					<div class="control-group">
@@ -169,8 +173,10 @@ function users_content() {
 						</label>
 					</div>
 					<p id="unCheck">&nbsp;</p>
+				</fieldset>
 
-					<h3><?php echo L_USER_MODERATOR ?></h3>
+				<fieldset id="categoryBoxes">
+					<legend><?php echo L_USER_MODERATOR ?></legend>
 					<label id="section_admin_label" for="section_admin_admin" class="radio">
 						<input name="section_admin" type="radio" id="section_admin_admin" value="1" />
 						<?php echo L_USER_MODERATOR_ADMIN ?>
@@ -179,35 +185,38 @@ function users_content() {
 						<input name="section_admin" type="radio" id="section_admin_user" checked="checked" value="0" />
 						<?php echo L_USER_MODERATOR_USER ?>
 					</label>
+					<hr>
 					<?php
-					foreach($cats as $s){?>
+					foreach($cats as $s) {
+						?>
 						<label for="perm_<?php echo $s->sectionname ?>" class="checkbox">
 							<input type="checkbox" name="permissions[]" id="perm_<?php echo $s->sectionname ?>" value="<?php echo $s->id ?>" />
 							<?php echo $s->sectionname ?>
 						</label>
-					<?php } ?>
+						<?php
+					}
+					?>
 				</fieldset>
 			</div>
+
 			<div class="span4">
 				<fieldset>
 					<legend><?php echo L_USER_DISABLE_ACCOUNT ?></legend>
 					<p><?php echo L_USER_DISABLE_ACCOUNT_NOTE ?></p>
 					<label for="disabled" class="checkbox">
 						<input type="checkbox" name="disabled" id="disabled" value="1" />
-						<span><?php echo L_USER_DISABLE_LABEL ?></span>
+						<?php echo L_USER_DISABLE_LABEL ?>
 					</label>
 				</fieldset>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span12">
-				<div class="form-actions">
-					<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
-				</div>
-			</div>
+
+		<div class="form-actions">
+			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 		</div>
-	<?php
-	} elseif(ACTION == 'edit') {
+
+		<?php
+	} elseif (ACTION == 'edit') {
 		if(!empty($item_id)) {
 			$users = get_dao('users');
 			$users->Get($item_id);
@@ -225,7 +234,7 @@ function users_content() {
 				$created = isset($_POST['created']) ? $_POST['created'] : time();
 
 				if(!empty($opass)) {
-					if(($password == $confirmpassword) && !empty($password) && strlen($password) >= 6) {
+					if(($password == $confirmpassword) && !empty($password) && strlen($password) >= 6){
 						$passwordok = true;
 					} else {
 						$passwordok = false;
@@ -237,14 +246,14 @@ function users_content() {
 					if(isset($_POST['permissions']) && !empty($_POST['permissions'])) {
 						if(!empty($the_username)) {
 							$user = $users->GetList(array(array('username','=', $the_username)));
-							if(empty($user)  || $the_username == $users->username) {
+							if(empty($user) || $the_username == $users->username) {
 								$users->username = $the_username;
 								$users->displayname = $the_displayname;
 								$users->password =  ($passwordok && !empty($opass)) ? md5(trim($_POST['password'])) : $users->password;
 								$users->email = $email;
 								$users->url = $url;
 								$users->section_admin = $section_admin;
-								if($users->primary_user) {
+	 							if($users->primary_user) {
 									$users->permissions = $users->permissions;
 									$users->admin = 1;
 									$users->disabled = 0;
@@ -260,7 +269,7 @@ function users_content() {
 									printOut(FAILURE, vsprintf(L_EDIT_FAILURE, array($users->username,mysql_error())));
 								}
 							} else {
-								printOut(FAILURE, sprintf(L_DUPLICATE_USERNAME, $user[0]->username));
+							printOut(FAILURE, sprintf(L_DUPLICATE_USERNAME, $user[0]->username));
 							}
 						} else {
 							printOut(FAILURE, sprintf(L_MISSING_FIELDS, 'username'));
@@ -275,17 +284,16 @@ function users_content() {
 			$user = $users->Get($item_id);
 			$sections = get_dao('sections');
 			$cats = $sections->GetList(array(array('pid', '=', 0)));
-			$hasitems = !empty($user) ? true : false; ?>
-			<?php echo $output ;?>
-			<?php
+			$hasitems = !empty($user) ? true : false;
+			echo $output;
 			if($user->primary_user) {
-			?>
+				?>
 				<div class="alert alert-block info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p><?php echo L_USER_PRIMARY_NOTE ?></p></div>
-			<?php
+				<?php
 			}
 			if($hasitems) {
 				$user->permissions = unserialize($user->permissions);
-			?>
+				?>
 				<div class="row">
 					<div class="span4">
 						<input type="hidden" value="1" id="edit_user" />
@@ -331,23 +339,29 @@ function users_content() {
 					<div class="span4">
 						<?php
 						if($user->primary_user) {
-						?>
+							?>
 							<div class="hidden">
-						<?php
+							<?php
 						}
 						?>
-						<fieldset id="categoryBoxes">
+						<fieldset id="adminBox">
 							<legend><?php echo L_USER_PRIVILEGES ?></legend>
 							<input type="hidden" name="permissions" value="" />
 							<label for="adminCheck" class="checkbox">
 								<input type="checkbox" name="admin" <?php echo $user->admin == 1 ? 'checked="checked"' : ''; ?> id="adminCheck" value="1" />
 								<?php echo L_USER_ADMIN ?>
 							</label>
-							<?php if($user->admin == 1) { ?>
+							<?php
+							if($user->admin == 1) {
+								?>
 								<span id="noteText" class="alert alert-info formNote" style="visibility: visible; opacity: 1; "><?php echo L_JS_ADMIN_RIGHTS; ?></span>
-							<?php } ?>
+								<?php
+							}
+							?>
 							<p id="unCheck">&nbsp;</p>
-							<h3><?php echo L_USER_MODERATOR ?></h3>
+						</fieldset>
+						<fieldset id="categoryBoxes">
+							<legend><?php echo L_USER_MODERATOR ?></legend>
 							<label id="section_admin_label" for="section_admin_admin" class="radio">
 								<input name="section_admin" type="radio" id="section_admin_admin" value="1" <?php echo $user->section_admin == 1 ? 'checked="checked"' : '' ?> />
 								<?php echo L_USER_MODERATOR_ADMIN ?>
@@ -356,59 +370,58 @@ function users_content() {
 								<input <?php echo $user->section_admin == 0 ? 'checked="checked"' : '' ?> type="radio" name="section_admin" id="section_admin_user" value="0" />
 								<?php echo L_USER_MODERATOR_USER; ?>
 							</label>
-
 							<?php
 							foreach($cats as $s) {
-							?>
+								?>
 								<label for="perm_<?php echo $s->sectionname ?>" class="checkbox">
 									<input type="checkbox" name="permissions[]" <?php echo in_array($s->id, $user->permissions) || $user->admin == 1 ? 'checked="checked"' : ''; ?> id="perm_<?php echo $s->sectionname ?>" value="<?php echo $s->id ?>" />
 									<?php echo $s->sectionname ?>
 								</label>
-							<?php
+								<?php
 							}
 							?>
 						</fieldset>
 						<?php
 						if($user->primary_user) {
-						?>
+							?>
 							</div>
-						<?php
+							<?php
 						}
 						?>
 					</div>
+
 					<div class="span4">
 						<?php
 						if($user->primary_user) {
-						?>
-						<div class="hidden">
-						<?php
+							?>
+							<div class="hidden">
+							<?php
 						}
 						?>
-							<fieldset>
-								<legend><?php echo L_USER_DISABLE_ACCOUNT ?></legend>
-								<p><?php echo L_USER_DISABLE_ACCOUNT_NOTE ?></p>
-								<div class="control-group">
-									<label for="disabled" class="permBox checkbox">
-										<input type="checkbox" name="disabled" id="disabled" <?php echo $user->disabled == 1 ? 'checked="checked"' : ''; ?> value="1" />
-										<?php echo L_USER_DISABLE_LABEL ?>
-									</label>
-								</div>
-							</fieldset>
+						<fieldset>
+							<legend><?php echo L_USER_DISABLE_ACCOUNT ?></legend>
+							<p><?php echo L_USER_DISABLE_ACCOUNT_NOTE ?></p>
+							<div class="control-group">
+								<label for="disabled" class="permBox checkbox">
+									<input type="checkbox" name="disabled" id="disabled" <?php echo $user->disabled == 1 ? 'checked="checked"' : ''; ?> value="1" />
+									<?php echo L_USER_DISABLE_LABEL ?>
+								</label>
+							</div>
+						</fieldset>
 						<?php
 						if($user->primary_user) {
-						?>
+							?>
 							</div>
-						<?php
+							<?php
 						}
 						?>
 					</div>
 				</div>
-
 				<?php
 				if($user->primary_user) {
-				?>
-				</div>
-				<?php
+					?>
+					</div>
+					<?php
 				}
 				?>
 				<div class="form-actions">
@@ -453,43 +466,52 @@ function users_content() {
 					<tr>
 						<th>Username</th>
 						<th>Action</th>
-						<th><?php if($hasitems){ ?><label for="toggleBox" class="checkbox"><input type="checkbox" id="toggleBox" value="" /><?php echo L_DELETE_ITEM ?></label><?php } ?></th>
+						<th>
+							<?php
+							if($hasitems) {
+								?>
+								<label for="toggleBox" class="checkbox"><input type="checkbox" id="toggleBox" value="" /><?php echo L_DELETE_ITEM ?></label>
+								<?php
+							}
+							?>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php
-				foreach($userList as $ind => $user) {
-					$user->username = trim_title($user->username,L_USER_NO_USERNAME); ?>
-					<tr<?php echo $ind % 2 ? ' class="altRow"' : ''; ?><?php echo $user->primary_user == 1 ? ' id="primaryUser"' : ''; ?>>
-					<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>"  title=" <?php echo $user->username; ?>" class="<?php echo $user->primary_user != 1 ? 'user' : 'primary'; ?>"><?php echo $user->username; ?></a></td>
-					<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>" title=" Edit <?php echo $user->username; ?>" class="editLink"><?php echo L_USER_EDIT_TEXT ?></a></td>
-					<td>
-						<div class="control-group">
-							<label for="del<?php echo $user->id; ?>" class="control-label"></label>
-							<div class="controls">
-								<input id="del<?php echo $user->id; ?>" name="del[]" type="checkbox" value="<?php echo $user->id; ?>"<?php if($user->primary_user == 1){ ?>disabled="disabled" title="<?php printf(strip_tags(L_USER_ACCOUNT_PRIMARY_NOT_DELETED), $user->username); ?>"<?php } ?> />
-							</div>
-						</div>
-					</td>
-				</tr>
-				<?php
-				} //End While
-				?>
+					<?php
+					foreach($userList as $ind => $user) {
+						$user->username = trim_title($user->username,L_USER_NO_USERNAME);
+						?>
+						<tr<?php echo $ind % 2 ? ' class="altRow"' : ''; ?><?php echo $user->primary_user == 1 ? ' id="primaryUser"' : ''; ?>>
+							<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>"  title=" <?php echo $user->username; ?>" class="<?php echo $user->primary_user != 1 ? 'user' : 'primary'; ?>"><?php echo $user->username; ?></a></td>
+							<td><a href="<?php echo $_SERVER['REQUEST_URI'] ;?>&amp;id=<?php echo $user->id; ?>" title=" Edit <?php echo $user->username; ?>" class="editLink"><?php echo L_USER_EDIT_TEXT ?></a></td>
+							<td>
+								<div class="control-group">
+									<label for="del<?php echo $user->id; ?>" class="control-label"></label>
+									<div class="controls">
+										<input id="del<?php echo $user->id; ?>" name="del[]" type="checkbox" value="<?php echo $user->id; ?>"<?php if($user->primary_user == 1) { ?>disabled="disabled" title="<?php printf(strip_tags(L_USER_ACCOUNT_PRIMARY_NOT_DELETED), $user->username); ?>"<?php } ?> />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<?php
+					}
+					?>
 				</tbody>
 			</table>
 			<div class="form-actions">
 				<a href="index.php?cat=admin&sub=users&action=add" class="btn btn-success"><?php echo L_USER_ADD_TITLE ?></a>
 				<?php
 				if(count($userList) > 1) {
-				?>
-				<div class="pull-right">
-					<input name="submit" id="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
-				</div>
-				<?php
+					?>
+					<div class="pull-right">
+						<input name="submit" id="submit" type="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
+					</div>
+					<?php
 				}
 				?>
 			</div>
 			<?php
-		} //end isset item id
+		}
 	}
 }

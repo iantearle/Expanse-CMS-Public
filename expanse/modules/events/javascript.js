@@ -1,4 +1,4 @@
-function expanse(){
+function Expanse() {
 	if(!$('online')) {
 		return;
 	}

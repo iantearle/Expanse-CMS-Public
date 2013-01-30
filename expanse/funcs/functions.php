@@ -36,16 +36,16 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
-/*   Do no edit below this line.
-//---------------------------*/
-
+/* // Do not edit anything below
+-------------------------------------------------- */
 fixServerSettings();
 regenerate_session(false);
 $output = '';
+include_once('format.php');
+
 function debug($data) {
 	echo '<div class="debug_info"><pre>';
 	$args = func_get_args();
@@ -57,7 +57,7 @@ function debug($data) {
 		print_r($arg);
 	}
 	echo "<strong>File information</strong>\n";
-		print_r(debug_backtrace());
+	print_r(debug_backtrace());
 	echo '</pre></div>';
 }
 
@@ -184,13 +184,15 @@ function manageOptions($exceptions) {
 * Misc *
 *****************************/
 function regenerate_session($delete_old = true) {
-	if (version_compare('5.1.0', phpversion(), '>')) {
+	if(version_compare('5.1.0', phpversion(), '>')) {
 		session_regenerate_id($delete_old);
 	} else {
-		if(version_compare('4.3.3', phpversion(), '>')) { return; } // 4.3.2 has a bug that will not allow sessions to stay active
-			if($delete_old) {
-				@unlink(ini_get('session.save_path').'/sess_'.session_id());
-			}
+		if(version_compare('4.3.3', phpversion(), '>')) {
+			return; // 4.3.2 has a bug that will not allow sessions to stay active
+		}
+		if($delete_old) {
+			@unlink(ini_get('session.save_path').'/sess_'.session_id());
+		}
 		session_regenerate_id();
 	}
 }
@@ -222,77 +224,81 @@ function installFile($path='') {
 	$is_installed = isInstalled();
 	if(file_exists($install_file)) {
 		ob_start();
-		$css_file = file_exists('./'.EXPANSE_FOLDER.'/css/expanse.css.php') ? './'.EXPANSE_FOLDER.'/css/expanse.css.php': (file_exists('./css/expanse.css.php') ?'./css/expanse.css.php' : (file_exists('../css/expanse.css.php') ? '../css/expanse.css.php' : '')); ?>
-		<!DOCTYPE html>
-		<html lang="en" class="no-js">
-		<head>
-			<meta charset="utf-8">
-			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-			<title><?php if($is_installed){ ?>WARNING! - Delete Expanse Install File <?php } else {?> Install Expanse <?php } ?></title>
-			<meta name="copyright" content="Little Polar Apps Ltd" />
-			<meta name="language" content="EN-US" />
-			<meta name="rating" content="General" />
-			<meta name="robots" content="index,follow" />
-			<meta name="revisit-after" content="7" />
-			<meta name="distribution" content="global" />
-			<meta name="author" content="Ian Tearle, Nate Cavanaugh, Jason Morrison" />
-			<link rel="shortcut icon" href="favicon.ico" />
-			<link href="<?php echo $css_file; ?>" rel="stylesheet" type="text/css" />
-			<style>
-				body { padding-top: 60px; }
-				#vanilla #content h1,
-				#vanilla #content h2{margin:0.25em 0;}
-				#vanilla #content h2{margin:0.25em 0 1em;}
-				#vanilla dt{background:none; font-weight:normal;font-size:1em;}
-				#vanilla dd{font-size:1.3em;font-weight:bold;}
-			</style>
-		</head>
-		<body id="vanilla">
-			<div id="mainContainer">
-				<div class="navbar navbar-inverse navbar-fixed-top">
-					<div class="navbar-inner">
-						<div class="container">
-							<a class="brand" href="./"><?php echo CMS_NAME ?></a>
-							<p class="pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
-						</div>
-					</div>
-				</div>
+		$css_file = file_exists('./'.EXPANSE_FOLDER.'/css/expanse.css.php') ? './'.EXPANSE_FOLDER.'/css/expanse.css.php': (file_exists('./css/expanse.css.php') ?'./css/expanse.css.php' : (file_exists('../css/expanse.css.php') ? '../css/expanse.css.php' : ''));
+		?>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title><?php if($is_installed){ ?>WARNING! - Delete Expanse Install File <?php } else {?> Install Expanse <?php } ?></title>
+	<meta name="copyright" content="Little Polar Apps Ltd" />
+	<meta name="language" content="EN-US" />
+	<meta name="rating" content="General" />
+	<meta name="robots" content="index,follow" />
+	<meta name="revisit-after" content="7" />
+	<meta name="distribution" content="global" />
+	<meta name="author" content="Ian Tearle, Nate Cavanaugh, Jason Morrison" />
+	<link rel="shortcut icon" href="favicon.ico" />
+	<link href="<?php echo $css_file; ?>" rel="stylesheet" type="text/css" />
+	<style>
+		body { padding-top: 60px; }
+		#vanilla #content h1,
+		#vanilla #content h2{margin:0.25em 0;}
+		#vanilla #content h2{margin:0.25em 0 1em;}
+		#vanilla dt{background:none; font-weight:normal;font-size:1em;}
+		#vanilla dd{font-size:1.3em;font-weight:bold;}
+	</style>
+</head>
+<body id="vanilla">
+	<div id="mainContainer">
+		<!-- Begin Header -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
 				<div class="container">
-					<div class="row">
-						<?php
-						if($is_installed) {
-						?>
-							<div class="span8">
-								<div class="well">
-									<h1>Please delete install.php</h1>
-									<p><?php echo CMS_NAME ?> has been installed, but the last step is to delete install.php. It is a security risk, and for your own benefit, please delete it.</p>
-									<p>However, make sure you have a copy stored on your computer (where it can't be accessed by the public). This will let you uninstall or reinstall it at a later time.</p>
-								</div>
-							</div>
-							<div class="span8">
-								<a href="javascript:window.location.reload();" class="btn primary large">I've deleted it, please let me try again.</a> or <a href="install.php?step=uninstall" class="btn">Uninstall</a>
-							</div>
-						<?php
-						} else {
-						?>
-							<h1>Please install <?php echo CMS_NAME ?></h1>
-							<p>expanse has not been installed yet, but it's yearning with a deep passion for you to give it a whirl.</p>
-							<p>How do you do that, exactly? Well, install.php is located inside of your expanse folder. Go ahead and point your browser there, and follow the 2 short steps, and you're on your way.</p>
-						<?php
-						}
-						?>
-					</div>
+					<a class="brand" href="./"><?php echo CMS_NAME ?></a>
+					<p class="pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
 				</div>
-				<footer class="footer">
-					<div class="container">
-						<div class="row">
-							<p><a href="<?php echo COMPANY_URL ?>" target="_blank"><?php echo COMPANY_NAME ?></a>. <?php printf(L_COPYRIGHT_FOOTER, date('Y'));?><?php if(!CUSTOM_INSTALL){ ?><?php echo L_MENU_SEPARATOR ?><a href="misc.php?action=license"><?php echo L_LEGAL_FOOTER ?></a><?php echo L_MENU_SEPARATOR ?><a href="http://forums.expansecms.org" target="_blank"><?php echo L_SUPPORT_FOOTER ?></a><?php } ?></p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<?php
+				if($is_installed){ ?>
+					<div class="span8">
+						<div class="well">
+							<h1>Please delete install.php</h1>
+							<p><?php echo CMS_NAME ?> has been installed, but the last step is to delete install.php. It is a security risk, and for your own benefit, please delete it.</p>
+							<p>However, make sure you have a copy stored on your computer (where it can't be accessed by the public). This will let you uninstall or reinstall it at a later time.</p>
 						</div>
 					</div>
-				</footer>
+					<div class="span8">
+						<a href="javascript:window.location.reload();" class="btn primary large">I've deleted it, please let me try again.</a>
+						or
+						<a href="install.php?step=uninstall" class="btn">Uninstall</a>
+					</div>
+					<?php
+				} else { ?>
+					<h1>Please install <?php echo CMS_NAME ?></h1>
+					<p>expanse has not been installed yet, but it's yearning with a deep passion for you to give it a whirl.</p>
+					<p>How do you do that, exactly? Well, install.php is located inside of your expanse folder. Go ahead and point your browser there, and follow the 2 short steps, and you're on your way.</p>
+					<?php
+				} ?>
 			</div>
-		</body>
-		</html>
+		</div>
+		<!-- End page content -->
+		<!-- Begin Footer -->
+		<footer class="footer">
+			<div class="container">
+				<div class="row">
+					<p><a href="<?php echo COMPANY_URL ?>" target="_blank"><?php echo COMPANY_NAME ?></a>. <?php printf(L_COPYRIGHT_FOOTER, date('Y'));?><?php if(!CUSTOM_INSTALL){ ?><?php echo L_MENU_SEPARATOR ?><a href="misc.php?action=license"><?php echo L_LEGAL_FOOTER ?></a><?php echo L_MENU_SEPARATOR ?><a href="http://forums.expansecms.org" target="_blank"><?php echo L_SUPPORT_FOOTER ?></a><?php } ?></p>
+				</div>
+			</div>
+		</footer>
+		<!-- End Footer -->
+	</div>
+</body>
+</html>
 		<?php
 		$page = ob_get_contents();
 		ob_end_clean();
@@ -328,13 +334,12 @@ function fixServerSettings() {
 	}
 }
 
-function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array()) {
+function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array(), $itemID=null) {
     $maxsize = ini_get("upload_max_filesize");
-    $final = array(
-    		'errors' => array(),
-    		'files' => array(),
-    		'result' => array()
-    	);
+    $final = array('errors' => array(),
+		'files' => array(),
+		'result' => array()
+	);
     foreach($filearr as $input => $filearray) {
 		//for every file upload field
 		if(is_array($filter)) {
@@ -342,31 +347,33 @@ function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array()) 
 		} else {
 			$use = !preg_match($filter, $input) ? true : false;
 		}
-
 		if($use) {
 			foreach($filearray as $ind => $val) {
 				//for every element in each upload
-				if ($ind == "name") {
+				if($ind == "name") {
 					$file_pieces = remExtension($val, true);
 					if(count($file_pieces) == 2) {
 						$val = dirify($file_pieces[0]).$file_pieces[1];
 					}
-					$name = time().'_'.$val;
+					if($itemID != null) {
+						$name = $itemID.$file_pieces[1];
+					} else {
+						$name = time().'_'.$val;
+					}
 				}
-				if ($ind == "tmp_name") {
+				if($ind == "tmp_name") {
 					$tmp_name = $val;
 				}
-				if ($ind == "size") {
+				if($ind == "size") {
 					$size = $val;
 				}
-				if ($ind == "type") {
+				if($ind == "type") {
 					$type = $val;
 				}
-				if ($ind == "error") {
+				if($ind == "error") {
 					$error = $val;
 				}
 			}
-
 			if(file_exists($tmp_name)) {
 				$final['files'][$input] = $_FILES[$input];
 				$final['files'][$input]['name'] = $name;
@@ -413,8 +420,8 @@ function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array()) 
 					}
 				}
 			}
-		} // filter
-    }
+		}
+	}
     return $final;
 }
 
@@ -436,7 +443,6 @@ function renameExtracted($filename) {
 	$fname = time().'_'.$fname;
 	$newname = $dirname.'/'.$fname;
 	rename($filename,$newname);
-
 	return $newname;
 }
 
@@ -451,7 +457,6 @@ function remExtension($name, $return_parts=false) {
 function userDate($ts, $split=' @ ') {
 	$optdate = getOption('dateformat').$split.getOption('timeformat');
 	$zone = $ts+(3600*getOption('timeoffset'))+date('Z');
-
 	return gmdate($optdate, $zone);
 }
 
@@ -459,14 +464,14 @@ function getFiles($dir, $type='all', $recursive=0) {
 	if(is_dir($dir)) {
 		if($dh = opendir($dir)) {
 			$filearr = array('dirs' => array(), 'files' => array());
-			while (($file = readdir($dh)) !== false) {
+			while(($file = readdir($dh)) !== false) {
 				if(!is_dir($dir."/".$file) && $file != '.' && $file != '..') {
 					$filearr['files'][] = $file;
-				} elseif(is_dir($dir."/".$file) && $file != '.' && $file != '..' && !$recursive){
+				} elseif(is_dir($dir."/".$file) && $file != '.' && $file != '..' && !$recursive) {
 					$filearr['dirs'][] = $file;
 				}
-				if($recursive){
-					if(is_dir($dir."/".$file) && $file != '.' && $file != '..'){
+				if($recursive) {
+					if(is_dir($dir."/".$file) && $file != '.' && $file != '..') {
 						$filearr['dirs'][$file] = getFiles($dir."/".$file, 'all', 1);
 					}
 				}
@@ -501,7 +506,7 @@ function get_page_dropdown($default = 0, $parent = 0, $level = 0, $mark = false,
 				$selected = '';
 			}
 			?>
-				<option value="<?php echo $page->id.($mark ? ':P' : '') ?>"<?php echo $selected ?>><?php echo $pad.$page->title ?></option>
+			<option value="<?php echo $page->id.($mark ? ':P' : '') ?>"<?php echo $selected ?>><?php echo $pad.$page->title ?></option>
 			<?php
 			get_page_dropdown($default, $page->id, $level+1, $mark, $start);
 		}
@@ -516,29 +521,19 @@ function get_page_list($default = 0, $parent = 0, $level = 0) {
 	$pages = $items->GetList(array(array('type', '=', 'static'), array('pid', '=', $parent), array('online', '=', '1')));
 	if(!empty($pages)) {
 		foreach($pages as $page) {
-			if(!empty($item_id)) {
+			if(!empty ($item_id)) {
 				if($page->id == $item_id) {
 					continue;
 				}
 			}
 			?>
-			<li id="page_<?php echo $page->id ?>">
-				<?php echo $page->title.L_MENU_SEPARATOR ?>
-				<a href="<?php echo edit_link($page->id); ?>" title="<?php echo L_EDIT_PAGE ?>"><?php echo L_EDIT_PAGE ?></a>
-				<?php echo L_MENU_SEPARATOR;  ?>
-				<a href="<?php echo edit_link($page->id); ?>>#sharing" title="<?php echo L_SHARE_PAGE ?>"><?php echo L_SHARE_PAGE ?></a>
-				<br />
-				<p class="<?php echo ($page->online == 0) ? 'offline' : 'online'; ?>">
-					<?php echo ($page->online == 0) ? L_PAGE_OFFLINE : L_PAGE_ONLINE; ?>
-					<br />
-					<label for="item_delete_<?php echo $page->id; ?>"><?php echo L_DELETE_ITEM; ?></label>
-					<input type="checkbox" name="del[]" value="<?php echo $page->id; ?>" id="item_delete_<?php echo $page->id; ?>" />
-				</p>
-			</li>
+			<li id="page_<?php echo $page->id ?>"><?php echo $page->title.L_MENU_SEPARATOR ?><a href="<?php echo edit_link($page->id); ?>" title="<?php echo L_EDIT_PAGE ?>"><?php echo L_EDIT_PAGE ?></a><?php echo L_MENU_SEPARATOR;  ?><a href="<?php echo edit_link($page->id); ?>>#sharing" title="<?php echo L_SHARE_PAGE ?>"><?php echo L_SHARE_PAGE ?></a><br />
+<p class="<?php echo ($page->online == 0) ? 'offline' : 'online'; ?>"><?php echo ($page->online == 0) ? L_PAGE_OFFLINE : L_PAGE_ONLINE; ?><br />
+<label for="item_delete_<?php echo $page->id; ?>"><?php echo L_DELETE_ITEM; ?></label><input type="checkbox" name="del[]" value="<?php echo $page->id; ?>" id="item_delete_<?php echo $page->id; ?>" /></p></li>
 			<ul>
-			<?php
-			get_page_list($default, $page->id, $level+1);
-			?>
+				<?php
+				get_page_list($default, $page->id, $level+1);
+				?>
 			</ul>
 			<?php
 		}
@@ -601,469 +596,467 @@ function dirify($s) {
      $s = preg_replace('!&[^;\s]+;!','',$s);
 	 $s = preg_replace('![^\w\s-]!','',$s);
      $s = preg_replace('![\s]+!','-',$s);
-
      return $s;
 }
 
 function convert_high_ascii($s) {
-	$HighASCII = array(
-		"\xc3\x80" => "A",
-		"\xc3\x81" => "A",
-		"\xc3\x82" => "A",
-		"\xc3\x83" => "A",
-		"\xc3\x84" => "A",
-		"\xc3\x85" => "A",
-		"\xc4\x80" => "A",
-		"\xc4\x82" => "A",
-		"\xc4\x84" => "A",
-		"\xc7\x8d" => "A",
-		"\xc7\x9e" => "A",
-		"\xc7\xa0" => "A",
-		"\xc7\xba" => "A",
-		"\xc8\x80" => "A",
-		"\xc8\x82" => "A",
-		"\xc8\xa6" => "A",
-		"\xc3\xa0" => "a",
-		"\xc3\xa1" => "a",
-		"\xc3\xa2" => "a",
-		"\xc3\xa3" => "a",
-		"\xc3\xa4" => "a",
-		"\xc4\x81" => "a",
-		"\xc4\x83" => "a",
-		"\xc4\x85" => "a",
-		"\xc7\x8e" => "a",
-		"\xc7\x9f" => "a",
-		"\xc7\xa0" => "a",
-		"\xc7\xbb" => "a",
-		"\xc8\x81" => "a",
-		"\xc8\x83" => "a",
-		"\xc8\xa7" => "a",
-		"\xc9\x90" => "a",
-		"\xc9\x91" => "a",
-		"\xc9\x92" => "a",
-		"\xc3\x86" => "Ae",
-		"\xc7\xa2" => "Ae",
-		"\xc7\xbc" => "AE",
-		"\xc3\xa6" => "ae",
-		"\xc7\xa3" => "ae",
-		"\xc7\xbd" => "ae",
-		"\xc6\x81" => "B",
-		"\xc6\x82" => "B",
-		"\xc9\x93" => "B",
-		"\xc6\x80" => "b",
-		"\xc6\x83" => "b",
-		"\xca\x99" => "b",
-		"\xc3\x87" => "C",
-		"\xc4\x86" => "C",
-		"\xc4\x88" => "C",
-		"\xc4\x8a" => "C",
-		"\xc4\x8c" => "C",
-		"\xc6\x87" => "C",
-		"\xc3\xa7" => "c",
-		"\xc4\x87" => "c",
-		"\xc4\x89" => "c",
-		"\xc4\x8b" => "c",
-		"\xc4\x8d" => "c",
-		"\xc6\x88" => "c",
-		"\xc9\x95" => "c",
-		"\xca\x97" => "c",
-		"\xc3\x90" => "D",
-		"\xc4\x8e" => "D",
-		"\xc4\x90" => "D",
-		"\xc6\x89" => "D",
-		"\xc6\x8a" => "D",
-		"\xc6\x8b" => "D",
-		"\xc3\xb0" => "d",
-		"\xc4\x8f" => "d",
-		"\xc4\x91" => "d",
-		"\xc6\x8c" => "d",
-		"\xc6\x8d" => "d",
-		"\xc8\xa1" => "d",
-		"\xc9\x96" => "d",
-		"\xc9\x97" => "d",
-		"\xc7\x84" => "DZ",
-		"\xc7\x85" => "DZ",
-		"\xc7\xb1" => "DZ",
-		"\xc7\xb2" => "DZ",
-		"\xc7\x86" => "dz",
-		"\xc7\xb3" => "dz",
-		"\xca\xa3" => "dz",
-		"\xca\xa4" => "dz",
-		"\xca\xa5" => "dz",
-		"\xc3\x88" => "E",
-		"\xc3\x89" => "E",
-		"\xc3\x8a" => "E",
-		"\xc3\x8b" => "E",
-		"\xc4\x92" => "E",
-		"\xc4\x94" => "E",
-		"\xc4\x96" => "E",
-		"\xc4\x98" => "E",
-		"\xc4\x9a" => "E",
-		"\xc6\x8e" => "E",
-		"\xc6\x8f" => "E",
-		"\xc6\x90" => "E",
-		"\xc8\x84" => "E",
-		"\xc8\x86" => "E",
-		"\xc8\xba" => "E",
-		"\xc3\xa8" => "e",
-		"\xc3\xa9" => "e",
-		"\xc3\xaa" => "e",
-		"\xc3\xab" => "e",
-		"\xc4\x93" => "e",
-		"\xc4\x95" => "e",
-		"\xc4\x97" => "e",
-		"\xc4\x99" => "e",
-		"\xc4\x9b" => "e",
-		"\xc7\x9d" => "e",
-		"\xc8\x85" => "e",
-		"\xc8\x87" => "e",
-		"\xc8\xbb" => "e",
-		"\xc9\x98" => "e",
-		"\xc9\x99" => "e",
-		"\xc9\x9a" => "e",
-		"\xc9\x9b" => "e",
-		"\xc9\x9c" => "e",
-		"\xc9\x9d" => "e",
-		"\xc9\x9e" => "e",
-		"\xca\x9d" => "e",
-		"\xc6\x91" => "F",
-		"\xc6\x92" => "f",
-		"\xc9\xb8" => "f",
-		"\xca\xa9" => "fg",
-		"\xc4\x9c" => "G",
-		"\xc4\x9e" => "G",
-		"\xc4\xa0" => "G",
-		"\xc4\xa2" => "G",
-		"\xc6\x93" => "G",
-		"\xc6\x94" => "G",
-		"\xc7\xa4" => "G",
-		"\xc7\xa6" => "G",
-		"\xc7\xb4" => "G",
-		"\xc4\x9d" => "g",
-		"\xc4\x9f" => "g",
-		"\xc4\xa1" => "g",
-		"\xc4\xa3" => "g",
-		"\xc7\xa5" => "g",
-		"\xc7\xa7" => "g",
-		"\xc7\xb5" => "g",
-		"\xc9\xa0" => "g",
-		"\xc9\xa1" => "g",
-		"\xc9\xa2" => "g",
-		"\xc9\xa3" => "g",
-		"\xca\x9c" => "g",
-		"\xc4\xa4" => "H",
-		"\xc4\xa6" => "H",
-		"\xc7\xb6" => "H",
-		"\xc8\x9e" => "H",
-		"\xc4\xa5" => "h",
-		"\xc4\xa7" => "h",
-		"\xc6\x95" => "h",
-		"\xc8\xa5" => "h",
-		"\xc9\xa6" => "h",
-		"\xc9\xa7" => "h",
-		"\xca\x9c" => "h",
-		"\xca\xae" => "h",
-		"\xca\xaf" => "h",
-		"\xc3\x8c" => "I",
-		"\xc3\x8d" => "I",
-		"\xc3\x8e" => "I",
-		"\xc3\x8f" => "I",
-		"\xc4\xa8" => "I",
-		"\xc4\xaa" => "I",
-		"\xc4\xac" => "I",
-		"\xc4\xae" => "I",
-		"\xc4\xb0" => "I",
-		"\xc6\x96" => "I",
-		"\xc6\x97" => "I",
-		"\xc7\x8f" => "I",
-		"\xc8\x88" => "I",
-		"\xc8\x8a" => "I",
-		"\xc3\xac" => "i",
-		"\xc3\xad" => "i",
-		"\xc3\xae" => "i",
-		"\xc3\xaf" => "i",
-		"\xc4\xa9" => "i",
-		"\xc4\xab" => "i",
-		"\xc4\xad" => "i",
-		"\xc4\xaf" => "i",
-		"\xc4\xb1" => "i",
-		"\xc7\x90" => "i",
-		"\xc8\x89" => "i",
-		"\xc8\x8b" => "i",
-		"\xc9\xa8" => "i",
-		"\xc9\xa9" => "i",
-		"\xc9\xaa" => "i",
-		"\xc4\xb2" => "IJ",
-		"\xc4\xb3" => "ij",
-		"\xc4\xb4" => "J",
-		"\xc4\xb5" => "j",
-		"\xc7\xb0" => "j",
-		"\xc9\x9f" => "j",
-		"\xca\x84" => "j",
-		"\xca\x9d" => "j",
-		"\xc4\xb6" => "K",
-		"\xc6\x98" => "K",
-		"\xc7\xa8" => "K",
-		"\xc4\xb7" => "k",
-		"\xc4\xb8" => "k",
-		"\xc6\x99" => "k",
-		"\xc7\xa9" => "k",
-		"\xca\x9e" => "k",
-		"\xc4\xb9" => "L",
-		"\xc4\xbb" => "L",
-		"\xc4\xbd" => "L",
-		"\xc4\xbf" => "L",
-		"\xc5\x81" => "L",
-		"\xc8\xb4" => "L",
-		"\xc4\xba" => "l",
-		"\xc4\xbc" => "l",
-		"\xc4\xbe" => "l",
-		"\xc5\x80" => "l",
-		"\xc5\x82" => "l",
-		"\xc6\x9a" => "l",
-		"\xc6\x9b" => "l",
-		"\xc9\xab" => "l",
-		"\xc9\xac" => "l",
-		"\xc9\xad" => "l",
-		"\xc9\xae" => "l",
-		"\xca\x9f" => "l",
-		"\xc7\x87" => "LJ",
-		"\xc7\x88" => "LJ",
-		"\xc7\x89" => "lj",
-		"\xca\xaa" => "ls",
-		"\xca\xab" => "lz",
-		"\xc6\x9c" => "M",
-		"\xc9\xaf" => "m",
-		"\xc9\xb0" => "m",
-		"\xc9\xb1" => "m",
-		"\xc3\x91" => "N",
-		"\xc5\x83" => "N",
-		"\xc5\x85" => "N",
-		"\xc5\x87" => "N",
-		"\xc5\x8a" => "N",
-		"\xc6\x9d" => "N",
-		"\xc8\xa0" => "N",
-		"\xc3\xb1" => "n",
-		"\xc5\x84" => "n",
-		"\xc5\x86" => "n",
-		"\xc5\x88" => "n",
-		"\xc5\x89" => "n",
-		"\xc5\x8b" => "n",
-		"\xc6\xb5" => "n",
-		"\xc8\xb4" => "n",
-		"\xc9\xb2" => "n",
-		"\xc9\xb3" => "n",
-		"\xc9\xb4" => "n",
-		"\xc7\x8a" => "NJ",
-		"\xc7\x8b" => "NJ",
-		"\xc7\xb8" => "NJ",
-		"\xc7\x8c" => "nj",
-		"\xc7\xb9" => "nj",
-		"\xc3\x92" => "O",
-		"\xc3\x93" => "O",
-		"\xc3\x94" => "O",
-		"\xc3\x95" => "O",
-		"\xc3\x96" => "O",
-		"\xc3\x97" => "O",
-		"\xc5\x8c" => "O",
-		"\xc5\x8e" => "O",
-		"\xc5\x90" => "O",
-		"\xc6\x86" => "O",
-		"\xc6\x9f" => "O",
-		"\xc6\xa0" => "O",
-		"\xc7\xb9" => "O",
-		"\xc7\xaa" => "O",
-		"\xc7\xac" => "O",
-		"\xc7\xbe" => "O",
-		"\xc8\x8c" => "O",
-		"\xc8\x8e" => "O",
-		"\xc8\xaa" => "O",
-		"\xc8\xac" => "O",
-		"\xc8\xae" => "O",
-		"\xc8\xb0" => "O",
-		"\xc3\xb2" => "o",
-		"\xc3\xb3" => "o",
-		"\xc3\xb4" => "o",
-		"\xc3\xb5" => "o",
-		"\xc3\xb6" => "o",
-		"\xc3\xb7" => "o",
-		"\xc5\x8d" => "o",
-		"\xc5\x8f" => "o",
-		"\xc5\x91" => "o",
-		"\xc6\xa1" => "o",
-		"\xc7\x92" => "o",
-		"\xc7\xab" => "o",
-		"\xc7\xad" => "o",
-		"\xc7\xbf" => "o",
-		"\xc8\x8d" => "o",
-		"\xc8\x8f" => "o",
-		"\xc8\xab" => "o",
-		"\xc8\xad" => "o",
-		"\xc8\xaf" => "o",
-		"\xc8\xb1" => "o",
-		"\xc9\x94" => "o",
-		"\xc9\xb5" => "o",
-		"\xc6\xa2" => "OI",
-		"\xc6\xa3" => "oi",
-		"\xc5\x92" => "Oe",
-		"\xc5\x93" => "oe",
-		"\xc9\xb6" => "oe",
-		"\xc9\xb7" => "oe",
-		"\xc6\xa5" => "P",
-		"\xca\xa0" => "q",
-		"\xc5\x94" => "R",
-		"\xc5\x96" => "R",
-		"\xc5\x98" => "R",
-		"\xc6\xa6" => "R",
-		"\xc8\x90" => "R",
-		"\xc8\x92" => "R",
-		"\xc5\x95" => "r",
-		"\xc5\x97" => "r",
-		"\xc5\x99" => "r",
-		"\xc8\x91" => "r",
-		"\xc8\x93" => "r",
-		"\xc9\xb9" => "r",
-		"\xc9\xba" => "r",
-		"\xc9\xbb" => "r",
-		"\xc9\xbc" => "r",
-		"\xc9\xbd" => "r",
-		"\xc9\xbe" => "r",
-		"\xca\x80" => "r",
-		"\xca\x81" => "r",
-		"\xc3\x9f" => "S",
-		"\xc5\x9a" => "S",
-		"\xc5\x9c" => "S",
-		"\xc5\x9e" => "S",
-		"\xc5\xa0" => "S",
-		"\xc6\xa7" => "S",
-		"\xc6\xa9" => "S",
-		"\xc8\x98" => "S",
-		"\xc5\x9b" => "s",
-		"\xc5\x9d" => "s",
-		"\xc5\x9f" => "s",
-		"\xc5\xa1" => "s",
-		"\xc6\xa8" => "s",
-		"\xc6\xaa" => "s",
-		"\xc8\x99" => "s",
-		"\xca\x82" => "s",
-		"\xca\x83" => "s",
-		"\xca\x84" => "s",
-		"\xca\x85" => "s",
-		"\xc3\x9e" => "T",
-		"\xc5\xa2" => "T",
-		"\xc5\xa4" => "T",
-		"\xc5\xa6" => "T",
-		"\xc6\xac" => "T",
-		"\xc6\xae" => "T",
-		"\xc8\x9a" => "T",
-		"\xc3\xbe" => "t",
-		"\xc5\xa3" => "t",
-		"\xc5\xa5" => "t",
-		"\xc5\xa7" => "t",
-		"\xc6\xab" => "t",
-		"\xc6\xad" => "t",
-		"\xc8\x9b" => "t",
-		"\xc8\xb6" => "t",
-		"\xca\x87" => "t",
-		"\xca\x88" => "t",
-		"\xca\xa8" => "tc",
-		"\xca\xa6" => "ts",
-		"\xca\xa7" => "ts",
-		"\xc3\x99" => "U",
-		"\xc3\x9a" => "U",
-		"\xc3\x9b" => "U",
-		"\xc3\x9c" => "U",
-		"\xc5\xa8" => "U",
-		"\xc5\xaa" => "U",
-		"\xc5\xac" => "U",
-		"\xc5\xae" => "U",
-		"\xc5\xb0" => "U",
-		"\xc5\xb2" => "U",
-		"\xc6\xaf" => "U",
-		"\xc6\xb1" => "U",
-		"\xc7\x93" => "U",
-		"\xc7\x95" => "U",
-		"\xc7\x97" => "U",
-		"\xc7\x99" => "U",
-		"\xc7\x9b" => "U",
-		"\xc8\x94" => "U",
-		"\xc8\x96" => "U",
-		"\xc8\xa2" => "U",
-		"\xc3\xb9" => "u",
-		"\xc3\xba" => "u",
-		"\xc3\xbb" => "u",
-		"\xc3\xbc" => "u",
-		"\xc5\xa9" => "u",
-		"\xc5\xab" => "u",
-		"\xc5\xad" => "u",
-		"\xc5\xaf" => "u",
-		"\xc5\xb1" => "u",
-		"\xc5\xb3" => "u",
-		"\xc6\xb0" => "u",
-		"\xc7\x94" => "u",
-		"\xc7\x96" => "u",
-		"\xc7\x98" => "u",
-		"\xc7\x9a" => "u",
-		"\xc7\x9c" => "u",
-		"\xc8\x95" => "u",
-		"\xc8\x97" => "u",
-		"\xc8\xa3" => "u",
-		"\xca\x89" => "u",
-		"\xca\x8a" => "u",
-		"\xca\x8b" => "u",
-		"\xc6\xb2" => "V",
-		"\xca\x8c" => "v",
-		"\xc5\xb4" => "W",
-		"\xc7\xb7" => "W",
-		"\xc5\xb5" => "w",
-		"\xca\x8d" => "w",
-		"\xc3\x9d" => "Y",
-		"\xc5\xb6" => "Y",
-		"\xc5\xb8" => "Y",
-		"\xc6\xb3" => "Y",
-		"\xc8\x9c" => "Y",
-		"\xc8\xb2" => "Y",
-		"\xc3\xbe" => "y",
-		"\xc3\xbf" => "y",
-		"\xc5\xb7" => "y",
-		"\xc6\xb4" => "y",
-		"\xc8\x9d" => "y",
-		"\xc8\xb3" => "y",
-		"\xca\x8e" => "y",
-		"\xca\x8f" => "y",
-		"\xc5\xb9" => "Z",
-		"\xc5\xbb" => "Z",
-		"\xc5\xbd" => "Z",
-		"\xc6\xb5" => "Z",
-		"\xc6\xb7" => "Z",
-		"\xc6\xb9" => "Z",
-		"\xc7\xae" => "Z",
-		"\xc8\xa4" => "Z",
-		"\xc5\xba" => "z",
-		"\xc5\xbc" => "z",
-		"\xc5\xbe" => "z",
-		"\xc6\xb6" => "z",
-		"\xc6\xb8" => "z",
-		"\xc6\xba" => "z",
-		"\xc7\xaf" => "z",
-		"\xc8\xa4" => "z",
-		"\xca\x90" => "z",
-		"\xca\x91" => "z",
-		"\xca\x92" => "z",
-		"\xca\x93" => "z",
-		"\xc6\xbb" => "2",
-		"\xc6\xbc" => "5",
-		"\xc6\xbd" => "5",
-		"\xc6\x84" => "6",
-		"\xc6\x85" => "6",
-	);
+ 	$HighASCII = array(
+      "\xc3\x80" => "A",
+      "\xc3\x81" => "A",
+      "\xc3\x82" => "A",
+      "\xc3\x83" => "A",
+      "\xc3\x84" => "A",
+      "\xc3\x85" => "A",
+      "\xc4\x80" => "A",
+      "\xc4\x82" => "A",
+      "\xc4\x84" => "A",
+      "\xc7\x8d" => "A",
+      "\xc7\x9e" => "A",
+      "\xc7\xa0" => "A",
+      "\xc7\xba" => "A",
+      "\xc8\x80" => "A",
+      "\xc8\x82" => "A",
+      "\xc8\xa6" => "A",
+      "\xc3\xa0" => "a",
+      "\xc3\xa1" => "a",
+      "\xc3\xa2" => "a",
+      "\xc3\xa3" => "a",
+      "\xc3\xa4" => "a",
+      "\xc4\x81" => "a",
+      "\xc4\x83" => "a",
+      "\xc4\x85" => "a",
+      "\xc7\x8e" => "a",
+      "\xc7\x9f" => "a",
+      "\xc7\xa0" => "a",
+      "\xc7\xbb" => "a",
+      "\xc8\x81" => "a",
+      "\xc8\x83" => "a",
+      "\xc8\xa7" => "a",
+      "\xc9\x90" => "a",
+      "\xc9\x91" => "a",
+      "\xc9\x92" => "a",
+      "\xc3\x86" => "Ae",
+      "\xc7\xa2" => "Ae",
+      "\xc7\xbc" => "AE",
+      "\xc3\xa6" => "ae",
+      "\xc7\xa3" => "ae",
+      "\xc7\xbd" => "ae",
+      "\xc6\x81" => "B",
+      "\xc6\x82" => "B",
+      "\xc9\x93" => "B",
+      "\xc6\x80" => "b",
+      "\xc6\x83" => "b",
+      "\xca\x99" => "b",
+      "\xc3\x87" => "C",
+      "\xc4\x86" => "C",
+      "\xc4\x88" => "C",
+      "\xc4\x8a" => "C",
+      "\xc4\x8c" => "C",
+      "\xc6\x87" => "C",
+      "\xc3\xa7" => "c",
+      "\xc4\x87" => "c",
+      "\xc4\x89" => "c",
+      "\xc4\x8b" => "c",
+      "\xc4\x8d" => "c",
+      "\xc6\x88" => "c",
+      "\xc9\x95" => "c",
+      "\xca\x97" => "c",
+      "\xc3\x90" => "D",
+      "\xc4\x8e" => "D",
+      "\xc4\x90" => "D",
+      "\xc6\x89" => "D",
+      "\xc6\x8a" => "D",
+      "\xc6\x8b" => "D",
+      "\xc3\xb0" => "d",
+      "\xc4\x8f" => "d",
+      "\xc4\x91" => "d",
+      "\xc6\x8c" => "d",
+      "\xc6\x8d" => "d",
+      "\xc8\xa1" => "d",
+      "\xc9\x96" => "d",
+      "\xc9\x97" => "d",
+      "\xc7\x84" => "DZ",
+      "\xc7\x85" => "DZ",
+      "\xc7\xb1" => "DZ",
+      "\xc7\xb2" => "DZ",
+      "\xc7\x86" => "dz",
+      "\xc7\xb3" => "dz",
+      "\xca\xa3" => "dz",
+      "\xca\xa4" => "dz",
+      "\xca\xa5" => "dz",
+      "\xc3\x88" => "E",
+      "\xc3\x89" => "E",
+      "\xc3\x8a" => "E",
+      "\xc3\x8b" => "E",
+      "\xc4\x92" => "E",
+      "\xc4\x94" => "E",
+      "\xc4\x96" => "E",
+      "\xc4\x98" => "E",
+      "\xc4\x9a" => "E",
+      "\xc6\x8e" => "E",
+      "\xc6\x8f" => "E",
+      "\xc6\x90" => "E",
+      "\xc8\x84" => "E",
+      "\xc8\x86" => "E",
+      "\xc8\xba" => "E",
+      "\xc3\xa8" => "e",
+      "\xc3\xa9" => "e",
+      "\xc3\xaa" => "e",
+      "\xc3\xab" => "e",
+      "\xc4\x93" => "e",
+      "\xc4\x95" => "e",
+      "\xc4\x97" => "e",
+      "\xc4\x99" => "e",
+      "\xc4\x9b" => "e",
+      "\xc7\x9d" => "e",
+      "\xc8\x85" => "e",
+      "\xc8\x87" => "e",
+      "\xc8\xbb" => "e",
+      "\xc9\x98" => "e",
+      "\xc9\x99" => "e",
+      "\xc9\x9a" => "e",
+      "\xc9\x9b" => "e",
+      "\xc9\x9c" => "e",
+      "\xc9\x9d" => "e",
+      "\xc9\x9e" => "e",
+      "\xca\x9d" => "e",
+      "\xc6\x91" => "F",
+      "\xc6\x92" => "f",
+      "\xc9\xb8" => "f",
+      "\xca\xa9" => "fg",
+      "\xc4\x9c" => "G",
+      "\xc4\x9e" => "G",
+      "\xc4\xa0" => "G",
+      "\xc4\xa2" => "G",
+      "\xc6\x93" => "G",
+      "\xc6\x94" => "G",
+      "\xc7\xa4" => "G",
+      "\xc7\xa6" => "G",
+      "\xc7\xb4" => "G",
+      "\xc4\x9d" => "g",
+      "\xc4\x9f" => "g",
+      "\xc4\xa1" => "g",
+      "\xc4\xa3" => "g",
+      "\xc7\xa5" => "g",
+      "\xc7\xa7" => "g",
+      "\xc7\xb5" => "g",
+      "\xc9\xa0" => "g",
+      "\xc9\xa1" => "g",
+      "\xc9\xa2" => "g",
+      "\xc9\xa3" => "g",
+      "\xca\x9c" => "g",
+      "\xc4\xa4" => "H",
+      "\xc4\xa6" => "H",
+      "\xc7\xb6" => "H",
+      "\xc8\x9e" => "H",
+      "\xc4\xa5" => "h",
+      "\xc4\xa7" => "h",
+      "\xc6\x95" => "h",
+      "\xc8\xa5" => "h",
+      "\xc9\xa6" => "h",
+      "\xc9\xa7" => "h",
+      "\xca\x9c" => "h",
+      "\xca\xae" => "h",
+      "\xca\xaf" => "h",
+      "\xc3\x8c" => "I",
+      "\xc3\x8d" => "I",
+      "\xc3\x8e" => "I",
+      "\xc3\x8f" => "I",
+      "\xc4\xa8" => "I",
+      "\xc4\xaa" => "I",
+      "\xc4\xac" => "I",
+      "\xc4\xae" => "I",
+      "\xc4\xb0" => "I",
+      "\xc6\x96" => "I",
+      "\xc6\x97" => "I",
+      "\xc7\x8f" => "I",
+      "\xc8\x88" => "I",
+      "\xc8\x8a" => "I",
+      "\xc3\xac" => "i",
+      "\xc3\xad" => "i",
+      "\xc3\xae" => "i",
+      "\xc3\xaf" => "i",
+      "\xc4\xa9" => "i",
+      "\xc4\xab" => "i",
+      "\xc4\xad" => "i",
+      "\xc4\xaf" => "i",
+      "\xc4\xb1" => "i",
+      "\xc7\x90" => "i",
+      "\xc8\x89" => "i",
+      "\xc8\x8b" => "i",
+      "\xc9\xa8" => "i",
+      "\xc9\xa9" => "i",
+      "\xc9\xaa" => "i",
+      "\xc4\xb2" => "IJ",
+      "\xc4\xb3" => "ij",
+      "\xc4\xb4" => "J",
+      "\xc4\xb5" => "j",
+      "\xc7\xb0" => "j",
+      "\xc9\x9f" => "j",
+      "\xca\x84" => "j",
+      "\xca\x9d" => "j",
+      "\xc4\xb6" => "K",
+      "\xc6\x98" => "K",
+      "\xc7\xa8" => "K",
+      "\xc4\xb7" => "k",
+      "\xc4\xb8" => "k",
+      "\xc6\x99" => "k",
+      "\xc7\xa9" => "k",
+      "\xca\x9e" => "k",
+      "\xc4\xb9" => "L",
+      "\xc4\xbb" => "L",
+      "\xc4\xbd" => "L",
+      "\xc4\xbf" => "L",
+      "\xc5\x81" => "L",
+      "\xc8\xb4" => "L",
+      "\xc4\xba" => "l",
+      "\xc4\xbc" => "l",
+      "\xc4\xbe" => "l",
+      "\xc5\x80" => "l",
+      "\xc5\x82" => "l",
+      "\xc6\x9a" => "l",
+      "\xc6\x9b" => "l",
+      "\xc9\xab" => "l",
+      "\xc9\xac" => "l",
+      "\xc9\xad" => "l",
+      "\xc9\xae" => "l",
+      "\xca\x9f" => "l",
+      "\xc7\x87" => "LJ",
+      "\xc7\x88" => "LJ",
+      "\xc7\x89" => "lj",
+      "\xca\xaa" => "ls",
+      "\xca\xab" => "lz",
+      "\xc6\x9c" => "M",
+      "\xc9\xaf" => "m",
+      "\xc9\xb0" => "m",
+      "\xc9\xb1" => "m",
+      "\xc3\x91" => "N",
+      "\xc5\x83" => "N",
+      "\xc5\x85" => "N",
+      "\xc5\x87" => "N",
+      "\xc5\x8a" => "N",
+      "\xc6\x9d" => "N",
+      "\xc8\xa0" => "N",
+      "\xc3\xb1" => "n",
+      "\xc5\x84" => "n",
+      "\xc5\x86" => "n",
+      "\xc5\x88" => "n",
+      "\xc5\x89" => "n",
+      "\xc5\x8b" => "n",
+      "\xc6\xb5" => "n",
+      "\xc8\xb4" => "n",
+      "\xc9\xb2" => "n",
+      "\xc9\xb3" => "n",
+      "\xc9\xb4" => "n",
+      "\xc7\x8a" => "NJ",
+      "\xc7\x8b" => "NJ",
+      "\xc7\xb8" => "NJ",
+      "\xc7\x8c" => "nj",
+      "\xc7\xb9" => "nj",
+      "\xc3\x92" => "O",
+      "\xc3\x93" => "O",
+      "\xc3\x94" => "O",
+      "\xc3\x95" => "O",
+      "\xc3\x96" => "O",
+      "\xc3\x97" => "O",
+      "\xc5\x8c" => "O",
+      "\xc5\x8e" => "O",
+      "\xc5\x90" => "O",
+      "\xc6\x86" => "O",
+      "\xc6\x9f" => "O",
+      "\xc6\xa0" => "O",
+      "\xc7\xb9" => "O",
+      "\xc7\xaa" => "O",
+      "\xc7\xac" => "O",
+      "\xc7\xbe" => "O",
+      "\xc8\x8c" => "O",
+      "\xc8\x8e" => "O",
+      "\xc8\xaa" => "O",
+      "\xc8\xac" => "O",
+      "\xc8\xae" => "O",
+      "\xc8\xb0" => "O",
+      "\xc3\xb2" => "o",
+      "\xc3\xb3" => "o",
+      "\xc3\xb4" => "o",
+      "\xc3\xb5" => "o",
+      "\xc3\xb6" => "o",
+      "\xc3\xb7" => "o",
+      "\xc5\x8d" => "o",
+      "\xc5\x8f" => "o",
+      "\xc5\x91" => "o",
+      "\xc6\xa1" => "o",
+      "\xc7\x92" => "o",
+      "\xc7\xab" => "o",
+      "\xc7\xad" => "o",
+      "\xc7\xbf" => "o",
+      "\xc8\x8d" => "o",
+      "\xc8\x8f" => "o",
+      "\xc8\xab" => "o",
+      "\xc8\xad" => "o",
+      "\xc8\xaf" => "o",
+      "\xc8\xb1" => "o",
+      "\xc9\x94" => "o",
+      "\xc9\xb5" => "o",
+      "\xc6\xa2" => "OI",
+      "\xc6\xa3" => "oi",
+      "\xc5\x92" => "Oe",
+      "\xc5\x93" => "oe",
+      "\xc9\xb6" => "oe",
+      "\xc9\xb7" => "oe",
+      "\xc6\xa5" => "P",
+      "\xca\xa0" => "q",
+      "\xc5\x94" => "R",
+      "\xc5\x96" => "R",
+      "\xc5\x98" => "R",
+      "\xc6\xa6" => "R",
+      "\xc8\x90" => "R",
+      "\xc8\x92" => "R",
+      "\xc5\x95" => "r",
+      "\xc5\x97" => "r",
+      "\xc5\x99" => "r",
+      "\xc8\x91" => "r",
+      "\xc8\x93" => "r",
+      "\xc9\xb9" => "r",
+      "\xc9\xba" => "r",
+      "\xc9\xbb" => "r",
+      "\xc9\xbc" => "r",
+      "\xc9\xbd" => "r",
+      "\xc9\xbe" => "r",
+      "\xca\x80" => "r",
+      "\xca\x81" => "r",
+      "\xc3\x9f" => "S",
+      "\xc5\x9a" => "S",
+      "\xc5\x9c" => "S",
+      "\xc5\x9e" => "S",
+      "\xc5\xa0" => "S",
+      "\xc6\xa7" => "S",
+      "\xc6\xa9" => "S",
+      "\xc8\x98" => "S",
+      "\xc5\x9b" => "s",
+      "\xc5\x9d" => "s",
+      "\xc5\x9f" => "s",
+      "\xc5\xa1" => "s",
+      "\xc6\xa8" => "s",
+      "\xc6\xaa" => "s",
+      "\xc8\x99" => "s",
+      "\xca\x82" => "s",
+      "\xca\x83" => "s",
+      "\xca\x84" => "s",
+      "\xca\x85" => "s",
+      "\xc3\x9e" => "T",
+      "\xc5\xa2" => "T",
+      "\xc5\xa4" => "T",
+      "\xc5\xa6" => "T",
+      "\xc6\xac" => "T",
+      "\xc6\xae" => "T",
+      "\xc8\x9a" => "T",
+      "\xc3\xbe" => "t",
+      "\xc5\xa3" => "t",
+      "\xc5\xa5" => "t",
+      "\xc5\xa7" => "t",
+      "\xc6\xab" => "t",
+      "\xc6\xad" => "t",
+      "\xc8\x9b" => "t",
+      "\xc8\xb6" => "t",
+      "\xca\x87" => "t",
+      "\xca\x88" => "t",
+      "\xca\xa8" => "tc",
+      "\xca\xa6" => "ts",
+      "\xca\xa7" => "ts",
+      "\xc3\x99" => "U",
+      "\xc3\x9a" => "U",
+      "\xc3\x9b" => "U",
+      "\xc3\x9c" => "U",
+      "\xc5\xa8" => "U",
+      "\xc5\xaa" => "U",
+      "\xc5\xac" => "U",
+      "\xc5\xae" => "U",
+      "\xc5\xb0" => "U",
+      "\xc5\xb2" => "U",
+      "\xc6\xaf" => "U",
+      "\xc6\xb1" => "U",
+      "\xc7\x93" => "U",
+      "\xc7\x95" => "U",
+      "\xc7\x97" => "U",
+      "\xc7\x99" => "U",
+      "\xc7\x9b" => "U",
+      "\xc8\x94" => "U",
+      "\xc8\x96" => "U",
+      "\xc8\xa2" => "U",
+      "\xc3\xb9" => "u",
+      "\xc3\xba" => "u",
+      "\xc3\xbb" => "u",
+      "\xc3\xbc" => "u",
+      "\xc5\xa9" => "u",
+      "\xc5\xab" => "u",
+      "\xc5\xad" => "u",
+      "\xc5\xaf" => "u",
+      "\xc5\xb1" => "u",
+      "\xc5\xb3" => "u",
+      "\xc6\xb0" => "u",
+      "\xc7\x94" => "u",
+      "\xc7\x96" => "u",
+      "\xc7\x98" => "u",
+      "\xc7\x9a" => "u",
+      "\xc7\x9c" => "u",
+      "\xc8\x95" => "u",
+      "\xc8\x97" => "u",
+      "\xc8\xa3" => "u",
+      "\xca\x89" => "u",
+      "\xca\x8a" => "u",
+      "\xca\x8b" => "u",
+      "\xc6\xb2" => "V",
+      "\xca\x8c" => "v",
+      "\xc5\xb4" => "W",
+      "\xc7\xb7" => "W",
+      "\xc5\xb5" => "w",
+      "\xca\x8d" => "w",
+      "\xc3\x9d" => "Y",
+      "\xc5\xb6" => "Y",
+      "\xc5\xb8" => "Y",
+      "\xc6\xb3" => "Y",
+      "\xc8\x9c" => "Y",
+      "\xc8\xb2" => "Y",
+      "\xc3\xbe" => "y",
+      "\xc3\xbf" => "y",
+      "\xc5\xb7" => "y",
+      "\xc6\xb4" => "y",
+      "\xc8\x9d" => "y",
+      "\xc8\xb3" => "y",
+      "\xca\x8e" => "y",
+      "\xca\x8f" => "y",
+      "\xc5\xb9" => "Z",
+      "\xc5\xbb" => "Z",
+      "\xc5\xbd" => "Z",
+      "\xc6\xb5" => "Z",
+      "\xc6\xb7" => "Z",
+      "\xc6\xb9" => "Z",
+      "\xc7\xae" => "Z",
+      "\xc8\xa4" => "Z",
+      "\xc5\xba" => "z",
+      "\xc5\xbc" => "z",
+      "\xc5\xbe" => "z",
+      "\xc6\xb6" => "z",
+      "\xc6\xb8" => "z",
+      "\xc6\xba" => "z",
+      "\xc7\xaf" => "z",
+      "\xc8\xa4" => "z",
+      "\xca\x90" => "z",
+      "\xca\x91" => "z",
+      "\xca\x92" => "z",
+      "\xca\x93" => "z",
+      "\xc6\xbb" => "2",
+      "\xc6\xbc" => "5",
+      "\xc6\xbd" => "5",
+      "\xc6\x84" => "6",
+      "\xc6\x85" => "6",
+ 	);
 	foreach($HighASCII as $ind=>$val) {
 		$HighASCII2["/".$ind."/"] = $val;
 	}
  	$find = array_keys($HighASCII2);
  	$replace = array_values($HighASCII2);
  	$s = preg_replace($find,$replace,$s);
-
     return $s;
 }
 
@@ -1093,14 +1086,12 @@ function getPage($id, $extraVars=array()) {
 function getChildrenPages($pid) {
 	global $items;
 	$content = '';
-
 	return $items->GetList(array(array('type', '=', 'static'), array('pid', '=', $pid)), 'menu_order');
 }
 
 function isFlooding($flood_delay) {
 	$currtime = (isset($_SESSION['current_time'])) ? $_SESSION['current_time'] : time();
 	$diff = (time() != $currtime) ? time()-$currtime : $flood_delay;
-
 	return ($diff < $flood_delay) ? true : false;
 }
 
@@ -1122,7 +1113,6 @@ function get_custom_fields() {
 			$cust_fields[] =  "'".$field."'";
 		}
 	}
-
 	return $cust_fields = '['.implode(',',$cust_fields).']';
 }
 
@@ -1143,7 +1133,6 @@ function isLoggedIn() {
 			$permissions = isset($userarray['permissions']) && !empty($userarray['permissions']) && is_array($userarray['permissions']) ? true : false;
 		}
 	}
-
 	return ($id && $user && $password && $email) ? true : false;
 }
 
@@ -1151,7 +1140,6 @@ function dateTimeProcess($created='') {
 	if(isset($_POST['resettime'])) {
 		return time();
 	}
-
 	return (!empty($_POST['month']) &&
 			!empty($_POST['day']) &&
 			!empty($_POST['year']) &&
@@ -1187,17 +1175,16 @@ function valid_uri($url, $options = null) {
 		extract($options);
 	}
 	if(preg_match(
-		'&^(?:([a-z][-+.a-z0-9]*):)?                             	# 1. scheme
-		(?://                                                   	# authority start
-		(?:((?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'();:\&=+$,])*)@)?    	# 2. authority-userinfo
-		(?:((?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)*[a-z](?:[a-z0-9]+)?\.?)  # 3. authority-hostname OR
-		|([0-9]{1,3}(?:\.[0-9]{1,3}){3}))                       	# 4. authority-ipv4
-		(?::([0-9]*))?)                                        		# 5. authority-port
-		((?:/(?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'():@\&=+$,;])*)*/?)? 	# 6. path
-		(?:\?([^#]*))?                                          	# 7. query
-		(?:\#((?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'();/?:@\&=+$,])*))? 	# 8. fragment
-		$&xi', $url, $matches)) {
-
+	'&^(?:([a-z][-+.a-z0-9]*):)?                             	# 1. scheme
+	(?://                                                   	# authority start
+	(?:((?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'();:\&=+$,])*)@)?    	# 2. authority-userinfo
+	(?:((?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)*[a-z](?:[a-z0-9]+)?\.?)  # 3. authority-hostname OR
+	|([0-9]{1,3}(?:\.[0-9]{1,3}){3}))                       	# 4. authority-ipv4
+	(?::([0-9]*))?)                                        		# 5. authority-port
+	((?:/(?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'():@\&=+$,;])*)*/?)? 	# 6. path
+	(?:\?([^#]*))?                                          	# 7. query
+	(?:\#((?:%[0-9a-f]{2}|[-a-z0-9_.!~*\'();/?:@\&=+$,])*))? 	# 8. fragment
+	$&xi', $url, $matches)) {
 		$scheme = isset($matches[1]) ? $matches[1] : '';
 		$authority = isset($matches[3]) ? $matches[3] : '' ;
 		if(is_array($allowed_schemes) && !in_array($scheme,$allowed_schemes)) {
@@ -1239,7 +1226,7 @@ if(!function_exists('getmxrr')) {
 			foreach($output as $line) {
 				$imx++;
 				$parts = "";
-				if(preg_match("/^$hostname\tMX preference = ([0-9]+), mail exchanger = (.*)$/", $line, $parts)) {
+				if(preg_match ("/^$hostname\tMX preference = ([0-9]+), mail exchanger = (.*)$/", $line, $parts) ) {
 					$mxweight[$imx] = $parts[1];
 					$mxhosts[$imx] = $parts[2];
 				}
@@ -1256,8 +1243,8 @@ function delRecursive($dirname) {
 	}
 	while($file=readdir($dir_handle)) {
 		if($file!="." && $file!="..") {
-			if(!is_dir($dirname."/".$file)) {
-				if (!unlink ($dirname."/".$file)) {
+			if(!is_dir($dirname."/".$file)){
+				if(!unlink ($dirname."/".$file)){
 					return false;
 				}
 			} else {
@@ -1273,10 +1260,16 @@ function delRecursive($dirname) {
 }
 
 function rm($dir) {
-	if(!$dh = @opendir($dir)) { return; }
-	while (($obj = readdir($dh))) {
-		if($obj=='.' || $obj=='..') { continue; }
-		if(!@unlink($dir.'/'.$obj)) { rm($dir.'/'.$obj); }
+	if(!$dh = @opendir($dir)) {
+		return;
+	}
+	while(($obj = readdir($dh))) {
+		if($obj=='.' || $obj=='..') {
+			continue;
+		}
+		if(!@unlink($dir.'/'.$obj)) {
+			rm($dir.'/'.$obj);
+		}
 	}
 	@rmdir($dir);
 }
@@ -1331,10 +1324,12 @@ function copyr($source, $dest, $ignore=array()) {
 	// Loop through the folder
 	$dir = dir($source);
 	while(false !== $entry = $dir->read()) {
+
 		// Skip pointers
 		if($entry == '.' || $entry == '..') {
 			continue;
 		}
+
 		// Deep copy directories
 		if($dest !== "$source/$entry") {
 			copyr("$source/$entry", "$dest/$entry", $ignore);
@@ -1384,7 +1379,6 @@ function language_info($lang_file) {
 	preg_match('|Translated by:(.*)|i', $lang_info, $lang_translator);
 	$name = isset($lang_name[1]) ? trim($lang_name[1]) : '';
 	$translator =  isset($lang_translator[1]) ? trim($lang_translator[1]) : '';
-
 	//Huh? Because I like object notation, that's why!
 	return (object) array('Language' => $name, 'Translator' => $translator);
 }
@@ -1410,7 +1404,6 @@ function theme_info($theme_file) {
 		$author_name = isset($author_name[1]) ? $author_name[1] : '';
 		$author = !isset($author_url[1]) || empty($author_url[1]) ? $author_name : '<a href="'.$author_url[1].'" title="'.L_THEME_VISIT_AUTHOR.'" target="_blank">'. $author_name.'</a>';
 	}
-
 	//Huh? Because I like object notation, that's why!
 	return (object) array('Name' => $name, 'Title' => $theme, 'Description' => (isset($description[1]) ? $description[1] : ''), 'Author' => $author, 'Version' => $version);
 }
@@ -1427,17 +1420,20 @@ function proper_list($array, $andor = 'and', $oxfordComma=false) {
 		return implode(", ", $array);
 	}
 	$last = array_pop($array);
-
 	return implode(", ", $array) . ($oxfordComma ? "," : "") . " $andor " . $last;
 }
 
 function paginate($table_name, $specifics='', $howmany=10, $return_info = false) {
-	if($howmany == 0) { return $table_name; }
+	if($howmany == 0) {
+		return $table_name;
+	}
 	global $Database;
 	$base_url = preg_replace('/(&|&amp;)page=([0-9]+)/', '', basename($_SERVER['REQUEST_URI']));
+	if(!empty($chowmany) && $chowmany != 0) {
+		$howmany = $chowmany;
+	}
 	$paginate = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 	$chowmany = check_get_id('sort_howmany');
-	if(!empty($chowmany) && $chowmany != 0) { $howmany = $chowmany; }
 	$limitvalue = $paginate * $howmany - ($howmany);
 	$table = new Expanse('items');
 	if(is_string($table_name)) {
@@ -1472,7 +1468,7 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 
 		//Previous link
 		$previous_link_url = $base_url;
-		if($previouspage > 0) {
+		if ($previouspage > 0) {
 			$previous_link_url .= '&amp;page=' . $previouspage;
 			$previous_link = '<li><a href="' . $previous_link_url .'">'.L_PAGING_PREVIOUS.'</a></li>';
 		}
@@ -1486,7 +1482,7 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 		//Next link
 		$next_link_url = $base_url;
 
-		if($nextpage <= $pagecount) {
+		if ($nextpage <= $pagecount) {
 			$next_link_url .= empty($subcat) ? '' : "&amp;subcat=$subcat";
 			$next_link_url .= '&amp;page=' . $nextpage;
 			$next_link = '<li><a href="' . $next_link_url . '">'.L_PAGING_NEXT.'</a></li>';
@@ -1507,7 +1503,6 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 	if($itemcount > 0) {
 		echo '<div id="pageList" class="pagination">';
 		echo '<ul>';
-		//echo "".L_PAGING_PAGES." $previous_link ";
 		echo "$first_link";
 		echo "$previous_link";
 		foreach($page_link as $val) {
@@ -1531,7 +1526,9 @@ function paginate($table_name, $specifics='', $howmany=10, $return_info = false)
 
 function insert_between($filename, $marker, $insertion) {
 	//Check to make sure the file is either createable or writeable
-	if(file_exists($filename) && !is_writable($filename)){return false;}
+	if(file_exists($filename) && !is_writable($filename)) {
+		return false;
+	}
 	$start_mark = "# //-- Start $marker";
 	$end_mark = "# //-- End $marker";
 	$markerdata = (!file_exists($filename)) ? false : explode("\n", file_get_contents($filename));
@@ -1541,8 +1538,10 @@ function insert_between($filename, $marker, $insertion) {
 		$user_line = true;
 		foreach($markerdata as $markerline) {
 			$is_start = strstr($markerline, $start_mark);
-			$is_end  = strstr($markerline, $end_mark);
-			if($is_start) { $user_line = false; } //ignore lines between mark and starting marker
+			$is_end = strstr($markerline, $end_mark);
+			if($is_start) {
+				$user_line = false;
+			} //ignore lines between mark and starting marker
 			if($user_line) { // write the users lines
 				fwrite($f, "{$markerline}\n");
 				continue;
@@ -1564,7 +1563,7 @@ function insert_between($filename, $marker, $insertion) {
 	}
 	if(!$found_mark) { //couldn't find the marker, so lets write it
 		fwrite($f, "{$start_mark}\n");
-		foreach($insertion as $custom) {
+		foreach ($insertion as $custom){
 			fwrite($f, "{$custom}\n");
 		}
 		fwrite($f, "{$end_mark}\n");
@@ -1603,12 +1602,16 @@ function unique_dirtitle($string, $table = 'items') {
 function set_dirtitle($obj, $xobj = 'items') {
 	return (!empty($_POST['dir_title'])) ? ((trim($_POST['dir_title']) == $obj->dirtitle) ? $obj->dirtitle : unique_dirtitle(dirify(trim($_POST['dir_title'])), $xobj)) : (!empty($obj->title) ? unique_dirtitle(dirify($obj->title), $xobj) : $obj->dirtitle);
 }
-function mod_rewrite() {
-	if(!_APACHE) { return false; }
-	if(function_exists('apache_get_modules')) {
-		if(!in_array('mod_rewrite', apache_get_modules())) { return false; }
-	}
 
+function mod_rewrite() {
+	if(!_APACHE) {
+		return false;
+	}
+	if(function_exists('apache_get_modules')){
+		if(!in_array('mod_rewrite', apache_get_modules())) {
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -1646,29 +1649,27 @@ function &get_dao($dao, $clone=true) {
 }
 
 class Module {
-	//Default class vars
 	var $name = '';
 	var $description = '';
 	var $authorURL = 'http://expansecms.org';
-	var $author = array(
-			'Ian Tearle' => 'http://iantearle.com',
-			'Nate Cavanaugh' => 'http://alterform.com',
-			'Jason Morrison' => 'http://dubtastic.com'
-		);
+	var $author = array('Ian Tearle' => 'http://iantearle.com');
 	var $version = '2.0';
 	var $modURL = 'http://expansecms.org';
-	var $tableNameNew = 'items';						// You can now easily overide the table for the module object
-	var $Exclude = false;								// You can use this to exclude from the add category list.
-	var $LEX = array();									// An array of language settings
+	var $tableNameNew = 'items';
+	var $Exclude = false;
+	var $LEX = array();
 	function Module() {
-		$this->Database = $GLOBALS['Database']; 		// Global db connection
-		$this->output = $GLOBALS['outmess']; 			// Global output handler
-		$this->auth = $GLOBALS['auth']; 				// Global authentication object
-		$this->items = get_dao($this->tableNameNew); 	// active-record object for the items table
-		$this->custom = get_dao('customfields'); 		// active-record object for the customfields table
-		$this->sections = get_dao('sections'); 			// active-record object for the sections table
-		$this->cat_id = CAT_ID; 						// Look for valid category id
-		$this->item_id = check_get_id('id'); 			// Look for valid item id
+		$this->Database = $GLOBALS['Database']; // Global db connection
+		$this->output = $GLOBALS['outmess']; // Global output handler
+		$this->auth = $GLOBALS['auth']; // Global authentication object
+		// active-record object for the items table
+		$this->items = get_dao($this->tableNameNew);
+		// active-record object for the customfields table
+		$this->custom = get_dao('customfields');
+		// active-record object for the sections table
+		$this->sections = get_dao('sections');
+		$this->cat_id = CAT_ID; // Look for valid category id
+		$this->item_id = check_get_id('id'); // Look for valid item id
 		$this->itemsList = array();
 		$this->cats = isset($GLOBALS['cats']) && is_object($GLOBALS['cats']) ? $GLOBALS['cats'] : getCatList(CAT_ID);
 		$this->category_action = !empty($_POST['category_action']) ? $_POST['category_action']: false;
@@ -1676,11 +1677,12 @@ class Module {
 		$this->add_subcat = isset($_POST['add_subcat']) ? trim(strip_tags($_POST['add_subcat'])) : '';
 		$this->new_item = null;
 		$this->errors = array();
-		if(!empty($this->item_id)){
+		if(!empty($this->item_id)) {
 			$this->items->Get($this->item_id);
 		}
 		//$this->load_language();
 	}
+
 	function add_title() {
 		$sections = $this->sections;
 		$sections->Get($this->cat_id);
@@ -1703,14 +1705,17 @@ class Module {
 		add_title(sprintf($page_title,$proper_title), 2);
 	}
 
-	/*      //-------------------------------*/
 	function add() {
-		$items = $this->items; 							//Declare method vars
+
+		//Declare method vars
+		$items = $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
 		$itemvars = get_object_vars($items);
 		$output = $this->output;
-		foreach($_POST as $ind=>$val) { 				//Loop over post
+
+		//Loop over post
+		foreach($_POST as $ind=>$val) {
 			if(isset($itemvars[$ind])) {
 				if(is_array($val)) {
 					foreach($val as $k => $v) {
@@ -1729,6 +1734,7 @@ class Module {
 		$items->created = dateTimeProcess();
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
+		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
 
 		//Add a subcat
 		$items->cid = $this->addSubcat();
@@ -1746,14 +1752,17 @@ class Module {
 		}
 	}
 
-	/*      //-------------------------------*/
 	function edit() {
-		$items = $this->items; 							//Declare method vars
+
+		//Declare method vars
+		$items = $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
 		$itemvars = get_object_vars($items);
 		$output = $this->output;
-		foreach($_POST as $ind=>$val) {					//Loop over post
+
+		//Loop over post
+		foreach($_POST as $ind=>$val) {
 			if(isset($itemvars[$ind])) {
 				$items->{$ind} = $val;
 			}
@@ -1762,6 +1771,7 @@ class Module {
 		$items->created = dateTimeProcess($items->created);
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = set_dirtitle($items);
+		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
 
 		//Add a subcat
 		$items->cid = $this->addSubcat();
@@ -1770,7 +1780,7 @@ class Module {
 			$this->manage_custom_fields($items);
 
 			//Item was moved or copied
-			if(!$this->moveOrCopy($items)) {
+			if(!$this->moveOrCopy($items)){
 				$output->printOut(SUCCESS,vsprintf(L_EDIT_SUCCESS, array($items->title, $cat_id, $items->id)));
 			} else {
 				$output->printOut(SUCCESS,vsprintf(L_EDIT_MOVE_SUCCESS, array($this->new_item->title, $this->new_home, $this->new_item->id)));
@@ -1780,7 +1790,6 @@ class Module {
 		}
 	}
 
-	/*      //-------------------------------*/
 	function delete() {
 		if(isset($_POST['del']) && !empty($_POST['del'])) {
 			$upfolder = UPLOADS;
@@ -1820,7 +1829,7 @@ class Module {
 						if(!empty($xtraimages)) {
 							foreach($xtraimages as $img) {
 								$delXtraImg = !empty($img->image) ? $upfolder.'/'.$img->image : '';
-								if(!empty($delXtraImg) && file_exists($delXtraImg)){
+								if(!empty($delXtraImg) && file_exists($delXtraImg)) {
 									unlink($delXtraImg);
 								}
 								$images->Delete($img->id);
@@ -1848,12 +1857,10 @@ class Module {
 		}
 	}
 
-	/*      //-------------------------------*/
 	function more() {
 
 	}
 
-	/*      //-------------------------------*/
 	function get_single() {
 		$items =& $this->items;
 		$cat_id = $this->cat_id;
@@ -1866,13 +1873,11 @@ class Module {
 		return ozone_walk($this->items, 'admin_item_');
 	}
 
-	/*      //-------------------------------*/
 	function get_list() {
 		$items =& $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
 		$auth = $this->auth;
-		/*--*/
 		$do_sort = check_get_alphanum('do_sort');
 		$terms = check_get_alphanum('search_text');
 		$sortoption = getOption('sortcats');
@@ -1900,7 +1905,6 @@ class Module {
 		return $this->itemsList;
 	}
 
-	/*		//-------------------------------*/
 	function addSubcat($new_subcat = '') {
 		$items = $this->items;
 		$cat_id = $this->cat_id;
@@ -1921,7 +1925,7 @@ class Module {
 				$cats = getCatList($cat_id);
 				$cats->subcats[] = array('catname'=>$subcats->sectionname,'id'=>$subcats->id);
 				$items->cid = $subcats->id;
-			} else {
+			} else{
 				$items->cid = $cat_list[0]->id;
 			}
 			return $items->cid;
@@ -1933,7 +1937,9 @@ class Module {
 	function manage_custom_fields(&$item) {
 		$Database =& $this->Database;
 		$custom =& $this->custom;
-		if(EDITING) { //reset the custom fields if we're editing
+		if(EDITING) {
+
+			//reset the custom fields if we're editing
 			$Database->Query("DELETE FROM ".PREFIX."customfields WHERE itemid={$item->id}");
 		}
 		$custom_array = isset($_POST['custom']) ? $_POST['custom'] : array();
@@ -1951,7 +1957,6 @@ class Module {
 		}
 	}
 
-	/*		//-------------------------------*/
 	function moveOrCopy($items) {
 		$new_item = null;
 		$new_home = $this->new_home;
@@ -1960,7 +1965,6 @@ class Module {
 		$auth = $this->auth;
 		$is_moved = false;
 		if($category_action) {
-
 			//check for permissions
 			if(in_array($new_home, $auth->Permissions)) {
 				if($category_action == 'move') {
@@ -1985,71 +1989,70 @@ class Module {
 		return $is_moved;
 	}
 
-	/*      //-------------------------------*/
 	function custom_fields() {
 		$items =& $this->items;
 		$custom =& $this->custom;
 		?>
 		<fieldset id="customGroup">
 			<legend><?php echo L_CUSTOM_FIELDS_TITLE; tooltip(L_CUSTOM_FIELDS_TITLE,L_CUSTOM_FIELDS_HELP); ?></legend>
-		<?php
-		$itemFields = (EDITING) ? $custom->GetList(array(array('itemid', '=', $items->id))) : array();
-		if(!empty($itemFields)) {
-			foreach($itemFields as $key => $ifield) {
-				$k = $key+1;
-				$custom_var = '{custom_var'.$k.'}';
-			?>
-				<div id="customLabel<?php echo $k ?>Group" class="row customFieldGroup">
+			<?php
+			$itemFields = (EDITING) ? $custom->GetList(array(array('itemid', '=', $items->id))) : array();
+			if(!empty($itemFields)) {
+				foreach($itemFields as $key => $ifield) {
+					$k = $key+1;
+					$custom_var = '{custom_var'.$k.'}';
+					?>
+					<div id="customLabel<?php echo $k ?>Group" class="row customFieldGroup">
+						<div class="span6">
+							<div class="control-group">
+								<div class="controls">
+									<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span6 fieldLabel text" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="controls">
+									<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"><?php echo $ifield->value ?></textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label for="customVar<?php echo $k ?>" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
+								<div class="controls">
+									<input type="text" value="<?php echo view($custom_var); ?>" class="shareField variableField uneditable-input" readonly="readonly" id="customVar<?php echo $k ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
+				}
+			} else {
+				?>
+				<div id="customLabel1Group" class="row customLabelGroup">
 					<div class="span6">
 						<div class="control-group">
 							<div class="controls">
-								<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span6 fieldLabel text" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
+								<input type="text" class="span6 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
 							</div>
 						</div>
 						<div class="control-group">
 							<div class="controls">
-								<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"><?php echo $ifield->value ?></textarea>
+								<textarea id="customValue1" name="custom[1][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"></textarea>
 							</div>
 						</div>
 						<div class="control-group">
-							<label for="customVar<?php echo $k ?>" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
+							<label for="customVar1" id="labelcustomVar1" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
 							<div class="controls">
-								<input type="text" value="<?php echo view($custom_var); ?>" class="shareField variableField uneditable-input" readonly="readonly" id="customVar<?php echo $k ?>">
+								<input type="text" class="shareField variableField uneditable-input" readonly="readonly" id="customVar1">
 							</div>
 						</div>
 					</div>
 				</div>
-			<?php
+				<?php
 			}
-		} else {
-		?>
-			<div id="customLabel1Group" class="row customLabelGroup">
-				<div class="span6">
-					<div class="control-group">
-						<div class="controls">
-							<input type="text" class="span6 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<textarea id="customValue1" name="custom[1][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"></textarea>
-						</div>
-					</div>
-					<div class="control-group">
-						<label for="customVar1" id="labelcustomVar1" class="control-label"><?php echo L_JS_CUSTOM_VARIABLE_TEXT ?></label>
-						<div class="controls">
-							<input type="text" class="shareField variableField uneditable-input" readonly="readonly" id="customVar1">
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php
-		}
-		?>
+			?>
 		</fieldset>
 		<input type="hidden" value="<?php echo view(get_custom_fields()); ?>" id="customList"  />
 		<div id="autosuggest"><ul></ul></div>
-	<?php
+		<?php
 	}
 
 	//"do" methods
@@ -2062,72 +2065,72 @@ class Module {
 		$auth = $this->auth;
 		$more_cats = $sections->GetList(array(array('pid', '=', 0)));
 		foreach($more_cats as $k => $v) {
-			if(!in_array($v->id, $auth->Permissions) || ($v->id == $cat_id)) {
+			if(!in_array($v->id, $auth->Permissions) || ($v->id == $cat_id)){
 				unset($more_cats[$k]);
 			}
 		}
 		?>
 		<div class="row">
-		<div class="span5">
-		<div class="control-group">
-			<label for="cid" class="control-label"><?php echo L_SUB_CATEGORY ?></label>
-			<div class="controls">
-				<select class="span5" name="cid" id="cid">
-					<option value="<?php echo $cat_id ?>"><?php echo L_SUB_CATEGORY_SELECT ?></option>
-					<?php
-					foreach($cats->subcats as $v){
-					?>
-					<option value="<?php echo $v['id'] ?>"<?php echo $items->cid == $v['id'] ? ' selected="selected"' : ''; ?>>&mdash;<?php echo $v['catname'] ?></option>
-					<?php
-					}
-					?>
-				</select>
-			</div>
-		</div>
+			<div class="span5">
+				<div class="control-group">
+					<label for="cid" class="control-label"><?php echo L_SUB_CATEGORY ?></label>
+					<div class="controls">
+						<select class="span5" name="cid" id="cid">
+							<option value="<?php echo $cat_id ?>"><?php echo L_SUB_CATEGORY_SELECT ?></option>
+							<?php
+							foreach($cats->subcats as $v) {
+								?>
+								<option value="<?php echo $v['id'] ?>"<?php echo $items->cid == $v['id'] ? ' selected="selected"' : ''; ?>>&mdash;<?php echo $v['catname'] ?></option>
+								<?php
+							}
+							?>
+						</select>
+					</div>
+				</div>
 		<?php
 		if(empty($mode)) {
-		?>
-		<div class="control-group">
-			<label for="add_subcat" class="control-label"><?php echo L_SUB_CATEGORY_ADD ?></label>
-			<div class="controls">
-				<input name="add_subcat" id="add_subcat" type="text" class="span5" />
-			</div>
-		</div>
-		</div>
-		<div class="span5">
-		<div class="control-group">
-			<label for="category_action" class="control-label"><?php echo L_CATEGORY_ACTION ?></label>
-			<div class="controls">
-				<select name="category_action" id="category_action" class="span5">
-					<option value="" selected="selected"><?php echo L_MOVE_OR_COPY ?></option>
-					<option value="move"><?php echo L_MOVE_TO ?></option>
-					<option value="copy"><?php echo L_COPY_TO ?></option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label for="new_home" class="control-label">Move into</label>
-			<div class="controls">
-				<select name="new_home" id="new_home" class="span5">
-				<?php
-				foreach($more_cats as $other_cat) {
-					$other_cat = new stdClass();
-					if($other_cat == $cat_id || $other_cat->cat_type == 'pages'){continue;}
-					?>
-					<option value="<?php echo $other_cat->id ?>"><?php echo $other_cat->sectionname ?></option>
-					<?php
+			?>
+					<div class="control-group">
+						<label for="add_subcat" class="control-label"><?php echo L_SUB_CATEGORY_ADD ?></label>
+						<div class="controls">
+							<input name="add_subcat" id="add_subcat" type="text" class="span5" />
+						</div>
+					</div>
+				</div>
+				<div class="span5">
+					<div class="control-group">
+						<label for="category_action" class="control-label"><?php echo L_CATEGORY_ACTION ?></label>
+						<div class="controls">
+							<select name="category_action" id="category_action" class="span5">
+								<option value="" selected="selected"><?php echo L_MOVE_OR_COPY ?></option>
+								<option value="move"><?php echo L_MOVE_TO ?></option>
+								<option value="copy"><?php echo L_COPY_TO ?></option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="new_home" class="control-label">Move into</label>
+						<div class="controls">
+							<select name="new_home" id="new_home" class="span5">
+								<?php
+								$other_cat = new stdClass();
+								foreach($more_cats as $other_cat) {
+									if($other_cat == $cat_id || $other_cat->cat_type == 'pages'){continue;}
+									?>
+									<option value="<?php echo $other_cat->id ?>"><?php echo $other_cat->sectionname ?></option>
+									<?php
 
-				}?>
-				</select>
+								}
+								?>
+							</select>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		</div>
-		</div>
-		<?php
+			<?php
 		}
 	}
 
-	/*---------*/
 	function doSharing() {
 		$items = $this->items;
 		$sections = $this->sections;
@@ -2143,8 +2146,7 @@ class Module {
 		}
 		$dynamic_url = $yoursite.((CLEAN_URLS) ? "$section_id/$the_item_id" : INDEX_PAGE."?pcat=$section_id&amp;item=$the_item_id");
 		$static_url = $yoursite.((CLEAN_URLS) ? $the_item_id : INDEX_PAGE."?ucat=$items->id");
-		$page_link = ($items->type !== 'static') ? $dynamic_url : $static_url;
-		?>
+		$page_link = ($items->type !== 'static') ? $dynamic_url : $static_url; ?>
 		<div class="control-group">
 			<label for="pageLink" class="control-label"><?php echo L_SHARING_DIRECT_LINK ?></label>
 			<div class="controls">
@@ -2153,31 +2155,33 @@ class Module {
 		</div>
 		<?php
 		if(!empty($items->image)) {
-		?>
+			?>
 			<div class="control-group">
 				<label for="imageLink" class="control-label"><?php echo L_SHARING_IMAGE_LINK ?></label>
 				<div class="controls">
-					<input type="text" class="span8 shareField" id="imageLink" value="<?php echo $expanseurl; ?>uploads/<?php echo $items->image; ?>" />
+					<input type="text" class="span8 shareField" id="imageLink" value="<?php echo UPLOADS_DIR; ?>/<?php echo $items->image; ?>" />
 				</div>
 			</div>
 			<?php
-			$thumbpath = $items->autothumb == 1 ? $expanseurl.'funcs/tn.lib.php?id='.$items->id.'&amp;thumb=1': $expanseurl.'uploads/'.$items->thumbnail;
+			$thumbpath = $items->autothumb == 1 ? $expanseurl.'funcs/tn.lib.php?id='.$items->id.'&amp;thumb=1': UPLOADS_DIR.'/'.$items->thumbnail;
 			if($items->autothumb == 1 || !empty($items->thumbnail)) {
-			?>
+				?>
 				<div class="control-group">
 					<label for="thumbLink" class="control-label"><?php echo L_SHARING_THUMB_LINK ?></label>
 					<div class="controls">
 						<input type="text" class="span8 shareField" id="thumbLink" value="<?php echo $thumbpath; ?>" />
 					</div>
 				</div>
-			<?php
+				<?php
 			}
 		}
+		applyOzoneAction('do_sharing');
 	}
 
-	/*---------*/
 	function doCleanURLTitles() {
-		if(!CLEAN_URLS) { return; }
+		if(!CLEAN_URLS) {
+			return;
+		}
 		$items = $this->items;
 		?>
 		<div class="control-group">
@@ -2190,7 +2194,6 @@ class Module {
 		<?php
 	}
 
-	/*---------*/
 	function doDateTimeForms() {
 		global $months;
 		$items =& $this->items;
@@ -2203,10 +2206,10 @@ class Module {
 				<select title="<?php echo L_TIME_MONTH ?>" class="infields" name="month" id="month">
 					<option value="current"><?php echo L_TIME_MONTH ?></option>
 					<?php
-					foreach($months as $i => $v) {
-					?>
+					foreach($months as $i => $v){
+						?>
 						<option value="<?php echo $i ?>"<?php echo (date('m', $timestamp) == $i) ? ' selected="selected"': '' ?>><?php echo $v ?></option>
-					<?php
+						<?php
 					}
 					?>
 				</select>
@@ -2236,18 +2239,19 @@ class Module {
 			<?php echo (!$adding) ? L_TIME_RESET : L_TIME_USE_CURRENT; ?>
 		</label>
 		<blockquote class="helpContents" id="editDateHelp">
-		<?php
-		if(!empty($items->created)) {
-		?>
-			<h5><?php echo L_POST_TIME_EDIT ?></h5><?php echo L_TIME_HELP_EDIT ?><?php
-			echo userDate($items->created); ?>
-		<?php
-		} else {
-		?>
-			<h5><?php echo L_POST_TIME_ADD ?></h5>
-			<?php echo L_TIME_HELP_ADD;
-		}
-		?>
+			<?php
+			if(!empty($items->created)) {
+				?>
+				<h5><?php echo L_POST_TIME_EDIT ?></h5>
+				<?php
+				echo L_TIME_HELP_EDIT;
+				echo userDate($items->created);
+			} else {
+				?>
+				<h5><?php echo L_POST_TIME_ADD ?></h5>
+				<?php echo L_TIME_HELP_ADD;
+			}
+			?>
 		</blockquote>
 		<?php
 	}
@@ -2263,18 +2267,19 @@ class Module {
 				if(!is_callable(array($this,$v))) {
 					continue;
 				}
-				$camelK = camelize($k); ?>
+				$camelK = camelize($k);
+				?>
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#stretchContainer" href="#<?php echo $camelK; ?>Container"><?php echo $k ?></a>
 					</div>
-					<div id="<?php echo $camelK; ?>Container" class="accordion-body collapse">
+					<div id="<?php echo $camelK; ?>Container" class="accordion-body collapse <?php echo ADDING ? 'in' : ''; ?>">
 						<div class="accordion-inner">
 							<?php $this->$v($args); ?>
 						</div>
 					</div>
 				</div>
-			<?php
+				<?php
 			}
 			return;
 		}
@@ -2282,7 +2287,9 @@ class Module {
 			$args = $method[1];
 			$method = $method[0];
 		}
-		if(!is_callable(array($this,$method))) { return; }
+		if(!is_callable(array($this,$method))) {
+			return;
+		}
 		$idK = (empty($id) ? camelize($str) : $id);
 		?>
 		<div class="accordion-group">
@@ -2295,7 +2302,7 @@ class Module {
 				</div>
 			</div>
 		</div>
-	<?php
+		<?php
 	}
 
 	function doSort() {
@@ -2362,12 +2369,9 @@ class Module {
 											array_unshift($cats->subcats, array('catname' => 'Uncategorized', 'id' => CAT_ID));
 											foreach($cats->subcats as $k => $subcat) {
 												$selected = SORT_BY_SUBCATS != false && SORT_BY_SUBCATS == $subcat['id'] ? 'selected="selected"' : '';
-												?>
-												<option value="<?php echo $subcat['id'] ?>" <?php echo $selected ?>><?php echo ($subcat['id'] != CAT_ID ? '&mdash;' : '').$subcat['catname'] ?></option>
-												<?php
+												?><option value="<?php echo $subcat['id'] ?>" <?php echo $selected ?>><?php echo ($subcat['id'] != CAT_ID ? '&mdash;' : '').$subcat['catname'] ?></option><?php
 											}
-											?>
-											</select>
+											?></select>
 										</div>
 									</div>
 									<div class="control-group">
@@ -2541,6 +2545,16 @@ function helpBlock($help_text) {
 	<?php
 }
 
+function popOver($direction, $title, $help_text) {
+	$unique_id = 'popover_'.random_string();
+	if(is_array($help_text) && isset($help_text[0])) {
+		$help_text = is_array($help_text[1]) ? vsprintf($help_text[0],$help_text[1]) : sprintf($help_text[0],$help_text[1]);
+	}
+	?>
+	rel="popover" data-placement="<?php echo $direction ?>" data-content="<?php echo $help_text ?>" data-original-title="<?php echo $title ?>" data-trigger="hover"
+    <?php
+}
+
 function random_string($length = 6) {
 	return substr(md5(uniqid(microtime())), 0, $length);
 }
@@ -2562,7 +2576,7 @@ function create_admin_menu_block($title, $content) {
 			</div>
 		</div>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -2579,12 +2593,17 @@ function get_plugins() {
 	$files = getFiles($plugins_folder, 'all', true);
 	foreach($files['dirs'] as $folder => $dir) {
 		foreach($dir['files'] as $file) {
-			if(!preg_match('|\.php$|', $file)) { continue; }
+			if(!preg_match('|\.php$|', $file)) {
+				continue;
+			}
 			$plugin_files[] = "$folder/$file";
 		}
+
 	}
 	foreach($files['files'] as $file) {
-		if (!preg_match('|\.php$|', $file)) { continue; }
+		if (!preg_match('|\.php$|', $file)) {
+			continue;
+		}
 		$plugin_files[] = $file;
 	}
 	if(empty($plugin_files)) {
@@ -2592,9 +2611,13 @@ function get_plugins() {
 	}
 	foreach($plugin_files as $plugin_file) {
 		$plugin_file = "{$plugins_folder}$plugin_file";
-		if(!is_readable($plugin_file)) { continue; }
+		if(!is_readable($plugin_file)) {
+			continue;
+		}
 		$plugin_info = plugin_info($plugin_file);
-		if(empty($plugin_info->Name)) { continue; }
+		if(empty($plugin_info->Name)) {
+			continue;
+		}
 		$plugins[str_replace($plugins_folder, '',$plugin_file)] = $plugin_info;
 	}
 	uasort($plugins, 'sort_plugins');
@@ -2628,7 +2651,6 @@ function plugin_info($plugin_file) {
 		$author_name = isset($author_name[1]) ? $author_name[1] : '';
 		$author = !isset($author_url[1]) || empty($author_url[1]) ? $author_name : '<a href="'.$author_url[1].'" title="'.L_THEME_VISIT_AUTHOR.'" target="_blank">'. $author_name.'</a>';
 	}
-
 	//Huh? Because I like object notation, that's why!
 	return (object) array('Name' => $name, 'Title' => $theme, 'Description' => (isset($description[1]) ? $description[1] : ''), 'Author' => $author, 'Version' => $version, 'Installable' => $installable);
 }
@@ -2648,7 +2670,6 @@ function make_breadcrumbs() {
 	foreach($page_meta['crumbs'] as $priority => $title) {
 		$final .= $sep.implode($sep,$title).' ';
 	}
-
 	return ltrim($final, $sep);
 }
 
@@ -2672,7 +2693,6 @@ function make_title() {
 	foreach($page_meta['title'] as $priority => $title) {
 		$final .= $sep.implode($sep,$title).' ';
 	}
-
 	return ltrim($final, $sep);
 }
 
@@ -2684,7 +2704,6 @@ function csort_cmp(&$a, &$b) {
 	if($a->$csort_cmp['key'] < $b->$csort_cmp['key']) {
 		return -1 * $csort_cmp['direction'];
 	}
-
 	return 0;
 }
 
@@ -2692,15 +2711,14 @@ function csort(&$a, $k, $sort_direction='ASC') {
 	global $csort_cmp;
 	$sort_direction = $sort_direction == 'ASC' ? 1 : -1;
 	$csort_cmp = array(
-			'key'   => $k,
-			'direction'     => $sort_direction
-		);
+		'key'   => $k,
+		'direction'     => $sort_direction
+	);
 	usort($a, "csort_cmp");
 	unset($csort_cmp);
 }
 
 function _l($lex) {
 	$constant = 'L_'.$lex;
-
 	return defined($constant) ? constant($constant) : '';
 }

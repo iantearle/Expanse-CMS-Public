@@ -1,27 +1,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="language" content="EN-GB" />
-	<link href="{expanseurl}css/expanse.css.php?extend=mailer" rel="stylesheet" type="text/css" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="language" content="EN-GB" />
+<link href="{expanseurl}css/expanse.css.php?extend=mailer" rel="stylesheet" type="text/css" />
 </head>
-<body>
-	<div id="mailBox">
-	{set:request}
-		<h1>{L_MAILER_REQUEST_TITLE}</h1>
-		<p>{L_MAILER_REQUEST_BODY}</p>
-	{/set}
-	{mis:request}
-		<h1>{L_MAILER_CHANGED_TITLE}</h1>
-		<p>{L_MAILER_CHANGED_BODY}</p>
-		<dl>
-			<dt id="loginInformation">{L_MAILER_CHANGED_DETAILS_TITLE}</dt>
-				<dd id="loginDetails">
-					<p>{L_MAILER_CHANGED_DETAILS}</p>
-				</dd>
-		</dl>
-	{/mis}
-		<p>{L_MAILER_POWERED_BY}</p>
-	</div>
+<body> 
+<div id="mailBox">
+{set:request}
+<h1>{L_MAILER_REQUEST_TITLE}</h1>
+<p>{L_MAILER_REQUEST_BODY}</p>
+{/set}
+{mis:request}
+<h1>{L_MAILER_CHANGED_TITLE}</h1>
+<p>{L_MAILER_CHANGED_BODY}</p>
+<dl>
+  <dt id="loginInformation">{L_MAILER_CHANGED_DETAILS_TITLE}</dt>
+  <dd id="loginDetails">
+    <p>
+{L_MAILER_CHANGED_DETAILS}
+</p></dd>
+</dl>
+{/mis}
+<p>{L_MAILER_POWERED_BY}</p>
+</div>
+
+
 </body>
 </html>

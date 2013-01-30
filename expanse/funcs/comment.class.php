@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -48,6 +47,7 @@ class commentProcess {
 
 	function commentHandle() {
 		global $comments, $option;
+
 		if($this->isFlooding($option->floodcontrol)) {
 			return printOut(FAILURE, sprintf(L_FLOODING_MESSAGE, $option->floodcontrol));
 		}
@@ -68,15 +68,15 @@ class commentProcess {
 		$RequiredFields = array('email_required_email','name_required','message_required');
 		$checks = array('_email','_url','_alnum','_required');
 		$errors = array(
-				'missing' => array(),
-				'wrong_format' => array(
-						'alnum' => array(),
-						'email' => array(),
-						'phone_number' => array(),
-						'ssn' => array()
-					),
-				'final' => ''
-			);
+			'missing' => array(),
+			'wrong_format' => array(
+				'alnum' => array(),
+				'email' => array(),
+				'phone_number' => array(),
+				'ssn' => array()
+			),
+			'final' => ''
+		);
 		$domain_check_options = array('allowed_schemes' => $allowed_protocols, 'domain_check' => $check_for_url_dns);
 		foreach($_POST as $ind => $val) {
 			$val = trim($val);
@@ -88,13 +88,14 @@ class commentProcess {
 			}
 			$val = htmlentities(strip_tags(trim($val)), ENT_QUOTES);
 			switch(TRUE) {
-				case strpos($post_index, '_email'):
+				case strpos($post_index, '_email'): {
 					$ind = str_replace(array('_email', '_required'), '', $ind);
 					if(!checkEmail($val)) {
 						$errors['wrong_format']['email'][] = $ind;
 					}
-				break;
-				case strpos($post_index, '_url'):
+					break;
+				}
+				case strpos($post_index, '_url'): {
 					$ind = str_replace(array('_url', '_required'), '', $ind);
 					if($val != '') {
 						if(!preg_match("/^(http|https):/", $val)){ $val = 'http://'.$val; }
@@ -102,31 +103,34 @@ class commentProcess {
 							$errors['wrong_format']['url'][] = $ind;
 						}
 					}
-				break;
-				case strpos($post_index, '_alnum'):
+					break;
+				}
+				case strpos($post_index, '_alnum'): {
 					$ind = str_replace('_alnum', '', $ind);
-					if(!ctype_alnum($val)) {
+					if(!ctype_alnum($val)){
 						$errors['wrong_format']['alnum'][] = $ind;
 					}
-				break;
-				case strpos($post_index, '_required'):
+					break;
+				}
+				case strpos($post_index, '_required'): {
 					$ind = str_replace('_required', '', $ind);
-					if(empty($val)) {
+					if(empty($val)){
 						$errors['missing'][] = $ind;
 					}
-				break;
+					break;
+				}
 			}
 			if(!strpos($post_index, '_allow_html')) {
 				$val = strip_tags($val);
 			}
 			if(array_key_exists($ind, $commentvars)) {
 				if(is_array($val)) {
-					foreach($val as $k => $v) {
-						$val[$k] = trim($v);
-						if(empty($v)) {
-							unset($val[$k]);
-						}
+				foreach($val as $k => $v) {
+					$val[$k] = trim($v);
+					if(empty($v)) {
+						unset($val[$k]);
 					}
+				}
 					$comments->{$ind} = !empty($val) ? serialize($val) : '';
 				} else {
 					$comments->{$ind} = trim($val);
@@ -140,6 +144,7 @@ class commentProcess {
 			foreach($array_diff as $string) {
 				$errors['missing'][] = str_replace($checks, '', $string);
 			}
+
 		}
 		if(!empty($errors['missing'])) {
 			$errors['final'] .= sprintf(L_MISSING_FIELDS, '<strong>'.proper_list($errors['missing']).'</strong>');
@@ -187,6 +192,7 @@ class commentProcess {
 			return false;
 		}
 	}
+
 	function isFlooding($flood, $currtime = '') {
 		$currtime = (empty($currtime) && isset($_SESSION['current_time'])) ? $_SESSION['current_time'] : $_SESSION[$currtime];
 		$latest_post = time();

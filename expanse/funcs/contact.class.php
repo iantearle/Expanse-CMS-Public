@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -45,6 +44,7 @@ class contactProcess {
 	var $ExtraVars = array();
 	var $FromName;
 	var $Subject;
+
 	function contactHandle() {
 		global $option;
 
@@ -64,54 +64,59 @@ class contactProcess {
 		$RequiredFields = array('email_required_email','name_required','message_required');
 		$checks = array('_email','_url','_alnum','_required');
 		$errors = array(
-				'missing' => array(),
-				'wrong_format' => array(
-						'alnum' => array(),
-						'email' => array(),
-						'phone_number' => array(),
-						'ssn' => array()
-					),
-				'final' => ''
-			);
+			'missing' => array(),
+			'wrong_format' => array(
+				'alnum' => array(),
+				'email' => array(),
+				'phone_number' => array(),
+				'ssn' => array()
+			),
+			'final' => ''
+		);
 		$domain_check_options = array('allowed_schemes' => $allowed_protocols, 'domain_check' => $check_for_url_dns);
-		foreach($_POST as $ind => $val) {
+		foreach ($_POST as $ind => $val) {
 			$postArray = array();
 			$val = trim($val);
 			$post_index = strtolower($ind);
-
 			foreach($bannedwords as $value) {
 				if(strpos(strtolower(" " . $val), trim(strtolower($value)))) {
 					return printOut(FAILURE, L_CONTACT_FAILURE);
 				}
 			}
 			switch(TRUE) {
-				case strpos($post_index, '_email'):
+				case strpos($post_index, '_email'): {
 					$ind = str_replace(array('_email', '_required'), '', $ind);
 					if(!checkEmail($val)){
-					$errors['wrong_format']['email'][] = $ind;
+						$errors['wrong_format']['email'][] = $ind;
 					}
-				break;
-				case strpos($post_index, '_url'):
+					break;
+				}
+				case strpos($post_index, '_url'): {
 					$ind = str_replace(array('_url', '_required'), '', $ind);
 					if($val != '') {
-						if(!preg_match("/^(http|https):/", $val)){ $val = 'http://'.$val; }
+						if(!preg_match("/^(http|https):/", $val)) {
+							$val = 'http://'.$val;
+						}
 						if(!valid_uri($val, $domain_check_options)) {
 							$errors['wrong_format']['url'][] = $ind;
 						}
 					}
-				break;
-				case strpos($post_index, '_alnum'):
+					break;
+				}
+				case strpos($post_index, '_alnum'): {
 					$ind = str_replace('_alnum', '', $ind);
 					if(!ctype_alnum($val)) {
 						$errors['wrong_format']['alnum'][] = $ind;
 					}
-				break;
-				case strpos($post_index, '_required'):
+					break;
+				}
+				case strpos($post_index, '_required'): {
 					$ind = str_replace('_required', '', $ind);
 					if(empty($val)) {
 						$errors['missing'][] = $ind;
 					}
-				break;
+					break;
+				}
 			}
 
 			if(!strpos($post_index, '_allow_html')) {
@@ -129,7 +134,6 @@ class contactProcess {
 				$contact->{$ind} = trim($val);
 			}
 		} //end post loop
-
 		$arrayKeys = array_keys($_POST);
 		$array_diff = array_diff($RequiredFields, $arrayKeys);
 		if($array_diff) {
@@ -140,7 +144,7 @@ class contactProcess {
 		if(!empty($errors['missing'])) {
 			$errors['final'] .= sprintf(L_MISSING_FIELDS, proper_list($errors['missing']));
 		}
- 		if(!empty($errors['wrong_format']['email'])) {
+		if(!empty($errors['wrong_format']['email'])) {
 			$errors['final'] .= '<p>'.sprintf(L_COMMENT_FORMAT_EMAIL,proper_list($errors['wrong_format']['email'], L_CONCAT_OR)).'</p>';
 		}
 		if(!empty($errors['wrong_format']['url'])) {

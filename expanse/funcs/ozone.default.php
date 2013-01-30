@@ -36,14 +36,13 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
 /*
 Clean HTML for display in an XML file (eg RSS or ATOMs)
 */
-function xmlEntities($string) {
+function xmlEntities($string){
 	$entity_to_decimal = array(
 		'&nbsp;' => '&#160;',
 		'&iexcl;' => '&#161;',
@@ -296,20 +295,20 @@ function xmlEntities($string) {
 		'&permil;' => '&#8240;',
 		'&lsaquo;' => '&#8249;',
 		'&rsaquo;' => '&#8250;',
-		'&euro;' => '&#8364;'
-	);
+		'&euro;' => '&#8364;');
 
 	$string = preg_replace("/&[A-Za-z]+;/", " ", strtr($string,$entity_to_decimal));
-
 	static $trans;
 	if(!isset($trans)) {
 		$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-		foreach($trans as $key => $value) {
+		foreach ($trans as $key => $value) {
 			$trans[$key] = '&#'.ord($key).';';
-			// dont translate the '&' in case it is part of &xxx;
-			$trans[chr(38)] = '&';
 		}
+
+		// dont translate the '&' in case it is part of &xxx;
+		$trans[chr(38)] = '&';
 	}
+
 	// after the initial translation, _do_ map standalone '&' into '&#38;'
 	return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
 }
@@ -318,16 +317,12 @@ function xmlEntities($string) {
 Parse the links, and add a rel="nofollow" to Sanitized Links
 */
 function sanitizeLinks($string) {
-	$string = preg_replace(
-	"/(?<!=\")((http|ftp)+(s)?:\/\/([^<>\s]+))/si",
-	"<a href=\"$0\" rel=\"nofollow\" target=\"_blank\">$0</a>", $string);
+	$string = preg_replace("/(?<!=\")((http|ftp)+(s)?:\/\/([^<>\s]+))/si", "<a href=\"$0\" rel=\"nofollow\" target=\"_blank\">$0</a>", $string);
 	return $string;
 }
 
 function linkScan($string) {
-	$string = preg_replace(
-	"/(?<!=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/si",
-	"<a href=\"$0\" target=\"_blank\">$0</a>", $string);
+	$string = preg_replace("/(?<!=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/si", "<a href=\"$0\" target=\"_blank\">$0</a>", $string);
 	return $string;
 }
 
@@ -353,10 +348,10 @@ function get_iso_8601_date($int_date) {
 	$option = getAllOptions();
 	$offset = $option->timeoffset;
 	$zone=(3600*$offset)+date('Z');
-	$date_mod = gmdate('Y-m-d\TH:i:s', $int_date + $zone);
-	$time_zone = sprintf('%s%02d:00', ($offset < 0) ? '-' : '+', abs($offset));
-	$date_mod .= $time_zone;
-	return $date_mod;
+   	$date_mod = gmdate('Y-m-d\TH:i:s', $int_date + $zone);
+  	$time_zone = sprintf('%s%02d:00', ($offset < 0) ? '-' : '+', abs($offset));
+   	$date_mod .= $time_zone;
+   return $date_mod;
 }
 
 function rssTimestamp($date) {
@@ -366,14 +361,17 @@ function rssTimestamp($date) {
 	$date = date('D, d M Y H:i:s '.$rssoffset,$date);
 	return $date;
 }
+
 ozone_filter('message', 'sanitizeLinks');
 ozone_filter('message', 'prepComment');
 ozone_filter('message', 'nl2br');
 ozone_filter('category_description', 'view');
 ozone_filter('category_description', 'nl2br');
+
 if(function_exists('handle_comment')) {
 	ozone_action('is_commenting', 'handle_comment');
 }
+
 if(function_exists('handle_contact')) {
 	ozone_action('is_contacting', 'handle_contact');
 }

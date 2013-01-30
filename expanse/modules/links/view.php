@@ -7,11 +7,14 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 #Must be included at the top of all mod files.
-if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
-
+if(!defined('EXPANSE')){
+die('Sorry, but this file cannot be directly viewed.');
+}
+ ?>
+<?php
 #If you're adding content, use this block
 if(ADDING):
-?>
+	?>
 	<input type="hidden" name="aid" value="<?php echo $_SESSION['id']; ?>" />
 	<input type="hidden" name="cid" value="<?php echo $catid; ?>" />
 	<div class="row">
@@ -19,7 +22,7 @@ if(ADDING):
 			<div class="control-group">
 				<label for="title" class="control-label"><?php echo L_LINKS_TITLE ?></label>
 				<div class="controls">
-					<input name="title" type="text" class="span6 formfields" id="title" value="<?php echo @$_POST['title']; ?>" />
+					<input name="title" type="text" class="span6 formfields" id="title" />
 				</div>
 			</div>
 			<div class="control-group">
@@ -52,12 +55,12 @@ if(ADDING):
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="span12">
-			<div class="clearfix">
-				<label for="descr"><?php echo L_LINKS_BODY ?></label>
-				<div class="controls border-descr">
-					<textarea name="descr" id="descr" class="descr formfields"><?php echo @$_POST['descr']; ?></textarea>
+	<div class="descr-well">
+		<div class="row-fluid">
+			<div class="control-group">
+				<label for="descr" class="control-label"><?php echo L_LINKS_BODY ?></label>
+				<div class="controls">
+					<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
 				</div>
 			</div>
 		</div>
@@ -81,12 +84,12 @@ if(ADDING):
 		<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_ADD ?>" />
 	</div>
 
+<?php endif; ?>
 <?php
-endif;
 #If you're editing content, use this block
 if(EDITING):
-
 	if(EDIT_SINGLE):
+		$format = new format;
 	?>
 		<input type="hidden" name="aid" value="<?php echo $items->aid;?>" />
 		<input type="hidden" name="cid" value="<?php echo $items->cid;?>" />
@@ -136,12 +139,12 @@ if(EDITING):
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span12">
+		<div class="descr-well">
+			<div class="row-fluid">
 				<div class="control-group">
-					<label for="descr"><?php echo L_LINKS_BODY ?></label>
-					<div class="controls border-descr">
-						<textarea name="descr" id="descr" class="descr formfields"><?php echo view($items->descr); ?></textarea>
+					<label for="descr" class="control-label"><?php echo L_LINKS_BODY ?></label>
+					<div class="controls">
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
 					</div>
 				</div>
 			</div>
@@ -166,9 +169,7 @@ if(EDITING):
 		<div class="form-actions">
 			</label><input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
-	<?php
-	elseif(EDIT_LIST):
-	?>
+	<?php elseif(EDIT_LIST): ?>
 		<div class="row">
 				<?php $the_module->doSort(); ?>
 			<div class="span12">
@@ -213,15 +214,17 @@ if(EDITING):
 
 					<input type="hidden" value="<?php echo getOption('sortcats'); ?>" id="order_by" />
 				</div>
-				<?php if($hasitems): ?>
+
 				<div class="form-actions">
+					<a class="btn btn-primary" href="index.php?type=add&amp;cat_id=<?php echo $item->pid ?>"><?php echo L_MENU_ADD ?></a>
+					<?php if($hasitems): ?>
 					<div class="pull-right">
 						<input name="submit" type="submit" class="btn btn-danger" id="submit" value="<?php echo L_BUTTON_DELETE ?>" />
 					</div>
+					<?php endif; ?>
 				</div>
-				<?php endif; ?>
+
 			</div>
 		</div>
-	<?php
-	endif;
-endif;
+	<?php endif; ?>
+<?php endif; ?>

@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -53,17 +52,13 @@ function is_home() {
 Dont Cache
 ============================================================
 */
-
 // HTTP/1.1
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
-
 // HTTP/1.0
 header("Pragma: no-cache");
-
 // Date in the past
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-
 // always modified
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
@@ -109,7 +104,6 @@ $users = new Expanse('users');
 $images = new Expanse('images');
 $prefs = new Expanse('prefs');
 /*--//--*/
-
 $outmess = new outputMessages;
 
 /*
@@ -148,13 +142,12 @@ if(isset($auth) && is_object($auth) && 0) {
 	if(isset($_SESSION['menu']) && !empty($_SESSION['menu'])) {
 		$authlevels = count($auth->Permissions);
 		$sessionlevels = isset($_SESSION['permissions']) ? count($_SESSION['permissions']) : 0;
-		if($authlevels == $sessionlevels){
+		if($authlevels == $sessionlevels) {
 			$menu = $_SESSION['menu'] != '<ul></ul>' ? $_SESSION['menu'] : $auth->createMenu();
 		} else {
 			$menu = $_SESSION['menu'] = $auth->createMenu();
 			$_SESSION['permissions'] = $auth->Permissions;
 		}
-
 	} elseif(isset($_SESSION['username'])) {
 		$menu = $_SESSION['menu'] = $auth->createMenu();
 	}
@@ -245,11 +238,9 @@ if(class_exists('xajax')) {
 		$arg = (!empty($errors)) ? sprintf(SUCCESS, L_REORDER_SUCCESS) : sprintf(FAILURE, L_REORDER_FAILURE);
 		$objResponse = new xajaxResponse();
 		$objResponse->addAssign("responseText", "innerHTML", $arg);
-		$objResponse->addScript($script);
 
 		return $objResponse->getXML();
 	}
-
 	function updateMenuOrder($arg, $table) {
 		global $Database;
 		$items = get_dao($table);
@@ -261,7 +252,7 @@ if(class_exists('xajax')) {
 		$Database->Query("UPDATE ".PREFIX."$table SET {$menu_order}");
 		$final = array();
 		$keepMenu = isset($keepMenu) ? $keepMenu : array();
-		foreach($keepMenu as $k => $v) {
+		foreach ($keepMenu as $k => $v) {
 			if(!is_numeric($v)) {
 				continue;
 			}
@@ -304,5 +295,5 @@ if(class_exists('xajax')) {
 		return $objResponse->getXML();
 	}
 
-	$xajax->processRequests();
+  $xajax->processRequests();
 }

@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -75,11 +74,14 @@ class easyRSS {
 				$items = array();
 			}
 		}
+
 		// Fill the channel array
 		$arr["items"] = array();
 		foreach($items as $item) {
+
 			// Determine title
 			preg_match('/<title>(.*)<\/title>/i', $item, $title);
+
 			// Determine pubdate
 			preg_match('/<pubDate>(.*)<\/pubDate>/i', $item, $pubdate);
 			$date = '';
@@ -89,8 +91,10 @@ class easyRSS {
 			if(!empty($datetype)) {
 				$date = date($datetype, $date);
 			}
+
 			// Determine link
 			preg_match('/<link>(.*)<\/link>/i', $item, $link);
+
 			// Determine description
 			if(stristr($item, '<![CDATA[')) {
 				preg_match('/<description><!\[CDATA\[(.*)\]\]><\/description>/is', $item, $description);
@@ -113,24 +117,26 @@ class easyRSS {
 	    $rss .= (!empty($input["stylesheet"]))?"\n".'<?xml-stylesheet type="text/xsl" href="'.stripslashes($input["stylesheet"]).'"?>':"";
 		$rss .= <<<__RSS__
 
-		<rss version="2.0">
-		<channel>
-		<title>{$input["title"]}</title>
-		<description>{$input["description"]}</description>
-		<link>{$input["link"]}</link>
-		<language>{$input["language"]}</language>
-		<generator>{$input["generator"]}</generator>
+<rss version="2.0">
+<channel>
+<title>{$input["title"]}</title>
+<description>{$input["description"]}</description>
+<link>{$input["link"]}</link>
+<language>{$input["language"]}</language>
+<generator>{$input["generator"]}</generator>
 
-		__RSS__;
+__RSS__;
 	    foreach($input["items"] as $item) {
-	        $data = date("r", stripslashes($item["pubDate"]));
-	        $rss .= "\n<item>\n<title>".stripslashes($item["title"])."</title>";
-	        $rss .= "\n<description><![CDATA[".stripslashes($item["description"])."]]></description>";
-	        if (!empty($item["pubDate"]))
-	            $rss .= "\n<pubDate>".date("r", stripslashes($item["pubDate"]))."</pubDate>";
-	        if (!empty($item["link"]))
-	            $rss .= "\n<link>".stripslashes($item["link"])."</link>";
-	        $rss .= "\n</item>\n";
+			$data = date("r", stripslashes($item["pubDate"]));
+			$rss .= "\n<item>\n<title>".stripslashes($item["title"])."</title>";
+			$rss .= "\n<description><![CDATA[".stripslashes($item["description"])."]]></description>";
+			if(!empty($item["pubDate"])) {
+				$rss .= "\n<pubDate>".date("r", stripslashes($item["pubDate"]))."</pubDate>";
+			}
+			if(!empty($item["link"])) {
+				$rss .= "\n<link>".stripslashes($item["link"])."</link>";
+			}
+			$rss .= "\n</item>\n";
 	    }
 	    $rss .= "\n</channel>\n</rss>";
 		return $rss;
