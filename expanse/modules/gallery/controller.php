@@ -9,6 +9,11 @@ if(!defined('EXPANSE')) {
 	die('Sorry, but this file cannot be directly viewed.');
 }
 
+/**
+ * Gallery class.
+ *
+ * @extends Module
+ */
 class Gallery extends Module {
 	// This is the meta data for the category.
 	var $name = L_GALLERY_NAME;
@@ -17,6 +22,12 @@ class Gallery extends Module {
 	// Inherit the rest of the category meta-data
 	/**/
 
+	/**
+	 * add function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function add() {
 		// Grab the global message object, and the global category id
 		// global $outmess, $catid;
@@ -115,6 +126,12 @@ class Gallery extends Module {
 		}
 	}
 
+	/**
+	 * edit function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function edit() {
 		$outmess = $this->output;
 		$catid = $this->cat_id;
@@ -259,6 +276,12 @@ class Gallery extends Module {
 		}
 	}
 
+	/**
+	 * more function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function more() {
 		if(is_posting(L_BUTTON_MASS_UPLOAD)) {
 			$this->galleryUpload();
@@ -268,9 +291,13 @@ class Gallery extends Module {
 		}
 	}
 
-	/*
-	You can define custom functions in this file as well, however, it may be better to use a class so that there is less chance of redefining an existing function.
-	*/
+	/**
+	 * galleryUpload function.
+	 * You can define custom functions in this file as well, however, it may be better to use a class so that there is less chance of redefining an existing function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function galleryUpload() {
 		$path = UPLOADS;
 		$items = &$this->items;
@@ -431,6 +458,12 @@ class Gallery extends Module {
 		}
 	}
 
+	/**
+	 * doThumbnails function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function doThumbnails() {
 		$items =& $this->items;
 		?>
@@ -483,6 +516,12 @@ class Gallery extends Module {
 		<?php
 	}
 
+	/**
+	 * doPaypal function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function doPaypal() {
 		$items =& $this->items;
 		global $currencysymbols;

@@ -21,7 +21,7 @@
         "font-styles": function(locale) {
             var tmpl = "<li class='dropdown'>" +
                 "<a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>" +
-                "<i class='icon-font'></i>&nbsp;<span class='current-font'>" + locale.font_styles.normal + "</span>&nbsp;<b class='caret'></b>" +
+                "<i class='icon-font'></i>&nbsp;<span class='current-font'></span>&nbsp;<b class='caret'></b>" +
                 "</a>" +
                 "<ul class='dropdown-menu'>";
             var stylesToRemove = locale.font_styles.remove || [];
@@ -39,6 +39,24 @@
         },
 
         "multiple-font-styles": function(locale) {
+        	var tmpl = "<li class='dropdown'>" +
+                "<a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>" +
+                "<i class='icon-chevron-left'></i><i class='icon-chevron-right'></i>&nbsp;<span class='current-font'></span>&nbsp;<b class='caret'></b>" +
+                "</a>" +
+                "<ul class='dropdown-menu'>";
+            var stylesToRemove = locale.multiple_font_styles.remove || [];
+            $.each(['div','h1','h2','h3'], function(idx, key) {
+                 if (stylesToRemove.indexOf(key) < 0) {
+                   tmpl += "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='" + key + "'>" + locale.multiple_font_styles[key] + "</a></li>";
+                 }
+            });
+            locale.multiple_font_styles.custom = locale.multiple_font_styles.custom || [];
+            $.each(locale.multiple_font_styles.custom, function(style, displayName) {
+                tmpl += "<li><a data-wysihtml5-command='customSpan' data-wsyihtml5-command-value='" + style + "'>" + displayName + "</a></li>";
+            });
+            tmpl += "</ul>"
+            return tmpl;
+            /*
             return "<li>" +
                   "<div class='btn-group'>" +
                     "<a class='btn btn-wysihtml5' data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h1' title=''>" + locale.multiple_font_styles.h1+ "</a>" +
@@ -46,6 +64,7 @@
                     "<a class='btn btn-wysihtml5' data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h3' title=''>" + locale.multiple_font_styles.h3 + "</a>" +
                   "</div>" +
                 "</li>";
+            */
         },
 
         "emphasis": function(locale) {
@@ -513,7 +532,7 @@
     var defaultOptions = $.fn.wysihtml5.defaultOptions = {
         "font-styles": true,
         "multiple-font-styles": false,
-        "color": true,
+        "color": false,
         "emphasis": true,
         "lists": true,
         "html": true,
@@ -543,6 +562,7 @@
                 "wysiwyg-color-teal" : 1,
                 "wysiwyg-color-aqua" : 1,
                 "wysiwyg-color-orange" : 1,
+                "row": 1,
                 "row-fluid": 1,
                 "span1": 1,
                 "span2": 1,
@@ -555,7 +575,9 @@
                 "span9": 1,
                 "span10": 1,
                 "span11": 1,
-                "span12": 1
+                "span12": 1,
+                "thumbnails": 1,
+                "thumbnail": 1
             },
             tags: {
                 "b":  {},
@@ -589,7 +611,7 @@
                         href:   "url" // important to avoid XSS
                     }
                 },
-                "span": 1,
+                "span": {},
                 "div": {},
                 "p": "p",
                 "small": 1,
@@ -614,6 +636,7 @@
                 h3: "Heading 3"
             },
             multiple_font_styles: {
+            	div: "div",
                 h1: "Heading 1",
                 h2: "Heading 2",
                 h3: "Heading 3"

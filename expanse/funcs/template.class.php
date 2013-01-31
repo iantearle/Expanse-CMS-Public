@@ -2062,4 +2062,3 @@ function ets_source_read_handler($id)
 
 	return $content;
 }
-?>

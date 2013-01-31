@@ -17,14 +17,14 @@ if(LOGGED_IN) {
 	        continue;
 	    }
 
-	    if(getimagesize(UPLOADS.'/'.$file)) {
-			$dims = getimagesize(UPLOADS.'/'.$file);
+	    if(getimagesize(UPLOADS . $file)) {
+			$dims = getimagesize(UPLOADS . $file);
 		}
 
 	    $file = array(
 	    	'name' => $file,
 	    	'size' => filesize(UPLOADS . $file),
-	    	'url' => UPLOADS_DIR .'/'. $file,
+	    	'url' => UPLOADS_DIR . $file,
 	    	'delete_type' => 'DELETE',
 	    	'width' => $dims[0],
 	    	'height' => $dims[1]

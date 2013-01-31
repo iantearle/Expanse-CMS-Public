@@ -50,10 +50,15 @@ $user_vars = array('menu' => array(), 'header' => array(), 'main' => array(), 'f
 Conditional functions
 */
 
+
+
 /**
-* Checks to see if we're on the home page
-* @return boolean
-*/
+ * is_home function.
+ * Checks to see if we're on the home page
+ *
+ * @access public
+ * @return void
+ */
 function is_home() {
 	$pcat = CAT_ID;
 	$ucat = UCAT;
@@ -1024,12 +1029,15 @@ function get_full_page_list($default = 0, $parent = 0, $level = 0) {
 }
 
 /**
-* Returns a portion of a string while leaving intact any HTML tags in that string
-* @param string $posttext
-* @param int $minimum_length
-* @param int $length_offset
-* @return string $posttext
-*/
+ * html_substr function.
+ * Returns a portion of a string while leaving intact any HTML tags in that string
+ *
+ * @access public
+ * @param mixed $posttext
+ * @param int $minimum_length (default: 200)
+ * @param int $length_offset (default: 10)
+ * @return string $posttext
+ */
 function html_substr($posttext, $minimum_length = 200, $length_offset = 10) {
 	$tag_counter = 0;
 	$quotes_on = false;

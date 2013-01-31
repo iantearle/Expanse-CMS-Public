@@ -20,13 +20,12 @@ if(LOGGED_IN) {
 		$messages = "<ul>".implode('', $messages)."</ul>";
 		printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
 
-		return;
 	} else {
 		$files = array();
 	    $file = array(
 	    	'name' => $xtra_img_uploads['files']['asset']['name'],
 	    	'size' => $xtra_img_uploads['files']['asset']['size'],
-	    	'url' => UPLOADS_DIR .'/'. $xtra_img_uploads['files']['asset']['name'],
+	    	'url' => UPLOADS_DIR . $xtra_img_uploads['files']['asset']['name'],
 	    	'delete_type' => 'DELETE',
 	    	'width' => $xtra_img_uploads['files']['asset']['width'],
 	    	'height' => $xtra_img_uploads['files']['asset']['height']

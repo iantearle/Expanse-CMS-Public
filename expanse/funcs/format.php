@@ -38,6 +38,10 @@ Expanse - Content Management For Web Designers, By A Web Designer
 
 ****************************************************************/
 
+/**
+ * Format class.
+ * https://github.com/spyrosoft/php-format-html-output
+ */
 class Format {
 	private $input = '';
 	private $output = '';
@@ -48,6 +52,13 @@ class Format {
 	private $inline_tag = FALSE;
 	private $input_index = 0;
 
+	/**
+	 * HTML function.
+	 *
+	 * @access public
+	 * @param mixed $input
+	 * @return void
+	 */
 	public function HTML($input) {
 		$this->input = $input;
 
@@ -81,6 +92,12 @@ class Format {
 		return $this->output;
 	}
 
+	/**
+	 * parse_comment function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function parse_comment() {
 		if($this->is_end_comment()) {
 			$this->in_comment = FALSE;
@@ -91,6 +108,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * parse_inner_tag function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function parse_inner_tag() {
 		if($this->input[$this->input_index] == '>') {
 			$this->in_tag = FALSE;
@@ -104,6 +127,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * parse_tag function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function parse_tag() {
 		if($this->is_comment()) {
 			$this->output .= "\n" . str_repeat("\t", $this->tabs);
@@ -126,6 +155,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * is_end_tag function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_end_tag() {
 		for($input_index = $this->input_index; $input_index < strlen($this->input); $input_index++) {
 			if($this->input[$input_index] == '<' and $this->input[$input_index + 1] == '/') {
@@ -139,6 +174,12 @@ class Format {
 		return false;
 	}
 
+	/**
+	 * decrement_tabs function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function decrement_tabs() {
 		$this->tabs--;
 		if($this->tabs < 0) {
@@ -146,6 +187,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * is_comment function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_comment() {
 		if($this->input[$this->input_index] == '<'
 			and $this->input[$this->input_index + 1] == '!'
@@ -157,6 +204,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * is_end_comment function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_end_comment() {
 		if($this->input[$this->input_index] == '-'
 			and $this->input[$this->input_index + 1] == '-'
@@ -167,6 +220,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * is_tag_empty function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_tag_empty() {
 		$current_tag = $this->get_current_tag($this->input_index + 2);
 		$in_tag = FALSE;
@@ -191,6 +250,13 @@ class Format {
 		return TRUE;
 	}
 
+	/**
+	 * get_current_tag function.
+	 *
+	 * @access private
+	 * @param mixed $input_index
+	 * @return void
+	 */
 	private function get_current_tag($input_index) {
 		$current_tag = '';
 
@@ -207,6 +273,12 @@ class Format {
 		return $current_tag;
 	}
 
+	/**
+	 * is_closed_tag function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_closed_tag() {
 		$closed_tags = array(
 			'meta', 'link', 'img', 'hr', 'br', 'input',
@@ -231,6 +303,12 @@ class Format {
 		}
 	}
 
+	/**
+	 * is_inline_tag function.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function is_inline_tag() {
 		$inline_tags = array(
 			'title', 'a', 'span', 'abbr', 'acronym', 'b', 'basefont', 'bdo', 'big', 'cite', 'code', 'dfn', 'em', 'font', 'i', 'kbd', 'label', 'q', 's', 'samp', 'small', 'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var', 'del',

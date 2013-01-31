@@ -97,7 +97,7 @@ define('DESCR_LENGTH', 80);
 if(isset($CONFIG)) {
 	define('EXPANSEPATH', realpath($CONFIG['home']));
 	define('HOMEPATH', realpath(EXPANSEPATH.'/..'));
-	$uploads = (isset($CONFIG['site']) && is_dir(EXPANSEPATH.'/uploads/'.$CONFIG['site'])) ? EXPANSEPATH.'/uploads/'.$CONFIG['site'] : EXPANSEPATH.'/uploads';
+	$uploads = (isset($CONFIG['site']) && is_dir(EXPANSEPATH.'/uploads/'.$CONFIG['site'])) ? EXPANSEPATH.'/uploads/'.$CONFIG['site'] .'/' : EXPANSEPATH.'/uploads/';
 	define('UPLOADS', $uploads);
 	define('THEMES', EXPANSEPATH.'/themes');
 	define('PLUGINS', EXPANSEPATH.'/plugins');
@@ -108,7 +108,7 @@ if(isset($CONFIG)) {
 	if(!defined('EXPANSE_URL')) {
 		define('EXPANSE_URL', YOUR_SITE.checkTrailingSlash(EXPANSE_FOLDER));
 	}
-	$uploadsDir = (isset($CONFIG['site']) && is_dir(EXPANSEPATH.'/uploads/'.$CONFIG['site'])) ? EXPANSE_URL.'uploads/'.$CONFIG['site'] : EXPANSE_URL.'uploads';
+	$uploadsDir = (isset($CONFIG['site']) && is_dir(EXPANSEPATH.'/uploads/'.$CONFIG['site'])) ? EXPANSE_URL.'uploads/'.$CONFIG['site'] .'/' : EXPANSE_URL.'uploads/';
 	define('UPLOADS_DIR', $uploadsDir);
 	$index_file = getOption('index_file');
 	define('INDEX_PAGE', empty($index_file) ? 'index.php' : $index_file);
@@ -123,6 +123,7 @@ define('CUSTOM_INSTALL', $private_label);
 Plugins
 =================================================
 */
+
 $all_plugins = isset($CONFIG) ? getOption('active_plugins') : false;
 if($all_plugins !== false) {
 	$all_plugins = is_array($all_plugins) ? $all_plugins : array();
