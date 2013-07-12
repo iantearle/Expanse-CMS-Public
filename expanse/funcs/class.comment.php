@@ -119,7 +119,6 @@ class commentProcess {
 					}
 					break;
 				}
-<<<<<<< HEAD:expanse/funcs/class.comment.php
 				case strpos($post_index, '_phone_number') : {
 					$ind = str_replace('_phone_number', '', $ind);
 					if(!checkPhone($val)) {
@@ -127,8 +126,6 @@ class commentProcess {
 					}
 					break;
 				}
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/comment.class.php
 			}
 			if(!strpos($post_index, '_allow_html')) {
 				$val = strip_tags($val);

@@ -176,17 +176,13 @@ Expanse Config File
 							$results['db_populate'] = $dbDelta->perform_queries(DBDELTA_MOST);
 
 							printOut('
-							<div class="span12">
-							<div class="page-header">
-								<h1>Congratulations!</h1>
-							</div>
+							<div class="span8">
+							<h1>Congratulations!</h1>
 							<p>You have now installed expanse, the cms for creative people.</p>
 							<p><strong>You must now remove install.php from the server before you can continue.</strong> Leaving install.php on the server is a major security risk, and you must delete it.</p>
 							<p>After you have deleted <code>install.php</code> from the server, you can login to expanse. </p>
 							</div>
-							</div>
-							<div class="row-fluid">
-							<div class="span12">
+							<div class="span8">
 							<div class="well">
 							<h3>Here are your login details</h3>
 							<p id="loginDetails">
@@ -197,8 +193,8 @@ Expanse Config File
 							</div>
 							</div>
 							</div>
-							<div class="row-fluid">
-							<div class="span12">
+							<div class="row">
+							<div class="span8">
 							<p>Be sure to keep a copy install.php somewhere on your local computer just in case you wish to uninstall Expanse later on (though we really hope you don\'t).</p>
 							<p>If you want us to try and delete <code>install.php</code> for you, go ahead and press this button. If successful, you\'ll be taken to the login page, but if it\'s not, you will have to do it manually.</p>
 							<div class="actions">
@@ -215,7 +211,6 @@ Expanse Config File
 							}
 							$users = new Expanse('users');
 							$users->Get(1);
-							$install_object = new stdClass();
 							$install_object->expanseurl = EXPANSE_URL;
 							$install_object->username = 'admin';
 							$install_object->password = $default_install_values['random_password'];
@@ -246,19 +241,19 @@ Expanse Config File
 $outmess->write_header('', 1, 1);
 
 ?>
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
+<div class="topbar">
+	<div class="topbar-inner">
 		<div class="container">
 			<a class="brand" href="./"><?php echo CMS_NAME ?></a>
-			<p class="navbar-text pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
+				<p class="pull-right"><?php echo CMS_NAME ?> thinks you're dreamy.</p>
 		</div>
 	</div>
 </div>
-<div class="container-narrow">
+<div class="container">
 	<form action="" method="post" class="form-stacked">
 	<?php
 	if(CURRENT_STEP == 'install') { ?>
-			<div class="row-fluid"> <?php
+			<div class="row"> <?php
 				if(INSTALLABLE) {
 					echo $output;
 					if(isInstalled() && empty($install)) {
@@ -266,109 +261,101 @@ $outmess->write_header('', 1, 1);
 					}
 					/*   At the first step   //-------------------------------*/
 					if(empty($install) || !empty($errors)) { ?>
-						<div class="span12">
-							<div class="page-header">
-								<h1>Settings</h1>
-							</div>
-						</div>
-					</div>
-					<div class="row-fluid">
-						<div class="span6">
+						<div class="span8">
+							<h1>Settings</h1>
 							<fieldset>
 								<legend>Your information</legend>
-								<div class="control-group">
-									<label for="yourname" class="control-label">Your name</label>
-									<div class="controls">
+								<div class="clearfix">
+									<label for="yourname">Your name</label>
+									<div class="input">
 										<input name="yourname" id="yourname" value="<?php echo @$_POST['yourname']; ?>" type="text" />
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="adminemail" class="control-label">Your email</label>
-									<div class="controls">
+								<div class="clearfix">
+									<label for="adminemail">Your email</label>
+									<div class="input">
 										<input name="adminemail" id="adminemail" value="<?php echo @$_POST['adminemail']; ?>" type="text" />
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="sitename" class="control-label">Your site name</label>
-									<div class="controls">
+								<div class="clearfix">
+									<label for="sitename">Your site name</label>
+									<div class="input">
 										<input name="sitename" id="sitename" value="<?php echo @$_POST['sitename']; ?>" type="text" />
 									</div>
 								</div>
 							</fieldset>
-						</div>
-						<div class="span6">
 							<fieldset>
 								<legend>MySQL Settings</legend>
-								<div class="control-group">
-									<label for="dbhost" class="control-label">MySQL Hostname</label>
-									<div class="controls">
-										<input name="dbhost" value="<?php echo @$_POST['dbhost']; ?>" type="text" class="formfields" id="dbhost" <?php popOver('right', 'MySQL Hostname', 'Address to the server (eg. localhost, or mysqlserver.domain.com)'); ?> />
+								<div class="clearfix">
+									<label for="dbhost">MySQL Hostname</label>
+									<div class="input">
+										<input name="dbhost" value="<?php echo @$_POST['dbhost']; ?>" type="text" class="formfields" id="dbhost" />
+										<span class="help-block">Address to the server (eg. localhost, or mysqlserver.domain.com)</span>
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="dbuser" class="control-label">MySQL Username</label>
-									<div class="controls">
+								<div class="clearfix">
+									<label for="dbuser">MySQL Username</label>
+									<div class="input">
 										<input name="dbuser" value="<?php echo @$_POST['dbuser']; ?>" type="text" class="formfields" id="dbuser"  />
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="dbpassword" class="control-label">MySQL Password</label>
-									<div class="controls">
+								<div class="clearfix">
+									<label for="dbpassword">MySQL Password</label>
+									<div class="input">
 										<input name="dbpassword" value="" type="password" class="formfields" id="dbpassword" />
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="db" class="control-label">MySQL Database</label>
-									<div class="controls">
-										<input name="db" value="<?php echo @$_POST['db']; ?>" type="text" class="formfields" id="db" <?php popOver('right', 'MySQL Database', 'Name of the database to use'); ?> />
+								<div class="clearfix">
+									<label for="db">MySQL Database</label>
+									<div class="input">
+										<input name="db" value="<?php echo @$_POST['db']; ?>" type="text" class="formfields" id="db" />
+										<span class="help-block">Name of the database to use</span>
 									</div>
 								</div>
-								<div class="control-group">
-									<label for="prefix" class="control-label">Table Prefix</label>
-									<div class="controls">
-										<input name="prefix" type="text" class="formfields" value="<?php echo isset($_POST['prefix']) ? $_POST['prefix'] : 'exp_'; ?>" id="prefix" <?php popOver('right', 'Table Prefix', 'This is the prefix to give the database tables. If you leave it empty, it will default to &quot;exp_&quot;, otherwise you can enter in whatever you wish. Note that if a table exists with the same name, it will be overwritten. Also, please note that only alphanumeric characters and underscores are allowed. Anything that is not either an alphanumeric character, or an underscore will be replaced with underscores.'); ?> />
+								<div class="clearfix">
+									<label for="prefix">Table Prefix</label>
+									<div class="input">
+										<input name="prefix" type="text" class="formfields" value="<?php echo isset($_POST['prefix']) ? $_POST['prefix'] : 'exp_'; ?>" id="prefix" />
+										<span class="help-block">This is the prefix to give the database tables. If you leave it empty, it will default to &quot;exp_&quot;, otherwise you can enter in whatever you wish. Note that if a table exists with the same name, it will be overwritten. Also, please note that only alphanumeric characters and underscores are allowed. Anything that is not either an alphanumeric character, or an underscore will be replaced with underscores.</span>
 									</div>
 								</div>
 							</fieldset>
 						</div>
-					</div>
-					<div class="row-fluid">
-						<div id="eula" class="well">
-							<p>expanse is licensed under the <a href="http://opensource.org/licenses/mit-license.php"><span class="caps">MIT</span> open-source license</a>. That means the code is copyright Ian Tearle, but you have permission to do almost anything you like with it. <strong>It’s free, both as in free beer and free speech.</strong></p>
-							<p>This includes using all or parts of the code in commercial applications. I request, but don’t require, that you give explicit credit and a link to expanse cms (<a href="http://expansecms.org">http://expansecms.org</a>), without using the expanse name or logo to advertise your product without written permission from the trademark owner (as specified by international trademark laws). You must, however, include the following license and notice with anything you distribute.</p>
-							<div id="boilerplate">
-							<p>Copyright &copy; 2012 Ian Tearle (http://expansecms.org)</p>
-							<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-							<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-							<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUR OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-							</div>
-							<div class="control-group">
-								<div class="input-list">
-									<label for="eula_read" class="checkbox">
-										<input name="eula_read" id="eula_read" type="checkbox" value="1" />
-										I have read and understood the End User License Agreement
-									</label>
+						<div class="span8">
+							<div id="eula" class="well">
+								<p>expanse is licensed under the <a href="http://opensource.org/licenses/mit-license.php"><span class="caps">MIT</span> open-source license</a>. That means the code is copyright Ian Tearle, but you have permission to do almost anything you like with it. <strong>It’s free, both as in free beer and free speech.</strong></p>
+								<p>This includes using all or parts of the code in commercial applications. I request, but don’t require, that you give explicit credit and a link to expanse cms (<a href="http://expansecms.org">http://expansecms.org</a>), without using the expanse name or logo to advertise your product without written permission from the trademark owner (as specified by international trademark laws). You must, however, include the following license and notice with anything you distribute.</p>
+								<div id="boilerplate">
+								<p>Copyright &copy; 2012 Ian Tearle (http://expansecms.org)</p>
+								<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+								<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+								<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUR OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+								</div>
+								<div class="clearfix">
+									<div class="input-list">
+										<label for="eula_read" class="span7">
+											<input name="eula_read" id="eula_read" type="checkbox" value="1" />
+											<span>I have read and understood the End User License Agreement</span>
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
+				</div>
+				<div class="row">
+					<div class="actions">
+						<p>Once you press install, the installer will attempt to connect to your database, and if successful, will create all the necessary tables. If there are any tables with the same name, they will be overwritten.<br>
+						The installer will also attempt to create an upload directory for your files.</p>
+						<input name="install" id="install" type="submit" class="btn large primary" value="Install" /> <input type="reset" class="btn danger" value="Reset" />
 					</div>
-					<div class="row-fluid">
-						<div class="form-actions">
-							<p class="alert alert-warning">Once you press install, the installer will attempt to connect to your database, and if successful, will create all the necessary tables. If there are any tables with the same name, they will be overwritten.<br>
-							The installer will also attempt to create an upload directory for your files.</p>
-							<input name="install" id="install" type="submit" class="btn large primary" value="Install" /> <input type="reset" class="btn danger" value="Reset" />
-						</div>
-					</div>
-				<?php
+				</div> <?php
 				}
 			} else { ?>
-					<div class="span12">
-						<div class="page-header">
-							<h1>System Requirements</h1>
-						</div>
+					<div class="span16">
+						<h1>System Requirements</h1>
 						<form action="" method="post" id="eulaStep1">
 							<?php echo $output; ?>
-							<table class="table">
+							<table align="center" cellspacing="0" class="comparisonTable">
 								<thead>
 									<tr>
 										<th align="center">&nbsp;</th>
@@ -378,66 +365,59 @@ $outmess->write_header('', 1, 1);
 								</thead>
 								<tbody>
 									<tr>
-										<th align="left">Minimum PHP Version</th>
+										<td align="left">Minimum PHP Version</td>
 										<td align="center"><?php echo MIN_VERSION; ?></td>
-										<td align="center" class="<?php echo (!VERSION_CORRECT) ? "text-error" : "text-success"; ?>"><?php echo phpversion(); ?></td>
-										<td align="left"><?php echo (!VERSION_CORRECT) ? '<i class="icon-remove"></i> Expanse requires a newer version of PHP' : '<i class="icon-ok"></i> Your PHP version is capable of running Expanse';?></td>
+										<td align="left"><p class="<?php echo (!VERSION_CORRECT) ? "errortext" : "successtext"; ?>"><?php echo phpversion(); ?></p></td>
+										<td align="left"><img src="images/<?php echo (!VERSION_CORRECT) ? "error.gif" : "success.gif"; ?>" alt="<?php echo (!VERSION_CORRECT) ? "Expanse requires a newer version of PHP" : "Your PHP version is capable of running Expanse"; ?>" class="imgs" /></td>
 									</tr> <?php
 									if(!VERSION_CORRECT) { ?>
 										<tr>
 											<td colspan="4">
-												<div class="alert alert-info">
-													<h3>How can I fix this?</h3>
-													<p>In order to fix this, you can either ask your host to upgrade their version of PHP, or signup with one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
-												</div>
+												<h3>How can I fix this?</h3>
+												<p>In order to fix this, you can either ask your host to upgrade their version of PHP, or signup with one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
 											</td>
 										</tr><?php
 									} ?>
 									<tr>
-										<th align="left">Is MySQL Installed? </th>
+										<td align="left">Is MySQL Installed? </td>
 										<td align="center">Yes</td>
-										<td align="center" class="<?php echo (!MYSQL_INSTALLED) ? "text-error" : "text-success"; ?>"><?php echo (MYSQL_INSTALLED) ? 'Yes' : 'No'; ?></td>
-										<td align="left"><?php echo (!MYSQL_INSTALLED) ? '<i class="icon-remove"></i> MySQL must be installed to run Expanse' : '<i class="icon-ok"></i> MySQL is installed'; ?></td>
+										<td align="left"><p class="<?php echo (!MYSQL_INSTALLED) ? "errortext" : "successtext"; ?>"><?php echo (MYSQL_INSTALLED) ? 'Yes' : 'No'; ?></p></td>
+										<td align="left"><img src="images/<?php echo (!MYSQL_INSTALLED) ? "error.gif" : "success.gif"; ?>" alt="<?php echo (!MYSQL_INSTALLED) ? "MySQL must be installed to run Expanse" : "MySQL is installed"; ?>" class="imgs" /></td>
 									</tr> <?php
 									if(!MYSQL_INSTALLED) { ?>
 										<tr>
 											<td colspan="4">
-												<div class="alert alert-info">
-													<h3>How can I fix this?</h3>
-													<p>In order to fix this, you can either ask your host to install MySQL, or signup with one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
-												</div>
+												<h3>How can I fix this?</h3>
+												<p>In order to fix this, you can either ask your host to install MySQL, or signup with one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
 											</td>
 										</tr> <?php
 									} ?>
 									<tr>
-										<th align="left">Writing permissions to directory?</th>
+										<td align="left">Writing permissions to directory?</td>
 										<td align="center">Yes</td>
-										<td align="center" class="<?php echo (!IS_WRITABLE) ? "text-error" : "text-success"; ?>"><?php echo (IS_WRITABLE) ? "Yes" : "No" ?></td>
-										<td align="left"><?php echo (!IS_WRITABLE) ? '<i class="icon-remove"></i> Expanse requires that this directory be writable during installation' : '<i class="icon-ok"></i> Your installation directory is writable'; ?></td>
+										<td align="left"><p class="<?php echo (!IS_WRITABLE) ? 'errortext': 'successtext'; ?>"><?php echo (IS_WRITABLE) ? "Yes" : "No" ?></p></td>
+										<td align="left"><img src="images/<?php echo (!IS_WRITABLE) ? "error.gif" : "success.gif"; ?>" alt="<?php echo (!IS_WRITABLE) ? "Expanse requires that this directory be writable during installation" : "Your installation directory is writable"; ?>" class="imgs" /></td>
 									</tr> <?php
 									if(!IS_WRITABLE) { ?>
 										<tr>
 											<td colspan="4">
-												<div class="alert alert-info">
-													<h3>How can I fix this?</h3>
-													<p>In order to fix this, the easiest way to do this is to use your FTP program to change the permissions of the directory you installed Expanse in. If you're not sure how to do that, view your FTP program's help documentation about setting the CHMOD.</p>
-												</div>
+												<h3>How can I fix this?</h3>
+												<p>In order to fix this, the easiest way to do this is to use your FTP program to change the permissions of the directory you installed Expanse in. If you're not sure how to do that, view your FTP program's help documentation about setting the CHMOD.</p>
 											</td>
 										</tr> <?php
 									} ?>
 									<tr>
-										<th align="left">Safe mode off?</th>
+										<td align="left">Safe mode off?</td>
 										<td align="center">Yes</td>
-										<td align="center" class="<?php echo (SAFE_MODE) ? "text-error" : "text-success" ?>"><?php echo (SAFE_MODE) ? 'No' : 'Yes' ?></td>
-											<td align="left"><?php echo (SAFE_MODE) ? '<i class="icon-remove"></i> Expanse requires that safe mode be off.' : '<i class="icon-ok"></i> Safe mode is off. Tell your host they\'re good people.'; ?></td>
+										<td align="left">
+											<p class="<?php echo (SAFE_MODE) ? 'errortext' : 'successtext' ?>"><?php echo (SAFE_MODE) ? 'No' : 'Yes' ?></p></td>
+											<td align="left"><img src="images/<?php if(SAFE_MODE) echo "error.gif"; else echo "success.gif"; ?>" alt="<?php echo (SAFE_MODE) ? "Expanse requires that safe mode be off." : "Safe mode is off. Tell your host they're good people."; ?>" class="imgs" /></td>
 									</tr> <?php
 									if(SAFE_MODE) { ?>
 										<tr>
 											<td colspan="4">
-												<div class="alert alert-info">
-													<h3>How can I fix this?</h3>
-													<p>You can ask your host to change this setting for you. Many hosts will allow you to change this setting, many times just by simply uploading a single file. If they will not change it for you or allow you to change it, you're better off looking for a new host from one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
-												</div>
+												<h3>How can I fix this?</h3>
+												<p>You can ask your host to change this setting for you. Many hosts will allow you to change this setting, many times just by simply uploading a single file. If they will not change it for you or allow you to change it, you're better off looking for a new host from one of our <a href="http://expansecms.com/?p=hosting" target="_blank">recommended hosts</a>.</p>
 											</td>
 										</tr> <?php
 									} ?>
@@ -585,24 +565,24 @@ $outmess->write_header('', 1, 1);
 				<h1>Manually Uninstall Expanse</h1> <?php
 				if(has_uploads()) { ?>
 					<p>If you'd like to just delete the uploads folder you can click the button below.</p>
-					<div class="control-group">
-						<div class="controls">
+					<div class="clearfix">
+						<div class="input">
 							<input name="delete_uploads" type="submit" class="btn primary" id="delete_uploads" value="Delete the uploads folder." />
 						</div>
 					</div> <?php
 				}
 				if(db_installed()) { ?>
 					<p>If you'd like to just clear all of your records from the database and delete the config file, click this button. (This will only delete the tables created by Expanse). Once you do this, Expanse will be considered to be uninstalled. </p>
-					<div class="control-group">
-						<div class="controls">
+					<div class="clearfix">
+						<div class="input">
 							<input name="delete_db" type="submit" class="btn" id="delete_db" value="Clear the database and delete the config file." />
 						</div>
 					</div> <?php
 				}
 				if(has_config()) { ?>
 					<p>If you'd like to JUST delete the config file, without clearing the database (helpful if you're moving locations, and FTP wont delete the config file), click this button below.</p>
-					<div class="control-group">
-						<div class="controls">
+					<div class="clearfix">
+						<div class="input">
 							<input name="delete_config" type="submit" class="btn" id="delete_config" value="Just delete the config file." />
 						</div>
 					</div> <?php

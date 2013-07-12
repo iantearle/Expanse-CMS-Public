@@ -123,18 +123,12 @@ Expanse Config File
 			<div class="control-group">
 				<label for="dbpassword" class="control-label"><?php echo L_DB_PASSWORD ?></label>
 				<div class="controls">
-<<<<<<< HEAD
 					<input name="pass" type="password" class="formfields" id="pass" <?php popOver('right', L_DB_PASSWORD, L_DB_PASSWORD_NOTE); ?>  />
-=======
-				<input name="pass" type="password" class="formfields" id="pass" size="40" />
-					<span class="help-block"><?php echo L_DB_PASSWORD_NOTE ?></span>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 			<div class="control-group">
 				<label for="db" class="control-label"><?php echo L_DB_DATABASE_NAME ?></label>
 				<div class="controls">
-<<<<<<< HEAD
 				<input name="db" type="text" class="formfields" id="db" value="<?php echo $CONFIG['db']; ?>" <?php popOver('right', L_DB_DATABASE_NAME, L_DB_DATABASE_NAME_HELP); ?>  />
 				</div>
 			</div>
@@ -142,20 +136,12 @@ Expanse Config File
 				<label for="db" class="control-label"><?php echo L_DB_TABLE_PREFIX ?></label>
 				<div class="controls">
 				<input name="db" type="text" class="formfields" id="db" value="<?php echo $CONFIG['prefix']; ?>" />
-=======
-				<input name="db" type="text" class="formfields" id="db" value="<?php echo $CONFIG['db']; ?>" size="31" />
-					<span class="help-block"><?php echo L_DB_DATABASE_NAME_HELP ?></span>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 		</div>
 	</div>
 	<?php
-<<<<<<< HEAD
 	if(is_writable(EXPANSEPATH.'/config.php')) {
-=======
-	if(is_writable(EXPANSEPATH.'/config.php')){
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		?>
 		<div class="form-actions">
 			<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />

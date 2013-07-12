@@ -54,10 +54,7 @@ ozone_action('admin_page', 'prefs_content');
 
 function prefs_content() {
 	global $output, $currencysymbols , $themesdir;
-<<<<<<< HEAD
 	$Database = new DatabaseConnection();
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	if (is_posting(L_BUTTON_UPDATE)) {
 		manageOptions("submit,rettimeformat,retdateformat,utctime,resettime");
 		$use_clean_urls = getOption('use_clean_urls');
@@ -179,11 +176,7 @@ function prefs_content() {
 								<!-- /*   Current Server Time   //===============================*/ -->
 								<div class="control-group">
 									<label for="utctime" class="control-label"><?php echo L_PREFS_TIME_SERVER ?> </label>
-<<<<<<< HEAD
 									<input name="utctime" type="text" class="span12" id="utctime" value="<?php echo isset($option->timeoffset) ? date('F d, Y g:i:s a', time() + (3600 * $option->timeoffset)) : date('F d, Y g:i:s a');?>" <?php popOver('bottom', L_PREFS_TIME_SERVER, array(L_PREFS_TIME_SERVER_HELP, date("T"))); ?> />
-=======
-									<input name="utctime" type="text" class="span12" id="utctime" value="<?php echo date('F d, Y g:i:s a');?>" <?php popOver('bottom', L_PREFS_TIME_SERVER, array(L_PREFS_TIME_SERVER_HELP, date("T"))); ?> />
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 								</div>
 
 								<!-- /*   Local Timezone Offset   //===============================*/ -->
@@ -270,15 +263,9 @@ function prefs_content() {
 											$startcategory = $option->startcategory;
 											$selected = ($startcategory == 'ALL') ? ' selected="selected"' : '';
 											echo '<option'.$selected.' value="ALL">All categories</option>';
-<<<<<<< HEAD
 											$d2 = $Database->Query("SELECT * FROM ".PREFIX."sections WHERE pid = 0");
 											while($d3 = mysqli_fetch_array($d2)) {
 												$d4 = $Database->Query("SELECT * FROM ".PREFIX."sections WHERE pid = $d3[id]");
-=======
-											$d2 = mysql_query("SELECT * FROM ".PREFIX."sections WHERE pid = 0");
-											while($d3 = mysql_fetch_array($d2)) {
-												$d4 = mysql_query("SELECT * FROM ".PREFIX."sections WHERE pid = $d3[id]");
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 												if($d3['cat_type'] == 'pages') {
 													echo '<optgroup label="&mdash;User Created Pages"></optgroup>';
 													get_page_dropdown(0,0,0,true, $startcategory);
@@ -288,11 +275,7 @@ function prefs_content() {
 												?>
 												<option<?php echo $selected ?> value="<?php echo $d3['id'] ?>"><?php echo ucwords($d3['sectionname']) ?></option>
 												<?php
-<<<<<<< HEAD
 												while($d5 = mysqli_fetch_array($d4)) {
-=======
-												while($d5 = mysql_fetch_array($d4)) {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 													$selected = ($d5['id'] == $startcategory) ? ' selected="selected"' : '';
 													?>
 													<option<?php echo $selected ?> value="<?php echo $d5['id'] ?>">&mdash;<?php echo $d5['sectionname'] ?></option>
@@ -398,11 +381,7 @@ function prefs_content() {
 											if(is_dir($themesdir)) {
 												if($dh = opendir($themesdir)) {
 													while(($file = readdir($dh)) !== false) {
-<<<<<<< HEAD
 														if(is_dir($themesdir."/".$file) && $file != '.' && $file != '..' && substr($file, 0, 1) != '.') {
-=======
-														if(is_dir($themesdir."/".$file) && $file != '.' && $file != '..') {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 															echo ($file == $theme) ? '<option selected="selected">'.$file.'</option>' : '<option>'.$file.'</option>';
 														}
 													}
@@ -655,7 +634,6 @@ function prefs_content() {
 
 							<div class="span6">
 
-<<<<<<< HEAD
 								<!-- /*   Moderate all posts   //===============================*/ -->
 								<div class="control-group">
 									<div class="controls">
@@ -667,8 +645,6 @@ function prefs_content() {
 									</div>
 								</div>
 
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 								<!-- /*   Moderate all comments   //===============================*/ -->
 								<div class="control-group">
 									<div class="controls">
@@ -687,7 +663,6 @@ function prefs_content() {
 										<input name="floodcontrol" type="text" class="span12" id="floodcontrol" value="<?php echo $option->floodcontrol;?>" <?php popOver('bottom', L_PREFS_USER_FLOODING, L_PREFS_USER_FLOODING_HELP); ?> />
 									</div>
 								</div>
-<<<<<<< HEAD
 
 								<!-- /*   required field list   //==============================*/ -->
 								<div class="row-fluid">
@@ -708,8 +683,6 @@ function prefs_content() {
 										</div>
 									</div>
 								</div>
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							</div>
 						</div>
 

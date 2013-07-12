@@ -7,14 +7,8 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 //Must be included at the top of all mod files.
-<<<<<<< HEAD
 if(!defined('EXPANSE') || !$auth->Authorized){die('<div class="alert alert-message alert-danger fade in" data-alert="alert"><p>You have no permissions to edit this file.</p></div>');}
 
-=======
-if(!defined('EXPANSE')) {
-	die('Sorry, but this file cannot be directly viewed.');
-}
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 ?>
 <script type="text/javascript" src="modules/events/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="modules/events/bootstrap-timepicker.js"></script>
@@ -80,11 +74,7 @@ if(ADDING):
 			<div class="control-group">
 				<label for="descr" class="control-label"><?php echo L_EVENTS_BODY ?></label>
 				<div class="controls">
-<<<<<<< HEAD
 					<textarea name="descr" id="descr" class="span12 descr"></textarea>
-=======
-					<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 		</div>
@@ -183,11 +173,7 @@ elseif(EDITING):
 				<div class="control-group">
 					<label for="descr" class="control-label"><?php echo L_EVENTS_BODY ?></label>
 					<div class="controls">
-<<<<<<< HEAD
 						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : ""; ?></textarea>
-=======
-						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					</div>
 				</div>
 			</div>
@@ -215,13 +201,8 @@ elseif(EDITING):
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
 	<?php elseif(EDIT_LIST): ?>
-<<<<<<< HEAD
 		<?php $the_module->doSort(); ?>
 		<div class="row-fluid">
-=======
-		<div class="row">
-				<?php $the_module->doSort(); ?>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span12">
 				<?php
 					$itemsList = paginate($itemsList, '', EDIT_LIMIT);

@@ -1,11 +1,7 @@
 /*
 ------------------------------------------------------------
 Expanse
-<<<<<<< HEAD
 http://expanse.io
-=======
-http://expansecms.org
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 Content management for the web deisgner, by the web designer
 Written, with love, by Ian Tearle @iantearle
 Based on original work by Nate Cavanaugh and Jason Morrison
@@ -137,10 +133,6 @@ Misc.
 	filter:alpha(opacity=50);
 	-moz-opacity:.5;
 	opacity:.5;
-<<<<<<< HEAD
-=======
-	position:relative;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 #itemList div.deleting * {

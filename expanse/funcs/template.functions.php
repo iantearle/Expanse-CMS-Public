@@ -258,11 +258,7 @@ function prepare_menu_content($menu) {
 			$menu[$k]->category_link = "{$menu[$k]->category_link}&amp;subcat=$val->id" . $theme_suffix;
 			$menu[$k]->category_link = (CLEAN_URLS) ? "{$menu[$k]->category_link}/$val->dirtitle" . $theme_suffix : $menu[$k]->category_link;
 		}
-<<<<<<< HEAD
 		$menu[$k]->link =& $menu[$k]->category_link;
-=======
-		$menu[$k]->link =&  $menu[$k]->category_link;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		foreach($menu[$k]->subcats as $i => $v) {
 			$menu[$k]->subcats[$i]->yoursite = YOUR_SITE;
 			$menu[$k]->subcats[$i]->title = isset($v->sectionname) ? $v->sectionname : $v->title;
@@ -554,10 +550,7 @@ function inject_variables($tpl_obj, $vars) {
 * @return string $return
 */
 function expanse($arg = '', $extraVars = array(), $return = false) {
-<<<<<<< HEAD
 	if(!$arg) { return; }
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	$content = prepare_content($arg, $extraVars, $return );
 	$content['page'] = applyOzone('page_content', $content['page']);
 	if(!$return ) {
@@ -866,10 +859,7 @@ function assignContent($content, $extraVars = array()) {
 	$paypal_tax = $option->paypal_tax;
 	$paypal_handling_cart = $option->paypal_handling_cart;
 	$customFields = new Expanse('customfields');
-<<<<<<< HEAD
 	$i18nFields = new Expanse('i18n');
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	$uploads_url = UPLOADS_DIR;
 	$error_img = $expanseurl . 'images/' . ERROR_IMG;
 	$current_cat = !empty($pcat) ? $pcat : $option->startcategory;
@@ -921,20 +911,12 @@ function assignContent($content, $extraVars = array()) {
 		$content[$k]->uploads_url = $uploads_url;
 
 		//Image
-<<<<<<< HEAD
 		$content[$k]->image = (!empty($itemObj->image)) ? $uploads_url . $itemObj->image : null;
-=======
-		$content[$k]->image = (!empty($itemObj->image)) ? $uploads_url . '/' . $itemObj->image : null;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$content[$k]->image_name = $itemObj->image;
 		$content[$k]->image_tag = '<img src="' . ((!is_null($content[$k]->image) ? $content[$k]->image : $error_img)) . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
 
 		//Thumbnail
-<<<<<<< HEAD
 		$content[$k]->thumbnail = ($itemObj->autothumb == 1 && empty($itemObj->thumbnail) ? $expanseurl . 'funcs/tn.lib.php?id=' . $itemObj->id . '&amp;thumb=1' : (!empty($itemObj->thumbnail) ? $uploads_url . $itemObj->thumbnail : null));
-=======
-		$content[$k]->thumbnail = ($itemObj->autothumb == 1 && empty($itemObj->thumbnail) ? $expanseurl . 'funcs/tn.lib.php?id=' . $itemObj->id . '&amp;thumb=1' : (!empty($itemObj->thumbnail) ? $uploads_url . '/' . $itemObj->thumbnail : null));
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$content[$k]->thumbnail_name = $itemObj->thumbnail;
 		$content[$k]->thumbnail_tag = '<img src="' . $content[$k]->thumbnail . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
 
@@ -1055,11 +1037,7 @@ function assignContent($content, $extraVars = array()) {
 			$itemImages[$index]->image_count = count($itemImages);
 
 			//Image
-<<<<<<< HEAD
 			$itemImages[$index]->image = $uploads_url . $image_val->image;
-=======
-			$itemImages[$index]->image = $uploads_url . '/' . $image_val->image;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			$itemImages[$index]->image_tag = '<img src="' . $itemImages[$index]->image . '" title="' . $content[$k]->title . '" alt="' . $content[$k]->title . '" />';
 			$itemImages[$index]->image_name = $itemImages[$index]->image;
 

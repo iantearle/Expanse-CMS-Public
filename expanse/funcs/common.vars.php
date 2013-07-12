@@ -74,11 +74,7 @@ define('CMS_NAME', (empty($cms_name) || !$private_label ? 'Expanse' : $cms_name)
 define('COMPANY_NAME', empty($company_name) || !$private_label ? 'Expanse Content Management System' : $company_name);
 define('COMPANY_URL', empty($company_url) || !$private_label ? 'http://expanse.io/' : $company_url);
 define('COMPANY_LOGO', (empty($company_logo) ? false : $company_logo));
-<<<<<<< HEAD
 define('CMS_VERSION', '2.3');
-=======
-define('CMS_VERSION', '2.0');
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 define('EXPANSE_FOLDER', (empty($expanse_folder) ? 'expanse' : $expanse_folder));
 define('USER_IP', $_SERVER['REMOTE_ADDR']);
 define('PREFIX', (isset($Database) && is_object($Database) ? $Database->Prefix : (isset($CONFIG) ? $CONFIG['prefix'] : '')));

@@ -59,7 +59,6 @@ class outputMessages {
 					$output .= '<div class="alert alert-block alert-warning fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>'.$val.'</p></div>';
 				}
 			}
-
 		} else {
 			if(empty($more)) {
 				$output .= $message;
@@ -112,8 +111,6 @@ class outputMessages {
 		$finaltitle = applyOzone('admin_title',$finaltitle);
 		$main_css = 'css/expanse.css.php'.($is_install ? '?extend=install': '');
 		$main_css = applyOzoneAction('admin_css_url', $main_css);
-		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
-		$main_js = applyOzoneAction('admin_js_url', $main_js);
 		?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -132,18 +129,10 @@ class outputMessages {
 	<link rel="shortcut icon" href="favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="<?php echo $main_css ?>" />
 	<?php echo (!empty($module_css)) ? '<link rel="stylesheet" type="text/css" href="'.$module_css.'" />' : ''; ?>
-<<<<<<< HEAD:expanse/funcs/class.output.php
 	<link rel="stylesheet" href="javascript/redactor/redactor.css" />
 	<script type="text/javascript">document.write('<link rel="stylesheet" type="text/css" href="css/expanse.js.css" />');</script>
 	<script type="text/javascript" src="javascript/modernizr.min.js"></script>
 	<?php
-=======
-	<script type="text/javascript">document.write('<link rel="stylesheet" type="text/css" href="css/expanse.js.css" />');</script>
-	<script type="text/javascript" src="javascript/modernizr.min.js"></script>
-	<script type="text/javascript" src="<?php echo $main_js ?>"></script>
-	<?php
-	echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>' : '';
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/output.class.php
 	if(isset($xajax) && is_object($xajax)) { $xajax->printJavascript("./funcs/"); }
 	$company_logo = COMPANY_LOGO;
 	if(!empty($company_logo) && CUSTOM_INSTALL) { ?>
@@ -226,6 +215,8 @@ class outputMessages {
 		$is_admin = (isset($auth) && is_object($auth) && $auth->Admin == true);
 		$upgradable = (defined('UPGRADE_AVAILABLE') && UPGRADE_AVAILABLE == true);
 		$show_label = (isset($_SESSION['username']) && $upgradable && $is_admin);
+		$main_js = 'javascript/expanse.js.php'.(isset($_GET['cat_id']) ? '?full=true' : '');
+		$main_js = applyOzoneAction('admin_js_url', $main_js);
 		?>
 		<div id="push"></div>
 	</div>
@@ -239,11 +230,7 @@ class outputMessages {
 		<?php
 		if($show_label) {
 			?>
-<<<<<<< HEAD:expanse/funcs/class.output.php
 			<p id="upgrade"><a href="http://expanse.io/download/" target="_blank"><?php printf(L_UPGRADE_AVAILABLE, UPGRADE_VERSION); ?></a></p>
-=======
-			<p id="upgrade"><a href="http://expansecms.org/download/" target="_blank"><?php printf(L_UPGRADE_AVAILABLE, UPGRADE_VERSION); ?></a></p>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/output.class.php
 			<?php
 		}
 		global $LEX_JS;
@@ -252,14 +239,11 @@ class outputMessages {
 		echo '</div>';
 		applyOzoneAction('admin_footer');
 		?>
-<<<<<<< HEAD:expanse/funcs/class.output.php
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo $main_js ?>"></script>
 	<script src="javascript/redactor/redactor.js"></script>
 	<?php echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>': ''; ?>
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/output.class.php
 </body>
 </html>
 		<?php

@@ -19,10 +19,7 @@ User Module - Global styling
 	-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);
 	-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);
 	box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);
-<<<<<<< HEAD
 	margin-top: 10px;
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 .descr {
@@ -180,7 +177,6 @@ Item list
 
 #itemList fieldset {
 	border:0;
-<<<<<<< HEAD
 	position:absolute;
 	bottom:10px;
 	right:0;
@@ -202,16 +198,6 @@ Item list
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#ffffff', EndColorStr='#dddddd');
 	border: solid #cfcfcf 1px;
 	border-right: none;
-=======
-	background:url(../images/delete_tag.gif) no-repeat;
-	position:absolute;
-	bottom:10px;
-	right:0;
-	width:75px;
-	height:25px;
-	padding:5px 0 0;
-	text-align:right;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 #itemList ul {

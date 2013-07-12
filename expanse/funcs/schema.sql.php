@@ -87,10 +87,7 @@ $schema['structure'] =
   `use_default_thumbsize` tinyint(1) NOT NULL DEFAULT '1',
   `descr` longtext NOT NULL,
   `created` int(10) DEFAULT NULL,
-<<<<<<< HEAD
   `updated` int(10) DEFAULT NULL,
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
   `dirtitle` varchar(255) NOT NULL DEFAULT '',
   `event_date` varchar(45) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',

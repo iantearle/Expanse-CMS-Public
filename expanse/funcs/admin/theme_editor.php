@@ -209,11 +209,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 			<form method="get" action="" class="form-inline">
 				<input name="cat" type="hidden" value="admin" />
 				<input name="sub" type="hidden" value="theme_editor" />
-<<<<<<< HEAD
 				<div class="row-fluid">
-=======
-				<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					<div class="span12">
 						<div class="form-actions">
 							<label for="theme" class="control-label"><?php echo L_THEME_SELECT_THEME ?></label>
@@ -281,11 +277,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 				</div>
 			</form>
 			<form action="" method="post" accept-charset="utf-8" class="form-stacked" id="theme_editor_form">
-<<<<<<< HEAD
 				<div class="row-fluid">
-=======
-				<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					<div class="span12">
 						<?php
 						$filename = urldecode($theme.'/'.$themefile);
@@ -345,11 +337,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 		<?php
 	} else {
 		?>
-<<<<<<< HEAD
 		<div id="themeEditor" class="row-fluid">
-=======
-		<div id="themeEditor" class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span12">
 				<?php
 					if(!is_writable(EXPANSEPATH.'/themes')) {
@@ -365,14 +353,11 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 						$yoursite = YOUR_SITE;
 						$active_theme = getOption('theme');
 						foreach($themes as $ind => $theme) {
-<<<<<<< HEAD
 							$theme_css_file = file_exists("$expanse_dir/themes/$theme/css/$theme.css") ? "$expanse_dir/themes/$theme/css/$theme.css" : "$expanse_dir/themes/$theme/css/styles.css";
 							$theme_info = theme_info($theme_css_file);
 							if(defined('SITE') && (empty($theme_info->Site) && !$theme_info->Site)) {
 								continue;
 							}
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							$preview_img = "$expanse_dir/themes/$theme/images/preview.png";
 							$preview_img_url = EXPANSE_URL."themes/$theme/images/preview.png"; ?>
 							<tr<?php echo ($theme == $active_theme) ?  ' class="activeTheme"' : (($ind % 2) ? ' class="altRow"' : ''); ?>>
@@ -385,11 +370,6 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 								</td>
 								<td class="themeInfo">
 									<?php
-<<<<<<< HEAD
-=======
-									$theme_css_file = file_exists("$expanse_dir/themes/$theme/css/$theme.css") ? "$expanse_dir/themes/$theme/css/$theme.css" : "$expanse_dir/themes/$theme/css/styles.css";
-									$theme_info = theme_info($theme_css_file);
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 									if(has_theme_info($theme_info)) {
 										?>
 										<h3><?php echo !empty($theme_info->Name) ? $theme_info->Name : str_replace('_', ' ', $theme); echo !empty($theme_info->Author) ? '<small> '.L_THEME_BY.' '.$theme_info->Author.'</small>' : ''; ?></h3> <?php
@@ -436,11 +416,7 @@ Author URL: '.((isset($users->url) && !empty($users->url)) ? $users->url : $your
 		<?php
 		if(is_writable(EXPANSEPATH.'/themes')) {
 			?>
-<<<<<<< HEAD
 			<div class="row-fluid">
-=======
-			<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				<div class="span12">
 					<fieldset>
 						<legend><?php echo L_THEME_CREATE_TITLE ?></legend>

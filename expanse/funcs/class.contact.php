@@ -75,7 +75,7 @@ class contactProcess {
 			'final' => ''
 		);
 		$domain_check_options = array('allowed_schemes' => $allowed_protocols, 'domain_check' => $check_for_url_dns);
-		foreach ($_POST as $ind => $val) {
+		foreach($_POST as $ind => $val) {
 			$postArray = array();
 			$val = trim($val);
 			$post_index = strtolower($ind);
@@ -118,7 +118,6 @@ class contactProcess {
 					}
 					break;
 				}
-<<<<<<< HEAD:expanse/funcs/class.contact.php
 				case strpos($post_index, '_phone_number') : {
 					$ind = str_replace('_phone_number', '', $ind);
 					if(!checkPhone($val)) {
@@ -126,8 +125,6 @@ class contactProcess {
 					}
 					break;
 				}
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/contact.class.php
 			}
 
 			if(!strpos($post_index, '_allow_html')) {
@@ -145,7 +142,6 @@ class contactProcess {
 				$contact->{$ind} = trim($val);
 			}
 		} //end post loop
-<<<<<<< HEAD:expanse/funcs/class.contact.php
 
 		$arrayKeys = array();
 		foreach($_POST as $ind => $val) {
@@ -153,9 +149,6 @@ class contactProcess {
 			$arrayKeys[] = $ind;
 		}
 
-=======
-		$arrayKeys = array_keys($_POST);
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/contact.class.php
 		$array_diff = array_diff($RequiredFields, $arrayKeys);
 
 		if($array_diff) {

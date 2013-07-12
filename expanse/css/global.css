@@ -8,11 +8,7 @@ body {
 
 }
 .container-narrow {
-<<<<<<< HEAD
 	width: 640px;
-=======
-	width: 740px;
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	margin: 0 auto;
 }
 .login,
@@ -55,7 +51,6 @@ body {
 	left:-34px;
 	top:5px;
 	border:solid #cfcfcf 2px;
-<<<<<<< HEAD
 }
 
 .gravatar,.gravatar img {
@@ -66,18 +61,6 @@ body {
 	border-radius:50px;
 }
 
-=======
-}
-
-.gravatar,.gravatar img {
-	width:25px;
-	height:25px;
-	-webkit-border-radius:50px;
-	-moz-border-radius:50px;
-	border-radius:50px;
-}
-
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 .row {
 	margin-bottom:10px;
 }
@@ -94,12 +77,9 @@ body {
 Accordion Styles
 ============================================================
 */
-<<<<<<< HEAD
 #stretchContainer {
 	margin-top: 10px;
 }
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 .accordion-toggle {
 	cursor:pointer;
 	padding:.2em;
@@ -190,7 +170,6 @@ h1 span {
 	background-position:5px 50%;
 	padding:.5em .5em .5em 3em;
 	margin-bottom:1em;
-<<<<<<< HEAD
 }
 
 #upgradeOverlay{
@@ -234,6 +213,4 @@ display:block;
 text-indent:-9999em;
 width: 101px;
 height: 101px;
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }

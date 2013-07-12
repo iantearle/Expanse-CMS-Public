@@ -46,7 +46,6 @@ regenerate_session(false);
 $output = '';
 include_once('format.php');
 
-<<<<<<< HEAD
 
 /**
  * debug function.
@@ -55,8 +54,6 @@ include_once('format.php');
  * @param mixed $data
  * @return void
  */
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 function debug($data) {
 	echo '<div class="debug_info"><pre>';
 	$args = func_get_args();
@@ -351,11 +348,7 @@ function installFile($path='') {
 			</div>
 		</div>
 		<div class="container">
-<<<<<<< HEAD
 			<div class="row-fluid">
-=======
-			<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				<?php
 				if($is_installed){ ?>
 					<div class="span8">
@@ -383,13 +376,8 @@ function installFile($path='') {
 		<!-- Begin Footer -->
 		<footer class="footer">
 			<div class="container">
-<<<<<<< HEAD
 				<div class="row-fluid">
 					<p><a href="<?php echo COMPANY_URL ?>" target="_blank"><?php echo COMPANY_NAME ?></a>. <?php printf(L_COPYRIGHT_FOOTER, date('Y'));?><?php if(!CUSTOM_INSTALL){ ?><?php echo L_MENU_SEPARATOR ?><a href="misc.php?action=license"><?php echo L_LEGAL_FOOTER ?></a><?php echo L_MENU_SEPARATOR ?><a href="http://forums.expanse.io" target="_blank"><?php echo L_SUPPORT_FOOTER ?></a><?php } ?></p>
-=======
-				<div class="row">
-					<p><a href="<?php echo COMPANY_URL ?>" target="_blank"><?php echo COMPANY_NAME ?></a>. <?php printf(L_COPYRIGHT_FOOTER, date('Y'));?><?php if(!CUSTOM_INSTALL){ ?><?php echo L_MENU_SEPARATOR ?><a href="misc.php?action=license"><?php echo L_LEGAL_FOOTER ?></a><?php echo L_MENU_SEPARATOR ?><a href="http://forums.expansecms.org" target="_blank"><?php echo L_SUPPORT_FOOTER ?></a><?php } ?></p>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 		</footer>
@@ -470,7 +458,6 @@ function fixServerSettings() {
 	}
 }
 
-<<<<<<< HEAD
 /**
  * checkFiles function.
  *
@@ -482,8 +469,6 @@ function fixServerSettings() {
  * @param mixed $itemID (default: null)
  * @return void
  */
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 function checkFiles($filearr, $uploaddir, $requireimage=false, $filter=array(), $itemID=null) {
     $maxsize = ini_get("upload_max_filesize");
     $final = array('errors' => array(),
@@ -655,7 +640,6 @@ function getFiles($dir, $type='all', $recursive=0) {
 		if($dh = opendir($dir)) {
 			$filearr = array('dirs' => array(), 'files' => array());
 			while(($file = readdir($dh)) !== false) {
-<<<<<<< HEAD
 				if(!is_dir($dir."/".$file) && $file != '.' && $file != '..' && substr($file, 0, 1) != '.') {
 					$filearr['files'][] = $file;
 				} elseif(is_dir($dir."/".$file) && $file != '.' && $file != '..' && !$recursive && substr($file, 0, 1) != '.') {
@@ -663,15 +647,6 @@ function getFiles($dir, $type='all', $recursive=0) {
 				}
 				if($recursive) {
 					if(is_dir($dir."/".$file) && $file != '.' && $file != '..' && substr($file, 0, 1) != '.') {
-=======
-				if(!is_dir($dir."/".$file) && $file != '.' && $file != '..') {
-					$filearr['files'][] = $file;
-				} elseif(is_dir($dir."/".$file) && $file != '.' && $file != '..' && !$recursive) {
-					$filearr['dirs'][] = $file;
-				}
-				if($recursive) {
-					if(is_dir($dir."/".$file) && $file != '.' && $file != '..') {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 						$filearr['dirs'][$file] = getFiles($dir."/".$file, 'all', 1);
 					}
 				}
@@ -2080,15 +2055,12 @@ function set_dirtitle($obj, $xobj = 'items') {
 	return (!empty($_POST['dir_title'])) ? ((trim($_POST['dir_title']) == $obj->dirtitle) ? $obj->dirtitle : unique_dirtitle(dirify(trim($_POST['dir_title'])), $xobj)) : (!empty($obj->title) ? unique_dirtitle(dirify($obj->title), $xobj) : $obj->dirtitle);
 }
 
-<<<<<<< HEAD
 /**
  * mod_rewrite function.
  *
  * @access public
  * @return void
  */
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 function mod_rewrite() {
 	if(!_APACHE) {
 		return false;
@@ -2164,7 +2136,6 @@ function &get_dao($dao, $clone=true) {
  * Module class.
  */
 class Module {
-<<<<<<< HEAD
 	public $name = '';
 	public $description = '';
 	public $authorURL = 'http://expanse.io';
@@ -2182,18 +2153,6 @@ class Module {
 	 * @return void
 	 */
 	public function Module() {
-=======
-	var $name = '';
-	var $description = '';
-	var $authorURL = 'http://expansecms.org';
-	var $author = array('Ian Tearle' => 'http://iantearle.com');
-	var $version = '2.0';
-	var $modURL = 'http://expansecms.org';
-	var $tableNameNew = 'items';
-	var $Exclude = false;
-	var $LEX = array();
-	function Module() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$this->Database = $GLOBALS['Database']; // Global db connection
 		$this->output = $GLOBALS['outmess']; // Global output handler
 		$this->auth = $GLOBALS['auth']; // Global authentication object
@@ -2203,11 +2162,8 @@ class Module {
 		$this->custom = get_dao('customfields');
 		// active-record object for the sections table
 		$this->sections = get_dao('sections');
-<<<<<<< HEAD
 		// active-record object for the languages (i18n) table
 		$this->i18n = get_dao('i18n');
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$this->cat_id = CAT_ID; // Look for valid category id
 		$this->item_id = check_get_id('id'); // Look for valid item id
 		$this->itemsList = array();
@@ -2223,7 +2179,6 @@ class Module {
 		//$this->load_language();
 	}
 
-<<<<<<< HEAD
 	/**
 	 * add_title function.
 	 *
@@ -2231,9 +2186,6 @@ class Module {
 	 * @return void
 	 */
 	public function add_title() {
-=======
-	function add_title() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$sections = $this->sections;
 		$sections->Get($this->cat_id);
 		$page_title = '';
@@ -2255,7 +2207,6 @@ class Module {
 		add_title(sprintf($page_title,$proper_title), 2);
 	}
 
-<<<<<<< HEAD
 
 	/**
 	 * add function.
@@ -2264,9 +2215,6 @@ class Module {
 	 * @return void
 	 */
 	public function add() {
-=======
-	function add() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 		//Declare method vars
 		$items = $this->items;
@@ -2316,7 +2264,6 @@ class Module {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * edit function.
 	 *
@@ -2324,9 +2271,6 @@ class Module {
 	 * @return void
 	 */
 	public function edit() {
-=======
-	function edit() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 		//Declare method vars
 		$items = $this->items;
@@ -2365,7 +2309,6 @@ class Module {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * delete function.
 	 *
@@ -2373,9 +2316,6 @@ class Module {
 	 * @return void
 	 */
 	public function delete() {
-=======
-	function delete() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		if(isset($_POST['del']) && !empty($_POST['del'])) {
 			$upfolder = UPLOADS;
 			$delete = (isset($_POST['del'])) ? $_POST['del'] : array();
@@ -2442,7 +2382,6 @@ class Module {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * more function.
 	 *
@@ -2460,13 +2399,6 @@ class Module {
 	 * @return void
 	 */
 	public function get_single() {
-=======
-	function more() {
-
-	}
-
-	function get_single() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$items =& $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
@@ -2478,7 +2410,6 @@ class Module {
 		return ozone_walk($this->items, 'admin_item_');
 	}
 
-<<<<<<< HEAD
 	/**
 	 * get_list function.
 	 *
@@ -2486,9 +2417,6 @@ class Module {
 	 * @return void
 	 */
 	public function get_list() {
-=======
-	function get_list() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$items =& $this->items;
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
@@ -2520,7 +2448,6 @@ class Module {
 		return $this->itemsList;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * addSubcat function.
 	 *
@@ -2529,9 +2456,6 @@ class Module {
 	 * @return void
 	 */
 	public function addSubcat($new_subcat = '') {
-=======
-	function addSubcat($new_subcat = '') {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$items = $this->items;
 		$cat_id = $this->cat_id;
 		$new_home = $this->new_home;
@@ -2590,7 +2514,6 @@ class Module {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * manage_language_fields function.
 	 *
@@ -2629,9 +2552,6 @@ class Module {
 	 * @return void
 	 */
 	public function moveOrCopy($items) {
-=======
-	function moveOrCopy($items) {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$new_item = null;
 		$new_home = $this->new_home;
 		//$items =& $this->items;
@@ -2663,7 +2583,6 @@ class Module {
 		return $is_moved;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * custom_fields function.
 	 *
@@ -2671,18 +2590,11 @@ class Module {
 	 * @return void
 	 */
 	public function custom_fields() {
-=======
-	function custom_fields() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$items =& $this->items;
 		$custom =& $this->custom;
 		?>
 		<fieldset id="customGroup">
-<<<<<<< HEAD
 			<legend <?php popOver('left', L_CUSTOM_FIELDS_TITLE,L_CUSTOM_FIELDS_HELP); ?>><?php echo L_CUSTOM_FIELDS_TITLE; ?></legend>
-=======
-			<legend><?php echo L_CUSTOM_FIELDS_TITLE; tooltip(L_CUSTOM_FIELDS_TITLE,L_CUSTOM_FIELDS_HELP); ?></legend>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<?php
 			$itemFields = (EDITING) ? $custom->GetList(array(array('itemid', '=', $items->id))) : array();
 			if(!empty($itemFields)) {
@@ -2690,28 +2602,16 @@ class Module {
 					$k = $key+1;
 					$custom_var = '{custom_var'.$k.'}';
 					?>
-<<<<<<< HEAD
 					<div id="customLabel<?php echo $k ?>Group" class="row-fluid customFieldGroup">
 						<div class="span6">
 							<div class="control-group">
 								<div class="controls">
 									<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span12 fieldLabel text" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
-=======
-					<div id="customLabel<?php echo $k ?>Group" class="row customFieldGroup">
-						<div class="span6">
-							<div class="control-group">
-								<div class="controls">
-									<input name="custom[<?php echo $k ?>][label]" id="customLabel<?php echo $k; ?>" type="text" class="span6 fieldLabel text" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" value="<?php echo view($ifield->field); ?>" autocomplete="off" />
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 								</div>
 							</div>
 							<div class="control-group">
 								<div class="controls">
-<<<<<<< HEAD
 									<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span12 fieldValue customFieldGroupDescr" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"><?php echo $ifield->value ?></textarea>
-=======
-									<textarea id="customValue<?php echo $k ?>" name="custom[<?php echo $k ?>][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"><?php echo $ifield->value ?></textarea>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 								</div>
 							</div>
 							<div class="control-group">
@@ -2726,28 +2626,16 @@ class Module {
 				}
 			} else {
 				?>
-<<<<<<< HEAD
 				<div id="customLabel1Group" class="row-fluid customLabelGroup">
 					<div class="span6">
 						<div class="control-group">
 							<div class="controls">
 								<input type="text" class="span12 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
-=======
-				<div id="customLabel1Group" class="row customLabelGroup">
-					<div class="span6">
-						<div class="control-group">
-							<div class="controls">
-								<input type="text" class="span6 fieldLabel text" id="customLabel1" name="custom[1][label]" autocomplete="off" value="" placeholder="<?php echo L_JS_CUSTOM_LABEL_TEXT ?>" />
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							</div>
 						</div>
 						<div class="control-group">
 							<div class="controls">
-<<<<<<< HEAD
 								<textarea id="customValue1" name="custom[1][value]" class="span12 fieldValue customFieldGroupDescr" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"></textarea>
-=======
-								<textarea id="customValue1" name="custom[1][value]" class="span6 fieldValue" placeholder="<?php echo L_JS_CUSTOM_FIELD_TEXT ?>"></textarea>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							</div>
 						</div>
 						<div class="control-group">
@@ -2765,7 +2653,6 @@ class Module {
 		<input type="hidden" value="<?php echo view(get_custom_fields()); ?>" id="customList"  />
 		<div id="autosuggest"><ul></ul></div>
 		<?php
-<<<<<<< HEAD
 	}
 
 	/**
@@ -2814,8 +2701,6 @@ class Module {
 			</div>
 		<?php
 		}
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	}
 
 
@@ -2840,11 +2725,7 @@ class Module {
 			}
 		}
 		?>
-<<<<<<< HEAD
 		<div class="row-fluid">
-=======
-		<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span5">
 				<div class="control-group">
 					<label for="cid" class="control-label"><?php echo L_SUB_CATEGORY ?></label>
@@ -2887,7 +2768,6 @@ class Module {
 						<div class="controls">
 							<select name="new_home" id="new_home" class="span5">
 								<?php
-<<<<<<< HEAD
 
 								foreach($more_cats as $other_cat) {
 									$cat_id = new stdClass();
@@ -2896,11 +2776,6 @@ class Module {
 									$other_cat->cat_type == 'pages') {
 										continue;
 									}
-=======
-								$other_cat = new stdClass();
-								foreach($more_cats as $other_cat) {
-									if($other_cat == $cat_id || $other_cat->cat_type == 'pages'){continue;}
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 									?>
 									<option value="<?php echo $other_cat->id ?>"><?php echo $other_cat->sectionname ?></option>
 									<?php
@@ -2916,7 +2791,6 @@ class Module {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * doSharing function.
 	 *
@@ -2924,9 +2798,6 @@ class Module {
 	 * @return void
 	 */
 	public function doSharing() {
-=======
-	function doSharing() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		$items = $this->items;
 		$sections = $this->sections;
 		$expanseurl = EXPANSE_URL;
@@ -2973,7 +2844,6 @@ class Module {
 		applyOzoneAction('do_sharing');
 	}
 
-<<<<<<< HEAD
 	/**
 	 * doCleanURLTitles function.
 	 *
@@ -2981,9 +2851,6 @@ class Module {
 	 * @return void
 	 */
 	public function doCleanURLTitles() {
-=======
-	function doCleanURLTitles() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		if(!CLEAN_URLS) {
 			return;
 		}
@@ -2999,7 +2866,6 @@ class Module {
 		<?php
 	}
 
-<<<<<<< HEAD
 	/**
 	 * doDateTimeForms function.
 	 *
@@ -3007,9 +2873,6 @@ class Module {
 	 * @return void
 	 */
 	public function doDateTimeForms() {
-=======
-	function doDateTimeForms() {
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		global $months;
 		$items =& $this->items;
 		$adding = empty($items->created) || is_posting(L_BUTTON_ADD);
@@ -3470,7 +3333,6 @@ function helpBlock($help_text) {
 	<?php
 }
 
-<<<<<<< HEAD
 /**
  * popOver function.
  *
@@ -3480,8 +3342,6 @@ function helpBlock($help_text) {
  * @param mixed $help_text
  * @return void
  */
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 function popOver($direction, $title, $help_text) {
 	$unique_id = 'popover_'.random_string();
 	if(is_array($help_text) && isset($help_text[0])) {
@@ -3492,7 +3352,6 @@ function popOver($direction, $title, $help_text) {
     <?php
 }
 
-<<<<<<< HEAD
 /**
  * random_string function.
  *
@@ -3500,8 +3359,6 @@ function popOver($direction, $title, $help_text) {
  * @param int $length (default: 6)
  * @return void
  */
-=======
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 function random_string($length = 6) {
 	return substr(md5(uniqid(microtime())), 0, $length);
 }

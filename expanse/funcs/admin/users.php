@@ -300,11 +300,7 @@ function users_content() {
 			if($hasitems) {
 				$user->permissions = unserialize($user->permissions);
 				?>
-<<<<<<< HEAD
 				<div class="row-fluid">
-=======
-				<div class="row">
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					<div class="span4">
 						<input type="hidden" value="1" id="edit_user" />
 						<div class="control-group">
@@ -349,13 +345,7 @@ function users_content() {
 					<div class="span4">
 						<?php
 						if($user->primary_user) {
-<<<<<<< HEAD
 							?><div class="hidden"><?php
-=======
-							?>
-							<div class="hidden">
-							<?php
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 						}
 						?>
 						<fieldset id="adminBox">
@@ -367,13 +357,7 @@ function users_content() {
 							</label>
 							<?php
 							if($user->admin == 1) {
-<<<<<<< HEAD
 								?><span id="noteText" class="alert alert-info formNote" style="visibility: visible; opacity: 1; "><?php echo L_JS_ADMIN_RIGHTS; ?></span><?php
-=======
-								?>
-								<span id="noteText" class="alert alert-info formNote" style="visibility: visible; opacity: 1; "><?php echo L_JS_ADMIN_RIGHTS; ?></span>
-								<?php
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							}
 							?>
 							<p id="unCheck">&nbsp;</p>
@@ -401,13 +385,7 @@ function users_content() {
 						</fieldset>
 						<?php
 						if($user->primary_user) {
-<<<<<<< HEAD
 							?></div><?php
-=======
-							?>
-							</div>
-							<?php
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 						}
 						?>
 					</div>

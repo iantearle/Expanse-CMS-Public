@@ -53,12 +53,8 @@ function add()
         $items->created = dateTimeProcess();
         $items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
 		$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
-<<<<<<< HEAD
 		$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
 		$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
-=======
-		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//Add a subcat
 		$items->cid = $this->addSubcat();
         //Save the info
@@ -73,11 +69,7 @@ function add()
             //Reset POST
             $_POST = array();
         } else {
-<<<<<<< HEAD
             printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysqli_error())));
-=======
-            printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysql_error())));
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         }
     }
 }
@@ -125,15 +117,9 @@ function edit()
             $items->width = $uploads['files']['image']['width'];
             $items->height = $uploads['files']['image']['height'];
         }
-<<<<<<< HEAD
 		$items->title = $items->title;
 		$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
 		$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
-=======
-		$items->title = html_entity_decode($items->title, ENT_QUOTES);
-		$items->descr = html_entity_decode($items->descr, ENT_QUOTES);
-		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         $items->created = dateTimeProcess($items->created);
         $items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
 		$items->dirtitle = set_dirtitle($items);
@@ -152,11 +138,7 @@ function edit()
             //Reset POST
             $_POST = array();
         } else {
-<<<<<<< HEAD
            printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($items->title, mysqli_error())));
-=======
-           printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($items->title, mysql_error())));
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         }
     }
 }

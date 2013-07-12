@@ -261,7 +261,7 @@ class _ets
 			case _ETS_EVAL:         return 'eval element';
 			case _ETS_SAFE:         return 'safe eval element';
 			case _ETS_ROOT_EVAL:    return 'eval or safe element';
-			case _ETS_PLACE:    return 'place element';
+			case _ETS_PLACE:    	return 'place element';
 		}
 	}
 	/**

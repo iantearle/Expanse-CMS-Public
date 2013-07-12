@@ -53,7 +53,3 @@ if($module_exists) {
 	echo L_NOTHING_HERE;
 }
 ?>
-<<<<<<< HEAD
-=======
-</form>
->>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
