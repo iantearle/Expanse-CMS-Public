@@ -42,7 +42,10 @@ Expanse - Content Management For Web Designers, By A Web Designer
 if(!defined('EXPANSE')) {
 	return;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 /*
 ------------------------------------------------------------
 Language: English - US
@@ -197,7 +200,11 @@ $LEX['prefs_updated']		= 'Your preferences have been saved';
 $LEX['prefs_update_failed']	= 'Some of your options could not be saved';
 $LEX['file_not_readable']	= 'This file cannot be read by expanse.';
 $LEX['upgrade_available']	= 'There is an upgrade to version %s';
+<<<<<<< HEAD
 $LEX['upgrade_instructions']= '<h4>Warning!</h4><p>It looks like you just upgraded your copy of %s to version %s. However, there is one final step you must take to wrap up the upgrade.<br>Go to <a href="../upgrade/">this page</a>, and press the &#8220;Finish Upgrade&#8221; button, and you\'re all set.</p>';
+=======
+$LEX['upgrade_instructions']= 'It looks like you just upgraded your copy of %s to version %s. However, there is one final step you must take to wrap up the upgrade. Go to <a href="upgrade.php">this page</a>, and press the &#8220;Finish Upgrade&#8221; button, and you\'re all set.';
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 $LEX['finish_update']		= 'Finish Update';
 $LEX['update_title']		= 'Software Update';
 $LEX['update_crumb']		= 'Updating %s';
@@ -770,7 +777,10 @@ $LEX['user_password']						= 'Password';
 $LEX['user_confirm_password']				= 'Confirm Password';
 $LEX['user_privileges']						= 'Privileges';
 $LEX['user_admin']							= 'Admin';
+<<<<<<< HEAD
 $LEX['user_admin_moderate']					= 'Moderate this user';
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 $LEX['user_moderator']						= 'Moderator';
 $LEX['user_moderator_admin']				= 'Let users modify all items in the category';
 $LEX['user_moderator_user']					= 'Let users modify only their items';

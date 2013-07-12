@@ -7,10 +7,17 @@ like so: </form><form method="post" action="">)
 ***************************************************/
 
 //Must be included at the top of all mod files.
+<<<<<<< HEAD
 if(!defined('EXPANSE') || !$auth->Authorized){die('<div class="alert alert-message alert-danger fade in" data-alert="alert"><p>You have no permissions to edit this file.</p></div>');}
 
 $size_note = sprintf('<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>', sprintf(L_SIZE_NOTE,MAX_UPLOAD));
+=======
+if(!defined('EXPANSE')){die('Sorry, but this file cannot be directly viewed.');}
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
+$size_note = sprintf('<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>%s</p></div>', sprintf(L_SIZE_NOTE,MAX_UPLOAD));
+ ?>
+<?php
 //If you're adding content, use this block
 if(ADDING) { ?>
 	<input type="hidden" name="aid" value="<?php echo $_SESSION['id']; ?>" />
@@ -104,7 +111,11 @@ if(ADDING) { ?>
 						<div class="control-group">
 							<label for="descr" class="control-label"><?php echo L_BODY ?></label>
 							<div class="controls">
+<<<<<<< HEAD
 								<textarea name="descr" id="descr" class="span12 descr"></textarea>
+=======
+								<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 							</div>
 						</div>
 					</div>
@@ -132,7 +143,11 @@ if(ADDING) { ?>
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_MASS_UPLOAD ?>" />
 		</div>
 	<?php } else { ?>
+<<<<<<< HEAD
 		<div class="row-fluid">
+=======
+		<div class="row">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span12">
 				<div class="pull-right">
 					<a href="<?php echo $_SERVER['REQUEST_URI'] ?>&upload=mass" class="btn primary"><?php echo L_GALLERY_MASS_UPLOAD ?></a>
@@ -206,13 +221,18 @@ if(ADDING) { ?>
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
 		<div class="row-fluid">
+=======
+		<div class="row">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span12">
 				<fieldset id="additional_images">
 					<legend><?php echo L_GALLERY_ADDITIONAL_IMAGES;tooltip(L_GALLERY_ADDITIONAL_IMAGES, L_GALLERY_ADDITIONAL_IMAGES_HELP) ?></legend>
 						<div class="row-fluid" id="additional_images1Group">
 							<div class="span8" id="third">
 								<div class="control-group" id="second">
+<<<<<<< HEAD
 									<label for="additional_images1" class="control-label"><?php echo L_IMAGE ?></label>
 									<div class="controls" id="first">
 										<input type="file" name="additional_images1" class="formfields" id="additional_images1" />
@@ -220,6 +240,15 @@ if(ADDING) { ?>
 								</div>
 								<div class="control-group">
 									<label for="caption1" class="control-label"><?php echo L_CAPTION ?></label>
+=======
+									<label for="additional_images1" class="control-label"><?php echo L_IMAGE ?> 1</label>
+									<div class="controls" id="first">
+										<input name="additional_images1" type="file" class="formfields" id="additional_images1" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label for="caption1" class="control-label"><?php echo L_CAPTION ?> 1</label><br />
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 									<div class="controls">
 										<textarea name="caption[additional_images1]" class="caption" id="caption1"></textarea>
 									</div>
@@ -234,7 +263,11 @@ if(ADDING) { ?>
 				<div class="control-group">
 					<label for="descr" class="control-label"><?php echo L_GALLERY_BODY ?></label>
 					<div class="controls">
+<<<<<<< HEAD
 						<textarea name="descr" id="descr" class="span12 descr"></textarea>
+=======
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					</div>
 				</div>
 			</div>
@@ -360,7 +393,11 @@ if(EDITING) {
 							$i=0;
 							foreach($add_images as $ximg) {
 								?>
+<<<<<<< HEAD
 								<div class="span3"<?php echo ($i % 4 == 0) ? ' style="margin: 0;"' : null; ?>>
+=======
+								<div class="span3"<?php echo ($i % 4 == 0) ? ' style="margin: 0;"' : null; echo $count; ?>>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 									<img src="funcs/tn.lib.php?image_id=<?php echo $ximg->id ?>&amp;dim=100" title="<?php echo view($ximg->caption); ?>" alt="<?php echo view($ximg->caption); ?>" id="addImg<?php echo $ximg->id ?>" class="thumbnails" />
 									<div class="control-group">
 										<label for="caption<?php echo $ximg->id ?>" class="control-label">Image Caption</label>
@@ -404,7 +441,11 @@ if(EDITING) {
 				<div class="control-group">
 					<label for="descr" class="control-label"><?php echo L_GALLERY_BODY ?></label>
 					<div class="controls">
+<<<<<<< HEAD
 						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : ''; ?></textarea>
+=======
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					</div>
 				</div>
 			</div>
@@ -436,8 +477,13 @@ if(EDITING) {
 			<input name="submit" type="submit" class="btn btn-primary" id="submit" value="<?php echo L_BUTTON_EDIT ?>" />
 		</div>
 	<?php } elseif(EDIT_LIST) { ?>
+<<<<<<< HEAD
 		<?php $the_module->doSort(); ?>
 		<div class="row-fluid">
+=======
+		<div class="row">
+				<?php $the_module->doSort(); ?>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<div class="span12">
 				<?php
 					$itemsList = paginate($itemsList, '', EDIT_LIMIT);

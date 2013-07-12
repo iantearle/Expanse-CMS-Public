@@ -52,10 +52,16 @@ function add()
             }
         }
         //Set individual fields
+<<<<<<< HEAD
 		$items->title = $items->title;
 		$items->descr = $items->descr;
 		$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
 		$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+=======
+		$items->title = html_entity_decode($items->title, ENT_QUOTES);
+		$items->descr = html_entity_decode($items->descr, ENT_QUOTES);
+		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         $items->created = dateTimeProcess();
         $items->pid = $items->cid = (isset($_POST['pid'])) ? $_POST['pid'] : 0;
         $items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
@@ -87,7 +93,11 @@ function add()
             //Reset POST
             $_POST = array();
         } else {
+<<<<<<< HEAD
            printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysqli_error())));
+=======
+           printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysql_error())));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         }
     }
 }
@@ -152,8 +162,12 @@ function edit()
         $items->pid = $items->cid = (isset($_POST['pid'])) ? $_POST['pid'] : 0;
         $items->dirtitle = set_dirtitle($items);
 		$items->type = 'static';
+<<<<<<< HEAD
 		$items->descr = str_replace(array('&nbsp;','<p></p>'), array(' ', ''), $items->descr);
 		$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+=======
+		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//Add a subcat
 		$items->cid = $this->addSubcat();
         //Save the info
@@ -172,7 +186,11 @@ function edit()
             //Reset POST
             $_POST = array();
         } else {
+<<<<<<< HEAD
            printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($items->title, mysqli_error())));
+=======
+           printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($items->title, mysql_error())));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
         }
     }
 }
@@ -198,7 +216,11 @@ function get_list(){
 				$sortoption = getOption('sortcats');
 				$ascending = getOption('sortdirection') == 'ASC' || $sortoption == 'order_rank' ? true : false;
 				$conditions = array(array('pid', '=', 0), array('type', '=', 'static'));
+<<<<<<< HEAD
 				if(!($auth->SectionAdmin && $auth->Admin)) {
+=======
+				if(!($auth->SectionAdmin || $auth->Admin)){
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					$conditions[] = array('aid', '=', $auth->Id);
 				}
 				$itemsList = $items->GetList($conditions, $sortoption, $ascending);

@@ -58,16 +58,26 @@ if(!ini_get('sendmail_from') && isInstalled()) {
 	$sendmail_from = getOption('adminemail');
 	ini_set('sendmail_from', $sendmail_from);
 }
+<<<<<<< HEAD
 if((basename($_SERVER['PHP_SELF']) == 'index.php') && !isset($_SESSION['upgrade_available'])) {
 	$upgrade_results = getRemoteFile('http://expanse.io/upgrade.php?version='.CMS_VERSION);
+=======
+if(basename($_SERVER['PHP_SELF']) == 'main.php' && !isset($_SESSION['upgrade_available'])) {
+	$upgrade_results = getRemoteFile('http://expansecms.org/upgrade.php?version='.CMS_VERSION);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	$upgrade_results = explode('|',$upgrade_results->results);
 	$_SESSION['upgrade_available'] = (bool) $upgrade_results[0];
 	$_SESSION['upgrade_version'] = $upgrade_results[1];
 }
+<<<<<<< HEAD
 define('UPGRADE_AVAILABLE', (isset($_SESSION['upgrade_available']) ? $_SESSION['upgrade_available'] : false));
 define('UPGRADE_VERSION', (isset($_SESSION['upgrade_available']) ? $_SESSION['upgrade_version'] : ''));
 
 date_default_timezone_set('UTC');
+=======
+define('UPGRADE_AVAILABLE', (isset($_SESSION['upgrade_available']) ? $_SESSION['upgrade_available'] : FALSE));
+define('UPGRADE_VERSION', (isset($_SESSION['upgrade_available']) ? $_SESSION['upgrade_version'] : ''));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 $headerDate	= date("l, F jS, Y");
 $output = isset($output) ? $output : '';
 

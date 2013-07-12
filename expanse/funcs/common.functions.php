@@ -194,11 +194,17 @@ function backtrace() {
 					//count how many args a there
 					$args_counter = isset($debug_array[$tmp_counter]["args"]) ? count($debug_array[$tmp_counter]["args"]) : 0;
 					//print them
+<<<<<<< HEAD
 					if(isset($_GET['context']) && $_GET['context'] == true) {
 						for($tmp_args_counter = 0; $tmp_args_counter != $args_counter; ++$tmp_args_counter) {
 							echo isset($debug_array[$tmp_counter]["args"]) ? (	is_array($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ||  is_object($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ? print_r($debug_array[$tmp_counter]["args"][$tmp_args_counter], true) : $debug_array[$tmp_counter]["args"][$tmp_args_counter] ) : '';
 							echo (($tmp_args_counter + 1) != $args_counter) ? ', ' : ' ';
 						}
+=======
+					for($tmp_args_counter = 0; $tmp_args_counter != $args_counter; ++$tmp_args_counter) {
+						echo isset($debug_array[$tmp_counter]["args"]) ? (	is_array($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ||  is_object($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ? print_r($debug_array[$tmp_counter]["args"][$tmp_args_counter], true) : $debug_array[$tmp_counter]["args"][$tmp_args_counter] ) : '';
+						echo (($tmp_args_counter + 1) != $args_counter) ? ', ' : ' ';
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					}
 					?>
 					</span><span class="func_name">)</span>
@@ -206,8 +212,15 @@ function backtrace() {
 			</tr>
 			<tr class="error_details">
 				<td>
+<<<<<<< HEAD
 					<strong>file:</strong> <?php echo isset($debug_array[$tmp_counter]["file"]) ? $debug_array[$tmp_counter]["file"] : '';?><br>
 					<strong>line:</strong> <?php echo isset($debug_array[$tmp_counter]["line"]) ? $debug_array[$tmp_counter]["line"] : '';?>
+=======
+					{<br>
+					file: <?php echo isset($debug_array[$tmp_counter]["file"]) ? $debug_array[$tmp_counter]["file"] : '';?><br>
+					line: <?php echo isset($debug_array[$tmp_counter]["line"]) ? $debug_array[$tmp_counter]["line"] : '';?><br>
+					}
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</td>
 			</tr>
 		</table>

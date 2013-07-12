@@ -43,13 +43,18 @@ if(!defined('EXPANSE')) {
 	die('Sorry, but this file cannot be directly viewed.');
 }
 
+<<<<<<< HEAD
 include('funcs/class.rss.php');
+=======
+include('funcs/rss.class.php');
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 $rss = new easyRSS;
 ?>
 <div class="row-fluid">
 	<div class="span12">
 		<div class="page-header">
+<<<<<<< HEAD
 			<h3><?php printf(L_WELCOME_HEADER, DISPLAY_NAME, CMS_NAME); ?></h3>
 		</div>
 	</div>
@@ -72,11 +77,22 @@ $rss = new easyRSS;
 	</div>
 </div>
 <hr>
+=======
+			<h1><?php printf(L_WELCOME_HEADER,DISPLAY_NAME, CMS_NAME); ?></h1>
+		</div>
+	</div>
+</div>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 <div class="row-fluid">
 	<div class="span6">
 		<div class="well">
 			<?php if (is_unsafe()){ printf(ALERT, L_PERMISSIONS_WARNING);} ?>
+<<<<<<< HEAD
 
+=======
+			<?php $totals = $auth->getTotals();?>
+			<p><?php printf(L_OVER_TOTAL_USAGE,$totals['user_count'],$totals['total_count']); ?></p>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			<?php echo  $auth->createSummary(); ?>
 		</div>
 	</div>
@@ -105,7 +121,10 @@ $rss = new easyRSS;
 			}
 		echo empty($news['items']) ? L_NEWS_NOT_LOADING : '';
 		?>
+<<<<<<< HEAD
 		<hr>
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		<div class="well">
 			<h3><?php printf(L_LATEST_BUZZ, YOUR_SITE, getOption('sitename')); ?></h3>
 			<?php

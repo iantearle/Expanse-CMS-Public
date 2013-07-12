@@ -1,0 +1,242 @@
+/*
+------------------------------------------------------------
+User Module - Gallery
+============================================================
+*/
+		#thumbNails{
+		position: relative;
+		width:65%;
+		margin:0 0 0 120px;
+		padding:0;
+		}
+		#thumbNails img{
+		margin: 1em;
+		border: 1px solid #ccc;
+		padding: 0.3em;
+		background: #fff;
+		float:left;
+		}
+		img#thumbNailThumb{
+		margin:1em 0.5em;
+		}
+		img#thumbNailMain{
+		position: relative;
+		}
+				/*
+				Additional images
+				------------------------------------------------------------
+				*/
+				* html #additionalImages{
+				float:left;
+				width:90%;
+				}
+				#additionalImages div label, #additionalImages div input{
+				display:inline;
+				float:none;
+				padding:0;
+				margin:0;
+				}
+				#additionalImages div img{
+				display:block;
+				border: 1px solid #ccc;
+				padding: 0.3em;
+				background: #fff;
+				}
+				#extraImages{
+				clear:both;
+				display:block;
+				float:left;
+				width:100%;
+				text-align:center;
+				padding: 0.3em;
+				}
+				* html #extraImages label{
+				background: #efefef;
+				}
+				#extraImages div{
+				float:left;
+				padding: 0.5em;
+				}
+				#additionalImages .uploadGroup label, #additionalImages .uploadGroup input{
+					display: block;
+					float: left;
+					width: 150px;
+					margin: 1em 0 5px 0;
+				}
+				#additionalImages .uploadGroup label{
+					text-align: right;
+					width: 10em;
+					padding-right: 1em;
+					font-weight: bold;
+				}
+				#additionalImages .uploadGroup input{
+					width:60%;
+				}
+				/*
+				Cropper/Scaler
+				------------------------------------------------------------
+				*/
+				#dragBox{
+				position:absolute;
+				border:1px solid #4D687F;
+				background:#C9D7E2;
+				font-size:1px;
+				filter:alpha(opacity=50);
+				-moz-opacity:0.50;
+				opacity: 0.50;
+				cursor:move; 
+				margin:0;
+				}
+				#canvas{
+				background:#fff;
+				overflow:visible;
+				cursor:crosshair;
+				padding:0;
+				border:1px double #B6C2D7;
+				}
+				#canvasImg{
+				margin:0;
+				}
+				.controllinks{
+				background:#fff;
+				border: 1px solid #ddd;
+				position: absolute; 
+				top:-60px; 
+				right:0;
+				z-index:1000;
+				margin:0;
+				padding: 0.5em 0.5em 0;
+				min-width:300px;
+				width:auto !important;
+				width:300px;
+				}
+				#controlLinksCrop label{
+				float:none;
+				font-weight:normal;
+				width:auto;
+				display:inline;
+				clear:left;
+				}
+				#controlLinksCrop #keepThumbSize{
+				display:block;
+				}
+				#keepThumbSize label, #keepThumbSize input{
+				float:left;
+				}
+				#theHandle,#theScaleHandle{
+				font-weight: bold;
+				font-size: 300%;
+				cursor:move;
+				position:absolute;
+				top:0px;
+				left:-53px;
+				border: 1px solid #ddd;
+				padding:0;
+				width: 50px;
+				height:50px;
+				text-align:center;
+				background:#fff url(../../images/handle.gif) no-repeat 50% 50%;
+				}
+				#theHandle span, #theScaleHandle span{
+				visibility:hidden;
+				}
+				
+				.controllinks a{
+				color:#900;
+				display:inline;
+				margin: 0 0.2em 0 1em;
+				}
+				#pendingP{
+				width: 50%;
+				margin:0.5em auto;
+				color: #900909;
+				font-size: 85%;
+				}
+				#scaleCanvas{
+				background:#fff;
+				border:1px double #B6C2D7;
+				overflow:visible;
+				padding:0;
+				position:absolute;
+				display:block;
+				top:105px;
+				left:100px;
+				min-width: 200px;
+				width: auto !important;
+				width: 500px;
+				height:575px;
+				}
+				#scaleCanvas .controllinks{
+				background:#fff;
+				border: 1px solid #ddd;
+				position: absolute; 
+				top:0; 
+				right:-100px;
+				z-index:1000;
+				margin:0;
+				padding: 1em;
+				}
+				#scaleCanvas .controllinks a{
+				display:inline;
+				margin: 0 0.2em 0 1em;
+				}
+				#overlay{ background-image: url(../../images/overlay.png); }
+				
+				* html #overlay{
+					background-color: #333;
+					back\ground-color: transparent;
+					background-image: none;
+					filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/overlay.png", sizingMethod="scale");
+					}
+				
+				#canvasDivContainer{
+				padding:5em;
+				}
+				#handle{
+				position:relative;
+				left:200px;
+				cursor:pointer;
+				background:transparent url(../../images/scale_slider.gif); 
+				}
+				#scaleTrack{
+				margin: 1.5em 0.5em;
+				background:#fff url(../../images/scale_track.gif) no-repeat 0 100%;
+				height:28px;
+				width:200px;
+				position:relative;
+				}
+				#scaleCanvas .controllinks{
+				position:static;
+				}
+				#cropLinksContainer{
+				overflow:auto;
+				}
+				#cropLinksContainer a{
+				margin: 0 0.5em;
+				display:block;
+				float:left;
+				height: 20px;
+				}
+				#cropImg{
+				background:url(../../images/crop.png) no-repeat 0 50%;
+				padding: 0 0 0 20px;
+				}
+				#scaleLink{
+				background:url(../../images/scale.png) no-repeat 0 50%;
+				padding: 0 0 0 20px;
+				}
+				.saveDims, .discardDims, .resetDims{
+				padding-left: 20px;
+				}
+				.saveDims{
+				background: url(../../images/save.gif) no-repeat 0 50%;
+				}
+				.discardDims{
+				background: url(../../images/discard.gif) no-repeat 0 50%;
+				}
+				.resetDims{
+				background: url(../../images/reset.gif) no-repeat 0 50%;
+				}
+				.switch{
+				text-align:center;
+				}

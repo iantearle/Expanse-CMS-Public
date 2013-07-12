@@ -93,14 +93,22 @@ function menu_builder_content() {
 	$include_subcats = getOption('mb_include_subcats');
 	$include_subcats = $include_subcats == false || $include_subcats == 0 ? 'no' : 'yes';
 	?>
+<<<<<<< HEAD
 	<div class="row-fluid">
+=======
+	<div class="row">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		<div class="span12">
 			<input type="hidden" id="cb_subcats" value="<?php echo $include_subcats ?>" />
 			<div id="beforeMenuContainer"></div>
 		</div>
 	</div>
 
+<<<<<<< HEAD
 	<div class="row-fluid">
+=======
+	<div class="row">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		<div class="span6">
 			<div id="keepMenuContainer">
 				<div id="keepMenu">

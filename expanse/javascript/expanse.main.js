@@ -1,7 +1,13 @@
 /********* Expanse ***********/
+<<<<<<< HEAD
 jQuery.fn.exists = function() {
 	return this.length > 0;
 };
+=======
+
+jQuery.fn.exists = function(){return this.length>0;}
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 /*
 Language get function
 */
@@ -315,6 +321,39 @@ expanse.reorder = Backbone.View.extend({
 		xajax_updateOrder(this.sortContainer.sortable('enable').sortable('serialize'));
 	}
 });
+<<<<<<< HEAD
+=======
+
+/*
+Resize Editor frame
+*/
+expanse.resizeEditor = Backbone.View.extend({
+	initialize: function() {
+		if($('.wysihtml5-editor')) {
+			this.createText();
+		}
+	},
+	createText: function() {
+		var sizerCont = '<span id="sizerContainer"><a href="javascript:;" id="increaseBox">+</a> <a href="javascript:;" id="decreaseBox">-</a></span>';
+		$('.descr').parent().after(sizerCont);
+		$('#increaseBox').mouseover(function() {window.status=_l('INCREASE_EDITOR'); return true;});
+		$('#increaseBox').mouseout(function() {window.status=''; return true;});
+		$('#decreaseBox').mouseover(function() {window.status=_l('DECREASE_EDITOR'); return true;});
+		$('#decreaseBox').mouseout(function() {window.status=''; return true;});
+		this.addActions();
+	},
+	addActions: function() {
+		var edObj = ($('.wysihtml5-sandbox').exists()) ? $('.wysihtml5-sandbox') : $('.descr');
+		$('#increaseBox').click(function() {
+			$(edObj).css("height","+=100");
+		});
+		$('#decreaseBox').click(function() {
+			$(edObj).css("height","-=100");
+		});
+	}
+});
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 /*
 Highlight Inputs
 */
@@ -677,7 +716,12 @@ function checkAll(obj) {
 			}
 		});
 	}
+<<<<<<< HEAD
 }
+=======
+};
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 expanse.sortCats = Backbone.View.extend({
 	initialize: function() {
 		var sort_submit = $('#sort_submit');
@@ -693,13 +737,63 @@ expanse.sortCats = Backbone.View.extend({
 	}
 });
 $(function() {
+<<<<<<< HEAD
 	if ($('#file_contents').exists()) {
+=======
+	if($('#file_contents').exists()) {
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		var textarea = $('textarea[name="file_contents"]').hide();
 		editor.getSession().setValue(textarea.val());
 		$('#theme_editor_form').submit(function() {
 			var editor = ace.edit("file_contents");
 			textarea.val(editor.getSession().getValue());
 		});
+<<<<<<< HEAD
+=======
+	}
+	new expanse.toggleBox;
+	new expanse.sortCats;
+	new expanse.confirmUninstall;
+	new expanse.reorderMenu;
+	new expanse.reorder;
+	new expanse.hiliteInput;
+	new expanse.setChecks;
+	new expanse.markDelete;
+	if($('.descr').exists()) {
+		//FCKeditor.ReplaceAllTextareas('descr');
+		$('.descr').wysihtml5({
+			imagesUrl: './javascript/images.json.php',
+			imageUpload: function(el) {
+				var checkComplete, form;
+				form = $(el).find('.image-upload-form');
+				checkComplete = function() {
+					var iframeContents, response, url;
+					iframeContents = $("#uploadiframe")[0].contentWindow.document.body.innerHTML; //el.find('iframe').contents().find('body').text();
+					if(iframeContents === "") {
+						console.log('Result: '+iframeContents);
+						return setTimeout(checkComplete, 2000);
+					} else {
+						response = $.parseJSON(iframeContents);
+						console.log('Result: '+response);
+						url = response[0].url;
+						self.editor.currentView.element.focus();
+						self.editor.composer.commands.exec("insertImage", {
+		                    src: url
+	                    });
+						$('div.progress.upload').remove();
+						$('.bootstrap-wysihtml5-insert-image-modal').modal('hide');
+						return form.find('.progress').hide();
+					}
+				};
+				return form.on('change', function() {
+					form.attr('target', 'upload-iframe').attr('action', './javascript/bootstrap-upload.php');
+					form.find('.progress').show();
+					form.submit();
+					return checkComplete();
+				});
+			}
+		});
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	}
 	new expanse.toggleBox();
 	new expanse.sortCats();
@@ -717,6 +811,10 @@ $(function() {
 		buttons: ['html', '|','formatting', '|', 'bold', 'italic']
 	});
 	loadAlert();
+<<<<<<< HEAD
+=======
+//	new expanse.resizeEditor;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	new magicFields({
 		firstField: '#option1',
 		fieldName: 'extraoptions',
@@ -756,6 +854,7 @@ $(function() {
 		toggleBoxes('del');
 	});
 	confirmEula();
+<<<<<<< HEAD
 	if (typeof window.Expanse == 'function') {
 		// function exists, so we can now call it
 		Expanse();
@@ -775,3 +874,641 @@ $(function() {
 		new Chart(ctx2).Bar(data);
 	}
 });
+=======
+	if(typeof window.Expanse == 'function') {
+		// function exists, so we can now call it
+		Expanse();
+	}
+	location.hash && $(location.hash + '.collapse').collapse('show');
+	$("[rel=popover]").popover();
+
+	/* Fix for dropdown menus, until Bootstrap manage to merge a change to fix officially */
+	$('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); }).on('touchstart.dropdown', '.dropdown-submenu', function (e) { e.preventDefault(); });
+
+	Modernizr.load({
+		test: Modernizr.ipad || Modernizr.ipod || Modernizr.iphone || Modernizr.fontface,
+		yep : 'javascript/ios.js'
+	});
+});
+
+/*
+function checkAll(obj) {
+	if(obj) {
+		if(obj.checked) {
+			if(!$('noteText')) {
+				var pEl = obj.parentNode.parentNode.parentNode;
+				var inputs = pEl.getElementsByTagName('input');
+				var txt = document.createTextNode(_l('ADMIN_RIGHTS'));
+				var sptxt = document.createElement('span');
+				sptxt.id = 'noteText';
+				sptxt.className = 'formNote';
+				sptxt.appendChild(txt);
+				alert(obj.nextSibling.id);
+				insertAfter(pEl, sptxt, pEL);
+				for(var i=0; i<inputs.length;i++) {
+					if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck') {
+						inputs[i].checked = true;
+						addEvent(inputs[i], 'click', function(e) {
+							if($('adminCheck').checked) {
+								var input = (window.event) ? window.event.srcElement : this;
+								input.checked = true;
+							}
+						});
+					}
+				}
+			}
+		}
+		addEvent(obj, 'click', function(){
+			if($('disabled').checked == false) {
+				var pEl = obj.parentNode.parentNode.parentNode;
+				var inputs = pEl.getElementsByTagName('input');
+				if(obj.checked){
+					if(!$('noteText')){
+						var txt = document.createTextNode(_l('ADMIN_RIGHTS'));
+						var sptxt = document.createElement('span');
+						sptxt.id = 'noteText';
+						sptxt.className = 'formNote';
+						sptxt.appendChild(txt);
+						insertAfter(pEl, sptxt, obj.nextSibling);
+					}
+					var noteFade = new fx.Opacity($('noteText'), {
+						duration: 400
+					});
+					noteFade.hide();
+					noteFade.toggle();
+					for(var i=0; i<inputs.length;i++) {
+						if(inputs[i].type === 'checkbox' && inputs[i].id != 'adminCheck') {
+							inputs[i].checked = true;
+							addEvent(inputs[i], 'click', function(e) {
+								if($('adminCheck').checked){
+									var input = (window.event) ? window.event.srcElement : this;
+									input.checked = true;
+								}
+							});
+						}
+
+					}
+				} else {
+					if(!$('noteText')){
+					for(var i=0; i<inputs.length;i++){
+					if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck'){
+					inputs[i].checked = false;
+					}
+					}
+					}
+
+					if($('noteText')){
+					var noteFade = new fx.Opacity($('noteText'), {duration: 400});
+					noteFade.toggle();
+					for(var i=0; i<inputs.length;i++){
+					if(inputs[i].type=='checkbox' && inputs[i].id != 'adminCheck'){
+					inputs[i].checked = false;
+					}
+					}
+					}
+				}
+			}
+		});
+	}
+}
+function disableBoxes(){
+	if($('disabled') && $('categoryBoxes')){
+		addEvent($('disabled'), 'click', function(){
+			if($('disabled').checked){
+				$('categoryBoxes').style.MozOpacity = '0.5';
+				$('categoryBoxes').style.opacity = '0.5';
+				$('categoryBoxes').style.filter = 'alpha(opacity=50)';
+				$('categoryBoxes').style.backgroundColor = '#fff';
+			} else {
+				$('categoryBoxes').style.MozOpacity = '1.0';
+				$('categoryBoxes').style.opacity = '1.0';
+				$('categoryBoxes').style.filter = 'alpha(opacity=100)';
+				$('categoryBoxes').style.backgroundColor = (document.all) ? '#fff' : 'none';
+			}
+		});
+	}
+}
+function debug(obj, op) {
+ 	var output = '';
+    for (var i in obj)
+        output += i+ ' | \n';
+    if(!op){
+		alert(output);
+		} else{
+		document.write(output);
+		}
+
+}
+function insertAfter(parent, node, referenceNode) {
+	parent.insertBefore(node, referenceNode.nextSibling);
+}
+
+
+var domEl = function(e,c,a,p,x) {
+if(e||c) {
+	c=(typeof c=='string'||(typeof c=='object'&&!c.length))?[c]:c;
+	e=(!e&&c.length==1)?document.createTextNode(c[0]):e;
+	var n = (typeof e=='string')?document.createElement(e) : !(e&&e===c[0])?e.cloneNode(false):e.cloneNode(true);
+	if(e.nodeType!=3) {
+		c[0]===e?c[0]='':'';
+		for(var i=0,j=c.length;i<j;i++) typeof c[i]=='string'? ((c[i] =='') ? '': n.appendChild(document.createTextNode(c[i]))):n.appendChild(c[i].cloneNode(true));
+		if(a) {
+			for (var i in a) i=='class'?n.className=a[i]:(i == 'style')?n.style.cssText=a[i]:n.setAttribute(i,a[i]);}
+	}
+}
+	if(!p)return n;
+	p=(typeof p=='object'&&!p.length)?[p]:p;
+	for(var i=(p.length-1);i>=0;i--) {
+		if(x){while(p[i].firstChild)p[i].removeChild(p[i].firstChild);
+			if(!e&&!c&&p[i].parentNode)p[i].parentNode.removeChild(p[i]);}
+		if(n){
+			if(!document.all){
+				p[i].appendChild(n.cloneNode(true));
+				} else {
+				if(n.canHaveChildren){
+					p[i].appendChild(n.cloneNode(true));
+				} else if(p[i].canHaveChildren) {
+				p[i].appendChild(n.cloneNode(false));
+				} else {
+					p[i].parentNode.appendChild(n);
+					}
+				}
+			}
+	}
+}
+
+function setDateFormat(){
+	if($('dateformat') && $('timeformat')){
+		var dformat = $('dateformat').value;
+		var offset = ($F('timeoffset') == '') ? theZone() : $('timeoffset').value;
+		xajax_returnDate(dformat,offset);
+		var tformat = document.getElementById('timeformat').value;
+		xajax_returnTime(tformat,offset);
+	}
+}
+function ToggleAll(e) {
+	if (e.checked) {
+	    CheckAll();
+	}
+	else {
+	    ClearAll();
+	}
+}
+function CheckAll() {
+	var ml = document.edit;
+	var len = ml.elements.length;
+	for (var i = 0; i < len; i++) {
+	    var e = ml.elements[i];
+	    eval(e.checked = true);
+	}
+	ml.toggleAll.checked = true;
+}
+function ClearAll() {
+	var ml = document.edit;
+	var len = ml.elements.length;
+	for (var i = 0; i < len; i++) {
+		var e = ml.elements[i];
+		eval(e.checked = false);
+	}
+	ml.toggleAll.checked = false;
+}
+function appendInputTypeClasses() {
+	if ( !document.getElementsByTagName )
+	return;
+var inputs = document.getElementsByTagName('input');
+var inputLen = inputs.length;
+	for ( i=0;i<inputLen;i++ ) {
+		if ( inputs[i].getAttribute('type') )
+		inputs[i].className += ' '+inputs[i].getAttribute('type');
+	}
+}
+
+function getCookie( name ) {
+	var start = document.cookie.indexOf( name + "=" );
+	var len = start + name.length + 1;
+	if ( ( !start ) && ( name != document.cookie.substring( 0, name.length ) ) ) {
+		return null;
+	}
+	if ( start == -1 ) return null;
+	var end = document.cookie.indexOf( ";", len );
+	if ( end == -1 ) end = document.cookie.length;
+	return unescape( document.cookie.substring( len, end ) );
+}
+
+function setCookie( name, value, expires, path, domain, secure ) {
+	var today = new Date();
+	today.setTime( today.getTime() );
+	if ( expires ) {
+		expires = expires * 1000 * 60 * 60 * 24;
+	}
+	var expires_date = new Date( today.getTime() + (expires) );
+	document.cookie = name+"="+escape( value ) +
+		( ( expires ) ? ";expires="+expires_date.toGMTString() : "" ) + //expires.toGMTString()
+		( ( path ) ? ";path=" + path : "" ) +
+		( ( domain ) ? ";domain=" + domain : "" ) +
+		( ( secure ) ? ";secure" : "" );
+}
+
+function deleteCookie( name, path, domain ) {
+	if ( getCookie( name ) ) document.cookie = name + "=" +
+			( ( path ) ? ";path=" + path : "") +
+			( ( domain ) ? ";domain=" + domain : "" ) +
+			";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+}
+//ToolTip code courtesy of http://livsey.org/2005/03/17/help-tips-experiment/ & http://www.squidfingers.com/code/dhtml/
+document.getElementsByClassName = function (needle)
+{
+  var         my_array = document.getElementsByTagName("*");
+  var         retvalue = new Array();
+  var        i;
+  var        j;
+  for (i = 0, j = 0; i < my_array.length; i++)
+  {
+    var c = " " + my_array[i].className + " ";
+    if (c.indexOf(" " + needle + " ") != -1)
+      retvalue[j++] = my_array[i];
+  }
+  return retvalue;
+}
+function addEvent( obj, type, fn ) {
+	if(obj){
+		if (obj.addEventListener) {
+		obj.addEventListener( type, fn, false );
+		EventCache.add(obj, type, fn);
+	}
+	else if (obj.attachEvent) {
+		obj["e"+type+fn] = fn;
+		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); }
+		obj.attachEvent( "on"+type, obj[type+fn] );
+		EventCache.add(obj, type, fn);
+	}
+	else {
+		obj["on"+type] = obj["e"+type+fn];
+	}
+		}
+
+}
+function removeEvent(obj, evType, fn, useCapture){
+  if (obj.removeEventListener){
+    obj.removeEventListener(evType, fn, useCapture);
+    return true;
+  } else if (obj.detachEvent){
+    var r = obj.detachEvent("on"+evType, fn);
+    return r;
+  } else {
+    alert("Handler could not be removed");
+  }
+}
+var EventCache = function(){
+	var listEvents = [];
+	return {
+		listEvents : listEvents,
+		add : function(node, sEventName, fHandler){
+			listEvents.push(arguments);
+		},
+		flush : function(){
+			var i, item;
+			for(i = listEvents.length - 1; i >= 0; i = i - 1){
+				item = listEvents[i];
+				if(item[0].removeEventListener){
+					item[0].removeEventListener(item[1], item[2], item[3]);
+				};
+				if(item[1].substring(0, 2) != "on"){
+					item[1] = "on" + item[1];
+				};
+				if(item[0].detachEvent){
+					item[0].detachEvent(item[1], item[2]);
+				};
+				item[0][item[1]] = null;
+			};
+		}
+	};
+}();
+addEvent(window,'unload',EventCache.flush);
+function HelpHover()
+{
+	this._mousePosX = 0;
+	this._mousePosY = 0;
+	this._hoverItem = null;
+	this._hoverContents = null;
+}
+HelpHover.prototype.init = function()
+{
+	var hh = this;
+	var helpItems = document.getElementsByClassName('hasHelp');
+	for (var i=0; i<helpItems.length; i++)
+	{
+		helpItems[i].onmouseover = function(e)
+		{
+			if (!e) var e = window.event;
+			if (e.pageX || e.pageY)
+			{
+				hh.mousePosX = e.pageX;
+				hh.mousePosY = e.pageY;
+			}
+			else if (e.clientX || e.clientY)
+			{
+
+hh.mousePosX = (document.documentElement && document.documentElement.scrollLeft) ? e.clientX + document.documentElement.scrollLeft : e.clientX + document.body.scrollLeft;
+hh.mousePosY = (document.documentElement && document.documentElement.scrollTop) ? e.clientY + document.documentElement.scrollTop : e.clientY + document.body.scrollTop;
+			}
+			hh._hoverItem = this;
+			hh._hoverContents = document.getElementById(this.id+'Help');
+			hh.move();
+		}
+		helpItems[i].onmouseout = function (e)
+		{
+			hh.out();
+		}
+	}
+}
+HelpHover.prototype.out = function()
+{
+	this._hoverContents.style.top = -10000+'px';
+	this._hoverContents.style.left = -10000+'px';
+	this._hoverItem = null;
+	this._hoverContents = null;
+	// IE hack because of floating elements over SELECT drop boxes
+	if(document.all){
+		selects = document.getElementsByTagName('select');
+		selects.length.times(function(n){
+							selects[n].style.visibility = 'visible';
+									  });
+		toggleFrame('showSelects');
+		}
+	//End IE HACK
+}
+HelpHover.prototype.move = function()
+{
+	this._hoverContents.style.top = this.mousePosY-70+'px';
+	this._hoverContents.style.left = this.mousePosX-278+'px';
+	// IE hack because of floating elements over SELECT drop boxes
+	if(document.all){
+		selects = document.getElementsByTagName('select');
+		selects.length.times(function(n){
+			selects[n].style.visibility = 'hidden';
+									  });
+		}
+	//End IE HACK
+}
+
+function toggleFrame(type){
+	if(type == 'hideSelects'){
+		if(!$('hideFrame')){
+			var objBody = document.getElementsByTagName("body").item(0);
+			var arrayPageSize = getPageSize();
+	// create overlay div and hardcode some functional styles (aesthetic styles are in CSS file)
+			var objOverlay = document.createElement("iframe");
+			objOverlay.setAttribute('id','hideFrame');
+			objOverlay.style.display = 'block';
+			objOverlay.style.height = (arrayPageSize[1] + 'px');
+			objOverlay.style.position = 'absolute';
+			objOverlay.style.top = '0';
+			objOverlay.style.left = '0';
+			objOverlay.style.zIndex = '90';
+			objOverlay.style.width = (arrayPageSize[0] + 'px');
+			objOverlay.style.filter='progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';
+			objBody.insertBefore(objOverlay, objBody.firstChild);
+			} else {
+				$('hideFrame').style.display = 'block';
+				}
+		} else if(type == 'showSelects'){
+			if($('hideFrame')){
+				$('hideFrame').style.display = 'none';
+				}
+			}
+
+	}
+
+function theZone(){
+   var d, tz, s = "";
+   d = new Date();
+   tz = d.getTimezoneOffset();
+   if (tz < 0)
+      s += Math.abs(tz) / 60;
+   else if (tz == 0)
+      s += "";
+   else
+      s += '-'+tz / 60;
+   return(s);
+}
+
+function dInit(){
+	if($('dateformat') && $('timeformat')){
+		addEvent($('dateformat'), 'blur', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnDate(dformat,offset);
+		});
+		addEvent($('timeformat'), 'blur', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnTime(tformat,offset);
+		});
+		addEvent($('timeoffset'), 'blur', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnDate(dformat,offset);
+			xajax_returnTime(tformat,offset);
+		});
+		addEvent($('dateformat'), 'keyup', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnDate(dformat,offset);
+		});
+		addEvent($('timeformat'), 'keyup', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnTime(tformat,offset);
+		});
+		addEvent($('timeoffset'), 'keyup', function(){
+			var offset = ($F('timeoffset') == '') ? theZone() : $F('timeoffset');
+			var tformat = $F('timeformat');
+			var dformat = $F('dateformat');
+			xajax_returnDate(dformat,offset);
+			xajax_returnTime(tformat,offset);
+		});
+
+		}
+	}
+
+function collapseIt(){
+var fadeTheBox = new Array;
+var collBoxId;
+var collSwitch = document.getElementsByClassName("collSwitch");
+for(i=0;i<collSwitch.length;i++){
+			collBoxId = collSwitch[i].id+'Contents';
+			if($(collBoxId)){
+			fadeTheBox[collBoxId] = new fx.Combo($(collBoxId), {duration: 400});
+			fadeTheBox[collBoxId].hide($(collBoxId), 'height');
+				}
+			addEvent(collSwitch[i], 'click', function(e){
+				var divId = this.id+'Contents';
+				if($(divId)){
+					fadeTheBox[divId].toggle('height');
+				}
+				});
+	}
+}
+function print_r(theObj){
+  if(theObj.constructor == Array ||
+     theObj.constructor == Object){
+    document.write("<ul>")
+    for(var p in theObj){
+      if(theObj[p].constructor == Array||
+         theObj[p].constructor == Object){
+document.write("<li>["+p+"] => "+typeof(theObj)+"</li>");
+        document.write("<ul>")
+        print_r(theObj[p]);
+        document.write("</ul>")
+      } else {
+document.write("<li>["+p+"] => "+theObj[p]+"</li>");
+      }
+    }
+    document.write("</ul>")
+  }
+}
+
+
+
+
+
+
+
+
+
+var createFooter = {
+	init : function(){
+		this.mainContainer = $('mainContainer');
+		if(this.mainContainer){
+			this.createElements();
+			}
+		},
+	createElements : function(){
+		domEl('div', '', {id : 'footerBottom'}, this.mainContainer);
+		$('footerBottom').appendChild($('footer'))
+		}
+	};
+
+
+var Bookmark = {
+	init : function(){
+		if(!$('content') || $('content').className != 'login' || !$('forgotLink')) {return;}
+		if (!window.external && !window.sidebar) { return;}
+		var bookmarkText = (window.sidebar) ? _l('BOOKMARK_FF') : _l('BOOKMARK_IE');
+		var bookmarkLink = domEl('a', bookmarkText, {href:'javascript:;', id: 'bookmarkLink'});
+		insertAfter($('forgotLink').parentNode, bookmarkLink, $('forgotLink'));
+		Event.observe(bookmarkLink, 'mouseover', function(){window.status=bookmarkText; return true;});
+		Event.observe(bookmarkLink, 'mouseout', function(){window.status='';return true;});
+		Event.observe($('bookmarkLink'), 'click', this.run);
+		},
+	run : function(){
+			var title = document.title;
+			var url = window.location.href;
+
+			if (window.sidebar) {
+			//Firefox
+				window.sidebar.addPanel(title, url,"");
+			} else if( window.external ) {
+			// IE
+				window.external.AddFavorite( url, title);
+			}
+		}
+	};
+var sortCats = {
+	init : function(){
+		var sort_submit = $('sort_submit');
+		if(!sort_submit){return;}
+		Event.observe(sort_submit, 'click', this.changeMethod)
+		},
+	changeMethod : function(){
+		$('post').setAttribute('method', 'get');
+		}
+	}
+var page = {
+	init:function(){
+		var hh = new HelpHover();
+		hh.init();
+		markDelete.init();
+		createFooter.init();
+		setChecks.init();
+		confirmEula();
+		hiliteInput.init();
+		reorder.init();
+		reorderMenu.init();
+		appendInputTypeClasses();
+		confirmUninstall.init();
+		Bookmark.init();
+		toggleBox.init();
+		sortCats.init();
+
+		var addSubs = new magicSubs({
+			firstField: 'new_cat1',
+			addText:_l('ADD_SUBCAT'),
+			clearText:_l('CLEAR_SUBCAT'),
+			removeText:_l('REMOVE_SUBCAT'),
+			labelText: _l('SUBCAT_LABEL'),
+			fieldName : 'new_cat',
+			confirmDelete : _l('SUBCAT_CLEAR_CONFIRM')
+		});
+		var addOptions = new magicFields({
+			firstField: 'option1',
+			fieldName : 'extraoptions',
+			addText:_l('ADD_OPTION'),
+			clearText:_l('CLEAR_OPTION'),
+			removeText:_l('REMOVE_OPTION'),
+			labelText: _l('OPTION_LABEL'),
+			confirmDelete : _l('OPTION_CLEAR_CONFIRM'),
+			incrementLabel : true
+		});
+		var addImages = new magicUploads({
+			firstField: 'additional_images1',
+			fieldName : 'additional_images',
+			addText:_l('ADD_IMAGE'),
+			clearText:_l('CLEAR_IMAGE'),
+			removeText:_l('REMOVE_IMAGE'),
+			labelText: ($('additionalImages') && $('additionalImages').className == 'addFiles') ? _l('IMAGE_LABEL_FILE') : _l('IMAGE_LABEL'),
+			confirmDelete : _l('IMAGE_CLEAR_CONFIRM'),
+			incrementLabel : true
+		});
+
+		var addCustom = new magicCustom({
+			firstField: 'customLabel1',
+			fieldName : 'customLabel',
+			incrementLabel : true
+		});
+
+		if($('toggleBox')){
+			addEvent($('toggleBox'),'click',function(){
+				toggleBoxes($('toggleBox'));
+			});
+			}
+		if($('dateformat')){
+			setDateFormat();
+			dInit();
+		}
+		if($('descr')){
+			FCKeditor.ReplaceAllTextareas('descr');
+		}
+
+		if($('timeoffset') && $F('timeoffset') == ''){
+			$('timeoffset').value = theZone();
+		}
+		resizeEditor.init();
+		loadAlert();
+		checkAll($('adminCheck'));
+		disableBoxes();
+		if(window.expanse){
+			expanse();
+		}
+	}
+};
+
+Event.onDOMReady(page.init);
+*/
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c

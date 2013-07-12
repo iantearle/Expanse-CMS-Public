@@ -61,7 +61,10 @@ class Format {
 	 */
 	public function HTML($input) {
 		$this->input = $input;
+<<<<<<< HEAD
 		$this->output = '';
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 		$starting_index = 0;
 

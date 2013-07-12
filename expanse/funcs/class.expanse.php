@@ -121,7 +121,11 @@ class Expanse {
 			if(count($fcv_array) == 0) {
 				return $fcv_array;
 			}
+<<<<<<< HEAD:expanse/funcs/class.expanse.php
 			$asc = $ascending == true ? 'ASC' : 'DESC';
+=======
+			$asc = $ascending == 'ASC' ? 'ASC' : 'DESC';
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/expanse.class.php
 			$orderBy = !empty($sortBy) ? $sortBy : (isset($this->Fields['primary']) ? $this->Fields['primary'] : 'id');
 			$sqlLimit = empty($limit) ? '' : "LIMIT $limit";
 			$what = empty($what) ? '*' : $what;
@@ -134,10 +138,15 @@ class Expanse {
 		}
 		$query = $Database->Query($this->pog_query);
 		$tableList = array();
+<<<<<<< HEAD:expanse/funcs/class.expanse.php
 		if(is_object($query)) {
 			while($array = mysqli_fetch_object($query)) {
 				$tableList[] = $array;
 			}
+=======
+		while ($array = mysql_fetch_object($query)) {
+			$tableList[] = $array;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c:expanse/funcs/expanse.class.php
 		}
 		return $tableList;
 	}

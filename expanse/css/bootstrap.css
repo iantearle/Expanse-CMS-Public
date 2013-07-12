@@ -1319,6 +1319,7 @@ input:focus:required:invalid:focus,textarea:focus:required:invalid:focus,select:
 	padding-left:5px;
 	vertical-align:middle;
 	*zoom:1;
+<<<<<<< HEAD
 }
 
 .input-append,.input-prepend {
@@ -1382,6 +1383,71 @@ input:focus:required:invalid:focus,textarea:focus:required:invalid:focus,select:
 	border-radius:4px 0 0 4px;
 }
 
+=======
+}
+
+.input-append,.input-prepend {
+	margin-bottom:5px;
+	font-size:0;
+	white-space:nowrap;
+}
+
+.input-append input,.input-prepend input,.input-append select,.input-prepend select,.input-append .uneditable-input,.input-prepend .uneditable-input,.input-append .dropdown-menu,.input-prepend .dropdown-menu {
+	font-size:14px;
+}
+
+.input-append input,.input-prepend input,.input-append select,.input-prepend select,.input-append .uneditable-input,.input-prepend .uneditable-input {
+	position:relative;
+	margin-bottom:0;
+	*margin-left:0;
+	vertical-align:top;
+	-webkit-border-radius:0 4px 4px 0;
+	-moz-border-radius:0 4px 4px 0;
+	border-radius:0 4px 4px 0;
+}
+
+.input-append input:focus,.input-prepend input:focus,.input-append select:focus,.input-prepend select:focus,.input-append .uneditable-input:focus,.input-prepend .uneditable-input:focus {
+	z-index:2;
+}
+
+.input-append .add-on,.input-prepend .add-on {
+	display:inline-block;
+	width:auto;
+	height:20px;
+	min-width:16px;
+	padding:4px 5px;
+	font-size:14px;
+	font-weight:400;
+	line-height:20px;
+	text-align:center;
+	text-shadow:0 1px 0 #fff;
+	background-color:#eee;
+	border:1px solid #ccc;
+}
+
+.input-append .add-on,.input-prepend .add-on,.input-append .btn,.input-prepend .btn {
+	vertical-align:top;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	border-radius:0;
+}
+
+.input-append .active,.input-prepend .active {
+	background-color:#a9dba9;
+	border-color:#46a546;
+}
+
+.input-prepend .add-on,.input-prepend .btn {
+	margin-right:-1px;
+}
+
+.input-prepend .add-on:first-child,.input-prepend .btn:first-child {
+	-webkit-border-radius:4px 0 0 4px;
+	-moz-border-radius:4px 0 0 4px;
+	border-radius:4px 0 0 4px;
+}
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 .input-append input,.input-append select,.input-append .uneditable-input {
 	-webkit-border-radius:4px 0 0 4px;
 	-moz-border-radius:4px 0 0 4px;
@@ -3575,6 +3641,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini {
 	clear:both;
 }
 
+<<<<<<< HEAD
 .tabs-below > .nav-tabs,.tabs-right > .nav-tabs,.tabs-left > .nav-tabs {
 	border-bottom:0;
 }
@@ -3583,6 +3650,20 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini {
 	display:none;
 }
 
+=======
+.tab-content {
+	overflow:auto;
+}
+
+.tabs-below > .nav-tabs,.tabs-right > .nav-tabs,.tabs-left > .nav-tabs {
+	border-bottom:0;
+}
+
+.tab-content > .tab-pane,.pill-content > .pill-pane {
+	display:none;
+}
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 .tab-content > .active,.pill-content > .active {
 	display:block;
 }
@@ -4897,8 +4978,12 @@ a.label:hover,a.badge:hover {
 }
 
 @-webkit-keyframes progress-bar-stripes {
+<<<<<<< HEAD
 	from {
 	background-position:40px 0;
+=======
+	frombackground-position:40px 0;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 to {
@@ -4907,8 +4992,12 @@ to {
 }
 
 @-moz-keyframes progress-bar-stripes {
+<<<<<<< HEAD
 	from {
 	background-position:40px 0;
+=======
+	frombackground-position:40px 0;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 to {
@@ -4917,8 +5006,12 @@ to {
 }
 
 @-ms-keyframes progress-bar-stripes {
+<<<<<<< HEAD
 	from {
 	background-position:40px 0;
+=======
+	frombackground-position:40px 0;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 to {
@@ -4927,8 +5020,12 @@ to {
 }
 
 @-o-keyframes progress-bar-stripes {
+<<<<<<< HEAD
 	from {
 	background-position:0 0;
+=======
+	frombackground-position:0 0;
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }
 
 to {
@@ -5294,6 +5391,7 @@ to {
 
 .affix {
 	position:fixed;
+<<<<<<< HEAD
 }
 .input-prepend.input-fullwidth {
     position: relative;
@@ -5315,4 +5413,6 @@ to {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 }

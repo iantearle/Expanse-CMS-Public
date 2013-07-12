@@ -15,7 +15,10 @@ if(!defined('EXPANSE')) {
  * @extends Module
  */
 class Gallery extends Module {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	// This is the meta data for the category.
 	var $name = L_GALLERY_NAME;
 	var $description = L_GALLERY_DESCRIPTION;
@@ -91,8 +94,12 @@ class Gallery extends Module {
 			$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
 			$items->paypal_amount = (isset($_POST['paypal_amount'])) ? (float) $_POST['paypal_amount'] : 0;
 			$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
+<<<<<<< HEAD
 			$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
 			$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+=======
+			$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 			//Add a subcat
 			$this->addSubcat();
@@ -123,7 +130,11 @@ class Gallery extends Module {
 				//Reset POST
 				$_POST = array();
 			} else {
+<<<<<<< HEAD
 				printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysqli_error($Database->GetConnection()))));
+=======
+				printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysql_error())));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			}
 		}
 	}
@@ -210,7 +221,11 @@ class Gallery extends Module {
 				$items->height = isset($uploads['files']['img_main']['height']) ? $uploads['files']['img_main']['height'] : $items->height;
 			}
 			$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
+<<<<<<< HEAD
 			foreach(isset($_POST['existing_image']) as $xi) {
+=======
+			foreach($_POST['existing_image'] as $xi) {
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				$images->Get($xi);
 				if(isset($caption[$xi])) {
 					$images->caption = isset($caption[$xi]) ? trim($caption[$xi]) : '';
@@ -241,8 +256,12 @@ class Gallery extends Module {
 			$items->dirtitle = set_dirtitle($items);
 			$items->paypal_amount = (isset($_POST['paypal_amount'])) ? (float) $_POST['paypal_amount'] : 0;
 			$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
+<<<<<<< HEAD
 			$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
 			$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+=======
+			$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 
 			//Clean extroptions of empty values
 			foreach($_POST['extraoptions'] as $ek => $ev) {
@@ -274,7 +293,11 @@ class Gallery extends Module {
 				//Reset POST
 				$_POST = array();
 			} else {
+<<<<<<< HEAD
 				printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($title, mysqli_error($Database->GetConnection()))));
+=======
+				printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($title, mysql_error())));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 			}
 		}
 	}
@@ -288,6 +311,9 @@ class Gallery extends Module {
 	function more() {
 		if(is_posting(L_BUTTON_MASS_UPLOAD)) {
 			$this->galleryUpload();
+		}
+		if(is_posting('Post this')) {
+			echo 'here';
 		}
 	}
 
@@ -583,7 +609,11 @@ class Gallery extends Module {
 				}
 			} else {
 			?>
+<<<<<<< HEAD
 				<div class="row-fluid" id="new_cat1Group">
+=======
+				<div class="row" id="new_cat1Group">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					<div class="span6">
 						<div class="control-group">
 							<label for="option1" class="control-label"><?php echo L_JS_OPTION_LABEL ?> 1</label>

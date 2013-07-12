@@ -74,7 +74,11 @@ function category_content() {
 	global $output, $modules_dir, $auth, $Database;
 	$item_id = ITEM_ID;
 	?>
+<<<<<<< HEAD
 	<div class="row-fluid" id="categoryMod">
+=======
+	<div class="row" id="categoryMod">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	<?php
 	if(ACTION == 'add') {
 		if(is_posting(L_BUTTON_ADD)) {
@@ -99,6 +103,7 @@ function category_content() {
 		?>
 		<div class="span6">
 			<h3><?php echo L_CATEGORY_GIVE_NAME ?></h3>
+<<<<<<< HEAD
 			<div class="well">
 				<div class="row-fluid">
 					<div class="control-group">
@@ -113,6 +118,18 @@ function category_content() {
 							<textarea name="cat_descr" id="cat_descr" class="span6 descr" rows="5"></textarea>
 						</div>
 					</div>
+=======
+			<div class="control-group">
+				<label for="sectionname" class="control-label"><?php echo L_CATEGORY_NAME ?></label>
+				<div class="controls">
+					<input type="text" id="sectionname" name="sectionname" class="span6 formfields" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="descr" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+				<div class="controls">
+					<textarea name="cat_descr" id="cat_descr" class="span6 descr"></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 		</div>
@@ -302,6 +319,7 @@ function category_content() {
 					} else {
 						printOut(FAILURE, $result);
 					}
+<<<<<<< HEAD
 				}
 			}
 			if(is_posting(L_BUTTON_EDIT)) {
@@ -312,6 +330,18 @@ function category_content() {
 					$subs->sectionname = empty($section_name) ? $subs->sectionname : $section_name;
 					$subs->dirtitle =  unique_dirtitle(dirify($subs->sectionname), 'sections');
 				}
+=======
+				}
+			}
+			if(is_posting(L_BUTTON_EDIT)) {
+				$subs->Get($item_id);
+				$section_name = trim(save(strip_tags($_POST['catTitle'])));
+				$subs->descr = isset($_POST['cat_descr']) ? trim(save($_POST['cat_descr'])) : '';
+				if($subs->sectionname != $section_name) {
+					$subs->sectionname = empty($section_name) ? $subs->sectionname : $section_name;
+					$subs->dirtitle =  unique_dirtitle(dirify($subs->sectionname), 'sections');
+				}
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				$new_cat = isset($_POST['new_cat']) && is_array($_POST['new_cat']) ? $_POST['new_cat'] : array();
 				$new_cat_descr = isset($_POST['new_cat_descr']) && is_array($_POST['new_cat_descr']) ? $_POST['new_cat_descr'] : array();
 				$subadd = '';
@@ -326,7 +356,11 @@ function category_content() {
 					$subsection->Get($i);
 					$subsection->sectionname = $sl;
 					if(isset($subcats_list_descr[$i])) {
+<<<<<<< HEAD
 						$subsection->descr = trim($subcats_list_descr[$i]);
+=======
+						$subsection->descr = trim(save($subcats_list_descr[$i]));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					}
 					$subsection->dirtitle = unique_dirtitle(dirify($subsection->sectionname), 'sections');
 					$subsection->Save();
@@ -336,13 +370,20 @@ function category_content() {
 				if(!empty($new_cat)) {
 					$newsubs =& get_dao('sections');
 					foreach($new_cat as $i => $v) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 						$v = trim(save(strip_tags($v)));
 						if(empty($v)) {
 							continue;
 						}
 						if(isset($new_cat_descr[$i]) && !empty($new_cat_descr[$i])) {
+<<<<<<< HEAD
 							$newsubs->descr = trim($new_cat_descr[$i]);
+=======
+							$newsubs->descr = trim(save($new_cat_descr[$i]));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 						}
 						$newsubs->sectionname = $v;
 						$newsubs->dirtitle =  unique_dirtitle(dirify($newsubs->sectionname), 'sections');
@@ -365,17 +406,31 @@ function category_content() {
 					$auth->updateAdmins();
 					printOut(SUCCESS, vsprintf(L_EDIT_CATEGORY_SUCCESS,array($subs->sectionname, $subadd)));
 				} else {
+<<<<<<< HEAD
 					printOut(FAILURE, vsprintf(L_EDIT_CATEGORY_FAILURE,array($subs->sectionname,$subadd, mysqli_error())));
+=======
+					printOut(FAILURE, vsprintf(L_EDIT_CATEGORY_FAILURE,array($subs->sectionname,$subadd, mysql_error())));
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				}
 			}
 			$subs->Get($item_id);
 			$subc = !empty($subs->id) ? $subs->GetList(array(array('pid', '=', $subs->id))) : array();
+<<<<<<< HEAD
 
 			echo $output;
 
 			if(!empty($subs->id)) {
 			?>
 			<div class="row-fluid">
+=======
+			?>
+			<div class="span12">
+				<?php echo $output; ?>
+			</div>
+			<?php
+			if(!empty($subs->id)) {
+			?>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				<div class="span6">
 					<h3><?php echo L_CATEGORY_ADD_TITLE; ?></h3>
 					<div class="well">
@@ -397,11 +452,19 @@ function category_content() {
 				</div>
 				<?php
 				if($subs->cat_type !== 'pages') {
+<<<<<<< HEAD
 				?>
 					<div class="span6" id="addSubcats">
 						<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
 						<div id="addSubcats1Group" class="row-fluid">
 							<div class="span12">
+=======
+						?>
+						<div class="span6" id="addSubcats">
+							<h3><?php echo L_ADD_SUBCATEGORY; ?></h3>
+							<div id="addSubcats1Group" class="row">
+								<div class="span6">
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 								<div class="control-group">
 									<label for="new_cat[1]" class="control-label"><?php echo L_JS_SUBCAT_LABEL ?></label>
 									<div class="controls">
@@ -417,6 +480,7 @@ function category_content() {
 							</div>
 						</div>
 					</div>
+<<<<<<< HEAD
 			</div>
 			<div class="row-fluid">
 				<div class="span12">
@@ -465,6 +529,49 @@ function category_content() {
 						<div class="pull-right">
 							<input type="submit" name="submit" class="btn btn-danger" value="<?php echo L_BUTTON_DELETE ?>" />
 						</div>
+=======
+
+					<div class="span12">
+						<?php
+						if(!empty($subc)) {
+							?>
+							<h3><?php echo L_EDIT_SUBCATEGORY_NAME_LABEL; ?></h3>
+							<table class="table table-striped">
+								<?php
+								foreach($subc as $subCat) {
+									?>
+									<tr>
+										<td>
+											<div class="control-group">
+												<label for="cat<?php echo $subCat->id; ?>" class="control-label"><?php echo L_EDIT_CATEGORY_NAME_LABEL ?></label>
+												<div class="controls">
+													<input type="text" name="sectionname[<?php echo $subCat->id; ?>]" id="cat<?php echo $subCat->id; ?>" value="<?php echo $subCat->sectionname; ?>" class="formfields" />
+												</div>
+												<label for="sectionname_descr[<?php echo $subCat->id; ?>]" class="control-label"><?php echo L_CATEGORY_DESCRIPTION ?></label>
+												<div class="controls">
+													<textarea name="sectionname_descr[<?php echo $subCat->id; ?>]"><?php echo view($subCat->descr); ?></textarea>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="control-group">
+												<div class="controls">
+												<label for="del<?php echo $subCat->id; ?>" class="checkbox pull-right">
+													<input id="del<?php echo $subCat->id; ?>" name="del[]" type="checkbox" value="<?php echo $subCat->id; ?>" />
+													<?php echo L_DELETE_ITEM ?>
+												</label>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<?php
+								}
+								?>
+							</table>
+							<?php
+						}
+						?>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					</div>
 				</div>
 			</div>
@@ -480,6 +587,17 @@ function category_content() {
 					</div>
 				</div>
 					<?php
+<<<<<<< HEAD
+=======
+				} else {
+					?>
+					<div class="span12">
+						<div class="form-actions">
+							<input type="submit" name="submit" class="btn btn-primary" value="<?php echo L_BUTTON_EDIT ?>" />
+						</div>
+					</div>
+					<?php
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				}
 			} else {
 				printf(FAILURE, L_CATEGORY_MISSING);

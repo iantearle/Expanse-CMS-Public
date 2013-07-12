@@ -143,6 +143,7 @@ if(CLEAN_URLS) {
 				$_GET['subcat'] = $check[0]->id;
 			}
 		}
+<<<<<<< HEAD
 	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)/([\w\d-]+)$|', $request_uri, $matches)) {
 		$check = $items->GetList(array(array('dirtitle','=',$matches[3])));
 		if(!empty($check)) {
@@ -154,6 +155,8 @@ if(CLEAN_URLS) {
 			trigger_404();
 			$_GET['ucat']= '';
 		}
+=======
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 	} elseif(preg_match('|^([\w\d-]+)/page/([\d]+)$|', $request_uri,$matches)) {
 
 		//paging category
@@ -298,11 +301,19 @@ if(!is_feed()) {
 	$menu = make_menu();
 
 	if(is_search()) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//performing a search
 		$tplfile = file_exists("$themetemplates/search{$tplext}") ? "search{$tplext}" : '';
 		$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 		$main = expanse("search:$search|template:$tplfile|ignore_paging:true", $user_vars['main'], true);
 	} elseif(is_home()) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//on the home page
 		$start_cat = $option->startcategory;
 		if(strpos($start_cat, ':P') === FALSE) {
@@ -337,6 +348,10 @@ if(!is_feed()) {
 			$main = expanse("type:static|id:{$items->id}|template:$tplfile", $user_vars['main'], true);
 		}
 	} elseif(is_userpage()) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//On a user page
 		$items->Get($ucat);
 		if(!empty($items->id) && $items->type == 'static') {
@@ -347,6 +362,10 @@ if(!is_feed()) {
 			trigger_404();
 		}
 	} elseif(is_category()) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		//Inside a category
 		$sections->Get($pcat);
 		if(is_subcat()) {
@@ -364,12 +383,16 @@ if(!is_feed()) {
 			//Viewing a single item
 			$tplfile = file_exists("$themetemplates/{$sections->dirtitle}_full{$tplext}") ? "{$sections->dirtitle}_full{$tplext}" : "{$sections->cat_type}_full{$tplext}";
 			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
+<<<<<<< HEAD
 			if($items->cid != 0) {
 				$subsection = $subsections->Get($items->cid);
 				$main = expanse("category:$sections->sectionname|subcategory:$subsections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
 			} else {
 				$main = expanse("category:$sections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
 			}
+=======
+			$main = expanse("category:$sections->sectionname|id:$item_id|template:$tplfile", $user_vars['main'], true);
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 		} else {
 
 			// Viewing just the category

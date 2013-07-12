@@ -439,7 +439,11 @@
 			var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 			var val = {
 				d: date.getDate(),
+<<<<<<< HEAD
 				m: date.getMonth() + 1,
+=======
+				m: date.getMonth(),
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				mmmm: monthNames[date.getMonth()],
 				yy: date.getFullYear().toString().substring(2),
 				yyyy: date.getFullYear()

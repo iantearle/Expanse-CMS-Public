@@ -64,7 +64,11 @@ if(ADDING):	?>
 			<div class="control-group">
 				<label for="descr" class="control-label"><?php echo L_BODY ?></label>
 				<div class="controls">
+<<<<<<< HEAD
 					<textarea name="descr" id="descr" class="span12 descr"></textarea>
+=======
+					<textarea name="descr" id="descr" class="span12 descr"><?php echo "<p>&nbsp;</p>"; ?></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 				</div>
 			</div>
 		</div>
@@ -156,7 +160,11 @@ if(EDITING):
 				<div class="control-group">
 					<label for="descr" class="control-label"><?php echo L_BODY ?></label>
 					<div class="controls">
+<<<<<<< HEAD
 						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : ""; ?></textarea>
+=======
+						<textarea name="descr" id="descr" class="span12 descr"><?php echo ($items->descr !== '') ? view($format->HTML($items->descr)) : "<p>&nbsp;</p>"; ?></textarea>
+>>>>>>> 325e700e95f305a91d7685ba9c9b19b036d2e24c
 					</div>
 				</div>
 			</div>
