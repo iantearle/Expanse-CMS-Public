@@ -1,23 +1,25 @@
 /*
 ------------------------------------------------------------
-Mailer styles 
+Mailer styles
 ============================================================
 */
-		#mailBox{
-		}
-		#mailBox p{
+#mailBox {
+}
 
-		}
-		#mailBox dd p{
+#mailBox p {
+}
 
-		}
-		#mailBox dl dt{
-		}
-		#mailBox dl dt#loginInformation{
-		}
-		#mailBox dl dt#loginDetails{
+#mailBox dd p {
+}
 
-		}
-		#mailBox dl dd{
+#mailBox dl dt {
+}
 
-		}
+#mailBox dl dt#loginInformation {
+}
+
+#mailBox dl dt#loginDetails {
+}
+
+#mailBox dl dd {
+}

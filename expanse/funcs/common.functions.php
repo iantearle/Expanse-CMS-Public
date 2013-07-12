@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -107,20 +106,6 @@ function trim_excerpt($text, $alt_text = L_NO_TEXT_IN_DESCRIPTION, $keep_line_br
 	}
 	$paragraph .= '&hellip;</p>';
 	$text = $paragraph;
-	// $text = $keep_line_breaks ? str_replace('</p>', '<br /><br />', $text) : $text;
-	// $acceptable_tags = $keep_line_breaks ? '<br><br />' : '';
-	// $acceptable_tags .= '<strong><em><b><i><a><ul><ol><li><dl><dt><dd>';
-	// $text = strip_tags($text,$acceptable_tags);
-	// $text = $newlines ? $text : str_replace(array("\n", "\t", "\r"), '', $text);
-	// $excerpt_length = DESCR_LENGTH;
-	// $text = trim($text);
-	// $text = empty($text) && !empty($alt_text) ? $alt_text : $text;
-	// $words = explode(' ', $text, $excerpt_length + 1);
-	// if(count($words) > $excerpt_length) {
-	// 		array_pop($words);
-	//		array_push($words, '&hellip;');
-	//		$text = implode(' ', $words);
-	// }
 	return $text;
 }
 
@@ -138,7 +123,19 @@ function trim_title($title, $alt_text = L_NO_TEXT_IN_TITLE) {
 	return $title;
 }
 
-function expanse_error_handler( $errno, $errstr, $errfile, $errline, $errcontext) {
+
+/**
+ * expanse_error_handler function.
+ *
+ * @access public
+ * @param mixed $errno
+ * @param mixed $errstr
+ * @param mixed $errfile
+ * @param mixed $errline
+ * @param mixed $errcontext
+ * @return void
+ */
+function expanse_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 	if(error_reporting() == 0) {
 		return;
 	}
@@ -146,9 +143,9 @@ function expanse_error_handler( $errno, $errstr, $errfile, $errline, $errcontext
 	"\n<br /><strong>Error:</strong>". print_r( $errstr, true).
 	"\n<br /><strong>In file:</strong>". print_r( $errfile, true).
 	"\n<br /><strong>on line:</strong>". print_r( $errline, true).
-	"\n<br /><strong>In context:</strong>".print_r( $errcontext, true).
+//	"\n<br /><strong>In context:</strong>".print_r( $errcontext, true).
 	"\n<br />Backtrace of expanse_error_handler()".
-	print_r( backtrace(), true)
+	print_r(backtrace(), true)
 	.'</div>';
 }
 
@@ -190,26 +187,29 @@ function backtrace() {
 		$margin = $tmp_counter*10;
 		?>
 		<table style="left:<?php echo $margin; ?>px" border="0" cellpadding="5" cellspacing="0">
-		<tr class="calling_function">
-		<td>function <span class="func_name"><?php
-		echo isset($debug_array[$tmp_counter]["function"]) ? $debug_array[$tmp_counter]["function"] : '';?>(</span> <span class="func_args"><?php
-		//count how many args a there
-		$args_counter = isset($debug_array[$tmp_counter]["args"]) ? count($debug_array[$tmp_counter]["args"]) : 0;
-		//print them
-		for($tmp_args_counter = 0; $tmp_args_counter != $args_counter; ++$tmp_args_counter) {
-			echo isset($debug_array[$tmp_counter]["args"]) ? (	is_array($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ||  is_object($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ? print_r($debug_array[$tmp_counter]["args"][$tmp_args_counter], true) : $debug_array[$tmp_counter]["args"][$tmp_args_counter] ) : '';
-			echo (($tmp_args_counter + 1) != $args_counter) ? ', ' : ' ';
-		}
-		?></span><span class="func_name">)</span></td>
-		</tr>
-		<tr class="error_details">
-		<td>{<br>
-			file: <?php
-			echo isset($debug_array[$tmp_counter]["file"]) ? $debug_array[$tmp_counter]["file"] : '';?><br>
-			line: <?php
-			echo isset($debug_array[$tmp_counter]["line"]) ? $debug_array[$tmp_counter]["line"] : '';?><br>
-		}</td>
-		</tr>
+			<tr class="calling_function">
+				<td>function <span class="func_name">
+					<?php
+					echo isset($debug_array[$tmp_counter]["function"]) ? $debug_array[$tmp_counter]["function"] : '';?>(</span> <span class="func_args"><?php
+					//count how many args a there
+					$args_counter = isset($debug_array[$tmp_counter]["args"]) ? count($debug_array[$tmp_counter]["args"]) : 0;
+					//print them
+					if(isset($_GET['context']) && $_GET['context'] == true) {
+						for($tmp_args_counter = 0; $tmp_args_counter != $args_counter; ++$tmp_args_counter) {
+							echo isset($debug_array[$tmp_counter]["args"]) ? (	is_array($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ||  is_object($debug_array[$tmp_counter]["args"][$tmp_args_counter]) ? print_r($debug_array[$tmp_counter]["args"][$tmp_args_counter], true) : $debug_array[$tmp_counter]["args"][$tmp_args_counter] ) : '';
+							echo (($tmp_args_counter + 1) != $args_counter) ? ', ' : ' ';
+						}
+					}
+					?>
+					</span><span class="func_name">)</span>
+				</td>
+			</tr>
+			<tr class="error_details">
+				<td>
+					<strong>file:</strong> <?php echo isset($debug_array[$tmp_counter]["file"]) ? $debug_array[$tmp_counter]["file"] : '';?><br>
+					<strong>line:</strong> <?php echo isset($debug_array[$tmp_counter]["line"]) ? $debug_array[$tmp_counter]["line"] : '';?>
+				</td>
+			</tr>
 		</table>
 		<?php
 		if(($tmp_counter + 1) != $counter) {

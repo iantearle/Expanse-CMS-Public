@@ -1,45 +1,4 @@
 <?php
-/****************************************************************
-
-                    `-+oyhdNMMMMMMMNdhyo/-`
-                .+ymNNmys+:::....-::/oshmNNdy/.
-             :smMmy/-``.-:-:-:----:-::--..-+hNNdo.
-          .smMdo-`.:::.`               `.-::-`:smMd/`
-        .yMNy- -::`                         `-::`:hMmo`
-      `yMNo``:/`                               `-/--yMN+
-     /mMy.`:-                                  ```./--dMd.
-    sMN/ //`                                    `..`-/`sMN/
-   yMm-`s.                                       `.-.`+-/NN+
-  yMm--y. ```.-/ooyoooo/:.                        `---`/::NN/
- +MN:.h--/sdNNNNMMMNNNmmmhdoo+:.                  `.-::`/:+MN.
-`NMs`hyhNNMMMMMMMMMMMNNNmhyso+syy/:-.`          `.-/+o++:. hMh
-+MN.`:ssdmmmmmmmmmmmmhyyyo++:.``   `.-:::://:::::.```````  -MN-
-mMy    ````````....`````````                         ````  `dMo
-MM+            ````                                  ````   yMy
-MM:                                                  ````   yMd
-MM+                                                  ````   yMy
-dMy                                                  ````  `dM+
-+Mm.       ``-://++oo+///-``    ``-::/ooooyhhddddddmmm+yo. -MN-
-`NM+ -/+s.`ommmmmmmmmmmmmmddhyhyo+++oosyhhdddmmmNNNNMddmh+ hMh
- /MN-oNmds``sdmmmmNNNNNmmmdNmmdddhhyyyyyhhdddmmmNNmmy-+:s`+MN.
-  sMm-sNmd+`.ydmmNNNNNNmmmNNNmdhysso+oosyssssso/:--:`.-o`:NN/
-   yMm-+Nmds..ymmmNNNNNmNNNNNmdhyso++//::--...```..``:+ /NN+
-    sNN/-hmdh+-ommNNNNmNNNNNNmdhyso+//::--..````.` .+:`oMN/
-     /mMy.+mmddhhmNNNmmNMNNNNmdyso+//::--..````` `++`-dMd.
-      `yMN+./hNmmmmmmmmmNNNNmmhyso+//:--..``..`-//`-yMN/
-        .yMNy--odNNNmmmmmNNNmdhyso+/::--..`.://-`:hMmo`
-          .smMdo-.+ydNNmmddmmdysso+/::::////.`:smMd/`
-             :smMmy+---/oysydhhyyyo/+/:-``-+hNNdo.
-                .+yNMNmhs+/::....-::/oshmNNdy/.
-                    .-+oyhdNMMMMMMMNdhyo/-`
-
-Expanse - Content Management For Web Designers, By A Web Designer
-			  Extended by Ian Tearle, @iantearle
-		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
-
-****************************************************************/
-
 /**
 CLASS: dbDelta
 PURPOSE: compare existing database to schema and generate SQL to update database.
@@ -66,7 +25,6 @@ Nate Cavanaugh - made it work for Expanse/expanse's Database class, and cleaned 
 * You can choose to concatenate the string constants together in order to
 * select multiples.
 */
-
 define('DBDELTA_CREATE_TABLES', 'CREATE_T');
 define('DBDELTA_DROP_TABLES', 'DROP_T');
 define('DBDELTA_ADD_INDEXES', 'ADD_IND');
@@ -157,6 +115,7 @@ class dbDelta {
 		foreach($qs as $q) {
 			$ret[] = $q['description'];
 		}
+
 		return $ret;
 	}
 
@@ -169,6 +128,7 @@ class dbDelta {
 		foreach($qs as $q) {
 			$ret[] = $q['query'];
 		}
+
 		return $ret;
 	}
 
@@ -182,6 +142,7 @@ class dbDelta {
 		foreach($this->qs_drop_tables as $key => $value) {
 			$ret[] = $key;
 		}
+
 		return $ret;
 	}
 
@@ -194,6 +155,7 @@ class dbDelta {
 		foreach($this->qs_drop_cols as $key=>$value) {
 			$ret[] = $key;
 		}
+
 		return $ret;
 	}
 
@@ -204,6 +166,7 @@ class dbDelta {
 	*/
 	function perform_queries($strConst=DBDELTA_DEFAULT) {
 		$queries = $this->get_queries($strConst);
+
 		return $this->do_these_queries($queries);
 	}
 
@@ -234,17 +197,11 @@ class dbDelta {
 			);
 			$ret[] = $item;
 		}
+
 		return $ret; //returns an array of ordinal array of query/result pairs
 	}
 
-	/******************************************************************************
-	PRIVATE FUNCTIONS
-	If Php supported private functions, these would not be availabel outside of
-	this class.
-	******************************************************************************/
-
-	//private
-	function _merge_query_sets($strConst=DBDELTA_DEFAULT) {
+	private function _merge_query_sets($strConst=DBDELTA_DEFAULT) {
 		$qs = array();
 		if(strstr($strConst, DBDELTA_CREATE_TABLES)) {
 			$qs = array_merge($qs, $this->qs_create_tables);
@@ -274,13 +231,11 @@ class dbDelta {
 		return $qs;
 	}
 
-	//private
-	function _getDb() {
+	private function _getDb() {
 		return $this->_dbCon;
 	}
 
-	//private
-	function initArrays() {
+	private function initArrays() {
 		$this->qs_create_tables = array();
 		$this->qs_drop_tables = array();
 		$this->qs_add_indexes = array();
@@ -292,13 +247,11 @@ class dbDelta {
 		$this->qs_ignored = array();
 	}
 
-	//private
-	function _normalize($t) {
+	private function _normalize($t) {
 		$t = str_replace("\r\n", "\n", $t);
 		$t = str_replace("\r", "\n", $t);
 		return $t;
 	}
-
 	/******************************************************************************
 	THE LOGICAL MONSTER WITHIN - with thanks to the developers at WordPress
 	******************************************************************************/
@@ -319,7 +272,7 @@ class dbDelta {
 		/* $cqueries is a local array for processing table CREATE queries extracted from schema (which must be present for this helper class to do anything interesting). It is conceivable that the schema could also contain some default data as INSERTS, or if it is an upgrade, there may also be some UPDATE queries */
 		$cqueries = array();
 
-		if($queries==null) {
+		if ($queries==null) {
 			$queries = $this->_dbSchema;
 		}
 
@@ -383,7 +336,7 @@ class dbDelta {
 			// For every current table in the existing database
 			foreach($tables as $table) {
 				// If a table query exists for the database table...
-				if(array_key_exists(strtolower($table), $cqueries)) {
+				if( array_key_exists(strtolower($table), $cqueries) ) {
 					unset($this->qs_create_tables[strtolower($table)]);
 					// Clear the field and index arrays
 					//unset($cfields);
@@ -395,6 +348,7 @@ class dbDelta {
 					$qryline = trim($match2[1]);
 					// Separate field lines into an array
 					$flds = explode("\n", $qryline);
+					//echo "<hr/><pre>n".print_r(strtolower($table), true).":n".print_r($cqueries, true)."</pre><hr/>";
 					// For every field line specified in the query
 					foreach($flds as $fld) {
 						// Extract the field name
@@ -409,8 +363,8 @@ class dbDelta {
 							case 'fulltext':
 							case 'unique':
 							case 'key':
-								$validfield = false;
-								$indices[] = trim(trim($fld), ", \n");
+							$validfield = false;
+							$indices[] = trim(trim($fld), ", \n");
 							break;
 						}
 						$fld = trim($fld);
@@ -419,7 +373,6 @@ class dbDelta {
 							$cfields[strtolower($fieldname)] = trim($fld, ", \n");
 						}
 					}
-
 					// Fetch the table column structure from the database
 					$tablefields = $dbCon->GetResults("DESCRIBE {$table};");
 					// For every field in the table
@@ -440,7 +393,6 @@ class dbDelta {
 								);
 								$this->qs_alter_cols[$table.$tablefield->Field.'_TYPE('.$fieldtype.')'] = $item;
 							}
-
 							// Get the default value from the array
 							//echo "{$cfields[strtolower($tablefield->Field)]}<br>";
 							if(preg_match("| DEFAULT '(.*)'|i", $cfields[strtolower($tablefield->Field)], $matches)) {
@@ -470,7 +422,6 @@ class dbDelta {
 							$this->qs_drop_cols[$table.'.'.$tablefield->Field] = $item;
 						}
 					}
-
 					// For every remaining field specified for the table
 					foreach($cfields as $fieldname => $fielddef) {
 						// add a query that adds the field to that table
@@ -482,14 +433,13 @@ class dbDelta {
 						);
 						$this->qs_add_cols[$table.'.'.$fieldname] = $item;
 					}
-
 					// Index stuff goes here
 					// Fetch the table index structure from the database
 					$tableindices = $dbCon->GetResults("SHOW INDEX FROM {$table};");
 					$tableindices = !empty($tableindices) ? $tableindices : false;
 					if($tableindices) {
 						// Clear the index array
-						//unset($index_ary);
+						// unset($index_ary);
 						$index_ary = array();
 						// For every index in the table
 						foreach($tableindices as $tableindex) {
@@ -498,14 +448,13 @@ class dbDelta {
 							$index_ary[$keyname]['columns'][] = array('fieldname' => $tableindex->Column_name, 'subpart' => $tableindex->Sub_part);
 							$index_ary[$keyname]['unique'] = ($tableindex->Non_unique == 0)?true:false;
 						}
-
 						// For each actual index in the index array
 						foreach($index_ary as $index_name => $index_data) {
 							// Build a create string to compare to the query
 							$index_string = '';
 							if($index_name == 'PRIMARY') {
 								$index_string .= 'PRIMARY ';
-							} else if($index_data['unique']) {
+							} elseif($index_data['unique']) {
 								$index_string .= 'UNIQUE ';
 							}
 							$index_string .= 'KEY ';
@@ -528,11 +477,12 @@ class dbDelta {
 							$index_string .= ' ('.$index_columns.')';
 
 							if(!(($aindex = array_search($index_string, $indices)) === false)) {
-								unset($indices[$aindex]);
+							unset($indices[$aindex]);
+							//echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">{$table}:<br/>Found index:".$index_string."</pre>n";
 							}
+							//else echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">{$table}:<br/><b>Did not find index:</b>".$index_string."<br/>".print_r($indices, true)."</pre>n";
 						}
 					}
-
 					// For every remaining index specified for the table
 					foreach($indices as $index) {
 						// add a query that adds the index to that table
@@ -546,22 +496,23 @@ class dbDelta {
 					}
 				} else {
 					// This table exists in the database, but not in the creation queries
-					//ignore it unless it begins with table prefix.
-					//TODO: verify logic that ignores existing tables in database that do not share prefix
-					//if (substr($table,0, $len_prefix)==$prefix) {
+					// ignore it unless it begins with table prefix.
+					// TODO: verify logic that ignores existing tables in database that do not share prefix
+					// if (substr($table,0, $len_prefix)==$prefix) {
 					if(strpos($table, $prefix) === 0) {
 						$item = array(
-							'description' => 'Drop table '.$table,
-							'query' => 'DROP TABLE '.$table
+						'description' => 'Drop table '.$table,
+						'query' => 'DROP TABLE '.$table
 						);
 						$this->qs_drop_tables[$table] = $item;
-					}//end if
-				}//end IF (query exists for table)
-			}//end FOREACH (tables in database)
-		}//end IF
+					} //end if
+				} //end IF (query exists for table)
+			} //end FOREACH (tables in database)
+		} //end IF
 		//debug($this->qs_drop_tables);
+
 		return;
-	}//end findDifferences()
+	} //end findDifferences()
 } //end class dbDelta
 
 /*
@@ -598,77 +549,15 @@ function upgrade() {
 
 	//Add the expanse version
 	setOption('expanseversion',CMS_VERSION);
+
 	return true;
 }
-// function upgrade_1_0($params){
-// 	//set the default index file option
-// 	setOption('index_file', 'index.php');
-// 	//set the default usage for using clean urls
-// 	setOption('use_clean_urls', 0);
-// }
-// function upgrade_1_1($params){
-// 	$files_to_delete = array(
-// 		'css/expanse.css',
-// 		'funcs/misc/theme_prototype/css/theme_prototype.css',
-// 		'funcs/misc/theme_prototype/javascript/theme_prototype.js',
-// 		'modules/blog/blog.def.php',
-// 		'modules/blog/blog.mod.php',
-// 		'modules/events/events.def.php',
-// 		'modules/events/events.mod.php',
-// 		'modules/gallery/gallery.def.php',
-// 		'modules/gallery/gallery.mod.php',
-// 		'modules/links/links.def.php',
-// 		'modules/links/links.mod.php',
-// 		'modules/pages/pages.def.php',
-// 		'modules/pages/pages.mod.php',
-// 		'modules/press/press.def.php',
-// 		'modules/press/press.mod.php');
-// 	foreach($files_to_delete as $file){
-// 		if(!file_exists(EXPANSEPATH."/$file")){continue;}
-// 		unlink(EXPANSEPATH."/$file");
-// 	}
-// }
-// function upgrade_1_2($params){
-// 	global $Database;
-// 	if(!getOption('active_plugins')){
-// 		$active_plugins = $params['active_plugins'];
-// 		setOption('active_plugins', $active_plugins);
-// 	}
-// 	setOption('language', 'en-us');
-// 	$Database->Query("UPDATE {$Database->Prefix}sections as a SET a.public = 1, a.order_rank = a.id WHERE a.cat_type != 'pages' AND a.pid=0");
-// 	$Database->Query("UPDATE {$Database->Prefix}items as a SET a.menu_order = a.id WHERE a.type = 'static'");
-// }
-/*function upgrade_1_1(){
-global $Database;
-//add section admin setting
-$Database->Query("ALTER TABLE `{$Database->Prefix}users` ADD `section_admin` tinyint(1) NOT NULL default '0' AFTER `admin`");
-//set the default index file option
-setOption('index_file', 'index.php');
-//set the default usage for using clean urls
-setOption('use_clean_urls', 0);
-}
-function updateAdmins(){
-$sections = new Expanse('sections');
-$users = new Expanse('users');
-$ids = array();
-$allsections = $sections->GetList(array(array('pid', '=', 0)));
-$alladmins = $users->GetList(array(array('admin', '=', 1)));
-foreach($allsections as $k => $v){
-$ids[] = $v->id;
-}
-$_SESSION['permissions'] = $ids;
-unset($_SESSION['menu']);
-$ids = serialize($ids);
-foreach($alladmins as $i => $val){
-$users->Get($val->id);
-$users->permissions = $ids;
-$users->Save();
-}
-}*/
+
 function same_user($php, $ftp) {
 	$phpuser = posix_getpwuid(fileowner($php));
 	$phpuser = trim($phpuser['name']);
 	$ftpuser = posix_getpwuid(fileowner($ftp));
 	$ftpuser = trim($ftpuser['name']);
+
 	return ($phpuser == $ftpuser);
 }

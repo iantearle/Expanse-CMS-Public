@@ -1,9 +1,30 @@
-<div id="content" class="links">
-<h1>{category}</h1>
-{set:subcategory}<h2>{subcategory}</h2>{/set}
-{output}
-{loop:content}
-<h3><a href="{url}" target="_blank" title="{title}">{title}</a></h3>
-<p>{descr}</p>
-{/loop}
+<div class="container">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="page-header">
+				<h1>{category}{set:subcategory}<br><small>{subcategory}</small>{/set}</h1>
+			</div>
+			{output}
+
+			<div class="tabbable tabs-left">
+				<ul class="nav nav-tabs">
+					{loop:content}
+					<li{set:_first} class="active"{/set}><a href="#tab{_rank}" data-toggle="tab">{title}</a></li>
+					{/loop}
+				</ul>
+
+				<div class="tab-content">
+					{loop:content}
+					<div class="tab-pane active" id="tab{_rank}">
+						<a href="{url}" target="_blank" title="{title}">{title}</a>
+						{excerpt}
+
+						<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by {author}{set:logged_in} | <a href="{editlink}">Edit item</a>{/set}</p>
+					</div>
+					{/loop}
+				</div>
+
+			{loop:pages}{set:_first}Pages: {/set}{previous_link} {page_link} {next_link}{/loop}
+		</div>
+	</div>
 </div>

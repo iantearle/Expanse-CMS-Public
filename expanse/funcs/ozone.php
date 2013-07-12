@@ -36,12 +36,12 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
 $ozone = array();
 $ozoneAction = array();
+
 /*
 Filter API
 Hooks into template processing & display
@@ -71,7 +71,9 @@ function applyOzone($field, $content) {
 		foreach($ozone[$field] as $priority => $functions) {
 			if(!is_null($functions)) {
 				foreach($functions as $function) {
-					if(!function_exists($function['function'])) { continue; }
+					if(!function_exists($function['function'])) {
+						continue;
+					}
 					$all_args = array_merge(array($content), $args);
 					$function_name = $function['function'];
 					$accepted_args = $function['accepted_args'];
@@ -225,5 +227,6 @@ function ozone_walk(&$content, $prefix = '') {
 			$content[$k] = applyOzone($prefix.$k, $v);
 		}
 	}
+	//r_print($content);
 	return $content;
 }

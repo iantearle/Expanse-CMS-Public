@@ -3,240 +3,327 @@
 Admin Module - Main Page
 ============================================================
 */
-		#catList{
-		list-style:none;
-		}
-		.adminList li{
-		padding: 0 0 0 20px;
-		line-height: normal;
-		}
-			#catList li h3{
-			margin:0;
-			padding: 0;
-			}
-		.adminList #users{
-		background: url(../images/userentry.gif) no-repeat 0 center;
-		}
-		.adminList #plugins{
-		background: url(../images/plugins.gif) no-repeat 0 center;
-		}
-		.adminList #menuBuilder{
-		background: url(../images/menu_builder.gif) no-repeat 0 center;
-		}
-		.adminList #comments{
-		background: url(../images/managecomments.gif) no-repeat 0 center;
-		}
-		.adminList #categories{
-		background: url(../images/managecategories.gif) no-repeat 0 center;
-		}
-		.adminList #hackattempts{
-		background: url(../images/hackattempts.gif) no-repeat 0 center;
-		}
-		.adminList #mysql{
-		background: url(../images/mysqlsettings.gif) no-repeat 0 center;
-		}
-		.adminList #preferences{
-		background: url(../images/preferences.gif) no-repeat 0 center;
-		}
-		.adminList #themeEditor{
-		background: url(../images/theme_editor.gif) no-repeat 0 center;
-		}
+#catList {
+	list-style:none;
+}
+
+.adminList li {
+	padding:0 0 0 20px;
+	line-height:normal;
+}
+
+#catList li h3 {
+	margin:0;
+	padding:0;
+}
+
+.adminList #users {
+	background:url(../images/userentry.gif) no-repeat 0 center;
+}
+
+.adminList #plugins {
+	background:url(../images/plugins.gif) no-repeat 0 center;
+}
+
+.adminList #menuBuilder {
+	background:url(../images/menu_builder.gif) no-repeat 0 center;
+}
+
+.adminList #comments {
+	background:url(../images/managecomments.gif) no-repeat 0 center;
+}
+
+.adminList #categories {
+	background:url(../images/managecategories.gif) no-repeat 0 center;
+}
+
+.adminList #hackattempts {
+	background:url(../images/hackattempts.gif) no-repeat 0 center;
+}
+
+.adminList #mysql {
+	background:url(../images/mysqlsettings.gif) no-repeat 0 center;
+}
+
+.adminList #preferences {
+	background:url(../images/preferences.gif) no-repeat 0 center;
+}
+
+.adminList #themeEditor {
+	background:url(../images/theme_editor.gif) no-repeat 0 center;
+}
+
 /*
 ------------------------------------------------------------
 Admin Module - Plugins
 ============================================================
 */
-		.installed td{
-		background: #C6DFF5;
-		}
+.installed td {
+	background:#C6DFF5;
+}
+
 /*
 ------------------------------------------------------------
 Admin Module - Menu Builder
 ============================================================
 */
-	#keepMenu, #excludeMenu{
+#keepMenu,#excludeMenu {
 	padding:2em;
 	margin:0 auto 2em;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	}
-			#keepMenuContainer h2, #excludeMenuContainer h2{
-			font-weight:bold;
-			padding:0 0 0 62px;
-			}
-		#keepMenu h2{
-		background: url(../images/final_menu.gif) no-repeat;
-		}
-		#excludeMenu h2{
-		background:  url(../images/menu_trash.gif) no-repeat;
-		}
-		#keepMenu{
-		border:1px solid #698dac;
-		}
-		#excludeMenu{
-		border:1px solid #ccc;
-		color: #333;
-		opacity:0.65;
-		-moz-opacity:0.65;
-		filter:alpha(opacity=65);
-		}
-			#keepMenu div, #excludeMenu div{
-			margin: 0 0 5px 0;
-			padding: 1px;
-			border: solid #A0CFDD 1px;
-			-webkit-border-radius: 3px;
-			-moz-border-radius: 3px;
-			border-radius: 3px;
-			}
-			#keepMenu.reorderingMenu div h3 span, #excludeMenu.reorderingMenu div h3 span{
-			cursor:move;
-			background:#006A98 url(../images/menu_item_body_hover.gif) no-repeat 99% center;
-			}
-			#keepMenu div h3, #excludeMenu div h3{
-			background-color: #036f9c;
-			background-image: -webkit-gradient(linear, left center, right center, from(rgb(3, 111, 156)), to(rgb(7, 74, 126)));
-			background-image: -webkit-linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
-			background-image: -moz-linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
-			background-image: -o-linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
-			background-image: -ms-linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
-			background-image: linear-gradient(left, rgb(3, 111, 156), rgb(7, 74, 126));
-			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,StartColorStr='#036f9c', EndColorStr='#074a7e');
-			color:#fff;
-			margin: 0;
-			}
-			#keepMenu div h3 span, #excludeMenu div h3 span {
-				background:url(../images/menu_item_body_hover.gif) no-repeat -999% center;
-				padding: 10px 45px 10px 10px;
-				display: block;
-			}
-			.menuHover{
-			background:#d5e6f6;
-			}
-			.menuHoverTrash{
-			background:#dcdcdc;
-			}
-			#keepMenu.reorderingMenu div.over, #excludeMenu.reorderingMenu div.over {
-			  background-color:#ecf7fe;
-			}
-		#menuBuilderHolder{
-		display:none;
-		}
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+}
+
+#keepMenuContainer h2,#excludeMenuContainer h2 {
+	font-weight:700;
+	padding:0 0 0 62px;
+}
+
+#keepMenu h2 {
+	background:url(../images/final_menu.gif) no-repeat;
+}
+
+#excludeMenu h2 {
+	background:url(../images/menu_trash.gif) no-repeat;
+}
+
+#keepMenu {
+	border:1px solid #698dac;
+}
+
+#excludeMenu {
+	border:1px solid #ccc;
+	color:#333;
+	opacity:.65;
+	-moz-opacity:.65;
+	filter:alpha(opacity=65);
+}
+
+#keepMenu div,#excludeMenu div {
+	margin:0 0 5px;
+	padding:1px;
+	border:solid #A0CFDD 1px;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+}
+
+#keepMenu.reorderingMenu div h3 span,#excludeMenu.reorderingMenu div h3 span {
+	cursor:move;
+	background:#006A98 url(../images/menu_item_body_hover.gif) no-repeat 99% center;
+}
+
+#keepMenu div h3,#excludeMenu div h3 {
+	background-color:#036f9c;
+	background-image:-webkit-gradient(linear,left center,right center,from(#036f9c),to(#074a7e));
+	background-image:-webkit-linear-gradient(left,#036f9c,#074a7e);
+	background-image:-moz-linear-gradient(left,#036f9c,#074a7e);
+	background-image:-o-linear-gradient(left,#036f9c,#074a7e);
+	background-image:-ms-linear-gradient(left,#036f9c,#074a7e);
+	background-image:linear-gradient(left,#036f9c,#074a7e);
+	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=1,StartColorStr='#036f9c',EndColorStr='#074a7e');
+	color:#fff;
+	margin:0;
+}
+
+#keepMenu div h3 span,#excludeMenu div h3 span {
+	background:url(../images/menu_item_body_hover.gif) no-repeat -999% center;
+	padding:10px 45px 10px 10px;
+	display:block;
+}
+
+.menuHover {
+	background:#d5e6f6;
+}
+
+.menuHoverTrash {
+	background:#dcdcdc;
+}
+
+#keepMenu.reorderingMenu div.over,#excludeMenu.reorderingMenu div.over {
+	background-color:#ecf7fe;
+}
+
+#menuBuilderHolder {
+	display:none;
+}
+
 /*
 ------------------------------------------------------------
 Admin Module - Theme Editor
 ============================================================
 */
-		#themeEditor h1{
-		font-size: 1.2em;
-		color: #333;
-		}
-		#themeEditor h2{
-		font-size: 1.3em;
-		color: #074B85;
-		}
-		#themeEditor ul{
-		padding:0;
-		width:30%;
+#themeEditor h1 {
+	font-size:1.2em;
+	color:#333;
+}
 
-		list-style:none;
-		}
-		#themeEditor table{
-		margin: 1em auto;
-		width: 100%;
-		}
-		#themeEditor td label{
-		font-weight:normal;
-		width:auto;
-		text-align:right;
-		padding-right:0.2em;
-		}
-		#themeEditor td{
-		padding: 1em;
-		}
-		#themeEditor ul li ul{
-		width:auto;
-		float:none;
-		padding: 0.5em 1em;
-		}
-		#themeEditor ul li h1{
-		color: #074B85;
-		font-size: 1.2em;
-		}
-		#themeEditor textarea{
-		width:98%;
-		height:60em;
-		font: 1.2em "Courier New", Courier, mono;
-		color:#000;
-		}
-		#content td.themeInfo h2, .themeInfo h3{
-		font-size: 0.9em;
-		font-weight:normal;
-		line-height:1em;
-		}
-		.themeInfo p{
-		margin-top:0.6em;
-		}
-		#themeList td img{
-		padding:0.25em;
-		border:3px solid #C6DFF5;
-		}
-			.activeTheme td {
-			background-color:#C6DFF5 !important;
-			}
-				#themeList .activeTheme td img{
-				padding:0.25em;
-				border:3px solid #fff;
-				}
+#themeEditor h2 {
+	font-size:1.3em;
+	color:#074B85;
+}
+
+#themeEditor ul {
+	padding:0;
+	width:30%;
+	list-style:none;
+}
+
+#themeEditor table {
+	margin:1em auto;
+	width:100%;
+}
+
+#themeEditor td label {
+	font-weight:400;
+	width:auto;
+	text-align:right;
+	padding-right:.2em;
+}
+
+#themeEditor td {
+	padding:1em;
+}
+
+#themeEditor ul li ul {
+	width:auto;
+	float:none;
+	padding:.5em 1em;
+}
+
+#themeEditor ul li h1 {
+	color:#074B85;
+	font-size:1.2em;
+}
+
+#themeEditor textarea {
+	width:98%;
+	height:60em;
+	font:1.2em "Courier New",Courier,mono;
+	color:#000;
+}
+
+#content td.themeInfo h2,.themeInfo h3 {
+	font-size:.9em;
+	font-weight:400;
+	line-height:1em;
+}
+
+.themeInfo p {
+	margin-top:.6em;
+}
+
+#themeList td img {
+	padding:.25em;
+	border:3px solid #C6DFF5;
+}
+
+.activeTheme td {
+	background-color:#C6DFF5!important;
+}
+
+#themeList .activeTheme td img {
+	padding:.25em;
+	border:3px solid #fff;
+}
+
+.filename {
+	word-wrap:break-word;
+}
+
+.file_contents_holder {
+	height:800px;
+	position:relative;
+	border:solid #cfcfcf 1px;
+	border-radius:4px;
+}
+
+#file_contents {
+	height:800px;
+	width:100%;
+}
 
 /*
 ------------------------------------------------------------
 Admin Module - Users
 ============================================================
 */
-		table#users td a.user{
-		background: url(../images/userentry.gif) no-repeat 0 50%;
-		padding: 0 0 0 20px;
-		display:block;
-		height: 20px;
-		}
-		table#users td a.primary{
-		background: url(../images/primary_user.gif) no-repeat 0 50%;
-		padding: 0 0 0 20px;
-		display:block;
-		height: 20px;
-		}
-		#unCheck{
-		margin:0;
-		padding:0;
-		clear:right;
-		}
-		#categoryBoxes label{
-		text-align:left;
-		clear:right;
-		}
-		#section_admin_label, #section_user_label{
-		width: auto;
-		margin-left:5px;
-		}
-		.permBox{
-		margin-left: 0.5em;
-		}
+table#users td a.user {
+	background:url(../images/userentry.gif) no-repeat 0 50%;
+	padding:0 0 0 20px;
+	display:block;
+	height:20px;
+}
 
-.footer {
-  padding: 70px 0;
-  margin-top: 70px;
-  border-top: 1px solid #e5e5e5;
-  background-color: #f5f5f5;
+table#users td a.primary {
+	background:url(../images/primary_user.gif) no-repeat 0 50%;
+	padding:0 0 0 20px;
+	display:block;
+	height:20px;
 }
+
+#unCheck {
+	margin:0;
+	padding:0;
+	clear:right;
+}
+
+#categoryBoxes label {
+	text-align:left;
+	clear:right;
+}
+
+#section_admin_label,#section_user_label {
+	width:auto;
+	margin-left:5px;
+}
+
+.permBox {
+	margin-left:.5em;
+}
+
+
 .footer p {
-  margin-bottom: 0;
-  color: #777;
+	margin-bottom:0;
+	color:#777;
 }
+
 .footer-links {
-  margin: 10px 0;
+	margin:10px 0;
 }
+
 .footer-links li {
-  display: inline;
-  margin-right: 10px;
+	display:inline;
+	margin-right:10px;
+}
+
+
+.form-signin {
+	max-width: 300px;
+	padding: 19px 29px 29px;
+	margin: 0 auto 20px;
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	   -moz-border-radius: 5px;
+	        border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+	margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+	font-size: 16px;
+	height: auto;
+	margin-bottom: 15px;
+	padding: 7px 9px;
+}
+
+.row-fluid [class*="span"].span-extra {
+	margin-left: 0;
 }

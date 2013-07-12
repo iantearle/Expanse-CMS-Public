@@ -36,13 +36,12 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
 define('IS_FRONTEND', false);
 define('IS_BACKEND', true);
-require(dirname(__FILE__).'/common.functions.php');
+require(dirname(__FILE__) . '/common.functions.php');
 turnOffGlobals();
 function is_home() {
 	return LOGGED_IN == true && empty($_GET);
@@ -53,17 +52,13 @@ function is_home() {
 Dont Cache
 ============================================================
 */
-
 // HTTP/1.1
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
-
 // HTTP/1.0
 header("Pragma: no-cache");
-
 // Date in the past
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-
 // always modified
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
@@ -76,22 +71,23 @@ $enteredusername = '';
 Get required files
 ============================================================
 */
-$config_file = realpath(dirname(__FILE__).'/../').'/config.php';
+
+$config_file = realpath(dirname(__FILE__).'/../') . '/config.php';
 if(file_exists($config_file)) {
 	require($config_file);
 }
 require(dirname(__FILE__) . '/functions.php');
-require(dirname(__FILE__) . '/output.class.php');
+require(dirname(__FILE__) . '/class.output.php');
 require(dirname(__FILE__) . '/xajax.inc.php');
 require(dirname(__FILE__) . '/ozone.php');
 require(dirname(__FILE__) . '/ozone.default.php');
 require(dirname(__FILE__) . '/pclzip.lib.php');
-require_once(dirname(__FILE__) . '/database.class.php');
-require_once(dirname(__FILE__) . '/expanse.class.php');
-require(dirname(__FILE__).'/session.class.php');
-require(dirname(__FILE__) . '/auth.class.php');
-require(dirname(__FILE__) . '/snoopy.class.php');
-require(dirname(__FILE__).'/common.vars.php');
+require_once(dirname(__FILE__) . '/class.database.php');
+require_once(dirname(__FILE__) . '/class.expanse.php');
+require(dirname(__FILE__) . '/class.session.php');
+require(dirname(__FILE__) . '/class.auth.php');
+require(dirname(__FILE__) . '/class.snoopy.php');
+require(dirname(__FILE__) . '/common.vars.php');
 require(dirname(__FILE__) . '/varsdef.php');
 
 /*
@@ -109,7 +105,6 @@ $users = new Expanse('users');
 $images = new Expanse('images');
 $prefs = new Expanse('prefs');
 /*--//--*/
-
 $outmess = new outputMessages;
 
 /*
@@ -148,13 +143,12 @@ if(isset($auth) && is_object($auth) && 0) {
 	if(isset($_SESSION['menu']) && !empty($_SESSION['menu'])) {
 		$authlevels = count($auth->Permissions);
 		$sessionlevels = isset($_SESSION['permissions']) ? count($_SESSION['permissions']) : 0;
-		if($authlevels == $sessionlevels){
+		if($authlevels == $sessionlevels) {
 			$menu = $_SESSION['menu'] != '<ul></ul>' ? $_SESSION['menu'] : $auth->createMenu();
 		} else {
 			$menu = $_SESSION['menu'] = $auth->createMenu();
 			$_SESSION['permissions'] = $auth->Permissions;
 		}
-
 	} elseif(isset($_SESSION['username'])) {
 		$menu = $_SESSION['menu'] = $auth->createMenu();
 	}
@@ -245,11 +239,9 @@ if(class_exists('xajax')) {
 		$arg = (!empty($errors)) ? sprintf(SUCCESS, L_REORDER_SUCCESS) : sprintf(FAILURE, L_REORDER_FAILURE);
 		$objResponse = new xajaxResponse();
 		$objResponse->addAssign("responseText", "innerHTML", $arg);
-		$objResponse->addScript($script);
 
 		return $objResponse->getXML();
 	}
-
 	function updateMenuOrder($arg, $table) {
 		global $Database;
 		$items = get_dao($table);
@@ -261,7 +253,7 @@ if(class_exists('xajax')) {
 		$Database->Query("UPDATE ".PREFIX."$table SET {$menu_order}");
 		$final = array();
 		$keepMenu = isset($keepMenu) ? $keepMenu : array();
-		foreach($keepMenu as $k => $v) {
+		foreach ($keepMenu as $k => $v) {
 			if(!is_numeric($v)) {
 				continue;
 			}
@@ -304,5 +296,5 @@ if(class_exists('xajax')) {
 		return $objResponse->getXML();
 	}
 
-	$xajax->processRequests();
+  $xajax->processRequests();
 }

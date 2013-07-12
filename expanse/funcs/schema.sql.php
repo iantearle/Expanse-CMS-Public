@@ -36,7 +36,6 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
@@ -49,15 +48,14 @@ $default_install_values['time'] = time();
 $default_install_values['random_password'] = random_string();
 $default_install_values['random_password_md5'] = md5($default_install_values['random_password']);
 $default_install_values['version'] = isset($cms_version) ? $cms_version : '';
-$default_install_values['permissions'] = serialize(range(1, 1));
+$default_install_values['permissions'] = serialize(range(1, 6));
 $default_install_values['active_plugins'] = serialize(array("alter_menu.php", "typogrify/php-typogrify.php"));
 
-
 $schema = array(
-		'prepare' => '',
-		'structure' => '',
-		'populate'
-	);
+			'prepare' => '',
+			'structure' => '',
+			'populate'
+			);
 $schema['prepare'] =
 "DROP TABLE IF EXISTS `{$Database->Prefix}items`;
 DROP TABLE IF EXISTS `{$Database->Prefix}images`;
@@ -71,40 +69,63 @@ DROP TABLE IF EXISTS `{$Database->Prefix}users`;
 
 $schema['structure'] =
 "CREATE TABLE `items` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `online` tinyint(1) NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `online` tinyint(1) NOT NULL DEFAULT '0',
   `order_rank` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL default '',
-  `materials` varchar(255) NOT NULL default '',
-  `rating` tinyint(4) NOT NULL default '0',
-  `image` varchar(255) NOT NULL default '',
-  `thumbnail` varchar(255) NOT NULL default '',
-  `height` varchar(10) NOT NULL default '',
-  `width` varchar(10) NOT NULL default '',
-  `crop_x` int(5) NOT NULL default '0',
-  `crop_y` int(5) NOT NULL default '0',
-  `thumb_w` int(5) NOT NULL default '0',
-  `thumb_h` int(5) NOT NULL default '0',
-  `thumb_max` int(5) NOT NULL default '50',
-  `use_default_thumbsize` tinyint(1) NOT NULL default '1',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `materials` varchar(255) NOT NULL DEFAULT '',
+  `rating` tinyint(4) NOT NULL DEFAULT '0',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `thumbnail` varchar(255) NOT NULL DEFAULT '',
+  `height` varchar(10) NOT NULL DEFAULT '',
+  `width` varchar(10) NOT NULL DEFAULT '',
+  `crop_x` int(5) NOT NULL DEFAULT '0',
+  `crop_y` int(5) NOT NULL DEFAULT '0',
+  `thumb_w` int(5) NOT NULL DEFAULT '0',
+  `thumb_h` int(5) NOT NULL DEFAULT '0',
+  `thumb_max` int(5) NOT NULL DEFAULT '50',
+  `use_default_thumbsize` tinyint(1) NOT NULL DEFAULT '1',
   `descr` longtext NOT NULL,
-  `created` int(10) default NULL,
-  `dirtitle` varchar(255) NOT NULL default '',
-  `event_date` int(10) NOT NULL default '',
-  `url` varchar(255) NOT NULL default '',
-  `comments` tinyint(1) NOT NULL default '0',
-  `smilies` tinyint(1) NOT NULL default '0',
-  `type` varchar(255) NOT NULL default '',
-  `menu_order` int(5) NOT NULL default '1',
-  `aid` int(11) NOT NULL default '0',
-  `cid` int(11) NOT NULL default '0',
-  `pid` int(11) NOT NULL default '0',
-  `autothumb` tinyint(1) NOT NULL default '0',
+  `created` int(10) DEFAULT NULL,
+  `updated` int(10) DEFAULT NULL,
+  `dirtitle` varchar(255) NOT NULL DEFAULT '',
+  `event_date` varchar(45) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `comments` tinyint(1) NOT NULL DEFAULT '0',
+  `smilies` tinyint(1) NOT NULL DEFAULT '0',
+  `type` varchar(255) NOT NULL DEFAULT '',
+  `menu_order` int(5) NOT NULL DEFAULT '1',
+  `aid` int(11) NOT NULL DEFAULT '0',
+  `cid` int(11) NOT NULL DEFAULT '0',
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `autothumb` tinyint(1) NOT NULL DEFAULT '0',
   `extraoptions` longtext NOT NULL,
-  `for_sale` tinyint(1) NOT NULL default '0',
-  `paypal_amount` varchar(255) NOT NULL default '',
-  `paypal_item_number` int(255) NOT NULL default '0',
-  `paypal_handling` varchar(255) NOT NULL default '',
+  `for_sale` tinyint(1) NOT NULL DEFAULT '0',
+  `paypal_amount` varchar(255) NOT NULL DEFAULT '',
+  `paypal_item_number` int(255) NOT NULL DEFAULT '0',
+  `paypal_handling` varchar(255) NOT NULL DEFAULT '',
+  `address` varchar(255) NOT NULL DEFAULT '',
+  `county` varchar(255) NOT NULL DEFAULT '',
+  `postcode` varchar(255) NOT NULL DEFAULT '',
+  `latitude` varchar(255) NOT NULL DEFAULT '',
+  `longitude` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(100) NOT NULL DEFAULT '',
+  `telephone` varchar(20) NOT NULL DEFAULT '',
+  `admission` longtext NOT NULL,
+  `events` longtext NOT NULL,
+  `shop` int(1) NOT NULL DEFAULT '0',
+  `plantsales` int(1) NOT NULL DEFAULT '0',
+  `cafe` int(1) NOT NULL DEFAULT '0',
+  `restaurant` int(1) NOT NULL DEFAULT '0',
+  `audiotours` int(1) NOT NULL DEFAULT '0',
+  `nodogs` int(1) NOT NULL DEFAULT '0',
+  `civilweddinglicense` int(1) NOT NULL DEFAULT '0',
+  `openallyear` int(1) NOT NULL DEFAULT '0',
+  `other` longtext NOT NULL,
+  `dates` longtext NOT NULL,
+  `twitter` varchar(100) NOT NULL DEFAULT '',
+  `facebook` varchar(250) NOT NULL DEFAULT '',
+  `hrtgs` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY  (`id`),
   FULLTEXT(`title`, `descr`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -143,6 +164,15 @@ CREATE TABLE `customfields` (
   KEY `post_id` (`itemid`),
   KEY `meta_key` (`field`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE `i18n` (
+  `id` int(11) NOT NULL auto_increment,
+  `itemid` int(11) NOT NULL default '0',
+  `field` varchar(255) default NULL,
+  `value` longtext,
+  PRIMARY KEY  (`id`),
+  KEY `post_id` (`itemid`),
+  KEY `meta_key` (`field`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 CREATE TABLE `prefs` (
   `id` int(11) NOT NULL auto_increment,
   `opt_name` varchar(255) NOT NULL default '',
@@ -168,6 +198,7 @@ CREATE TABLE `users` (
   `email` varchar(150) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
   `permissions` varchar(255) NOT NULL default '',
+  `moderate` tinyint(1) NOT NULL default '1',
   `created` int(10) NOT NULL default '0',
   `primary_user` tinyint(1) NOT NULL default '0',
   `admin` tinyint(1) NOT NULL default '0',
@@ -228,4 +259,6 @@ INSERT INTO `sections` VALUES (4, 'Press','', 4, 0, 1, 'press', 'press');
 INSERT INTO `sections` VALUES (5, 'Links','', 5, 0, 1, 'links', 'links');
 INSERT INTO `sections` VALUES (6, 'Blog', '', 6, 0, 1, 'blog', 'blog');
 
-INSERT INTO `users` VALUES ('1', 'admin', '$default_install_values[your_name]', '$default_install_values[random_password_md5]', '$default_install_values[admin_email]', '$default_install_values[site_url]', '$default_install_values[permissions]', '$default_install_values[time]' , '1', '1', '0', '', '1');";
+
+INSERT INTO `users` VALUES ('1', 'admin', '$default_install_values[your_name]', '$default_install_values[random_password_md5]', '$default_install_values[admin_email]', '$default_install_values[site_url]', '$default_install_values[permissions]', '$default_install_values[time]' , '1', '1', '0', '', '1');
+";

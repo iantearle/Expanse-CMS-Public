@@ -36,11 +36,13 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
-if(!defined('EXPANSE')) { return; }
+if(!defined('EXPANSE')) {
+	return;
+}
+
 /*
 ------------------------------------------------------------
 Language: English - US
@@ -59,13 +61,13 @@ $LEX['logged_out'] 				= 'You are now logged out.';
 $LEX['logout'] 					= 'Logout';
 $LEX['welcome'] 				= 'Welcome, %s';
 $LEX['get_started'] 			= 'Login to get started.';
-$LEX['login_username'] 			= 'Username:';
-$LEX['login_password'] 			= 'Password:';
-$LEX['login_email'] 			= 'Email:';
+$LEX['login_username'] 			= 'Username';
+$LEX['login_password']			= 'Password';
+$LEX['login_email'] 			= 'Email';
 $LEX['login_remember_me'] 		= 'Remember Me';
 $LEX['login_forgot_password'] 	= 'I forgot my password';
 $LEX['login_go_back'] 			= '&laquo; Login';
-$LEX['nothing_here'] 			= '<div class="alert alert-info"><strong>Heads up!</strong> Please use the <a href="index.php" title="Main Menu">menu</a> to navigate through the CMS.</div>';
+$LEX['nothing_here'] 			= '<div class="alert alert-block alert-error fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>Please use the <a href="index.php" title="Main Menu">menu</a> to navigate through the CMS.</p></div>';
 
 /*   Password request/change   //-------------------------------*/
 $LEX['missing_retrieve_field'] 			= 'Please make sure you\'ve entered in a valid username and email';
@@ -105,16 +107,16 @@ Admin overview text
 ============================================================
 */
 $LEX['over_pages_online'] 	= '<span>%s</span> pages online / <span>%s</span> total';
-$LEX['over_items_online']	= '<span>%s</span> items online / <span>%s</span> total';
+$LEX['over_items_online'] 	= '<span>%s</span> items online / <span>%s</span> total';
 $LEX['menu_admin_settings'] = 'Admin Settings';
 $LEX['menu_view_site'] 		= 'View Site';
 $LEX['welcome_header'] 		= 'Welcome, <strong>%s</strong> to %s&hellip;';
 $LEX['over_total_usage'] 	= 'You have added <span>%s</span> items so far out of a total of <span>%s</span> items.';
 $LEX['permissions_warning'] = 'It is HIGHLY recommended that you change the permissions of the current directory to a safer level (ie. 755).';
 $LEX['latest_buzz']  		= 'Latest <a href="http://blogsearch.google.com/blogsearch_feeds?hl=en&q=link:%s&output=rss" target="_blank">Buzz</a> about %s';
-$LEX['no_buzz']  			= 'There\'s no buzz about you yet, but I\'m sure there will be soon. After all, you\'re running <a href="%s" target="_blank">%s</a>.';
+$LEX['no_buzz']  			= '<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>There\'s no buzz about you yet, but I\'m sure there will be soon. After all, you\'re running <a href="%s" target="_blank">%s</a>.</p></div>';
 $LEX['latest_news']  		= 'Latest News from %s';
-$LEX['news_not_loading']  	= 'Sorry, but the news could not be loaded. Please try again later.';
+$LEX['news_not_loading']  	= '<div class="alert alert-block alert-error fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p>Sorry, but the news could not be loaded. Please try again later.</p></div>';
 
 /*
 ------------------------------------------------------------
@@ -166,7 +168,6 @@ $LEX['reorder_success'] 		= 'Your items have been reordered.';
 $LEX['reorder_failure'] 		= 'Sorry, but your items couldn\'t be reordered.';
 $LEX['reorder_menu_success'] 	= 'Your menu has been reordered.';
 $LEX['reorder_menu_failure'] 	= 'Sorry, but your menu couldn\'t be reordered.';
-
 /*
 ------------------------------------------------------------
 Contact Form Output
@@ -182,46 +183,46 @@ $LEX['contact_from']	= '%s Mail Notification';
 Misc Messages
 ============================================================
 */
-$LEX['no_entries_user'] 		= 'Sorry, but there are no entries here.';
-$LEX['previous_text'] 			= '&laquo;Previous';
-$LEX['next_text'] 				= 'Next&raquo;';
-$LEX['missing_fields'] 			= 'Sorry, but you are missing the following required field(s): %s.';
-$LEX['entry_not_found']			= 'Sorry, but that entry doesn\'t exist. Why don\'t you add an entry <a href="index.php?type=add&amp;cat_id=%s">here</a>?';
-$LEX['page_not_found'] 			= 'Sorry, but that page does not exist.';
-$LEX['no_entries'] 				= 'Sorry, but there are no entries in this category. Go ahead and add one <a href="index.php?type=add&amp;cat_id=%s">here</a>.';
-$LEX['preview_text'] 			= 'View this item on your site';
-$LEX['flooding_message']		= 'Sorry, but &quot;flood control&quot; is enabled. Please wait %s seconds.';
-$LEX['eula_notice']				= 'Please read the EULA and check the box indicating that you have read and understood the agreement. If you cannot see the checkbox, scroll down to the bottom of the EULA box.';
-$LEX['prefs_updated']			= 'Your preferences have been saved';
-$LEX['prefs_update_failed']		= 'Some of your options could not be saved';
-$LEX['file_not_readable']		= 'This file cannot be read by expanse.';
-$LEX['upgrade_available']		= 'There is an upgrade to version %s';
-$LEX['upgrade_instructions']	= 'It looks like you just upgraded your copy of %s to version %s. However, there is one final step you must take to wrap up the upgrade. Go to <a href="upgrade.php">this page</a>, and press the &#8220;Finish Upgrade&#8221; button, and you\'re all set.';
-$LEX['finish_update']			= 'Finish Update';
-$LEX['update_title']			= 'Software Update';
-$LEX['update_crumb']			= 'Updating %s';
-$LEX['up_to_date']				= '%s is up to date. We\'ll let you know when there\'s a new version for you to install.';
-$LEX['update_successful']		= 'You are awesome! Thanks for updating your software, as we think you\'ll appreciate the changes.';
-$LEX['update_thanks']			= 'Thanks for updating. Now go on and enjoy %s.';
-$LEX['update_descr']			= 'You\'re just one step away from finishing your update.<br />Just press this button, and you\'re done.';
-$LEX['copyright_footer']		= ' &copy; %s. All Rights Reserved.';
-$LEX['legal_footer']			= 'Legal';
-$LEX['support_footer']			= 'Support';
-$LEX['concat_and']				= 'and';
-$LEX['concat_or']				= 'or';
-$LEX['separator']				= '/';
-$LEX['menu_separator']			= ' | ';
+$LEX['no_entries_user'] 	= 'Sorry, but there are no entries here.';
+$LEX['previous_text'] 		= '&laquo;Previous';
+$LEX['next_text'] 			= 'Next&raquo;';
+$LEX['missing_fields'] 		= 'Sorry, but you are missing the following required field(s): %s.';
+$LEX['entry_not_found']		= 'Sorry, but that entry doesn\'t exist. Why don\'t you add an entry <a href="index.php?type=add&amp;cat_id=%s">here</a>?';
+$LEX['page_not_found'] 		= 'Sorry, but that page does not exist.';
+$LEX['no_entries'] 			= 'Sorry, but there are no entries in this category. Go ahead and add one <a href="index.php?type=add&amp;cat_id=%s">here</a>.';
+$LEX['preview_text'] 		= 'View this item on your site';
+$LEX['flooding_message']	= 'Sorry, but &quot;flood control&quot; is enabled. Please wait %s seconds.';
+$LEX['eula_notice']			= 'Please read the EULA and check the box indicating that you have read and understood the agreement. If you cannot see the checkbox, scroll down to the bottom of the EULA box.';
+$LEX['prefs_updated']		= 'Your preferences have been saved';
+$LEX['prefs_update_failed']	= 'Some of your options could not be saved';
+$LEX['file_not_readable']	= 'This file cannot be read by expanse.';
+$LEX['upgrade_available']	= 'There is an upgrade to version %s';
+$LEX['upgrade_instructions']= '<h4>Warning!</h4><p>It looks like you just upgraded your copy of %s to version %s. However, there is one final step you must take to wrap up the upgrade.<br>Go to <a href="../upgrade/">this page</a>, and press the &#8220;Finish Upgrade&#8221; button, and you\'re all set.</p>';
+$LEX['finish_update']		= 'Finish Update';
+$LEX['update_title']		= 'Software Update';
+$LEX['update_crumb']		= 'Updating %s';
+$LEX['up_to_date']			= '%s is up to date. We\'ll let you know when there\'s a new version for you to install.';
+$LEX['update_successful']	= 'You are awesome! Thanks for updating your software, as we think you\'ll appreciate the changes.';
+$LEX['update_thanks']		= 'Thanks for updating. Now go on and enjoy %s.';
+$LEX['update_descr']		= 'You\'re just one step away from finishing your update.<br />Just press this button, and you\'re done.';
+$LEX['copyright_footer']	= ' &copy; %s. All Rights Reserved.';
+$LEX['legal_footer']		= 'Legal';
+$LEX['support_footer']		= 'Support';
+$LEX['concat_and']			= 'and';
+$LEX['concat_or']			= 'or';
+$LEX['separator']			= '/';
+$LEX['menu_separator']		= ' | ';
 
 /*   Page titles   //-------------------------------*/
-$LEX['main_title']				= 'Welcome to %s';
-$LEX['login_title']				= 'Login to %s to get started';
-$LEX['default_title']			= 'Look away! I\'m hideous!';
+$LEX['main_title']			= 'Welcome to %s';
+$LEX['login_title']			= 'Login to %s to get started';
+$LEX['default_title']		= 'Look away! I\'m hideous!';
 
 /*   Breadcrumbs   //-------------------------------*/
-$LEX['crumb_home']				= 'Home';
-$LEX['crumb_add']				= 'Add items to %s';
-$LEX['crumb_edit']				= 'Manage your %s items';
-$LEX['crumb_edit_admin']		= 'Edit Admin Settings';
+$LEX['crumb_home']			= 'Home';
+$LEX['crumb_add']			= 'Add items to %s';
+$LEX['crumb_edit']			= 'Manage your %s items';
+$LEX['crumb_edit_admin']	= 'Edit Admin Settings';
 
 /*   Misc. page   //-------------------------------*/
 $LEX['misc_account_disabled'] 		= 'Sorry, but your account has been disabled. If you feel you\'ve reached this page in error, please speak to the Admin.';
@@ -230,6 +231,7 @@ $LEX['misc_no_permissions'] 		= 'Sorry, but you do not have the proper permissio
 $LEX['misc_no_permissions_title'] 	= 'Access Denied';
 $LEX['misc_nothing_here'] 			= 'Whoops! It looks like you took a wrong turn somewhere, because there is nothing here.';
 $LEX['misc_nothing_here_title'] 	= 'Whoops!';
+
 /*
 ------------------------------------------------------------
 Generic Module Text
@@ -249,14 +251,14 @@ $LEX['body'] 					= 'Body';
 $LEX['use_smilies'] 			= 'Use Smilies?';
 $LEX['allow_comments'] 			= 'Allow Comments';
 $LEX['category_options'] 		= 'Category Options';
-$LEX['post_time_add'] 			= 'Post in the Future (or past)<img src="images/help.gif" alt="" width="16" height="16" class="hasHelp" id="editDate" />';
+$LEX['post_time_add'] 			= 'Post in the Future (or past)';
 $LEX['currently_editing'] 		= 'Editing &#8220;%s&#8221;';
 $LEX['currently_editing_html'] 	= 'Editing &#8220;<strong>%s</strong>&#8221;';
 $LEX['currently_editing_plain'] = 'Editing %s';
 $LEX['custom_fields_title'] 	= 'Custom Fields';
 $LEX['custom_fields_help']  	= 'Custom fields are a way for you to easily add custom data to your item. Sometimes you\'d like to add extra information into your item, such as &quot;Client URL&quot; or &quot;Role in project&quot;. This information can be anything you wish, and you can add as many as you like.<br />
 Also, a custom variable is created for you in the content loop. So you can paste the variable anywhere in your loop, and it will work.';
-$LEX['post_time_edit'] 			= 'Edit Date/Time <img src="images/help.gif" alt="" width="16" height="16" class="hasHelp" id="editDate" />';
+$LEX['post_time_edit'] 			= 'Edit Date/Time';
 $LEX['clean_url_titles'] 		= 'Clean URL Titles';
 $LEX['edit_item'] 				= 'Edit Item';
 $LEX['share_item'] 				= 'Share this item';
@@ -273,24 +275,25 @@ $LEX['page_online'] 			= 'Page is online';
 $LEX['page_offline'] 			= 'Page is offline';
 
 /*   Sub-category   //-------------------------------*/
-$LEX['sub_category'] 			= 'Sub-category';
-$LEX['sub_category_add'] 		= 'Add a sub-category';
-$LEX['sub_category_select'] 	= 'Select a sub-category';
+$LEX['sub_category'] 		= 'Sub-category';
+$LEX['sub_category_add'] 	= 'Add a sub-category';
+$LEX['sub_category_select'] = 'Select a sub-category';
 
 /*   Category actions (move or edit)   //-------------------------------*/
-$LEX['category_action'] 		= 'Category Action';
-$LEX['move_or_copy'] 			= 'Move or copy item to a different category';
-$LEX['move_to'] 				= 'Move item to:';
-$LEX['copy_to'] 				= 'Copy item to:';
+$LEX['category_action'] = 'Category Action';
+$LEX['move_or_copy'] 	= 'Move or copy item to a different category';
+$LEX['move_to'] 		= 'Move item to:';
+$LEX['copy_to'] 		= 'Copy item to:';
 
 /*   Sharing   //-------------------------------*/
-$LEX['sharing_direct_link']		= 'Direct Link (&quot;Permalink&quot;) to this item';
-$LEX['sharing_image_link']		= 'Permalink to the full size image ';
-$LEX['sharing_thumb_link']		= 'Permalink to thumbnail';
+$LEX['sharing_direct_link']	= 'Direct Link (&quot;Permalink&quot;) to this item';
+$LEX['sharing_image_link']	= 'Permalink to the full size image ';
+$LEX['sharing_thumb_link']	= 'Permalink to thumbnail';
 
 /*   Clean URLs   //-------------------------------*/
-$LEX['clean_url_title']			= 'Clean URL Title';
-$LEX['clean_url_help']			= 'If you\'re using clean urls, sometimes you may wish to customize the url text for this item. Anything you enter here will be "cleansed" so as to be a valid URL, but you can enter whatever you wish. If you\'d like to automatically regenerate it based upon the title, go ahead and erase the current text, and it will be done for you.';
+$LEX['clean_url_title']	= 'Clean URL Title';
+$LEX['clean_url_help']	= 'If you\'re using clean urls, sometimes you may wish to customize the url text for this item. Anything you enter here will be "cleansed" so as to be a valid URL, but you can enter whatever you wish. If you\'d like to automatically regenerate it based upon the title, go ahead and erase the current text, and it will be done for you.';
+
 /*   Date/Time   //-------------------------------*/
 $LEX['time_date']			= 'Date';
 $LEX['time_month']			= 'Select a month';
@@ -301,7 +304,7 @@ $LEX['time_hour']			= 'Hour';
 $LEX['time_minute']			= 'Minute';
 $LEX['time_second']			= 'Second';
 $LEX['time_reset']			= 'Reset date/time to right now';
-$LEX['time_use_current']	= 'Reset date/time to right now';
+$LEX['time_use_current'] 	= 'Reset date/time to right now';
 $LEX['time_help_add'] 		= 'You can set your item to go live in the future, or backdate your post. In order for your post to be published in the future, you <strong>MUST</strong> also have the Online checkbox checked.';
 $LEX['time_help_edit'] 		= 'The time shown is the time on your host\'s server. This does not account for your local timezone.<br />The local time of the entry is: ';
 
@@ -363,7 +366,7 @@ Blog Module
 ============================================================
 */
 $LEX['blog_name'] 			= 'Blog';
-$LEX['blog_description'] 	= 'This category is useful for news/blog type updates and posts to your website.';
+$LEX['blog_description']	= 'This category is useful for news/blog type updates and posts to your website.';
 
 /*
 ------------------------------------------------------------
@@ -440,13 +443,12 @@ Events Module
 */
 $LEX['events_name'] 		= 'Events';
 $LEX['events_description'] 	= 'This type of category is best for posting upcoming events, such as Art shows, gallery exhibits, etc to your website.';
-$LEX['events_title']		= 'Event Title';
+$LEX['events_title'] 		= 'Event Title';
 $LEX['events_body']			= 'Event Details';
 $LEX['events_date'] 		= 'Event Date';
 $LEX['events_date_start'] 	= 'Event Start Date-time';
 $LEX['events_date_end'] 	= 'Event End Date-time';
 $LEX['events_link'] 		= 'Event Link';
-
 /*
 ------------------------------------------------------------
 Press Module
@@ -509,6 +511,7 @@ If you delete the value in here, it will reset it to use the current title, othe
 $LEX['page_additional_files_delete']	= 'Delete?';
 $LEX['page_file_caption']				= 'File caption';
 $LEX['page_file_name']					= 'File name:';
+
 /*
 ------------------------------------------------------------
 Property Module
@@ -532,7 +535,6 @@ $LEX['property_audio_tours']			= 'Audio Tours';
 $LEX['property_dogs_disallowed'] 		= 'Dogs Disallowed';
 $LEX['property_open_all_year']			= 'Open All Year';
 $LEX['allow_property_reviews']			= 'Allow reviews';
-/*//-------------------------------*/
 
 /*
 ------------------------------------------------------------
@@ -572,8 +574,7 @@ $LEX['category_missing'] 		        	= 'That category does not exist.';
 $LEX['subcategory_deleted'] 	        	= 'Your sub-category <strong>%s</strong> has been deleted.';
 $LEX['subcategory_not_deleted']         	= 'Your sub-category <strong>%s</strong> could not be deleted.(%s)';
 $LEX['edit_category_success']           	= 'The category: <strong>%s</strong> has been edited.%s';
-$LEX['edit_category_failure']           	= 'Sorry, but the category: <strong>%s</strong> could not be edited.%s  <p>Why?<br />
-%s</p>';
+$LEX['edit_category_failure']           	= 'Sorry, but the category: <strong>%s</strong> could not be edited.%s  <p>Why?<br />%s</p>';
 $LEX['add_subcategory']        				= 'Add a Sub-Category';
 $LEX['edit_category_name_label']        	= 'Edit category name';
 $LEX['category_missing']        			= 'Sorry, but there is no category with that id. Please make sure you\'re following a correct link.';
@@ -628,6 +629,7 @@ $LEX['db_username']       		= 'MySQL Username';
 $LEX['db_password']       		= 'MySQL Password';
 $LEX['db_password_note']       	= '(Leave blank to keep the same password)';
 $LEX['db_database_name']       	= 'MySQL Database';
+$LEX['db_table_prefix']       	= 'MySQL Table Prefix';
 $LEX['db_hostname_help']       	= 'Address to the server (eg. localhost, or mysqlserver.domain.com)';
 $LEX['db_database_name_help']   = 'Name of the database to use';
 $LEX['db_needs_permissions']    = 'In order to edit your settings, you need to set the permissions for your config file to 777. (If you don\'t know what that means, check your FTP\'s help documentation under CHMOD.)';
@@ -647,16 +649,16 @@ $LEX['prefs_admin_email_help']  			= 'This is the address that will recieve mail
 $LEX['prefs_site_name']   					= 'Site Name';
 $LEX['prefs_site_name_help']   				= 'The name of your website';
 $LEX['prefs_site_description']  			= 'Site Description';
-$LEX['prefs_site_description_help']			= 'A short description of your site';
+$LEX['prefs_site_description_help']   		= 'A short description of your site';
 $LEX['prefs_site_url']   					= 'Your Site URL';
 $LEX['prefs_site_url_help']   				= '(eg. http://domainname.com)<br />Our best guess is that this value is: <strong>http://%s</strong>';
 $LEX['prefs_time_server']   				= 'Current Server Time';
-$LEX['prefs_time_server_help']   			= 'Your server time is the local time of wherever the server is located. You can adjust the settings on your site by setting the offset.';
+$LEX['prefs_time_server_help']  			= 'Your server time is the local time of wherever the server is located. You can adjust the settings on your site by setting the offset.';
 $LEX['prefs_time_tz_offset']   				= 'Local Timezone Offset';
 $LEX['prefs_time_tz_offset_help']   		= 'You can display times in your local timezone throughout your website by setting the number of hours to offset. Negative numbers set it to earlier, positive numbers set it later.<br />Example: if your server says it is currently 3 o\'clock A.M on Thursday, but it\'s 11 o\'clock P.M on Wednesday in your timezone, you would set it to -4.';
 $LEX['prefs_time_format_date']   			= 'Date Format';
-$LEX['prefs_time_curr_format_date'] 		= 'Current Date Format';
-$LEX['prefs_time_curr_format_date_help']   	= 'Current Settings: %s<br />The format you wish Date\'s to be displayed in. Accepts PHP\'s date format options[<a href="http://php.net/date" target="_blank">http://php.net/date</a>]';
+$LEX['prefs_time_curr_format_date']  		= 'Current Date Format';
+$LEX['prefs_time_curr_format_date_help']	= 'Current Settings: %s<br />The format you wish Date\'s to be displayed in. Accepts PHP\'s date format options[<a href=\'http://php.net/date\' target=\'_blank\'>http://php.net/date</a>]';
 $LEX['prefs_time_format_time']   			= 'Time Format';
 $LEX['prefs_time_curr_format_time']   		= 'Current Time Format';
 $LEX['prefs_app_start_category']   			= 'Start Category';
@@ -664,7 +666,7 @@ $LEX['prefs_app_start_category_help']   	= 'The category that you wish to have a
 $LEX['prefs_app_how_many']   				= 'How many per page?';
 $LEX['prefs_app_how_many_help']   			= 'This will set the number of items to display per page. You can choose to have no limits by setting it blank.';
 $LEX['prefs_app_how_many_edit']   			= 'How many per edit page?';
-$LEX['prefs_app_how_many_edit_help']   		= 'When you are editing your items in %s, this sets how many items to display on the page list. Set this to 0 if you dont want to break your items into pages.';
+$LEX['prefs_app_how_many_edit_help']  		= 'When you are editing your items in %s, this sets how many items to display on the page list. Set this to 0 if you dont want to break your items into pages.';
 $LEX['prefs_app_sort_cats']   				= 'Sort your categories by';
 $LEX['prefs_app_sort_cats_help']   			= 'Unless you are manually displaying content, %s will try to sort your categories by the option you specify. The default is &quot;User Ranking&quot;, which just means that it\'s ordered in the way you want.';
 $LEX['prefs_app_sort_dir']   				= 'Sort &quot;Direction&quot;';
@@ -678,27 +680,29 @@ $LEX['prefs_app_theme_help']   				= 'From here you can select the name of the i
 $LEX['prefs_app_clean_urls']   				= 'Use Clean URLs?';
 $LEX['prefs_app_clean_urls_help']   		= 'Clean URLs allows you to have nicer looking URLs. That means your links to your pages and items would go from this: %s/%s?pcat=2&amp;item=3 to something like this: %s/artwork/your-artwork-item.';
 $LEX['prefs_app_index_file']   				= 'I renamed the index file to:';
-$LEX['prefs_app_index_file_help']   		= 'If you renamed the index file (index.php) to another name (such as main.php or anything else), enter in the name that you changed it to.';
+$LEX['prefs_app_index_file_help']  			= 'If you renamed the index file (index.php) to another name (such as main.php or anything else), enter in the name that you changed it to.';
 $LEX['prefs_pp_email']   					= 'PayPal E-mail';
 $LEX['prefs_pp_email_help']   				= 'The e-mail address of the PayPal account you wish to use. This field is optional.';
 $LEX['prefs_pp_currency_code']   			= 'Currency Type';
-$LEX['prefs_pp_currency_code_help']   		= 'This is the currency type that you wish your order to be processed in.';
+$LEX['prefs_pp_currency_code_help']  		= 'This is the currency type that you wish your order to be processed in.';
 $LEX['prefs_pp_logo_url']   				= 'Your PayPal Logo';
 $LEX['prefs_pp_logo_url_help']   			= 'Do you have a custom logo you want PayPal to use when people add items to their cart? Add the url to the image here.';
 $LEX['prefs_pp_shipping']   				= 'Shipping Cost';
 $LEX['prefs_pp_shipping_help']   			= 'The amount to apply towards shipping for 1-item orders. Setting this to "0" makes shipping free.';
 $LEX['prefs_pp_shipping2']   				= 'Shipping Cost (Multiple Items)';
-$LEX['prefs_pp_shipping2_help']   			= 'The amount to apply towards shipping for orders over 1 item. Setting this to "0" makes shipping free.';
+$LEX['prefs_pp_shipping2_help']  			= 'The amount to apply towards shipping for orders over 1 item. Setting this to "0" makes shipping free.';
 $LEX['prefs_pp_tax']   						= 'Item Tax';
 $LEX['prefs_pp_tax_help']   				= 'The amount to apply towards tax for orders. This amount applies to all buyers. Setting this to "0" makes the tax free.';
 $LEX['prefs_pp_handling']   				= 'Handling Cost';
 $LEX['prefs_pp_handling_help']   			= 'The amount to apply towards the total order amount (regardless of quantity) for handling. Setting this to "0" makes the handling free.';
 $LEX['prefs_user_moderate']   				= 'Moderate All Comments';
 $LEX['prefs_user_moderate_help']   			= 'If you\'d like to approve every comment before it gets posted live, check this box. We find that this can help keep down spammy comments.';
+$LEX['prefs_user_moderate_posts']   		= 'Moderate All Posts';
+$LEX['prefs_user_moderate_posts_help']		= 'If you\'d like to approve every post before it gets posted live, check this box.';
 $LEX['prefs_user_flooding']   				= '&quot;Flood Control&quot; Delay';
 $LEX['prefs_user_flooding_help']   			= 'The amount of time, in seconds, that you wish to force people to wait before posting again. Setting this to zero turns off &quot;Flood Control&quot;.';
 $LEX['prefs_user_banned_words']   			= 'Banned Words';
-$LEX['prefs_user_banned_words_help']  		= 'Words that you wish to keep people from being able to post in their comments. This helps in keeping comment spam and mail hacking down. The list must be comma separated.';
+$LEX['prefs_user_banned_words_help']   		= 'Words that you wish to keep people from being able to post in their comments. This helps in keeping comment spam and mail hacking down. The list must be comma separated.';
 $LEX['prefs_user_banned_ips']   			= 'Banned IPs';
 $LEX['prefs_user_banned_ips_help']   		= 'IP addresses of users you wish to keep from commenting on your items or contacting you. This setting is site-wide, but still allows users to view the site. Also, you may inadvertently block large groups of people, if the person you are blocking is behind a proxy. This list must be comma separated.';
 $LEX['prefs_language']   					= 'Language';
@@ -706,7 +710,7 @@ $LEX['prefs_language_help']   				= 'This is the language you wish to have %s di
 $LEX['prefs_language_translated_by']   		= 'Translated by: %s';
 
 /*   Themes module   //---------------------------*/
-$LEX['theme_editor_title']		= 'Theme Editor';
+$LEX['theme_editor_title']   	= 'Theme Editor';
 $LEX['theme_activate_success']  = 'Your theme of choice has been activated.';
 $LEX['theme_activate_failure']  = 'Sorry, but that theme could not be activated.';
 $LEX['theme_no_permissions']   	= 'Sadly, you do not have writing permissions for this directory. You can look, but you can\'t touch.';
@@ -723,7 +727,7 @@ $LEX['theme_select_file']   	= 'Select a file to edit';
 $LEX['theme_main_folder']   	= 'Main folder';
 $LEX['theme_by']   				= 'by';
 $LEX['theme_version']   		= 'Version:';
-$LEX['theme_edit_choose_note']	= 'You can edit your themes online. First, choose a theme to edit';
+$LEX['theme_edit_choose_note']  = 'You can edit your themes online. First, choose a theme to edit';
 $LEX['theme_preview']   		= 'Preview';
 $LEX['theme_edit_text']   		= 'Edit';
 $LEX['theme_activate_text']   	= 'Activate';
@@ -738,14 +742,14 @@ $LEX['theme_title']				= 'Title';
 $LEX['theme_description']		= 'Description';
 $LEX['theme_author']			= 'Author';
 $LEX['theme_version']			= 'Version';
-$LEX['theme_editor_var_note'] 	= 'If you\'re not sure what variables you can add to your templates, you can go ahead and visit the <a href="http://help.expansecms.org/Overview/ThemesTemplates#toc3" target="_blank">Help Documentation</a>.';
+$LEX['theme_editor_var_note'] 	= 'If you\'re not sure what variables you can add to your templates, you can go ahead and visit the <a href="http://help.expanse.io/Overview/ThemesTemplates#toc3" target="_blank">Help Documentation</a>.';
 
 /*   Plugins module   //-------------------------------*/
 $LEX['plugin_installed']		= 'Your plugin has been installed.';
 $LEX['plugin_not_installed']	= 'Sorry, but that plugin couldn\'t be installed.';
 $LEX['plugin_uninstalled']		= 'Your plugin has been uninstalled.';
 $LEX['plugin_not_uninstalled']	= 'Sorry, but that plugin couldn\'t be uninstalled.';
-$LEX['plugin_note']				= 'Plugins are a way for you to customize and extend not only your copy of expanse, but also your site. For more information on getting or creating plugins, please check out the <a href="http://help.expansecms.org" target="_blank">Help Documentation</a>.';
+$LEX['plugin_note']				= 'Plugins are a way for you to customize and extend not only your copy of expanse, but also your site. For more information on getting or creating plugins, please check out the <a href="http://help.expanse.io" target="_blank">Help Documentation</a>.';
 $LEX['plugin_title']			= 'Plugins';
 $LEX['menu_manage_plugins']		= 'Manage Plugins';
 
@@ -766,7 +770,8 @@ $LEX['user_password']						= 'Password';
 $LEX['user_confirm_password']				= 'Confirm Password';
 $LEX['user_privileges']						= 'Privileges';
 $LEX['user_admin']							= 'Admin';
-$LEX['user_moderator']						= 'Moderator:';
+$LEX['user_admin_moderate']					= 'Moderate this user';
+$LEX['user_moderator']						= 'Moderator';
 $LEX['user_moderator_admin']				= 'Let users modify all items in the category';
 $LEX['user_moderator_user']					= 'Let users modify only their items';
 $LEX['user_disable_account']				= 'Disable Account';
@@ -799,6 +804,7 @@ $LEX['ninth_month'] 	= 'September';
 $LEX['tenth_month'] 	= 'October';
 $LEX['eleventh_month'] 	= 'November';
 $LEX['twelfth_month'] 	= 'December';
+
 /*
 ------------------------------------------------------------
 Javascript text
@@ -806,7 +812,7 @@ Javascript text
 ============================================================
 */
 /*   Install   //-------------------------------*/
-$LEX['js_eula'] = 'Please read the EULA and check the box indicating that you have read and understood the agreement. If you cannot see the checkbox, scroll down to the bottom of the EULA box.';
+$LEX['js_eula'] 	= 'Please read the EULA and check the box indicating that you have read and understood the agreement. If you cannot see the checkbox, scroll down to the bottom of the EULA box.';
 
 /*   Uninstall   //-------------------------------*/
 $LEX['js_delete_uploads'] 	= 'Are you SURE you want to delete the uploads folder? All of your uploaded files will be completely removed.';
@@ -840,6 +846,10 @@ $LEX['js_custom_delete_field'] 	= 'Delete this field';
 $LEX['js_increase_field_size'] 	= 'Increase the field size';
 $LEX['js_decrease_field_size'] 	= 'Decrease the field size';
 
+/*   Language Fields (i18n)   //-------------------------------*/
+$LEX['js_i18n_label_text'] 	= 'Language';
+$LEX['js_i18n_field_text'] 	= 'Translation';
+
 /*   Custom fields (sub-categories)   //-------------------------------*/
 $LEX['js_add_subcat'] 			= '+ Add a sub-category';
 $LEX['js_remove_subcat'] 		= '- Remove a sub-category';
@@ -863,7 +873,6 @@ $LEX['js_image_label_file'] 	= 'File';
 $LEX['js_image_label'] 			= 'Image';
 $LEX['js_image_clear_confirm'] 	= 'Are you sure you want to delete all of your upload fields?';
 
-
 /*   Misc.   //-------------------------------*/
 $LEX['js_check_boxes'] 			= 'Check them all ';
 $LEX['js_admin_rights'] 		= '(Total Access, Users, Database Settings, Etc.)';
@@ -876,5 +885,5 @@ $LEX['js_mb_include_subcats']   = 'Include sub-categories?';
 $LEX['js_crop_thumb']     		= 'Crop Thumbnail';
 $LEX['js_resize_thumb']     	= 'Resize Thumbnail';
 $LEX['js_crop_save']     		= 'Save changes';
-$LEX['js_crop_reset']    		= 'Reset';
+$LEX['js_crop_reset']     		= 'Reset';
 $LEX['js_crop_discard']     	= 'Discard changes';

@@ -1,27 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="language" content="EN-GB" />
-<link href="{themecss}" rel="stylesheet" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>{sitename} Comment Notification</title>
+	<style type="text/css">
+	{#
+		#outlook a {padding:0;}
+		body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
+		.ExternalClass {width:100%;}
+		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+		#backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
+		img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+		a img {border:none;}
+		.image_fix {display:block;}
+		p {margin: 1em 0;}
+		h1, h2, h3, h4, h5, h6 {color: black !important;}
+		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
+		h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+			color: red !important;
+		 }
+		h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+			color: purple !important;
+		}
+		table td {border-collapse: collapse;}
+		table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+		a {color: #0088cc;text-decoration:none;}
+		a:hover{color:#005580;text-decoration:underline;}
+		ul,ol{padding:0;margin:0 0 10px 25px;}
+		ul ul,ul ol,ol ol,ol ul{margin-bottom:0;}
+		li{line-height:20px;}
+		dl{margin-bottom:20px;}
+		dt,dd{line-height:20px;}
+		dt{font-weight:bold;}
+		dd{margin-left:10px;}
+		.dl-horizontal{*zoom:1;}.dl-horizontal:before,.dl-horizontal:after{display:table;content:"";line-height:0;}
+		.dl-horizontal:after{clear:both;}
+		.dl-horizontal dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+		.dl-horizontal dd{margin-left:180px;}
+		.nav{margin-left:0;margin-bottom:20px;list-style:none;}
+		.nav>li>a{display:block;}
+		.nav>li>a:hover{text-decoration:none;background-color:#eeeeee;}
+		.nav>li>a>img{max-width:none;}
+		.nav>.pull-right{float:right;}
+		.nav-header{display:block;padding:3px 15px;font-size:11px;font-weight:bold;line-height:20px;color:#999999;text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);text-transform:uppercase;}
+		.nav li+.nav-header{margin-top:9px;}
+		.nav-list{padding-left:15px;padding-right:15px;margin-bottom:0;}
+		.nav-list>li>a,.nav-list .nav-header{margin-left:-15px;margin-right:-15px;text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);}
+		.nav-list>li>a{padding:3px 15px;}
+		.nav-list>.active>a,.nav-list>.active>a:hover{color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#0088cc;}
+		.nav-list [class^="icon-"],.nav-list [class*=" icon-"]{margin-right:2px;}
+		.nav-list .divider{*width:100%;height:1px;margin:9px 1px;*margin:-5px 0 5px;overflow:hidden;background-color:#e5e5e5;border-bottom:1px solid #ffffff;}
+		.nav-tabs,.nav-pills{*zoom:1;}.nav-tabs:before,.nav-pills:before,.nav-tabs:after,.nav-pills:after{display:table;content:"";line-height:0;}
+		.nav-tabs:after,.nav-pills:after{clear:both;}
+		.nav-tabs>li,.nav-pills>li{float:left;}
+		.nav-tabs>li>a,.nav-pills>li>a{padding-right:12px;padding-left:12px;margin-right:2px;line-height:14px;}
+		.nav-tabs{border-bottom:1px solid #ddd;}
+		.nav-tabs>li{margin-bottom:-1px;}
+		.nav-tabs>li>a{padding-top:8px;padding-bottom:8px;line-height:20px;border:1px solid transparent;-webkit-border-radius:4px 4px 0 0;-moz-border-radius:4px 4px 0 0;border-radius:4px 4px 0 0;}.nav-tabs>li>a:hover{border-color:#eeeeee #eeeeee #dddddd;}
+		.nav-tabs>.active>a,.nav-tabs>.active>a:hover{color:#555555;background-color:#ffffff;border:1px solid #ddd;border-bottom-color:transparent;cursor:default;}
+		.nav-pills>li>a{padding-top:8px;padding-bottom:8px;margin-top:2px;margin-bottom:2px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;}
+		.nav-pills>.active>a,.nav-pills>.active>a:hover{color:#ffffff;background-color:#0088cc;}
+		.nav-stacked>li{float:none;}
+		.nav-stacked>li>a{margin-right:0;}
+		.nav-tabs.nav-stacked{border-bottom:0;}
+		.nav-tabs.nav-stacked>li>a{border:1px solid #ddd;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
+		.nav-tabs.nav-stacked>li:first-child>a{-webkit-border-top-right-radius:4px;-moz-border-radius-topright:4px;border-top-right-radius:4px;-webkit-border-top-left-radius:4px;-moz-border-radius-topleft:4px;border-top-left-radius:4px;}
+		.nav-tabs.nav-stacked>li:last-child>a{-webkit-border-bottom-right-radius:4px;-moz-border-radius-bottomright:4px;border-bottom-right-radius:4px;-webkit-border-bottom-left-radius:4px;-moz-border-radius-bottomleft:4px;border-bottom-left-radius:4px;}
+		.nav-tabs.nav-stacked>li>a:hover{border-color:#ddd;z-index:2;}
+		.nav-pills.nav-stacked>li>a{margin-bottom:3px;}
+		.nav-pills.nav-stacked>li:last-child>a{margin-bottom:1px;}
+		.nav-tabs .dropdown-menu{-webkit-border-radius:0 0 6px 6px;-moz-border-radius:0 0 6px 6px;border-radius:0 0 6px 6px;}
+		.nav-pills .dropdown-menu{-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;}
+		.nav .dropdown-toggle .caret{border-top-color:#0088cc;border-bottom-color:#0088cc;margin-top:6px;}
+		.nav .dropdown-toggle:hover .caret{border-top-color:#005580;border-bottom-color:#005580;}
+		.nav-tabs .dropdown-toggle .caret{margin-top:8px;}
+		.nav .active .dropdown-toggle .caret{border-top-color:#fff;border-bottom-color:#fff;}
+		.nav-tabs .active .dropdown-toggle .caret{border-top-color:#555555;border-bottom-color:#555555;}
+		.nav>.dropdown.active>a:hover{cursor:pointer;}
+		.nav-tabs .open .dropdown-toggle,.nav-pills .open .dropdown-toggle,.nav>li.dropdown.open.active>a:hover{color:#ffffff;background-color:#999999;border-color:#999999;}
+		.nav li.dropdown.open .caret,.nav li.dropdown.open.active .caret,.nav li.dropdown.open a:hover .caret{border-top-color:#ffffff;border-bottom-color:#ffffff;opacity:1;filter:alpha(opacity=100);}
+
+		/***************************************************
+		****************************************************
+		MOBILE TARGETING
+
+		Use @media queries with care.  You should not bring these styles inline -- so it's recommended to apply them AFTER you bring the other stlying inline.
+
+		Note: test carefully with Yahoo.
+		Note 2: Don't bring anything below this line inline.
+		****************************************************
+		***************************************************/
+		@media only screen and (max-device-width: 480px) {
+			a[href^="tel"], a[href^="sms"] {
+						text-decoration: none;
+						color: black; /* or whatever your want */
+						pointer-events: none;
+						cursor: default;
+					}
+
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+						text-decoration: default;
+						color: orange !important; /* or whatever your want */
+						pointer-events: auto;
+						cursor: default;
+					}
+		}
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+			/* You guessed it, ipad (tablets, smaller screens, etc) */
+			a[href^="tel"], a[href^="sms"] {
+						text-decoration: none;
+						color: blue; /* or whatever your want */
+						pointer-events: none;
+						cursor: default;
+					}
+
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+						text-decoration: default;
+						color: orange !important;
+						pointer-events: auto;
+						cursor: default;
+					}
+		}
+		@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+			/* Put your iPhone 4g styles in here */
+		}
+		@media only screen and (-webkit-device-pixel-ratio:.75){
+			/* Put CSS for low density (ldpi) Android layouts in here */
+		}
+		@media only screen and (-webkit-device-pixel-ratio:1){
+			/* Put CSS for medium density (mdpi) Android layouts in here */
+		}
+		@media only screen and (-webkit-device-pixel-ratio:1.5){
+			/* Put CSS for high density (hdpi) Android layouts in here */
+		}
+	#}
+	</style>
+
+	<!-- Targeting Windows Mobile -->
+	<!--[if IEMobile 7]>
+	<style type="text/css">
+
+	</style>
+	<![endif]-->
+
+	<!--[if gte mso 9]>
+	<style>
+		/* Target Outlook 2007 and 2010 */
+	</style>
+	<![endif]-->
 </head>
-<body> 
-<div id="mailBox">
-<h1>{sitename} Comment Notification</h1>
-<dl>
-<dt><a href="{url}">{name}</a> says:</dt>
- <dd> <p>{message}</p>
-  <p>Posted On: {date} @ {time}</p></dd>
-  <dt id="commenterInformation">Commenter Information</dt>
-  <dd id="commenterDetails"><p><strong>Name:</strong> {name}<br />
-  <strong>E-mail: </strong><a href="mailto:{email}">{email}</a><br />
-  <strong>URL: </strong><a href="{url}">{url}</a><br />
-  <strong>ISP Details:</strong> <a href="http://ws.arin.net/cgi-bin/whois.pl?queryinput={ip}">http://ws.arin.net/cgi-bin/whois.pl?queryinput={ip}</a><br />
-  <strong>IP:</strong> {ip}<br />
-  <strong>Hostmask:</strong> {hostmask}</p></dd>
-</dl>
-<p>You can choose to view this <a href="{yoursite}{pageurl}#viewcomments">comment in context</a>, <a href="{yoursite}{pageurl}#postcomment">respond at the webpage</a>, or <a href="{expanse_url}">manage this comment</a>.</p>
-<p>Powered By <a href="{company_url}" target="_blank">{cms_name}</a></p>
-</div>
+<body>
+	<table cellpadding="0" cellspacing="0" border="0" id="backgroundTable">
+	<tr>
+		<td>
+			<table cellpadding="0" cellspacing="0" border="0" align="center">
+				<tr>
+					<td width="20" valign="top"></td>
+					<td width="760" valign="top">
+						<h1 style="display:block;margin:20px 0;font-family:inherit;font-weight:bold;line-height:38px;color:inherit;text-rendering:optimizelegibility;font-size:38.5px;">{sitename} Comment Notification</h1>
+
+						<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;"><a href="{url}" target ="_blank" title="{name}" style="color: #0088cc; text-decoration: none;">{name}</a> says:</p>
+
+						<blockquote style="padding:0 0 0 15px;margin:0 0 20px;border-left:5px solid #eeeeee;">
+							<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#333333;margin-bottom:0;font-size:16px;font-weight:300;line-height:25px;">{message}</p>
+						</blockquote>
+
+						<hr style="margin:20px 0;border:0;border-top:1px solid #eeeeee;border-bottom:1px solid #ffffff;" />
+
+						<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;">You can make the following choices:</p>
+
+						<ul class="nav nav-pills nav-stacked" style="margin-left:0;margin-bottom:20px;list-style:none;">
+							<li class="active" style="line-height:20px;margin-bottom:15px;">
+								<a href="{yoursite}{pageurl}#viewcomments" target ="_blank" title="comment in context" style="color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#0088cc;text-decoration: none;padding-top:8px;padding-bottom:8px;margin-top:2px;margin-bottom:2px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;padding-right:12px;padding-left:12px;margin-right:2px;line-height:14px;display:block;">comment in context</a>
+							</li>
+							<li class="active" style="line-height:20px;margin-bottom:15px;">
+								<a href="{yoursite}{pageurl}#postcomment" target ="_blank" title="respond at the webpage" style="color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#0088cc;text-decoration: none;padding-top:8px;padding-bottom:8px;margin-top:2px;margin-bottom:2px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;padding-right:12px;padding-left:12px;margin-right:2px;line-height:14px;display:block;">respond at the webpage</a>
+							</li>
+							<li class="active" style="line-height:20px;margin-bottom:15px;">
+								<a href="{expanseurl}index.php?cat=admin&sub=comments" target ="_blank" title="manage this comment" style="color:#ffffff;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.2);background-color:#0088cc;text-decoration: none;padding-top:8px;padding-bottom:8px;margin-top:2px;margin-bottom:2px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;padding-right:12px;padding-left:12px;margin-right:2px;line-height:14px;display:block;">manage this comment</a>
+							</li>
+						</ul>
+
+						<hr style="margin:20px 0;border:0;border-top:1px solid #eeeeee;border-bottom:1px solid #ffffff;" />
+
+						<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;"><small style="font-size:85%;">Posted On: {date} @ {time}</small></p>
+					</td>
+					<td width="20" valign="top"></td>
+				</tr>
+				<tr>
+					<td width="20" valign="top"></td>
+					<td width="760" valign="top">
+						<dl>
+							<dt id="commenterInformation"><h3 style="margin:10px 0;font-family:inherit;font-weight:bold;line-height:20px;color:inherit;text-rendering:optimizelegibility;font-size:24.5px;">Commenter Information</h3></dt>
+							<dd id="commenterDetails">
+								<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;">
+								<strong style="font-weight:bold;">Name:</strong> {name}<br />
+								<strong style="font-weight:bold;">E-mail: </strong><a href="mailto:{email}" style="color: #0088cc; text-decoration: none;">{email}</a><br />
+								<strong style="font-weight:bold;">URL: </strong><a href="{url}" style="color: #0088cc; text-decoration: none;">{url}</a><br />
+								<strong style="font-weight:bold;">ISP Details:</strong> <a href="http://whois.arin.net/ui/query.do?q={ip}" style="color: #0088cc; text-decoration: none;">http://whois.arin.net/ui/query.do?q={ip}</a><br />
+								<strong style="font-weight:bold;">IP:</strong> {ip}<br />
+								<strong style="font-weight:bold;">Hostmask:</strong> <a href="{hostmask}" style="color: #0088cc; text-decoration: none;">{hostmask}</a></p>
+							</dd>
+						</dl>
+					</td>
+					<td width="20" valign="top"></td>
+				</tr>
+				<tr>
+					<td width="20" valign="top"></td>
+					<td width="760" valign="top">
+						<hr style="margin:20px 0;border:0;border-top:1px solid #eeeeee;border-bottom:1px solid #ffffff;" />
+						<p style="font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;">Powered By <a href="{company_url}" target="_blank" style="color: #0088cc; text-decoration: none;">{cms_name}</a></p>
+					</td>
+					<td width="20" valign="top"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
 </body>
 </html>

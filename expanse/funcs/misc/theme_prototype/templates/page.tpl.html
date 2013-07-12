@@ -1,35 +1,28 @@
-<div id="content" class="page">
-{output}
-{loop:content}
-<h3 class="news"><a href="{permalink}">{title}</a></h3>
-<p>{loop:extra_fields}
-<strong>{field}</strong>: {value}<br />
-{/loop}</p>
-{set:parent_link}<h2>&laquo; {parent_link}</h2>{/set}
-{page_list}
-{descr}
-{set:logged_in}<a href="{editlink}">Edit page</a>{/set}<br />
-</p>
-  {if:{comments}}<h4 id="viewcomments"> {comments_count} Comment{if:{comments_count} <> 1}s{/if}</h4>{/if}
-{if: {comments} == 0}<h6>Comments are not allowed on this entry</h6>{/if}
-{mis:the_comments}
-<h6>There are no comments on this entry</h6>
-{/mis}
-	
-{loop:the_comments}
-  <dl class="comments">
-<dt id="comment{_rank}"><a href="#comment{_rank}" title="Permanent Link To This Comment">{name}</a> says:</dt>
- <dd> <p>{message}</p>
-  <p>Posted On: {date} @ {time}{set:logged_in} | <a href="{expanseurl}index.php?type=edit&amp;cat=admin&amp;sub=comments&amp;id={id}">Edit comment</a>{/set}</p></dd>
-</dl>
-  {/loop}
-  {if:{comments}}
-  <h4 id="postcomment">Post A Comment</h4>
-<p class="formNote">* Required Fields <br />
-No HTML is allowed. All links, and new lines will be automagically converted to HTML for you.<br />
-Notice to spammers, all links will be sanitized with rel=&quot;nofollow&quot;.</p>
-  
-  {/if}
-{/loop}
+<div class="container">
+	<div class="row-fluid">
+		<div class="span12">
+			{output}
 
+			{loop:content}
+			<article class="article">
+				<div class="page-header">
+					<h1>{category}{set:parent_link}<br><small>{parent_link}</small>{/set}</h1>
+				</div>
+
+				{page_list}
+
+				{loop:extra_fields}
+				<strong>{field}</strong>: {value}<br />
+				{/loop}
+
+				{descr}
+
+				<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by <a href="{user_url}">{author}</a><br>
+				<a href="{permalink}">Full View</a> {if:{comments} or {comments_count} != 0}| {comments_count} Comments{/if}{set:logged_in}| <a href="{editlink}">Edit item</a>{/set}</p>
+			</article>
+			{/loop}
+
+			{loop:pages}{set:_first}Pages: {/set}{previous_link} {page_link} {next_link}{/loop}
+		</div>
+	</div>
 </div>

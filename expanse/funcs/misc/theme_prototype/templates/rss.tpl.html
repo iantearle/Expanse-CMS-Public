@@ -1,18 +1,19 @@
-<rss version="2.0">
-<channel>
-<title>{sitename}{set:category} - {category}{set:subcategory} - {subcategory}{/set}{/set}</title> 
-<link>{category_link}</link> 
-<description>{sitedescr}</description> 
-<language>en-us</language> 
-<docs>http://blogs.law.harvard.edu/tech/rss</docs> 
-{loop:content}
-<item>
-<title>{title}</title>
-<description>
-{descr}</description>
-<link>{permalink}</link> 
-<pubDate>{created}</pubDate>
-</item>
-{/loop}
-</channel>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+	<atom:link href="{rss_feed}" rel="self" type="application/rss+xml" />
+	<title>{sitename}{set:category} - {category}{set:subcategory} - {subcategory}{/set}{/set}</title>
+	<link>{category_link}</link>
+	<description>{sitedescr}</description>
+	<language>en-us</language>
+	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+	{loop:content}
+	<item>
+		<title>{title}</title>
+		<description>{descr}</description>
+		<link>{permalink}</link>
+		<pubDate>{created}</pubDate>
+		<guid>{yoursite}index.php?pcat={pid}&amp;item={id}</guid>
+	</item>
+	{/loop}
+	</channel>
 </rss>

@@ -36,15 +36,18 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
-if(!defined('EXPANSE')) { die('Sorry, but this file cannot be directly viewed.'); }
+
+if(!defined('EXPANSE')) {
+	die('Sorry, but this file cannot be directly viewed.');
+}
 
 /*   Plugins   //-------*/
 add_admin_menu('<a href="?cat=admin&amp;sub=plugins">'.L_MENU_MANAGE_PLUGINS.'</a>','','plugins');
-
-if($admin_sub !== 'plugins') { return; }
+if($admin_sub !== 'plugins') {
+	return;
+}
 add_breadcrumb(L_PLUGIN_TITLE);
 add_title(L_PLUGIN_TITLE);
 ozone_action('admin_page', 'plugin_content');
@@ -52,9 +55,9 @@ ozone_action('admin_page', 'plugin_content');
 function plugin_content() {
 	global $output;
 	if(!CUSTOM_INSTALL) {
-	?>
+		?>
 		<div class="alert alert-block alert-info fade in" data-alert="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><p><?php echo L_PLUGIN_NOTE ?></p></div>
-	<?php
+		<?php
 	}
 	$current_plugins = getOption('active_plugins');
 	$plug_install = check_get_alphanum('install');
@@ -86,13 +89,15 @@ function plugin_content() {
 	}
 
 	//Cleanup & purge
-	if($current_plugins == false || !is_array($current_plugins)) {
+	if ($current_plugins == false || !is_array($current_plugins)) {
 		$current_plugins = array();
 	}
 	foreach($current_plugins as $key => $current_plugin) {
 		if(!file_exists(PLUGINS . "/$current_plugin")) {
-				if(!isset($current_plugins[$key])) { continue; }
-					unset($current_plugins[$key]);
+			if (!isset($current_plugins[$key])) {
+				continue;
+			}
+			unset($current_plugins[$key]);
 		}
 	}
 	setOption('active_plugins', $current_plugins);
@@ -117,7 +122,7 @@ function plugin_content() {
 				</td>
 				<td><a href="index.php?cat=admin&amp;sub=plugins&amp;<?php echo $installed ? 'un' : ''; ?>install=yes&amp;plugin=<?php echo $k; ?>" class="btn <?php echo $installed ? 'btn-danger' : 'btn-success'; ?>"><?php echo $installed ? L_BUTTON_UNINSTALL : L_BUTTON_INSTALL; ?></a></td>
 			</tr>
-		<?php
+			<?php
 		}
 		?>
 	</table>

@@ -1,13 +1,29 @@
-<div id="content">
-<h1>{category}</h1>
-{output}
-{loop:content}
-<h3>{title}</h3>
-<p>When:{event_date}</p>
-<p>Details: {descr}</p>
-<p>{loop:extra_fields}
-<strong>{field}</strong>: {value}<br />
-{/loop}</p>
-<p>More Information: {url} </p>
-{/loop}
+<div class="container">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="page-header">
+				<h1>{category}{set:subcategory}<br><small>{subcategory}</small>{/set}</h1>
+			</div>
+			{output}
+
+			<article class="article">
+			{loop:content}
+				<h3>{title}</h3>
+				<dl>
+					<dt>When</dt>
+					<dd>{php}date('YYYY-MM-DD',{event_date}){/php}</dd>
+
+					<dt>Details</dt>
+					<dd>{descr}</dd>
+
+					<dt>More Information</dt>
+					<dd><a href="{url}">{url}</a></dd>
+				</dl>
+
+				<p>Posted On: <strong>{date}</strong> @ <strong>{time}</strong> by {author}{set:logged_in} | <a href="{editlink}">Edit item</a>{/set}</p>
+			{/loop}
+			</article>
+
+		</div>
+	</div>
 </div>

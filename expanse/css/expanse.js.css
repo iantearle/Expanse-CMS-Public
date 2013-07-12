@@ -1,134 +1,154 @@
 /*
 ------------------------------------------------------------
 Expanse
-http://expansecms.com
-Content management for the Artist, by the Artist
-Written, with love, by Nate Cavanaugh and Jason Morrison
-www.alterform.com & www.dubtastic.com
+http://expanse.io
+Content management for the web deisgner, by the web designer
+Written, with love, by Ian Tearle @iantearle
+Based on original work by Nate Cavanaugh and Jason Morrison
 All rights reserved.
 
 Javascript only CSS
 ============================================================
 */
+
 /*
 ------------------------------------------------------------
 Global styles
 ============================================================
 */
-.hidden{
-	display: none;
+.hidden {
+	display:none;
 }
-.visible{
-	display: block;
-}
-.hilite{
 
+.visible {
+	display:block;
 }
-#content .formatSettings{
-}
-.formatSettingsL{
 
+.hilite {
 }
+
+#content .formatSettings {
+}
+
+.formatSettingsL {
+}
+
 /*
 ------------------------------------------------------------
 Tooltips (w/ Javascript)
 ============================================================
 */
-.hasHelp{
-display: none;
-}
-.helpContents{
-margin: 0;
-padding: 7px;
-position: absolute;
-top: -1000px;
-left: -1000px;
-border: 1px solid #999;
-z-index: 100;
-background-color: #fff;
--moz-border-radius: 5px;
-width: 250px;
-font-size: 12px;
-}
-.hasHelp{
-display: inline;
-cursor: pointer;
-}
-#categoriesList .hasHelp{
-padding-top: 0;
-display: inline;
-cursor: pointer;
-}
-#vanilla .hasHelp{
-padding-top: 0.7em;
-display: inline;
-cursor: pointer;
-float:left;
-margin: 0.4em;
-}
-#bannedIPs.hasHelp, #bannedWords.hasHelp{
-padding-bottom: 8em;
-display: inline;
-cursor: pointer;
-}
-blockquote.helpContents a{
-text-decoration: none;
+.hasHelp {
+	display:none;
 }
 
+.helpContents {
+	margin:0;
+	padding:7px;
+	position:absolute;
+	top:-1000px;
+	left:-1000px;
+	border:1px solid #999;
+	z-index:100;
+	background-color:#fff;
+	-moz-border-radius:5px;
+	width:250px;
+	font-size:12px;
+}
 
+.hasHelp {
+	display:inline;
+	cursor:pointer;
+}
+
+#categoriesList .hasHelp {
+	padding-top:0;
+	display:inline;
+	cursor:pointer;
+}
+
+#vanilla .hasHelp {
+	padding-top:.7em;
+	display:inline;
+	cursor:pointer;
+	float:left;
+	margin:.4em;
+}
+
+#bannedIPs.hasHelp,#bannedWords.hasHelp {
+	padding-bottom:8em;
+	display:inline;
+	cursor:pointer;
+}
+
+blockquote.helpContents a {
+	text-decoration:none;
+}
 
 /*
 ------------------------------------------------------------
 Waiting Message Styles
 ============================================================
 */
-#overlay{
-background:#000;
-filter:alpha(opacity=50);
--moz-opacity:0.50;
-opacity: 0.50;
-cursor:default;
+#overlay {
+	background:#000;
+	filter:alpha(opacity=50);
+	-moz-opacity:.5;
+	opacity:.5;
+	cursor:default;
 }
+
 .overlayHelp {
-margin: 0 0 0 -125px;
-padding: 7px;
-border: 1px solid #999;
-z-index: 100;
-background-color: #fff;
--moz-border-radius: 5px;
-width: 250px;
-font-size: 12px;
+	margin:0 0 0 -125px;
+	padding:7px;
+	border:1px solid #999;
+	z-index:100;
+	background-color:#fff;
+	-moz-border-radius:5px;
+	width:250px;
+	font-size:12px;
 }
+
 /*
 ------------------------------------------------------------
 Container for Sizing links
 ============================================================
 */
-#sizerContainer a, .sizerContainer a{
+#sizerContainer a,.sizerContainer a {
 }
+
 /*
 -------------------------------------------------
 Misc.
 =================================================
 */
 /*   Marked for deletion   //---------------------------*/
-#itemList div.deleting{
+#itemList div.deleting {
 	border:1px solid #c00;
+	position: relative;
+	background-color: #f2dede;
+	background-image: none;
+}
+#itemList div.deleting>*:not(fieldset) {
 	filter:alpha(opacity=50);
-	-moz-opacity:.50;
-	opacity:.50;
-	position:relative;
+	-moz-opacity:.5;
+	opacity:.5;
 }
-#itemList div.deleting *{
-	color: #ccc;
+
+#itemList div.deleting * {
+	color:#ccc;
 }
-#itemList div img.marked{display:none;}
+
+#itemList div img.marked {
+	display:none;
+}
+
 #itemList div.deleting img.marked {
 	display:block;
 	position:absolute;
 	border:0;
 	top:10px;
-	left: 50%;
-	margin: 0 0 0 -64px;
+	left:50%;
+	margin:0 0 0 -64px;
 	background:none;
 }

@@ -1,24 +1,19 @@
-<feed version="1.0"
-  xmlns="http://purl.org/atom/ns#"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xml:lang="en"
-  ><title>{sitename}</title>
-	<link rel="alternate" type="text/html" href="{yoursite}" />
-	<tagline>{sitedescr}</tagline>
-	<modified>{lastmodified}</modified>
-	<copyright>Copyright {copyrightdate}</copyright>
-	<generator url="{company_url}">{cms_name}</generator>
-{loop:content}<entry>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>{sitename}</title>
+    <link href="{atom_feed}" rel="self" />
+    <link href="{yoursite}" />
+    <updated>{lastmodified}</updated>
+    <id>urn:uuid:60a76c80-d399-11d9-b91C-0003939e0af6</id>
+   	{loop:content}
+	<entry>
 	  	<author>
 			<name>{author}</name>
 		</author>
-		<title type="text/html" mode="escaped"><![CDATA[{title}]]></title>
+		<title type="html"><![CDATA[{title}]]></title>
 		<link rel="alternate" type="text/html" href="{permalink}" />
 		<id>{permalink}</id>
-		<modified>{created}</modified>
-		<issued>{created}</issued>
-		<dc:subject>{pcat}</dc:subject>
-		<content type="text/html" mode="escaped" xml:base="{yoursite}/?pcat={pcat}&amp;item={id}"><![CDATA[	{descr} ]]></content>
+		<updated>{created}</updated>
+		<content type="html" xml:base="{yoursite}/?pcat={pcat}&amp;item={id}"><![CDATA[	{descr} ]]></content>
 	</entry>
-{/loop}
+	{/loop}
 </feed>

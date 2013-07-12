@@ -5,44 +5,64 @@ and POST handling logic (if any)
 ***************************************************/
 
 //Must be included at the top of all module files.
-if(!defined('EXPANSE')){ die('Sorry, but this file cannot be directly viewed.'); }
+if(!defined('EXPANSE')) {
+	die('Sorry, but this file cannot be directly viewed.');
+}
 
+/**
+ * Gallery class.
+ *
+ * @extends Module
+ */
 class Gallery extends Module {
-	//This is the meta data for the category.
+
+	// This is the meta data for the category.
 	var $name = L_GALLERY_NAME;
 	var $description = L_GALLERY_DESCRIPTION;
-	//Inherit the rest of the category meta-data
+
+	// Inherit the rest of the category meta-data
 	/**/
+
+	/**
+	 * add function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function add() {
-	    //Grab the global message object, and the global category id
-	    //global $outmess, $catid;
+		// Grab the global message object, and the global category id
+		// global $outmess, $catid;
 		$catid = $this->cat_id;
 		$outmess = $this->output;
-	    //Process the files
+
+		//Process the files
 		$uploaddir = UPLOADS;
-	  	$uploads = checkFiles($_FILES, $uploaddir, true, '/^additional_images\d/i');
+		$uploads = checkFiles($_FILES, $uploaddir, true, '/^additional_images\d/i');
 		$xtra_img_uploads = checkFiles($_FILES, $uploaddir, true, array('img_main', 'img_thumb'));
-	    //Check for errors
-	    if(!empty($uploads['errors']) || !empty($xtra_img_uploads['errors'])) {
-	        foreach($uploads['errors'] as $val) {
-	            foreach($val as $v) {
-	                $messages[] = "<li>$v</li>";
-	            }
-	        }
+		// Check for errors
+		if(!empty($uploads['errors']) || !empty($xtra_img_uploads['errors'])) {
+			foreach($uploads['errors'] as $val) {
+				foreach($val as $v) {
+					$messages[] = "<li>$v</li>";
+				}
+			}
 			foreach($xtra_img_uploads['errors'] as $val) {
-	            foreach($val as $v) {
-	                $messages[] = "<li>$v</li>";
-	            }
-	        }
-	        //Send a message if there are errors
-	        $messages = "<ul>".implode('', $messages)."</ul>";
-	       printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
-	    } else {
-	        //Grab module items object
-	        $items =& $this->items;
+				foreach($val as $v) {
+					$messages[] = "<li>$v</li>";
+				}
+			}
+
+			//Send a message if there are errors
+			$messages = "<ul>".implode('', $messages)."</ul>";
+			printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
+		} else {
+			//Everything looks good
+			//Grab module items object
+			$items =& $this->items;
 			$object_vars = get_object_vars($items);
-	        //Loop through POST
-	        foreach($_POST as $ind=>$val) {
+
+			//Loop through POST
+			foreach($_POST as $ind=>$val) {
 				if(isset($object_vars[$ind])) {
 					if(is_array($val)) {
 						foreach($val as $k => $v) {
@@ -56,30 +76,35 @@ class Gallery extends Module {
 						$items->{$ind} = trim($val);
 					}
 				}
-	        }
-	        //Set individual fields
-	        if(!empty($uploads['files'])) {
-	            $items->image = $uploads['files']['img_main']['name'];
+			}
+
+			//Set individual fields
+			if(!empty($uploads['files'])) {
+				$items->image = $uploads['files']['img_main']['name'];
 				$items->thumbnail = !isset($_POST['autothumb']) && isset($uploads['files']['img_thumb']['name']) ? $uploads['files']['img_thumb']['name'] : '';
-	            $items->width = $uploads['files']['img_main']['width'];
-	            $items->height = $uploads['files']['img_main']['height'];
-	        }
+				$items->width = $uploads['files']['img_main']['width'];
+				$items->height = $uploads['files']['img_main']['height'];
+			}
 			$items->use_default_thumbsize = 1;
-	        $items->created = dateTimeProcess();
-	        $items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
-	        $items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
+			$items->created = dateTimeProcess();
+			$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
+			$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
 			$items->paypal_amount = (isset($_POST['paypal_amount'])) ? (float) $_POST['paypal_amount'] : 0;
 			$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
+			$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
+			$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+
 			//Add a subcat
 			$this->addSubcat();
-	        //Save the info
-	        if($items->SaveNew()) {
+
+			//Save the info
+			if($items->SaveNew()) {
 				$items = applyOzoneAction('item_add', $items);
 				$this->manage_custom_fields($items);
 				if(!empty($xtra_img_uploads['files'])) {
 					$images = new Expanse('images');
 					$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
-					foreach($xtra_img_uploads['files'] as $xi => $xv) {
+					foreach($xtra_img_uploads['files'] as $xi => $xv){
 						$images->image = $xv['name'];
 						$images->width = $xv['width'];
 						$images->height = $xv['height'];
@@ -88,66 +113,78 @@ class Gallery extends Module {
 						$images->SaveNew();
 					}
 				}
+
 				//Move or copy
 				$new_item =& $this->new_item;
 				$new_home =& $this->new_home;
 				$this->moveOrCopy($items);
-			   	printOut(SUCCESS,vsprintf(L_ADD_SUCCESS, array($items->title, $catid, $items->id)));
-	            //Reset POST
-	            $_POST = array();
-	        } else {
-	            printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysql_error())));
-	        }
-	    }
+				printOut(SUCCESS,vsprintf(L_ADD_SUCCESS, array($items->title, $catid, $items->id)));
+
+				//Reset POST
+				$_POST = array();
+			} else {
+				printOut(FAILURE,vsprintf(L_ADD_FAILURE, array($items->title, mysqli_error($Database->GetConnection()))));
+			}
+		}
 	}
 
+	/**
+	 * edit function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function edit() {
 		$outmess = $this->output;
 		$catid = $this->cat_id;
 		$item_id = $this->item_id;
-	    //Process the files
-	  	$uploaddir = UPLOADS;
-	    $uploads = checkFiles($_FILES, $uploaddir, true, '/^additional_images\d/i');
+
+		//Process the files
+		$uploaddir = UPLOADS;
+		$uploads = checkFiles($_FILES, $uploaddir, true, '/^additional_images\d/i');
 		$xtra_img_uploads = checkFiles($_FILES, $uploaddir, true, array('img_main', 'img_thumb'));
-	    //Check for errors
-	    if(!empty($uploads['errors']) || !empty($xtra_img_uploads['errors'])) {
-	        foreach($uploads['errors'] as $val) {
-	            foreach($val as $v) {
-	                $messages[] = "<li>$v</li>";
-	            }
-	        }
+
+		//Check for errors
+		if(!empty($uploads['errors']) || !empty($xtra_img_uploads['errors'])) {
+			foreach($uploads['errors'] as $val) {
+				foreach($val as $v) {
+					$messages[] = "<li>$v</li>";
+				}
+			}
 			foreach($xtra_img_uploads['errors'] as $val) {
-	            foreach($val as $v) {
-	                $messages[] = "<li>$v</li>";
-	            }
-	        }
-	        //Send a message if there are errors
-	        $messages = "<ul>".implode('', $messages)."</ul>";
-	        printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
-	    } else {
-	        //Instantiate new object
-		   //global $items;
-		   $items =& $this->items;
-		   $images = new Expanse('images');
+				foreach($val as $v) {
+					$messages[] = "<li>$v</li>";
+				}
+			}
+
+			// Send a message if there are errors
+			$messages = "<ul>".implode('', $messages)."</ul>";
+			printOut(FAILURE,sprintf(L_UPLOAD_FAILURE, $messages));
+		} else {
+			// Everything looks good
+			// Instantiate new object
+			// global $items;
+			$items =& $this->items;
+			$images = new Expanse('images');
 			$items->Get($item_id);
 			$object_vars = get_object_vars($items);
-	        //Loop through POST
-	        foreach($_POST as $ind=>$val) {
+			//Loop through POST
+			foreach($_POST as $ind=>$val) {
 				if(isset($object_vars[$ind])) {
-					if(is_array($val)) {
-						foreach($val as $k => $v){
-							$val[$k] = trim($v);
-							if(empty($v)){
-								unset($val[$k]);
-							}
+					if(is_array($val)){
+					foreach($val as $k => $v) {
+						$val[$k] = trim($v);
+						if(empty($v)) {
+							unset($val[$k]);
 						}
+					}
 						$items->{$ind} = !empty($val) ? serialize($val) : '';
 					} else {
 						$items->{$ind} = trim($val);
 					}
 				}
 			}
-	        //Set individual fields
+			//Set individual fields
 			if(!empty($uploads['files'])) {
 				$mainimage = isset($uploads['files']['img_main']['name']) ? $uploads['files']['img_main']['name'] : NULL;
 				$thumbimage = isset($uploads['files']['img_thumb']['name']) ? $uploads['files']['img_thumb']['name'] : NULL;
@@ -163,30 +200,35 @@ class Gallery extends Module {
 				if(isset($thumbimage) && !empty($items->thumbnail)) {
 					if($items->thumbnail != $thumbimage && file_exists($uploaddir.'/'.$thumbimage)) {
 						if(!empty($items->thumbnail) && file_exists($uploaddir.'/'.$items->thumbnail)) {
-						 unlink($uploaddir.'/'.$items->thumbnail);
+							unlink($uploaddir.'/'.$items->thumbnail);
 						}
 					}
 				}
-	            $items->image = !is_null($mainimage) ? $mainimage : $items->image;
+				$items->image = !is_null($mainimage) ? $mainimage : $items->image;
 				$items->thumbnail = (isset($_POST['autothumb']) && $_POST['autothumb'] == 1) ? '' : (!is_null($thumbimage)) ? $thumbimage : $items->thumbnail;
-	            $items->width = isset($uploads['files']['img_main']['width']) ? $uploads['files']['img_main']['width'] : $items->width;
-	            $items->height = isset($uploads['files']['img_main']['height']) ? $uploads['files']['img_main']['height'] : $items->height;
-	        }
-
+				$items->width = isset($uploads['files']['img_main']['width']) ? $uploads['files']['img_main']['width'] : $items->width;
+				$items->height = isset($uploads['files']['img_main']['height']) ? $uploads['files']['img_main']['height'] : $items->height;
+			}
+			$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
+			foreach(isset($_POST['existing_image']) as $xi) {
+				$images->Get($xi);
+				if(isset($caption[$xi])) {
+					$images->caption = isset($caption[$xi]) ? trim($caption[$xi]) : '';
+					$images->itemid = $item_id;
+					$images->Save();
+				}
+			}
 			if(!empty($xtra_img_uploads['files'])) {
-
-				$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
 				foreach($xtra_img_uploads['files'] as $xi => $xv) {
 					$images->image = $xv['name'];
 					$images->width = $xv['width'];
 					$images->height = $xv['height'];
-					$images->caption = isset($caption[$xi]) ? trim(strip_tags($caption[$xi])) : '';
+					$images->caption = isset($caption[$xi]) ? trim($caption[$xi]) : '';
 					$images->itemid = $item_id;
 					$images->SaveNew();
 				}
 			}
 			$delete_images = isset($_POST['delete_additional']) ? $_POST['delete_additional'] : array();
-
 			foreach($delete_images as $di) {
 				$images->Get($di);
 				if(!empty($images->image) && file_exists($uploaddir.'/'.$items->image)) {
@@ -194,12 +236,13 @@ class Gallery extends Module {
 				}
 				$images->Delete();
 			}
-
-	        $items->created = dateTimeProcess($items->created);
-	        $items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
-	        $items->dirtitle = set_dirtitle($items);
+			$items->created = dateTimeProcess($items->created);
+			$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $catid;
+			$items->dirtitle = set_dirtitle($items);
 			$items->paypal_amount = (isset($_POST['paypal_amount'])) ? (float) $_POST['paypal_amount'] : 0;
 			$items->paypal_handling = (isset($_POST['paypal_handling'])) ? (float) $_POST['paypal_handling'] : 0;
+			$items->descr = str_replace(array('&nbsp;','<p></p>'), '', $items->descr);
+			$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
 
 			//Clean extroptions of empty values
 			foreach($_POST['extraoptions'] as $ek => $ev) {
@@ -214,10 +257,11 @@ class Gallery extends Module {
 			//Add a subcat
 			$items->cid = $this->addSubcat();
 
-	        //Save the info
-	        if($items->Save()) {
+			//Save the info
+			if($items->Save()) {
 				$items = applyOzoneAction('item_edit', $items);
 				$this->manage_custom_fields($items);
+
 				//Move or copy
 				$new_item =& $this->new_item;
 				$new_home =& $this->new_home;
@@ -226,23 +270,34 @@ class Gallery extends Module {
 				} else {
 					printOut(SUCCESS,vsprintf(L_EDIT_MOVE_SUCCESS, array($title, $new_home, $new_item->id)));
 				}
-	            //Reset POST
-	            $_POST = array();
-	        } else {
-	        	printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($title, mysql_error())));
-	        }
-	    }
+
+				//Reset POST
+				$_POST = array();
+			} else {
+				printOut(FAILURE,vsprintf(L_EDIT_FAILURE, array($title, mysqli_error($Database->GetConnection()))));
+			}
+		}
 	}
 
+	/**
+	 * more function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function more() {
 		if(is_posting(L_BUTTON_MASS_UPLOAD)) {
 			$this->galleryUpload();
 		}
 	}
 
-	/*
-	You can define custom functions in this file as well, however, it may be better to use a class so that there is less chance of redefining an existing function.
-	*/
+	/**
+	 * galleryUpload function.
+	 * You can define custom functions in this file as well, however, it may be better to use a class so that there is less chance of redefining an existing function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function galleryUpload() {
 		$path = UPLOADS;
 		$items = &$this->items;
@@ -250,28 +305,25 @@ class Gallery extends Module {
 		$filename = isset($uploaded['files']['massupload']['name']) ? $uploaded['files']['massupload']['name'] : '';
 		$pathfile = $path.'/'.$filename;
 		$ftp_path = isset($_POST['mass_upload_ftp']) ? trim($_POST['mass_upload_ftp']) : '';
-
 		if(empty($filename) && empty($ftp_path)) {
 			printOut(FAILURE, L_GALLERY_INVALID_MASS_UPLOAD);
 			return false;
 		}
-
 		if(!empty($ftp_path)) {
 			$ftp_path = str_replace(array('..'), '', $ftp_path);
 			$ftp_path = $base_folder = trim($ftp_path, '/');
 			$ftp_path = UPLOADS.'/'.$ftp_path;
 			$errors = array();
-
 			if(!empty($ftp_path) && file_exists($ftp_path) && is_dir($ftp_path)) {
 				$resource_files = getFiles($ftp_path);
 				$object_vars = get_object_vars($items);
-
-				foreach($_POST as $ind=>$val) { //Loop through POST
+				foreach($_POST as $ind=>$val) {
+					//Loop through POST
 					if(isset($object_vars[$ind])) {
 						if(is_array($val)) {
 							foreach($val as $k => $v) {
 								$val[$k] = trim($v);
-								if(empty($v)){
+								if(empty($v)) {
 									unset($val[$k]);
 								}
 							}
@@ -281,20 +333,16 @@ class Gallery extends Module {
 						}
 					}
 				}
-
 				foreach($resource_files['files'] as $i => $val) {
 					$base_file = $base_folder.'/'.$val;
 					$file = UPLOADS.'/'.$base_folder.'/'.$val;
-
 					$file_dims = @getimagesize($file);
-					if(!$file_dims){
+					if(!$file_dims) {
 						$errors[] = $file; continue;
 					}
 					$items->width = $file_dims[0];
 					$items->height = $file_dims[1];
 					$items->image = $base_file;
-
-
 					$items->pid = $this->cat_id;
 					$items->title = remExtension($val);
 					$items->online = isset($_POST['online']) ? 1 : 0;
@@ -307,9 +355,7 @@ class Gallery extends Module {
 					if(!$items->SaveNew()) {
 						$errors[] = $i;
 					}
-
 				}
-
 				if(!empty($resource_files) && empty($errors)) {
 					$_POST = array();
 					printOut(SUCCESS, L_GALLERY_FTP_UPLOAD_SUCCESS);
@@ -318,25 +364,22 @@ class Gallery extends Module {
 					printOut(FAILURE, L_GALLERY_FTP_UPLOAD_FAILURE);
 					return;
 				}
-
 			} else {
 				printOut(FAILURE, L_GALLERY_FTP_UPLOAD_MISSING);
 			}
 		} // uploading via FTP
-
 		if(!empty($filename)) {
 			$archive = new PclZip($pathfile);
 			if(($exfiles = $archive->extract(PCLZIP_OPT_PATH, $path, PCLZIP_OPT_REMOVE_ALL_PATH)) == 0) {
 				$ziperror = L_GALLERY_INVALID_ZIP.$archive->errorName();
 				printOut(FAILURE, $ziperror);
-				if(file_exists($pathfile) && is_file($pathfile)){
+				if(file_exists($pathfile) && is_file($pathfile)) {
 					unlink($pathfile);
 				}
 			} else {
 				$images = array();
 				$nonimages = array();
 				$results = array();
-
 				foreach($exfiles as $ind => $val) {
 					if(file_exists($val['filename'])) {
 						$val['filename'] = renameExtracted($val['filename']);
@@ -354,7 +397,7 @@ class Gallery extends Module {
 									if(is_array($value)) {
 										foreach($value as $k => $v) {
 											$value[$k] = trim($v);
-											if(empty($v)){
+											if(empty($v)) {
 												unset($value[$k]);
 											}
 										}
@@ -377,26 +420,23 @@ class Gallery extends Module {
 								$this->manage_custom_fields($items);
 								$results['success'][] = $items->title;
 							} else {
-								$results['error'][$items->title] = mysql_error();
+								$results['error'][$items->title] = mysqli_error($Database->GetConnection());
 							}
 						}
 					} else {
 						unset($exfiles[$ind]);
 					}
 				}
-
 				if(file_exists($pathfile) && is_file($pathfile)) {
 					unlink($pathfile);
 				}
-
 				if(isset($results['success']) && count($results['success']) > 0) {
-					foreach($results['success'] as $v){
+					foreach($results['success'] as $v) {
 						$messages[] = "<li><strong>$v</strong></li>";
 					}
 					$messages = "<ul>".implode('', $messages)."</ul>";
 					printOut(SUCCESS, sprintf(L_GALLERY_ZIP_EXTRACTED,$messages));
 				}
-
 				if(isset($results['error']) && count($results['error']) > 0) {
 					$messages = array();
 					foreach($results['error'] as $k => $v) {
@@ -405,7 +445,6 @@ class Gallery extends Module {
 					$messages = "<ul>".implode('', $messages)."</ul>";
 					printOut(FAILURE, sprintf(L_GALLERY_ZIP_PARTIALLY_EXTRACTED,$messages));
 				}
-
 				if(count($images) == 0) {
 					printOut(FAILURE, L_GALLERY_ZIP_NO_IMAGES);
 				}
@@ -413,17 +452,22 @@ class Gallery extends Module {
 					$nicount = count($nonimages);
 					$errmess = $nicount !=1 ? L_GALLERY_ZIP_NOT_IMAGES_PLURAL : L_GALLERY_ZIP_NOT_IMAGES_SINGULAR;
 					$nonimages = implode('</strong>, '.L_CONCAT_AND.' <strong>',$nonimages);
-					//$nonimages = substr($nonimages,0,-1);
 					printOut(FAILURE, '<strong>'.$nonimages.'</strong> '.$errmess.'.');
 				}
 			}
-		} // uploading a zip
+		}
 	}
 
+	/**
+	 * doThumbnails function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function doThumbnails() {
 		$items =& $this->items;
-	?>
-		<div class="row">
+		?>
+		<div class="row-fluid">
 			<div class="span5">
 				<div class="control-group">
 					<label for="crop_x" class="control-label"><?php echo L_GALLERY_THUMB_X ?></label>
@@ -453,7 +497,7 @@ class Gallery extends Module {
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row-fluid">
 			<div class="span5">
 				<div class="control-group">
 					<label for="thumb_max" class="control-label"><?php echo L_GALLERY_THUMB_MAX ?></label>
@@ -469,9 +513,15 @@ class Gallery extends Module {
 				</label>
 			</div>
 		</div>
-	<?php
+		<?php
 	}
 
+	/**
+	 * doPaypal function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function doPaypal() {
 		$items =& $this->items;
 		global $currencysymbols;
@@ -505,36 +555,35 @@ class Gallery extends Module {
 		<fieldset id="new_cat">
 			<legend><?php echo L_GALLERY_PP_MORE_OPTIONS; tooltip(L_GALLERY_PP_MORE_OPTIONS, L_GALLERY_PP_MORE_OPTIONS_HELP); ?></legend>
 			<?php
-			if(!empty($items->extraoptions)){
+			if(!empty($items->extraoptions)) {
 				$extraoptions = unserialize($items->extraoptions);
-				foreach($extraoptions as $k => $val){
-				$ok = $k+1;
-				if($ok === 1){
-					?>
-					<div class="control-group">
-						<label for="option<?php echo $ok ?>"><?php echo L_JS_OPTION_LABEL ?> <?php echo $ok ?></label>
-						<div class="controls">
-							<input type="text" name="extraoptions[]" id="option<?php echo $ok ?>" value="<?php echo view($val) ?>" class="formfields"  />
-						</div>
-					</div>
-					<?php
-				} else {
-				?>
-					<div id="option<?php echo $ok ?>Group">
+				foreach($extraoptions as $k => $val) {
+					$ok = $k+1;
+					if($ok === 1) {
+						?>
 						<div class="control-group">
 							<label for="option<?php echo $ok ?>"><?php echo L_JS_OPTION_LABEL ?> <?php echo $ok ?></label>
 							<div class="controls">
 								<input type="text" name="extraoptions[]" id="option<?php echo $ok ?>" value="<?php echo view($val) ?>" class="formfields"  />
 							</div>
 						</div>
-					</div>
-				<?php
-				}
-
+						<?php
+					} else {
+					?>
+						<div id="option<?php echo $ok ?>Group">
+							<div class="control-group">
+								<label for="option<?php echo $ok ?>"><?php echo L_JS_OPTION_LABEL ?> <?php echo $ok ?></label>
+								<div class="controls">
+									<input type="text" name="extraoptions[]" id="option<?php echo $ok ?>" value="<?php echo view($val) ?>" class="formfields"  />
+								</div>
+							</div>
+						</div>
+					<?php
+					}
 				}
 			} else {
-				?>
-				<div class="row" id="new_cat1Group">
+			?>
+				<div class="row-fluid" id="new_cat1Group">
 					<div class="span6">
 						<div class="control-group">
 							<label for="option1" class="control-label"><?php echo L_JS_OPTION_LABEL ?> 1</label>
@@ -544,10 +593,9 @@ class Gallery extends Module {
 						</div>
 					</div>
 				</div>
-				<?php
+			<?php
 			}
 			?>
-
 		</fieldset>
 		<?php
 	}

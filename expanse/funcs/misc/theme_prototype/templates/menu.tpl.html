@@ -1,14 +1,20 @@
-<div id="menu">
-  <ul>
- {loop:custom_menu}
-	 <li><h2><a href="{link}">{title}</a></h2>
-	 	{set:subcats}
-				<ul>
+<div class="navbar">
+	<div class="navbar-inner">
+		<a class="brand" href="{yoursite}">{sitename}</a>
+		<ul class="nav">
+		{loop:custom_menu}
+			<li class="{set:current} active {/set}{set:subcats} dropdown {/set}">
+				{mis:subcats}<a href="{link}">{title}</a>{/mis}
+				{set:subcats}
+				<a href="{link}" class="dropdown-toggle" data-toggle="dropdown">{title} <b class="caret"></b></a>
+				<ul class="dropdown-menu">
 				{loop:subcats}
 					<li><a href="{link}">{title}</a></li>
 				{/loop}
 				</ul>
-		{/set}
-	 </li>
-	{/loop}
-</ul></div>
+				{/set}
+			</li>
+		{/loop}
+		</ul>
+	</div>
+</div>

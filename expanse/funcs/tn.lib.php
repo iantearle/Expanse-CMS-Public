@@ -36,24 +36,23 @@ dMy                                                  ````  `dM+
 Expanse - Content Management For Web Designers, By A Web Designer
 			  Extended by Ian Tearle, @iantearle
 		Started by Nate Cavanaugh and Jason Morrison
-			www.alterform.com & www.dubtastic.com
 
 ****************************************************************/
 
 /*require(dirname(__FILE__) . '/admin.php');*/
 require(realpath(dirname(__FILE__) .'/../config.php'));
-require(dirname(__FILE__) . '/database.class.php');
-require(dirname(__FILE__) . '/expanse.class.php');
+require(dirname(__FILE__) . '/class.database.php');
+require(dirname(__FILE__) . '/class.expanse.php');
 require(dirname(__FILE__) . '/ozone.php');
 require(dirname(__FILE__) . '/functions.php');
 require(dirname(__FILE__) . '/common.vars.php');
-
 $option = getAllOptions();
 $maxwidth = (isset($_GET['dim'])) ? $_GET['dim'] : (!empty($option->thumbsize) ? $option->thumbsize : 100);
 $maxheight = (isset($_GET['dim'])) ? $_GET['dim'] : (!empty($option->thumbsize) ? $option->thumbsize : 100);
 $item_img = '';
 $item_id = check_get_id('id');
 $image_id = check_get_id('image_id');
+$file_name = check_get_alphanum('file_name');
 if(!empty($item_id)) {
 	$items = new Expanse('items');
 	$items->Get($item_id);
@@ -73,7 +72,7 @@ if(!empty($item_id)) {
 	}
 	if(isset($_GET['dim'])) {
 		$maxwidth = $maxheight = $thumb_max = (int) $_GET['dim'];
-	} elseif ($items->use_default_thumbsize == 1) {
+	} elseif($items->use_default_thumbsize == 1) {
 		$maxwidth = $maxheight = $thumb_max = (!empty($option->thumbsize) ? $option->thumbsize : 100);
 	}
 } elseif(!empty($image_id)) {
@@ -88,6 +87,25 @@ if(!empty($item_id)) {
 	} else {
 		$maxwidth = $maxheight = $thumb_max = $option->thumbsize;
 	}
+} elseif(!empty($file_name)) {
+	$item_img = rawurlencode($file_name);
+	$item_img = !empty($item_img) ? $item_img : ERROR_IMG;
+	$dims = getimagesize(UPLOADS . $file_name);
+	$img_width = trim($dims[0]);
+	$item_img = (!empty($img_width)) ? $item_img : FILE_IMG;
+	$crop_x = (isset($_GET['cropx'])) ? $_GET['cropx'] : 0;
+	$crop_y = (isset($_GET['cropy'])) ? $_GET['cropy'] : 0;
+	$thumb_w = (isset($_GET['thumbw'])) ? $_GET['thumbw'] : '';
+	$thumb_h = (isset($_GET['thumbh'])) ? $_GET['thumbh'] : '';
+	$thumb_max = (isset($_GET['max'])) ? $_GET['max'] : $option->thumbsize;
+	if($thumb_w == 0 && $thumb_h == 0 && $thumb_max != 0) {
+		$maxwidth = $maxheight = $thumb_max;
+	}
+	if(isset($_GET['dim']) && is_numeric($_GET['dim'])) {
+		$maxwidth = $maxheight = $thumb_max = (int) $_GET['dim'];
+	} else {
+		$maxwidth = $maxheight = $thumb_max = $option->thumbsize;
+	}
 }
 $uploaddir = (!in_array($item_img, array(ERROR_IMG, FILE_IMG))) ? UPLOADS : EXPANSEPATH . '/images';
 
@@ -97,8 +115,8 @@ define('MAX_WIDTH', $maxwidth);
 define('MAX_HEIGHT', $maxheight);
 
 //Get image location
-$image_file = (isset($_GET['pic'])) ? $_GET['pic'] : (!empty($item_id) || !empty($image_id) ? $item_img : str_replace('..', '', $_SERVER['QUERY_STRING']));
-$image_path = IMAGE_BASE . "/" . rawurldecode($image_file);
+$image_file = (isset($_GET['pic'])) ? $_GET['pic'] : (!empty($item_id) || !empty($image_id) || !empty($file_name) ? $item_img : str_replace('..', '', $_SERVER['QUERY_STRING']));
+$image_path = IMAGE_BASE . rawurldecode($image_file);
 
 //Load image
 $img = null;
@@ -109,12 +127,15 @@ if($ext == 'jpg' || $ext == 'jpeg') {
 	$img = @imagecreatefromjpeg($image_path);
 } elseif($ext == 'png') {
 	$img = @imagecreatefrompng($image_path);
+
 	//Only if your version of GD includes GIF support
 } elseif($ext == 'gif') {
 	$img = @imagecreatefromgif($image_path);
 }
+
 //If an image was successfully loaded, test the image for size
 if($img) {
+
 	//Get image size and scale ratio
 	$width = imagesx($img);
 	$height = imagesy($img);
@@ -175,4 +196,5 @@ if($ext == 'jpg' || $ext == 'jpeg') {
 } else {
 	header('Content-type: image/jpeg');
 }
+
 imagepng($img);
