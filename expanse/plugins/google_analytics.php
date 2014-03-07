@@ -56,7 +56,7 @@ function ga_include_code() {
 	$print .= "_gaq.push(['_trackPageview']);\n";
 	$print .= "(function() {\n";
 	$print .= "var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n";
-	$print .= "ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n";
+	$print .= "ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';\n";
 	$print .= "var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n";
 	$print .= "})();\n";
 	$print .= "</script>\n";

@@ -506,7 +506,10 @@ var magicFields = Backbone.View.extend({
 		var divHTML = '<div id="' + optID + 'Group" class="row-fluid">' + '<div class="span6">' + '<div class="control-group">' + '<label for="' + optID + '">' + this.labelText + incrementor + '</label>' + '<div class="controls">' + '<input type="text" value="" name="' + this.fieldName + '[]" id="' + optID + '" class="text" />' + '</div>' + '</div>' + '</div>' + '</div>';
 		$('#' + this.addLinkID).before(divHTML);
 		$(optID + 'Descr').redactor({
-			buttons: ['formatting', '|', 'bold', 'italic']
+			buttons: ['html', '|','formatting', '|', 'bold', 'italic', '|', 'image', 'file'],
+			imageGetJson: 'javascript/redactor/modules/images.json.php',
+			imageUpload: 'javascript/redactor/modules/upload.php',
+			fileUpload: 'javascript/redactor/modules/file_upload.php'
 		});
 	},
 	removeFields: function() {
@@ -546,7 +549,10 @@ var magicUploads = magicFields.extend({
 		var divHTML = '<div id="' + optID + 'Group" class="row-fluid">' + '<div class="span8">' + '<div class="control-group">' + '<label for="' + optID + '" class="control-label">' + this.labelText + incrementor + '</label>' + '<div class="controls">' + '<input type="file" name="' + this.fieldName + fieldCount + '"  id="' + optID + '"  class="formfields file" />' + '</div>' + '</div>' + '<div class="control-group">' + '<label for="' + optID + '" class="control-label">Caption' + incrementor + '</label>' + '<div class="controls">' + '<textarea name="caption[' + optID + ']" class="caption ' + optID + 'Descr" id="' + optID + '"></textarea>' + '</div>' + '</div>' + '</div>' + '</div>';
 		$('#' + this.addLinkID).before(divHTML);
 		$(optID + 'Descr').redactor({
-			buttons: ['html', '|','formatting', '|', 'bold', 'italic']
+			buttons: ['html', '|','formatting', '|', 'bold', 'italic', '|', 'image', 'file'],
+			imageGetJson: 'javascript/redactor/modules/images.json.php',
+			imageUpload: 'javascript/redactor/modules/upload.php',
+			fileUpload: 'javascript/redactor/modules/file_upload.php'
 		});
 	}
 });
@@ -586,7 +592,10 @@ var magicCustom = magicFields.extend({
 		this.makeCustomVar(customVar, label);
 		this.insertSizers(field, fieldCount);
 		$('.customFieldGroupDescr').redactor({
-			buttons: ['html', '|','formatting', '|', 'bold', 'italic']
+			buttons: ['html', '|','formatting', '|', 'bold', 'italic', '|', 'image', 'file'],
+			imageGetJson: 'javascript/redactor/modules/images.json.php',
+			imageUpload: 'javascript/redactor/modules/upload.php',
+			fileUpload: 'javascript/redactor/modules/file_upload.php'
 		});
 /*
 		new AutoSuggest(label,this.customLabels);
@@ -711,10 +720,16 @@ $(function() {
 	new expanse.markDelete();
 	$('.descr').redactor({
 		imageGetJson: 'javascript/redactor/modules/images.json.php',
-		imageUpload: 'javascript/redactor/modules/upload.php'
+		imageUpload: 'javascript/redactor/modules/upload.php',
+		fileUpload: 'javascript/redactor/modules/file_upload.php',
+	//	pastePlainText: true
 	});
 	$('.customFieldGroupDescr').redactor({
-		buttons: ['html', '|','formatting', '|', 'bold', 'italic']
+		buttons: ['html', '|','formatting', '|', 'bold', 'italic', '|', 'image', 'file'],
+		imageGetJson: 'javascript/redactor/modules/images.json.php',
+		imageUpload: 'javascript/redactor/modules/upload.php',
+		fileUpload: 'javascript/redactor/modules/file_upload.php',
+	//	pastePlainText: true
 	});
 	loadAlert();
 	new magicFields({

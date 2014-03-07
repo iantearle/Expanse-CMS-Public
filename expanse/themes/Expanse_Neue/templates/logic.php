@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 Logic.php
 ---------------------------
@@ -60,4 +60,6 @@ This conditional indicates whenever you are on a custom, user-created page
 is_feed()
 This conditional indicates whenever you are looking at the RSS/XML feed
 */
+
+add_loop('category:events|howmany:7|sortby:created', 'next_events');
 ?>

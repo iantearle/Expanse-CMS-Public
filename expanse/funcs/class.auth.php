@@ -171,8 +171,8 @@ class userAuth {
 				$Database->Query("SELECT COUNT(id) as itemcount FROM ".PREFIX."items WHERE type='static' AND online=1");
 				$online_items = $Database->Result(0, 'itemcount');
 				$ov .= '<li>
-				<h3>' . ucwords($val->sectionname) . '</h3>
-				<p>'.sprintf(L_OVER_PAGES_ONLINE, $online_items, $total_items).'</p></li>';
+				<h3><a href="index.php?type=edit&cat_id='.$val->id.'">' . ucwords($val->sectionname) . '</a> <small>'.sprintf(L_OVER_PAGES_ONLINE, $online_items, $total_items).'</small></h3>
+				</li>';
 				continue;
 			}
 			$Database->Query("SELECT COUNT(id) as itemcount FROM ".PREFIX."items WHERE pid=$val->id");
@@ -180,8 +180,8 @@ class userAuth {
 			$Database->Query("SELECT COUNT(id) as itemcount FROM ".PREFIX."items WHERE pid=$val->id AND online=1");
 			$online_items = $Database->Result(0, 'itemcount');
 			$ov .= '<li>
-			<h3>' . ucwords($val->sectionname) . '</h3>
-			<p>'.sprintf(L_OVER_ITEMS_ONLINE, $online_items, $total_items).'</p></li>';
+			<h3><a href="index.php?type=edit&cat_id='.$val->id.'">' . ucwords($val->sectionname) . '</a> <small>'.sprintf(L_OVER_ITEMS_ONLINE, $online_items, $total_items).'</small></h3>
+			</li>';
 		}
 		$ov .= '</ul>';
 		$ov = applyOzoneAction('admin_summary_html',$ov,$ov_list);

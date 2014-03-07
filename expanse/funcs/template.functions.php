@@ -62,7 +62,8 @@ Conditional functions
 function is_home() {
 	$pcat = CAT_ID;
 	$ucat = UCAT;
-	return(empty($pcat) && empty($ucat) || (empty($pcat) && empty($ucat) && !is_search()) || STARTCAT == CAT_ID);
+//	return(empty($pcat) && empty($ucat));
+	return(empty($pcat) && empty($ucat) || (empty($pcat) && empty($ucat) && !is_search()) || (STARTCAT == CAT_ID) ? true : false);
 }
 
 /**
@@ -265,8 +266,8 @@ function prepare_menu_content($menu) {
 			$menu[$k]->subcats[$i]->sitename = $option->sitename;
 			$menu[$k]->subcats[$i]->yourname = $option->yourname;
 			$menu[$k]->subcats[$i]->subid = $menu[$k]->subcats[$i]->id;
-			$v->descr = applyOzone('category_description',$v->descr);
-			$menu[$k]->subcats[$i]->descr = $menu[$k]->subcats[$i]->descr  = isset($v->descr) ? $v->descr : '';
+			$v->subcategory_descr = applyOzone('subcategory_category_description',$v->descr);
+			$menu[$k]->subcats[$i]->subcategory_descr = $menu[$k]->subcats[$i]->subcategory_descr = isset($v->descr) ? $v->descr : '';
 			$menu[$k]->subcats[$i]->subcategory_link = $categories ? "{$menu[$k]->category_link}&amp;subcat=$v->id" . $theme_suffix :  YOUR_SITE.INDEX_PAGE."?$cat_type=$v->id" . $theme_suffix;
 			$menu[$k]->subcats[$i]->subcategory_link = (CLEAN_URLS) ? ($categories ? "{$menu[$k]->category_link}/$v->dirtitle" : YOUR_SITE.$v->dirtitle) . $theme_suffix : $menu[$k]->subcats[$i]->subcategory_link;
 			$menu[$k]->subcats[$i]->link =& $menu[$k]->subcats[$i]->subcategory_link;
@@ -311,7 +312,7 @@ function make_footer() {
 function add_loop($arg, $name) {
 	global $user_vars;
 	if(is_string($arg)) {
-		$var = prepare_content($arg); // Removed for custom loops: .'|ignore_paging:true');
+		$var = prepare_content($arg.'|ignore_paging:true');
 		$loop_vars = !isset($user_vars['main'][$name]) ? array() : $user_vars['main'][$name];
 		$loop = $var['page']->content;
 		if(!empty($loop_vars) && !empty($loop)) {
@@ -583,6 +584,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 	$category_name = '';
 	$category_type = '';
 	$category_descr = '';
+	$subcategory_descr = '';
 	$pcat = false;
 	$defcat = false;
 	$defaultcat = '';
@@ -619,25 +621,37 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 		}
 		$pcat = ($pcat !== false ? $pcat : ($defcat !== false ? $defcat : 0));
 		$parent_category = isset($arr['category']) ? $arr['category'] : $defaultcat;
-		$lessthan = isset($arr['lessthan']) ? explode( ',', $arr['lessthan']) : '';
-		$conditions = ($category_type == 'events') ? array(array('online', '=', 1), array('pid', '=', $pcat), array('event_date','>',time() - 3600)) : array(array('online', '=', 1), array('pid', '=', $pcat));
-		$conditions = isset($arr['lessthan']) ? array_merge($conditions, array(array($lessthan[0], $lessthan[1], $lessthan[2]))) : $conditions;
+		$conditions[] = array('pid', '=', $pcat);
+		if(!isset($arr['subcategory']) && !isset($arr['include'])) {
+			$conditions[] = array('cid', '=', 0);
+		}
+
 		$subcategories = (!isset($arr['id'])) ? $sections->GetList(array(array('pid', '=', $pcat))) : array();
 		$subcat = '';
 		$subcategory_name = '';
 		if(isset($arr['subcategory'])) {
 			$subcategory_name = $arr['subcategory'];
 			$subcat = $sections->GetList(array(array('sectionname', '=', $subcategory_name), array('pid', '=', $pcat)));
-			$category_descr = !empty($subcat) ? $subcat[0]->descr : $category_descr;
+			$subcategory_descr = !empty($subcat) ? $subcat[0]->descr : $category_descr;
 			$subcat = !empty($subcat) ? $subcat[0]->id : '';
 			$conditions[] = array('cid', '=', $subcat);
 		}
+
+		if(isset($arr['lessthan'])) {
+			$lessthan = explode( ',', $arr['lessthan']);
+			$conditions[] = array($lessthan[0], $lessthan[1], $lessthan[2]);
+		}
+		if(isset($arr['morethan'])) {
+			$lessthan = explode( ',', $arr['morethan']);
+			$conditions[] = array($lessthan[0], $lessthan[1], $lessthan[2]);
+		}
+
 		$sortby = isset($arr['sortby']) ? $arr['sortby'] : ((!empty($option->sortcats)) ? $option->sortcats : 'created');
 		$sortby = ($category_type == 'events') ? 'event_date' : $sortby;
 		$orderby = (isset($arr['orderby'])) ? $arr['orderby'] : ($sortby == 'order_rank' ? true : false);
 		$orderby = ($orderby == 'newestontop' || $orderby == 'newontop' || $orderby == 'newestfirst') ? true : false;
 		$orderby = (empty($option->sortdirection)) ? $orderby : (($option->sortdirection == 'ASC' || $sortby == 'order_rank') ? true : false);
-		$orderby = ($category_type == 'events') ? true : $orderby;
+		$orderby = ($category_type == 'events') ? false : $orderby;
 		$howmany = (isset($arr['howmany'])) ? $arr['howmany'] : $option->howmany;
 		$item_id = (isset($arr['id'])) ? (int)$arr['id'] : null;
 		$ignore_paging = isset($arr['ignore_paging']) ? true : ((empty($howmany) || $howmany == 0) ? true : false);
@@ -663,7 +677,6 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			$content = $items->GetList($conditions, $sortby, $orderby, $limitvalue, '*');
 
 		} else {
-
 			/**
 			 * Get single item (Full Template
 			 *
@@ -767,7 +780,7 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			$pagecat = $sections->GetList(array(array('cat_type', '=', 'pages')));
 			$pcat = $pagecat[0]->id;
 			$page_id = is_null($item_id) ? 0 : $item_id;
-			$page_ul = '<ul class="page_list">' . get_full_page_list(0, $page_id) . '</ul>';
+			$page_ul = '<ul class="page_list nav nav-pills nav-stacked">' . get_full_page_list(0, $page_id) . '</ul>';
 			if($items->pid != 0) {
 				$parent_page = clone($items);
 				$parent_page->Get($items->pid);
@@ -777,14 +790,14 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 			}
 		}
 		$content = assignContent($content, array('pcat' => $pcat, 'options' => $option, 'page_list' => $page_ul, 'parent_link' => $parent_link));
-		/* if(!$is_search) {
+		if(!$is_search) {
 			foreach ($subcategories as $k => $itemObject) {
 				$subcontent = $items->GetList(array(array('cid', '=', $itemObject->id)));
 				$subcategories[$k]->category_link = YOUR_SITE.INDEX_PAGE."?pcat=$pcat" . '&amp;subcat='.$itemObject->id;
 				$subcategories[$k]->category_link = (CLEAN_URLS) ? YOUR_SITE.$category_name . '/'.$itemObject->dirtitle : $subcategories[$k]->category_link;
 				$subcategories[$k]->content = assignContent($subcontent, array('pcat' => $pcat, 'options' => $option));
 			}
-		}*/
+		}
 	} else {
 		if(!empty($fof)) {
 			printOut(FAILURE, L_NO_ENTRIES_USER);
@@ -813,8 +826,9 @@ function prepare_content($arg = '', $extraVars = array(), $return = false) {
 
 	$page->subcat = $subcat;
 	$category_description = applyOzone('category_description',$category_descr);
-	$page->category_description = $category_description;
+	$page->category_description = $category_descr;
 	$page->descr = $category_descr;
+	$page->subcategory_descr = $subcategory_descr;
 	$page->logged_in = LOGGED_IN;
 	$page->template_path = dirname($template);
 	$page = inject_variables($page, $extraVars);
@@ -877,12 +891,14 @@ function assignContent($content, $extraVars = array()) {
 			$sections->Get($itemObj->pid);
 			$parent_dirtitle = $sections->dirtitle;
 		}
+		/*
 		if($itemObj->cid !== 0) {
 			$subcat = $itemObj->cid;
 			$sections->Get($subcat);
 			$subcat_name = $sections->sectionname;
 			$subcat_dirtitle = $sections->dirtitle;
 		}
+		*/
 
 		//Category Link
 		$content[$k]->category = $parent_name;
@@ -1102,7 +1118,7 @@ function get_full_page_list($default = 0, $parent = 0, $level = 0) {
 					$page_list .= '<li class="page_' . $page->id . ' user_page current_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a></li>' . "\n";
 				}
 			}
-			$page_list .= '<li class="page_' . $page->id . ' user_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a></li>' . "\n" . '<ul>' . get_full_page_list($default, $page->id, $level + 1) . '</ul>' . "\n";
+			$page_list .= '<li class="page_' . $page->id . ' user_page"><a href="' . $url . $theme_suffix . '" title="' . $page->title . '">' . $page->title . '</a>' . "\n" . '<ul>' . get_full_page_list($default, $page->id, $level + 1) . '</ul>' . "</li>\n";
 		}
 	}
 	return $page_list;

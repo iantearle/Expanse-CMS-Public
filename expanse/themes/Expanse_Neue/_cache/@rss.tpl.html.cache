@@ -1,0 +1,17 @@
+ETSa:1:{s:4:"main";a:9:{s:4:"2:48";s:37:"<rss version="2.0">
+<channel>
+<title>";s:14:"4:57:sitename:";s:0:"";s:4:"2:74";s:16:"</title> 
+<link>";s:19:"4:88:category_link:";s:0:"";s:5:"2:111";s:22:"</link> 
+<description>";s:16:"4:121:sitedescr:";s:0:"";s:5:"2:218";s:96:"</description> 
+<language>en-us</language> 
+<docs>http://blogs.law.harvard.edu/tech/rss</docs> 
+";s:15:"16:232:content:";a:9:{s:5:"2:247";s:15:"
+<item>
+<title>";s:12:"4:253:title:";s:0:"";s:5:"2:276";s:22:"</title>
+<description>";s:12:"4:282:descr:";s:0:"";s:5:"2:304";s:21:"</description>
+<link>";s:16:"4:314:permalink:";s:0:"";s:5:"2:333";s:18:"</link> 
+<pubDate>";s:14:"4:341:created:";s:0:"";s:5:"2:361";s:19:"</pubDate>
+</item>
+";}s:5:"2:386";s:18:"
+</channel>
+</rss>";}}

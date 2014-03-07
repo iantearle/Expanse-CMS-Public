@@ -151,6 +151,7 @@ function edit()
 		$items->created = dateTimeProcess($items->created);
         $items->pid = $items->cid = (isset($_POST['pid'])) ? $_POST['pid'] : 0;
         $items->dirtitle = set_dirtitle($items);
+        $items->template = dirify(trim($_POST['template']));
 		$items->type = 'static';
 		$items->descr = str_replace(array('&nbsp;','<p></p>'), array(' ', ''), $items->descr);
 		$items->descr = htmlspecialchars_decode(htmlentities($items->descr, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);

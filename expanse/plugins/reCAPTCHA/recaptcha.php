@@ -91,7 +91,6 @@ function recaptcha_handle_comment() {
 		if(!$resp->is_valid) {
 		    // What happens when the CAPTCHA was entered incorrectly
 		    printOut(FAILURE, 'The CAPTCHA you entered was incorrect or missing.');
-		    error_log($resp->error);
 		} else {
 		    handle_comment();
 		}
@@ -114,7 +113,6 @@ function recaptcha_handle_contact() {
 		if(!$resp->is_valid) {
 		    // What happens when the CAPTCHA was entered incorrectly
 		    printOut(FAILURE, 'The CAPTCHA you entered was incorrect or missing. ');
-		    error_log($resp->error);
 		} else {
 		    handle_contact();
 		}

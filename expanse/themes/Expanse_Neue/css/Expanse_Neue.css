@@ -6,6 +6,7 @@ Description: Default Expanse Theme
 Version: 1.0
 Author: Nate Cavanaugh, Jason Morrison
 Author URL: http://alterform.com/, http://dubtastic.com/
+Site: bob
 //----------------------------
 */
 
@@ -220,7 +221,7 @@ label,input{
 	margin: 1em 0 5px 0;
 }
 
-label { 
+label {
 	text-align: right;
 	width: 10em;
 	padding-right: 1em;
@@ -289,7 +290,7 @@ color: #333;
 font-weight: bold;
 font-size: 0.9em;
 background:url(../images/submit.gif) no-repeat;
-text-transform:capitalize; 
+text-transform:capitalize;
 width:76px;
 height:28px;
 }
@@ -372,8 +373,8 @@ list-style:none;
 #gallery li a{
 margin:5px;
 vertical-align:top;
-display:table-cell; 
-display:inline-table; 
+display:table-cell;
+display:inline-table;
 display:inline-block;
 }
 #gallery li img{margin:5px 7px 15px;}
@@ -396,14 +397,14 @@ text-decoration:none;
 }
 #fullView{
 max-width: 80%;
-width:expression( 
+width:expression(
    this.width > 520*0.9   ?
         "90%":
         "auto" );
 }
 .keepSized{
 max-width: 80%;
-width:expression( 
+width:expression(
    this.width > 520*0.9   ?
         "90%":
         "auto" );
@@ -581,11 +582,11 @@ padding:2em;
 #imageData{
 	padding:0 10px;
 	}
-#imageData #imageDetails{ width: 70%; float: left; text-align: left; color:#333;}	
+#imageData #imageDetails{ width: 70%; float: left; text-align: left; color:#333;}
 #imageData #caption{ font-weight: bold;	}
-#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}			
-#imageData #bottomNavClose{ width: 66px; float: right;  padding-bottom: 0.7em;	}	
-		
+#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}
+#imageData #bottomNavClose{ width: 66px; float: right;  padding-bottom: 0.7em;	}
+
 #overlay{
 	position: absolute;
 	top: 0;
@@ -600,15 +601,15 @@ padding:2em;
 	}
 
 .clearfix:after {
-	content: "."; 
-	display: block; 
-	height: 0; 
-	clear: both; 
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
 	visibility: hidden;
 	}
 
 * html>body .clearfix {
-	display: inline-block; 
+	display: inline-block;
 	width: 100%;
 	}
 
@@ -616,7 +617,7 @@ padding:2em;
 	/* Hides from IE-mac \*/
 	height: 1%;
 	/* End hide from IE-mac */
-	}	
+	}
 .viewDetails{
 padding:5px 18px;
 background:url(../images/view_details.gif) no-repeat 0 50%;

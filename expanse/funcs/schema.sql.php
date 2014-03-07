@@ -89,6 +89,7 @@ $schema['structure'] =
   `created` int(10) DEFAULT NULL,
   `updated` int(10) DEFAULT NULL,
   `dirtitle` varchar(255) NOT NULL DEFAULT '',
+  `template` varchar(255) NOT NULL DEFAULT '',
   `event_date` varchar(45) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
   `comments` tinyint(1) NOT NULL DEFAULT '0',

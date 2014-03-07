@@ -134,25 +134,16 @@ if(CLEAN_URLS) {
 			$_GET['item'] = $check[0]->id;
 		} else {
 			$check_parent = $sections->GetList(array(array('dirtitle', '=', $matches[1])));
-			$check_parent = $check_parent[0]->id;
-			$check = $sections->GetList(array(array('dirtitle', '=', $matches[2]), array('pid','=',$check_parent)));
-			if(!empty($check)) {
+			if(!empty($check_parent)) {
+				$check_parent = $check_parent[0]->id;
+				$check = $sections->GetList(array(array('dirtitle', '=', $matches[2]), array('pid','=',$check_parent)));
+				if(!empty($check)) {
 
-				//is a subcategory
-				$_GET['pcat'] = $check[0]->pid;
-				$_GET['subcat'] = $check[0]->id;
+					//is a subcategory
+					$_GET['pcat'] = $check[0]->pid;
+					$_GET['subcat'] = $check[0]->id;
+				}
 			}
-		}
-	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)/([\w\d-]+)$|', $request_uri, $matches)) {
-		$check = $items->GetList(array(array('dirtitle','=',$matches[3])));
-		if(!empty($check)) {
-
-			//is a single item
-			$_GET['pcat'] = $check[0]->pid;
-			$_GET['item'] = $check[0]->id;
-		}  else {
-			trigger_404();
-			$_GET['ucat']= '';
 		}
 	} elseif(preg_match('|^([\w\d-]+)/page/([\d]+)$|', $request_uri,$matches)) {
 
@@ -173,7 +164,18 @@ if(CLEAN_URLS) {
 			$_GET['subcat'] = $check_sub[0]->id;
 			$_GET['page'] = $matches[3];
 		}
+	} elseif(preg_match('|^([\w\d-]+)/([\w\d-]+)/([\w\d-]+)$|', $request_uri, $matches)) {
+		$check = $items->GetList(array(array('dirtitle','=',$matches[3])));
+		if(!empty($check)) {
+			//is a single item
+			$_GET['pcat'] = $check[0]->pid;
+			$_GET['item'] = $check[0]->id;
+		}  else {
+			trigger_404();
+			$_GET['ucat']= '';
+		}
 	}
+
 }
 
 /*   Page sections   //-------------------------------*/
@@ -340,7 +342,11 @@ if(!is_feed()) {
 		//On a user page
 		$items->Get($ucat);
 		if(!empty($items->id) && $items->type == 'static') {
-			$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
+			if($items->template) {
+				$tplfile = file_exists("$themetemplates/{$items->template}{$tplext}") ? "{$items->template}{$tplext}" : "page{$tplext}";
+			} else {
+				$tplfile = file_exists("$themetemplates/{$items->dirtitle}{$tplext}") ? "{$items->dirtitle}{$tplext}" : "page{$tplext}";
+			}
 			$tplfile = (isset($tplfile)) ? safe_tpl($tplfile) : trigger_404();
 			$main = expanse("type:static|id:$ucat|template:@$tplfile", $user_vars['main'], true);
 		} else {

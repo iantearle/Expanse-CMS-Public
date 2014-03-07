@@ -109,7 +109,7 @@ class Expanse {
 	* @param string $what
 	* @return array $tableList
 	*/
-	function GetList($fcv_array, $sortBy = '', $ascending = true, $limit = '', $what = '') {
+	function GetList($fcv_array, $sortBy = '', $ascending = true, $limit = '', $what = '', $print = false) {
 		$Database = new DatabaseConnection();
 		if(is_string($fcv_array)) {
 			$fcv_array = trim($fcv_array);
@@ -131,6 +131,9 @@ class Expanse {
 				$this->pog_query .= "`" . strtolower($fcv_array[$i][0]) . "` " . $fcv_array[$i][1] . " '" . $Database->Escape($fcv_array[$i][2]) . "' AND ";
 			}
 			$this->pog_query .= "`" . strtolower($fcv_array[$i][0]) . "` " . $fcv_array[$i][1] . " '" . $Database->Escape($fcv_array[$i][2]) . "' ORDER BY `$orderBy` $asc $sqlLimit";
+		}
+		if($print) {
+			print_r($this->pog_query);
 		}
 		$query = $Database->Query($this->pog_query);
 		$tableList = array();

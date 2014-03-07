@@ -1,0 +1,27 @@
+ETSa:1:{s:4:"main";a:23:{s:5:"2:132";s:121:"<feed 
+xmlns="http://www.w3.org/2005/Atom" 
+xmlns:thr="http://purl.org/syndication/thread/1.0" 
+xml:lang="en" 
+xml:base="";s:15:"4:141:yoursite:";s:0:"";s:5:"2:167";s:25:"feed.php?feed=atom">
+<id>";s:15:"4:176:yoursite:";s:0:"";s:5:"2:210";s:33:"feed.php?feed=atom</id>
+  <title>";s:15:"4:219:sitename:";s:0:"";s:5:"2:275";s:55:"</title>
+	<link rel="alternate" type="text/html" href="";s:15:"4:284:yoursite:";s:0:"";s:5:"2:313";s:28:"" />
+	<subtitle type="text">";s:16:"4:323:sitedescr:";s:0:"";s:5:"2:388";s:64:"</subtitle>
+	<link rel="self" type="application/atom+xml" href="";s:15:"4:397:yoursite:";s:0:"";s:5:"2:431";s:33:"feed.php?feed=atom" />
+	<updated>";s:19:"4:444:lastmodified:";s:0:"";s:5:"2:487";s:42:"</updated>
+	<rights type="text">Copyright ";s:20:"4:501:copyrightdate:";s:0:"";s:5:"2:529";s:27:"</rights>
+	<generator uri="";s:18:"4:541:company_url:";s:0:"";s:5:"2:544";s:2:"">";s:15:"4:553:cms_name:";s:0:"";s:5:"2:567";s:13:"</generator>
+";s:15:"16:581:content:";a:17:{s:5:"2:610";s:29:"
+<entry>
+		<author>
+			<name>";s:13:"4:617:author:";s:0:"";s:5:"2:668";s:50:"</name>
+		</author>
+		<title type="html"><![CDATA[";s:12:"4:674:title:";s:0:"";s:5:"2:734";s:59:"]]></title>
+		<link rel="alternate" type="text/html" href="";s:16:"4:744:permalink:";s:0:"";s:5:"2:756";s:11:"" />
+		<id>";s:16:"4:766:permalink:";s:0:"";s:5:"2:784";s:17:"</id>
+		<updated>";s:14:"4:792:created:";s:0:"";s:5:"2:817";s:24:"</updated>
+		<published>";s:14:"4:825:created:";s:0:"";s:5:"2:872";s:46:"</published>
+		<content type="html" xml:base="";s:16:"4:882:permalink:";s:0:"";s:5:"2:895";s:12:""><![CDATA[ ";s:12:"4:901:descr:";s:0:"";s:5:"2:926";s:24:"]]></content>
+	</entry>
+";}s:5:"2:941";s:8:"
+</feed>";}}

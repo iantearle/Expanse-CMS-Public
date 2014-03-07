@@ -34,6 +34,13 @@ if(ADDING):
 					</select>
 				</div>
 			</div>
+			<div class="control-group">
+				<label for="dir_title" class="control-label"><?php echo L_PAGE_TEMPLATE_SAFE_TITLE ?></label>
+				<div class="controls">
+					<input name="template" type="text" class="formfields" id="template" value="<?php echo $items->template;?>" />
+					<?php tooltip(L_PAGE_TEMPLATE_SAFE_TITLE, sprintf(L_PAGE_TEMPLATE_SAFE_TITLE_HELP, CMS_NAME)); ?>
+				</div>
+			</div>
 		</div>
 		<div class="span6">
 			<div class="control-group">
@@ -124,7 +131,7 @@ if(EDITING):
 				<div class="control-group">
 					<label for="dir_title" class="control-label"><?php echo L_PAGE_TEMPLATE_SAFE_TITLE ?></label>
 					<div class="controls">
-						<input name="dir_title" type="text" class="formfields" id="dir_title" value="<?php echo $items->dirtitle ;?>" />
+						<input name="template" type="text" class="formfields" id="template" value="<?php echo $items->template;?>" />
 						<?php tooltip(L_PAGE_TEMPLATE_SAFE_TITLE, sprintf(L_PAGE_TEMPLATE_SAFE_TITLE_HELP, CMS_NAME)); ?>
 					</div>
 				</div>

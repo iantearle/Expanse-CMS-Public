@@ -713,7 +713,7 @@ function get_page_dropdown($default = 0, $parent = 0, $level = 0, $mark = false,
 function get_page_list($default = 0, $parent = 0, $level = 0) {
 	global $item_id;
 	$items = isset($GLOBALS['items']) && is_object($GLOBALS['items']) ? $GLOBALS['items'] : new Expanse('items');
-	$pages = $items->GetList(array(array('type', '=', 'static'), array('pid', '=', $parent), array('online', '=', '1')));
+	$pages = $items->GetList(array(array('type', '=', 'static'), array('pid', '=', $parent)));
 	if(!empty($pages)) {
 		foreach($pages as $page) {
 			if(!empty ($item_id)) {
@@ -1338,7 +1338,11 @@ function getPage($id, $extraVars=array()) {
 			$pg->{$ek} 	= $ev;
 		}
 		$pg[0]->pages = getChildrenPages($pg[0]->id);
-		$pagetpl = file_exists("$themetemplates/{$pg[0]->dirtitle}{$tplext}") && is_file("$themetemplates/{$pg[0]->dirtitle}{$tplext}") ?  "$themetemplates/{$pg[0]->dirtitle}{$tplext}" : "$themetemplates/page{$tplext}";
+		if($pg[0]->template) {
+			$pagetpl = file_exists("$themetemplates/{$pg[0]->template}{$tplext}") && is_file("$themetemplates/{$pg[0]->template}{$tplext}") ?  "$themetemplates/{$pg[0]->template}{$tplext}" : "$themetemplates/page{$tplext}";
+		} else {
+			$pagetpl = file_exists("$themetemplates/{$pg[0]->dirtitle}{$tplext}") && is_file("$themetemplates/{$pg[0]->dirtitle}{$tplext}") ?  "$themetemplates/{$pg[0]->dirtitle}{$tplext}" : "$themetemplates/page{$tplext}";
+		}
 		$content = sprintt($pg, $pagetpl);
 	}
 	return $content;
@@ -2241,11 +2245,11 @@ class Module {
 		}
 
 		date_default_timezone_set('UTC');
-		$items->event_date = date('U', strtotime(isset($_POST['event_date']) .' '.isset($_POST['event_time'])));
+		$items->event_date = (isset($_POST['event_date']) && isset($_POST['event_time'])) ? date('U', strtotime($items->event_date .' '.$_POST['event_time'])) : '';
 		$items->created = dateTimeProcess();
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = (!empty($_POST['title'])) ? unique_dirtitle(dirify($_POST['title'])) : unique_dirtitle('untitled');
-		$items->descr = str_replace(array('&nbsp;','<p></p>'), ' ', $items->descr);
+		$items->descr = str_replace(array('&nbsp;','<p> </p>'), ' ', $items->descr);
 
 		//Add a subcat
 		$items->cid = $this->addSubcat();
@@ -2286,7 +2290,7 @@ class Module {
 			}
 		}
 		date_default_timezone_set('UTC');
-		$items->event_date = date('U', strtotime($items->event_date .' '.$_POST['event_time']));
+		$items->event_date = ($items->event_date && isset($_POST['event_time'])) ? date('U', strtotime($items->event_date .' '.$_POST['event_time'])) : '';
 		$items->created = dateTimeProcess($items->created);
 		$items->pid = (isset($_POST['pid'])) ? $_POST['pid'] : $cat_id;
 		$items->dirtitle = set_dirtitle($items);
@@ -2421,16 +2425,22 @@ class Module {
 		$cat_id = $this->cat_id;
 		$item_id = $this->item_id;
 		$auth = $this->auth;
+		$cat_type = strtolower($this->name);
 		$do_sort = check_get_alphanum('do_sort');
 		$terms = check_get_alphanum('search_text');
-		$sortoption = getOption('sortcats');
-		$ascending = getOption('sortdirection') == 'ASC' || $sortoption == 'order_rank' ? true : false;
+		if($cat_type == 'events') {
+			$sortoption = 'event_date';
+			$ascending = false;
+		} else {
+			$sortoption = getOption('sortcats');
+			$ascending = (getOption('sortdirection') == 'ASC' || $sortoption == 'order_rank') ? true : false;
+		}
 		$conditions = array(array('pid', '=', $cat_id));
 		if($do_sort == 'yes') {
-			$sort_orderdir = (check_get_alphanum('sort_orderdir') == 'ASC') ? 'ASC' : 'DESC';
+			$sort_orderdir = (check_get_alphanum('sort_orderdir') === 'ASC') ? true : false;
 			$sort_subcat = check_get_id('sort_subcat');
 			$sort_orderby = check_get_alphanum('sort_orderby');
-			$sortoption = (!empty($sort_orderby)) ? $sort_orderby: $sortoption;
+			$sortoption = (!empty($sort_orderby)) ? $sort_orderby : $sortoption;
 			$ascending = $sort_orderdir;
 		}
 		if(!($auth->SectionAdmin && $auth->Admin)) {
@@ -2726,11 +2736,11 @@ class Module {
 		}
 		?>
 		<div class="row-fluid">
-			<div class="span5">
+			<div class="span6">
 				<div class="control-group">
 					<label for="cid" class="control-label"><?php echo L_SUB_CATEGORY ?></label>
 					<div class="controls">
-						<select class="span5" name="cid" id="cid">
+						<select class="span12" name="cid" id="cid">
 							<option value="<?php echo $cat_id ?>"><?php echo L_SUB_CATEGORY_SELECT ?></option>
 							<?php
 							foreach($cats->subcats as $v) {
@@ -2748,15 +2758,15 @@ class Module {
 					<div class="control-group">
 						<label for="add_subcat" class="control-label"><?php echo L_SUB_CATEGORY_ADD ?></label>
 						<div class="controls">
-							<input name="add_subcat" id="add_subcat" type="text" class="span5" />
+							<input name="add_subcat" id="add_subcat" type="text" class="span12" />
 						</div>
 					</div>
 				</div>
-				<div class="span5">
+				<div class="span6">
 					<div class="control-group">
 						<label for="category_action" class="control-label"><?php echo L_CATEGORY_ACTION ?></label>
 						<div class="controls">
-							<select name="category_action" id="category_action" class="span5">
+							<select name="category_action" id="category_action" class="span12">
 								<option value="" selected="selected"><?php echo L_MOVE_OR_COPY ?></option>
 								<option value="move"><?php echo L_MOVE_TO ?></option>
 								<option value="copy"><?php echo L_COPY_TO ?></option>
@@ -2766,7 +2776,7 @@ class Module {
 					<div class="control-group">
 						<label for="new_home" class="control-label">Move into</label>
 						<div class="controls">
-							<select name="new_home" id="new_home" class="span5">
+							<select name="new_home" id="new_home" class="span12">
 								<?php
 
 								foreach($more_cats as $other_cat) {
@@ -3108,6 +3118,9 @@ class Module {
 														break;
 													case 'online':
 														$sorttag = 'Online';
+														break;
+													case 'event_date':
+														$sorttag = 'Event Date';
 														break;
 													default:
 														$sorttag = '';

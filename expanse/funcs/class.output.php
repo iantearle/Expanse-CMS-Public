@@ -237,13 +237,15 @@ class outputMessages {
 		echo '<div class="hide">';
 		echo is_array($LEX_JS) ? implode("\n",$LEX_JS) : '';
 		echo '</div>';
-		applyOzoneAction('admin_footer');
 		?>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo $main_js ?>"></script>
 	<script src="javascript/redactor/redactor.js"></script>
-	<?php echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>': ''; ?>
+	<?php
+		echo (!empty($module_js)) ? '<script type="text/javascript" src="'.$module_js.'"></script>': '';
+		applyOzoneAction('admin_footer');
+	?>
 </body>
 </html>
 		<?php

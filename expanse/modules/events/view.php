@@ -9,10 +9,6 @@ like so: </form><form method="post" action="">)
 //Must be included at the top of all mod files.
 if(!defined('EXPANSE') || !$auth->Authorized){die('<div class="alert alert-message alert-danger fade in" data-alert="alert"><p>You have no permissions to edit this file.</p></div>');}
 
-?>
-<script type="text/javascript" src="modules/events/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="modules/events/bootstrap-timepicker.js"></script>
-<?php
 //If you're adding content, use this block
 if(ADDING):
 ?>
@@ -230,6 +226,7 @@ elseif(EDITING):
 					<div id="item_<?php echo $item->id ?>" title="<?php echo strip_tags($item->descr) ?>">
 						<span class="pull-right <?php echo ($item->online == 0) ? 'label' : 'label label-success'; ?>"><?php echo ($item->online == 0) ? L_ITEM_OFFLINE : L_ITEM_ONLINE; ?></span>
 						<h1><?php echo $item->title ?></h1>
+						<p>Event Date: <?php echo view(date('d F Y', $item->event_date)); ?></p>
 						<p><?php printf(L_POSTED_BY, $the_displayname, $the_username) ?></p>
 						<?php if($has_subcat){ ?>
 							<h3><?php echo L_SUB_CATEGORY ?>: <?php echo $category; ?></h3>

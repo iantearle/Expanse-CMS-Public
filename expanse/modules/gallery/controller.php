@@ -210,7 +210,8 @@ class Gallery extends Module {
 				$items->height = isset($uploads['files']['img_main']['height']) ? $uploads['files']['img_main']['height'] : $items->height;
 			}
 			$caption = isset($_POST['caption']) ? $_POST['caption'] : array();
-			foreach(isset($_POST['existing_image']) as $xi) {
+			$existing_image = (isset($_POST['existing_image'])) ? $_POST['existing_image'] : array();
+			foreach($existing_image as $xi) {
 				$images->Get($xi);
 				if(isset($caption[$xi])) {
 					$images->caption = isset($caption[$xi]) ? trim($caption[$xi]) : '';
